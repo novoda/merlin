@@ -1,0 +1,45 @@
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+out/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+.project
+.classpath
+.settings
+target/
+libs/
+classes/
+gen-external-apklibs/
+tmp/
+
+# IDEA Ignores
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Android
+local.properties
+
+# MAC
+*.DS_Store
+
+*.orig
+
+=======
+
+# Robolectric helper to find the manifest
+/AndroidManifest.xml
