@@ -1,4 +1,4 @@
-/*___Generated_by_IDEA___*/
+// IGNORE ME!
 
 package com.novoda.merlin;
 
