@@ -1,7 +1,7 @@
 Merlin
 ======
 
-###An ok name for a library
+###"An ok name for a library"
 
 
 Merlin aims to simplify network monitoring by providing 3 registerable callbacks. ``onConnect`` ``onDisconnect`` and ``onMerlinBind``
@@ -23,13 +23,20 @@ This is triggered when the network state changes from connected to disconnected.
 This is triggered as soon as the MerlinService has binded. The provided ``NetworkStatus`` does not take host pinging into account, unless a host pinged networkStatus has already been retrieved.
 
 
-##Simple usage :
+##Setup
 
-Add the service to the manifest
+You'll need to add a few things to your manifest :
+
+These permissions (if you don't already have them)
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+this service
 
     <service android:exported="false" android:name="com.novoda.merlin.service.MerlinService" />
 
-Add the ConnectivityReceiver to the manifest
+and this receiver
 
     <receiver android:name="com.novoda.merlin.receiver.ConnectivityReceiver">
       <intent-filter>
@@ -37,7 +44,9 @@ Add the ConnectivityReceiver to the manifest
       </intent-filter>
     </receiver>
 
-Create Merlin
+##Simple usage
+
+Create Merlin (using Merlin.Builder())
 
     merlin = new Merlin.Builder().withConnectableCallbacks().build(context);
 
@@ -63,3 +72,5 @@ Register for callbacks
                 // Do something!
             }
     });
+    
+The [MerlinActivity](https://github.com/novoda/merlin/blob/master/demo/src/com/novoda/demo/presentation/base/MerlinActivity.java) within the demo shows a simple way to declutter Merlin from your main application code.    
