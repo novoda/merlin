@@ -27,7 +27,7 @@ This is triggered as soon as the MerlinService has binded. The provided ``Networ
 
 Add the service to the manifest
 
-    <service android:exported="false" android:name=".com.novoda.demo.connectivity.merlin.MerlinService" />
+    <service android:exported="false" android:name="com.novoda.merlin.service.MerlinService" />
 
 Add the ConnectivityReceiver to the manifest
 
