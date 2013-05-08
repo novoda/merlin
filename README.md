@@ -4,23 +4,29 @@ Merlin
 ###"An ok name for a library"
 
 
-Merlin aims to simplify network monitoring by providing 3 registerable callbacks. ``onConnect`` ``onDisconnect`` and ``onMerlinBind``
+Merlin aims to simplify network monitoring by providing 3 registerable callbacks. 
+`onConnect()` , `onDisconnect()` and `onMerlinBind(NetworkStatus networkStatus)`.
 
-    onConnect()
 
-What :
-This is triggered when the network state changes from disconnected to connected and a successful host ping has completed.
+##Usecases##
 
-Why :
-You have aquired a valid network connection, time to update stale data!
+####`onConnect()`####
 
-    onDisconnect()
+**When** the network state changes from disconnected to connected and a successful host ping has completed.
 
-This is triggered when the network state changes from connected to disconnected.
+**Because** you have just aquired a valid network connection, time to update stale data!
 
-    onMerlinBind(NetworkStatus networkStatus)
+####`onDisconnect()`####
 
-This is triggered as soon as the MerlinService has binded. The provided ``NetworkStatus`` does not take host pinging into account, unless a host pinged networkStatus has already been retrieved.
+**When** the network state changes from connected to disconnected.
+
+**Because** you probably want to tell the user he's now offline! or disable certain functionality until connectivity is available again.
+
+####`onMerlinBind(NetworkStatus networkStatus)`####
+
+**When** the MerlinService has binded, the current NetworkStatus is provided, although this is without pinging a host. 
+
+**Because** you may need to know the current state of the network before a network change occurs. 
 
 
 ##Setup
