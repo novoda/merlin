@@ -1,6 +1,6 @@
 package com.novoda.matcher;
 
-import com.merlin.NetworkStatus;
+import com.novoda.merlin.NetworkStatus;
 
 import org.mockito.ArgumentMatcher;
 

@@ -2,11 +2,11 @@ package com.novoda.demo.presentation;
 
 import android.os.Bundle;
 
-import com.merlin.Merlin;
-import com.merlin.NetworkStatus;
-import com.merlin.registerable.connection.Connectable;
-import com.merlin.registerable.disconnection.Disconnectable;
-import com.merlin.service.BindListener;
+import com.novoda.merlin.Merlin;
+import com.novoda.merlin.NetworkStatus;
+import com.novoda.merlin.registerable.connection.Connectable;
+import com.novoda.merlin.registerable.disconnection.Disconnectable;
+import com.novoda.merlin.service.BindListener;
 import com.novoda.demo.R;
 import com.novoda.demo.connectivity.display.NetworkStatusCroutonDisplayer;
 import com.novoda.demo.connectivity.display.NetworkStatusDisplayer;

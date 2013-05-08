@@ -35,9 +35,11 @@
 
     <service
       android:exported="false"
-      android:name="com.merlin.service.MerlinService" />
+      android:name="com.novoda.merlin.service.MerlinService" />
 
-    <receiver android:name="com.merlin.receiver.ConnectivityReceiver">
+    <!-- RECEIVER -->
+
+    <receiver android:name="com.novoda.merlin.receiver.ConnectivityReceiver">
       <intent-filter>
         <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
       </intent-filter>
