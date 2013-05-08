@@ -1,7 +1,7 @@
 Merlin
 ======
 
-###"An ok name for a library"
+####*"An ok name for a library"*
 
 
 Merlin aims to simplify network monitoring by providing 3 registerable callbacks. 
