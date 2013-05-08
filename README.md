@@ -5,7 +5,11 @@ Merlin aims to simplify network monitoring by providing 3 registerable callbacks
 
     onConnect()
 
-This is triggered when the network state changes from disconnected to connected and a successful host ping has completed
+What :
+This is triggered when the network state changes from disconnected to connected and a successful host ping has completed.
+
+Why :
+You havping e a valid network connection, time you update stale data!
 
     onDisconnect()
 
