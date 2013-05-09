@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 
-import com.novoda.merlin.Log;
 import com.novoda.merlin.receiver.event.ConnectionEventPackager;
 import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
 import com.novoda.merlin.service.MerlinService;
@@ -27,8 +26,12 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
     private void notifyMerlinService(Context context, ConnectivityChangeEvent connectivityChangedEvent) {
         IBinder binder = peekService(context, new Intent(context, MerlinService.class));
-        MerlinService merlinService = ((MerlinService.LocalBinder) binder).getService();
+        MerlinService merlinService = getMerlinService(binder);
         merlinService.onConnectivityChanged(connectivityChangedEvent);
+    }
+
+    protected MerlinService getMerlinService(IBinder binder) {
+        return ((MerlinService.LocalBinder) binder).getService();
     }
 
 }

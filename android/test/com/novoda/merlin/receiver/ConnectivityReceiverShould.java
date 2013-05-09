@@ -1,0 +1,67 @@
+package com.novoda.merlin.receiver;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.os.IBinder;
+
+import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
+import com.novoda.merlin.service.MerlinService;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.robolectric.RobolectricTestRunner;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.MockitoAnnotations.initMocks;
+
+@RunWith(RobolectricTestRunner.class)
+public class ConnectivityReceiverShould {
+
+    private ConnectivityReceiver connectivityReceiver;
+
+    @Mock Context context;
+    @Mock MerlinService merlinService;
+
+    @Before
+    public void setUp() throws Exception {
+        initMocks(this);
+        connectivityReceiver = new ConnectivityReceiver() {
+            @Override
+            protected MerlinService getMerlinService(IBinder binder) {
+                return merlinService;
+            }
+        };
+    }
+
+    @Test
+    public void not_notify_the_merlin_service_on_null_intents() throws Exception {
+        connectivityReceiver.onReceive(context, null);
+
+        verifyZeroInteractions(context);
+    }
+
+    @Test
+    public void not_notify_the_merlin_service_on_non_connectivity_intents() throws Exception {
+        Intent intent = new Intent();
+        intent.setAction("not_notify_the_merlin_service_on_non_connectivity_intents");
+        connectivityReceiver.onReceive(context, intent);
+
+        verifyZeroInteractions(context);
+    }
+
+    @Test
+    public void notify_the_merlin_service_on_valid_connectivity_intents() throws Exception {
+        Intent intent = new Intent();
+        intent.setAction(ConnectivityManager.CONNECTIVITY_ACTION);
+
+        connectivityReceiver.onReceive(context, intent);
+
+        verify(merlinService).onConnectivityChanged(any(ConnectivityChangeEvent.class));
+    }
+
+}
