@@ -2,12 +2,13 @@ package com.novoda.merlin;
 
 import android.content.Context;
 
-import com.novoda.merlin.registerable.connection.ConnectableRegisterer;
+import com.novoda.merlin.registerable.MerlinRegisterer;
+import com.novoda.merlin.registerable.connection.ConnectListener;
+import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.connection.Connector;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
-import com.novoda.merlin.registerable.disconnection.DisconnectableRegisterer;
+import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.disconnection.Disconnector;
-import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.service.BindListener;
 import com.novoda.merlin.service.MerlinServiceBinder;
 
@@ -16,20 +17,20 @@ public class MerlinBuilder {
     private BindListener bindListener;
     private ConnectListener merlinReconnector;
     private DisconnectListener merlinDisconnector;
-    private ConnectableRegisterer connectableRegisterer;
-    private DisconnectableRegisterer disconnectableRegisterer;
+    private MerlinRegisterer<Connectable> connectableRegisterer;
+    private MerlinRegisterer<Disconnectable> disconnectableRegisterer;
 
     MerlinBuilder() {
     }
 
     public MerlinBuilder withConnectableCallbacks() {
-        connectableRegisterer = new ConnectableRegisterer();
+        connectableRegisterer = new MerlinRegisterer<Connectable>();
         this.merlinReconnector = new Connector(connectableRegisterer);
         return this;
     }
 
     public MerlinBuilder withDisconnectableCallbacks() {
-        disconnectableRegisterer = new DisconnectableRegisterer();
+        disconnectableRegisterer = new MerlinRegisterer<Disconnectable>();
         this.merlinDisconnector = new Disconnector(disconnectableRegisterer);
         return this;
     }

@@ -1,6 +1,7 @@
 package com.novoda.merlin.registerable.connection;
 
 import com.novoda.merlin.registerable.MerlinConnector;
+import com.novoda.merlin.registerable.MerlinRegisterer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ConnectorShould {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        merlinConnector = new ConnectableRegisterer();
+        merlinConnector = new MerlinRegisterer<Connectable>();
         connector = new Connector(merlinConnector);
     }
 
