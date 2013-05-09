@@ -42,7 +42,7 @@ public class ConnectivityReceiverShould {
     public void not_notify_the_merlin_service_on_null_intents() throws Exception {
         connectivityReceiver.onReceive(context, null);
 
-        verifyZeroInteractions(context);
+        verifyZeroInteractions(merlinService);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class ConnectivityReceiverShould {
         intent.setAction("not_notify_the_merlin_service_on_non_connectivity_intents");
         connectivityReceiver.onReceive(context, intent);
 
-        verifyZeroInteractions(context);
+        verifyZeroInteractions(merlinService);
     }
 
     @Test
