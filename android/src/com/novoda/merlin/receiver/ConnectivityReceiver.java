@@ -16,7 +16,6 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent != null && connectivityAction(intent)) {
-            Log.d("onReceive : " + intent.getAction());
             ConnectivityChangeEvent connectivityChangedEvent = ConnectionEventPackager.from(intent);
             notifyMerlinService(context, connectivityChangedEvent);
         }
