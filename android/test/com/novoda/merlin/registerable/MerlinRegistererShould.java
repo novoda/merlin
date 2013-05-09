@@ -1,5 +1,7 @@
 package com.novoda.merlin.registerable;
 
+import com.novoda.merlin.registerable.connection.Connectable;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +39,17 @@ public class MerlinRegistererShould {
         System.gc();
 
         assertThat(merlinRegisterer.get()).isEmpty();
+    }
+
+    @Test
+    public void not_register_the_same_object_more_than_once() throws Exception {
+        Connectable connectable = mock(Connectable.class);
+
+        merlinRegisterer.register(connectable);
+        merlinRegisterer.register(connectable);
+        merlinRegisterer.register(connectable);
+
+        assertThat(merlinRegisterer.get()).hasSize(1);
     }
 
 }

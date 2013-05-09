@@ -38,20 +38,7 @@ public class ConnectorShould {
     }
 
     @Test
-    public void not_register_the_same_object_more_than_once() throws Exception {
-        Connectable connectable = mock(Connectable.class);
-
-        merlinConnector.register(connectable);
-        merlinConnector.register(connectable);
-        merlinConnector.register(connectable);
-
-        connector.onConnect();
-
-        verify(connectable, times(1)).onConnect();
-    }
-
-    @Test
-    public void callback_registered() throws Exception {
+    public void callback_all_registered() throws Exception {
         List<Connectable> connectables = createListOfConnectables();
 
         registerListOfConnectables(connectables);
