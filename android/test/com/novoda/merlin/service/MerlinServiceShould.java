@@ -1,4 +1,4 @@
-package com.novoda.merlin;
+package com.novoda.merlin.service;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
