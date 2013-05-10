@@ -5,19 +5,19 @@ import android.content.Context;
 import com.novoda.merlin.registerable.MerlinConnector;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.service.MerlinServiceBinder;
+import robolectric.NovodaRobolectricTestRunner;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(NovodaRobolectricTestRunner.class)
 public class MerlinShould {
 
     @Mock private Context context;

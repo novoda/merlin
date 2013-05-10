@@ -7,24 +7,23 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 
+import com.novoda.matcher.ComponentNameMatcher;
 import com.novoda.merlin.receiver.ConnectivityReceiver;
 import com.novoda.merlin.receiver.event.ConnectionEventPackager;
 import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
-import com.novoda.merlin.service.MerlinService;
-import com.novoda.matcher.ComponentNameMatcher;
+import robolectric.NovodaRobolectricTestRunner;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(NovodaRobolectricTestRunner.class)
 public class MerlinServiceShould {
 
     @Mock private Intent intent;

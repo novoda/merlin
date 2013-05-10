@@ -2,6 +2,7 @@ package com.novoda.merlin.registerable.connection;
 
 import com.novoda.merlin.registerable.MerlinConnector;
 import com.novoda.merlin.registerable.MerlinRegisterer;
+import robolectric.NovodaRobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +10,12 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(NovodaRobolectricTestRunner.class)
 public class ConnectorShould {
 
     private MerlinConnector<Connectable> merlinConnector;
