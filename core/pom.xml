@@ -5,10 +5,10 @@
   <parent>
     <groupId>com.novoda.merlin</groupId>
     <artifactId>merlin-parent</artifactId>
-    <version>0.1</version>
+    <version>0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>merlin-android</artifactId>
+  <artifactId>merlin-core</artifactId>
   <packaging>jar</packaging>
   <name>Merlin</name>
 
