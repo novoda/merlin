@@ -20,7 +20,7 @@ Merlin aims to simplify network monitoring by providing 3 registerable callbacks
 
 **When** the network state changes from connected to disconnected.
 
-**Because** you probably want to tell the user he's now offline! or disable certain functionality until connectivity is available again.
+**Because** you probably want to tell the user they're now offline! or disable certain functionality until a reliqble connection is available again.
 
 ####`onMerlinBind(NetworkStatus networkStatus)`####
 
