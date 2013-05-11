@@ -15,7 +15,7 @@
   <name>Merlin</name>
 
   <modules>
-    <module>android</module>
+    <module>core</module>
     <module>demo</module>
   </modules>
 
@@ -40,6 +40,21 @@
           </dependency>
         </dependencies>
       </plugin>
+      <plugin>
+        <artifactId>maven-scm-plugin</artifactId>
+        <configuration>
+          <scmVersionType>branch</scmVersionType>
+          <scmVersion>${scm.branch}</scmVersion>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <useReleaseProfile>false</useReleaseProfile>
+        </configuration>
+        <goals />
+      </plugin>
     </plugins>
   </build>
 
@@ -54,23 +69,19 @@
 
   </repositories>
 
-  <pluginRepositories>
-
-    <pluginRepository>
-      <id>public-mvn-repo.plugin-releases</id>
-      <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-
-  </pluginRepositories>
-
   <scm>
-    <url>https://github.com/novoda/merlin/tree/${scm.branch}</url>
-    <connection>scm:git:git://https://github.com/novoda/merlin.git</connection>
-    <developerConnection>scm:git:ssh://https://github.com/novoda/merlin.git</developerConnection>
+    <url>http://github.com/novoda/merlin/tree/${scm.branch}</url>
+    <connection>scm:git:git://github.com/novoda/merlin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:novoda/merlin.git</developerConnection>
   </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>local-public-mvn-repo</id>
+      <name>local clone of https://github.com/novoda/public-mvn-repo</name>
+      <url>${local.public.mvn.repo}</url>
+    </repository>
+  </distributionManagement>
 
   <licenses>
     <license>
@@ -78,4 +89,5 @@
       <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
+
 </project>
