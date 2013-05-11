@@ -1,6 +1,7 @@
 package com.novoda.merlin;
 
 import com.novoda.merlin.registerable.MerlinConnector;
+import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.service.MerlinServiceBinder;
@@ -10,17 +11,16 @@ public class Merlin {
     public static final String DEFAULT_HOSTNAME = "http://www.google.com";
 
     private final MerlinServiceBinder merlinServiceBinder;
+
     private final MerlinConnector<Connectable> merlinConnector;
     private final MerlinConnector<Disconnectable> merlinDisconnector;
+    private final MerlinConnector<Bindable> merlinOnBinder;
 
-    Merlin(MerlinServiceBinder merlinServiceBinder) {
-        this(merlinServiceBinder, null, null);
-    }
-
-    Merlin(MerlinServiceBinder merlinServiceBinder, MerlinConnector<Connectable> merlinConnector, MerlinConnector<Disconnectable> merlinDisconnector) {
+    Merlin(MerlinServiceBinder merlinServiceBinder, MerlinConnector<Connectable> merlinConnector, MerlinConnector<Disconnectable> merlinDisconnector, MerlinConnector<Bindable> merlinOnBinder) {
         this.merlinServiceBinder = merlinServiceBinder;
         this.merlinConnector = merlinConnector;
         this.merlinDisconnector = merlinDisconnector;
+        this.merlinOnBinder = merlinOnBinder;
     }
 
     public void setHostname(String hostname) {
@@ -61,6 +61,20 @@ public class Merlin {
             );
         }
         return merlinDisconnector;
+    }
+
+    public void registerBindable(Bindable bindable) {
+        getOnBinder().register(bindable);
+    }
+
+    private MerlinConnector<Bindable> getOnBinder() {
+        if (merlinOnBinder == null) {
+            throw new MerlinException(
+                    "You must call " + Builder.class.getSimpleName() + ".withBindableCallbacks()" +
+                            "before registering a " + Bindable.class.getSimpleName()
+            );
+        }
+        return merlinOnBinder;
     }
 
     public static class Builder extends MerlinBuilder {

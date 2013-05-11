@@ -6,7 +6,7 @@ import com.novoda.merlin.Merlin;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
-import com.novoda.merlin.service.BindListener;
+import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.demo.R;
 import com.novoda.demo.connectivity.display.NetworkStatusCroutonDisplayer;
 import com.novoda.demo.connectivity.display.NetworkStatusDisplayer;
@@ -28,7 +28,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         return new Merlin.Builder()
                 .withConnectableCallbacks()
                 .withDisconnectableCallbacks()
-                .withBindListener(this)
+                .withBindableCallbacks()
                 .withLogging(true)
                 .build(this);
     }
@@ -38,6 +38,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         super.onResume();
         registerConnectable(this);
         registerDisconnectable(this);
+
     }
 
     @Override

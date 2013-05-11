@@ -1,4 +1,4 @@
-package com.novoda.merlin.service;
+package com.novoda.merlin.registerable.bind;
 
 import com.novoda.merlin.NetworkStatus;
 

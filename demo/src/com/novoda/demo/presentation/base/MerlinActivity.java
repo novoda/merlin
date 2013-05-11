@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.novoda.merlin.Merlin;
+import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.connection.Connectable;
 
@@ -25,6 +26,10 @@ public abstract class MerlinActivity extends Activity {
 
     protected void registerDisconnectable(Disconnectable disconnectable) {
         merlin.registerDisconnectable(disconnectable);
+    }
+
+    protected void registerBindable(Bindable bindable) {
+        merlin.registerBindable(bindable);
     }
 
     @Override

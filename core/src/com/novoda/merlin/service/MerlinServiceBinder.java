@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import com.novoda.merlin.Log;
+import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 
