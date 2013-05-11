@@ -13,7 +13,7 @@ public class Connector extends MerlinCallbackManager<Connectable> implements Con
     @Override
     public void onConnect() {
         Log.d("onConnect");
-        for (Connectable connectable : getMerlinConnectors()) {
+        for (Connectable connectable : getRegisterables()) {
             connectable.onConnect();
         }
     }
