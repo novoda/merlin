@@ -10,7 +10,7 @@
 
   <groupId>com.novoda.merlin</groupId>
   <artifactId>merlin-parent</artifactId>
-  <version>0.1</version>
+  <version>0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Merlin</name>
 
@@ -72,7 +72,7 @@
   <scm>
     <url>http://github.com/novoda/merlin/tree/${scm.branch}</url>
     <connection>scm:git:git://github.com/novoda/merlin.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com:novoda/merlin.git</developerConnection>
+    <developerConnection>scm:git:ssh://git@github.com/novoda/merlin.git</developerConnection>
   </scm>
 
   <distributionManagement>
