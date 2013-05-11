@@ -2,17 +2,17 @@ package com.novoda.demo.presentation;
 
 import android.os.Bundle;
 
-import com.novoda.merlin.Merlin;
-import com.novoda.merlin.NetworkStatus;
-import com.novoda.merlin.registerable.connection.Connectable;
-import com.novoda.merlin.registerable.disconnection.Disconnectable;
-import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.demo.R;
 import com.novoda.demo.connectivity.display.NetworkStatusCroutonDisplayer;
 import com.novoda.demo.connectivity.display.NetworkStatusDisplayer;
 import com.novoda.demo.presentation.base.MerlinActivity;
+import com.novoda.merlin.Merlin;
+import com.novoda.merlin.NetworkStatus;
+import com.novoda.merlin.registerable.bind.Bindable;
+import com.novoda.merlin.registerable.connection.Connectable;
+import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
-public class DemoActivity extends MerlinActivity implements Connectable, Disconnectable, BindListener {
+public class DemoActivity extends MerlinActivity implements Connectable, Disconnectable, Bindable {
 
     private NetworkStatusDisplayer networkStatusDisplayer;
 
@@ -38,11 +38,12 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         super.onResume();
         registerConnectable(this);
         registerDisconnectable(this);
+        registerBindable(this);
 
     }
 
     @Override
-    public void onMerlinBind(NetworkStatus networkStatus) {
+    public void onBind(NetworkStatus networkStatus) {
         if (!networkStatus.isAvailable()) {
             onDisconnect();
         }
