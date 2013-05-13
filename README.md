@@ -5,8 +5,27 @@ Merlin
 
 
 Merlin aims to simplify network monitoring by providing 3 registerable callbacks. 
-`onConnect()` , `onDisconnect()` and `onMerlinBind(NetworkStatus networkStatus)`.
+`onConnect()` , `onDisconnect()` and `onBind(NetworkStatus networkStatus)`.
 
+[Download the jar from here]()
+
+or if you're using maven
+
+*The repository is needed until the project is released on maven central, sorry about that*
+
+    <repositories>
+        <repository>
+          <id>public-mvn-repo-releases</id>
+          <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
+        </repository>
+    </repositories>
+
+    <dependency>
+      <groupId>com.novoda.merlin</groupId>
+      <artifactId>merlin-core</artifactId>
+      <version>0.2</version>
+    </dependency>
+    
 
 ##Usecases##
 
@@ -22,7 +41,7 @@ Merlin aims to simplify network monitoring by providing 3 registerable callbacks
 
 **Because** you probably want to tell the user they're now offline! or disable certain functionality until a reliqble connection is available again.
 
-####`onMerlinBind(NetworkStatus networkStatus)`####
+####`onBind(NetworkStatus networkStatus)`####
 
 **When** the MerlinService has binded, the current NetworkStatus is provided, although this is without pinging a host. 
 
@@ -83,6 +102,18 @@ The [MerlinActivity](https://github.com/novoda/merlin/blob/master/demo/src/com/n
 
 ##Changelog
 
+###0.2###
+  - Removed bindListener.
+  - Added bindable to match connectable and disconnectable.  
+  - Tidied code up.
+
 ###0.2-SNAPSHOT###
-Initial release.
+  - Initial release.
+
+
+##Contributing!
+
+If you would like to help out (and everyone should!!) please code against the **[develop branch](https://github.com/novoda/merlin/tree/develop)** 
+
+*and be sure write tests where possible!*
 
