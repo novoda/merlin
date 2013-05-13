@@ -7,7 +7,7 @@ Merlin
 Merlin aims to simplify network monitoring by providing 3 registerable callbacks. 
 `onConnect()` , `onDisconnect()` and `onBind(NetworkStatus networkStatus)`.
 
-[Download the jar from here]()
+[Download the jar from here](https://github.com/novoda/merlin/raw/master/releases/merlin-core-v0.2.jar)
 
 or if you're using maven
 
