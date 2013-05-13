@@ -3,29 +3,33 @@ package com.novoda.merlin;
 import android.content.Context;
 
 import com.novoda.merlin.registerable.MerlinRegisterer;
+import com.novoda.merlin.registerable.bind.Bindable;
+import com.novoda.merlin.registerable.bind.OnBinder;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.connection.Connector;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.disconnection.Disconnector;
-import com.novoda.merlin.service.BindListener;
+import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.service.MerlinServiceBinder;
 
 public class MerlinBuilder {
 
-    private BindListener bindListener;
-    private ConnectListener merlinReconnector;
+    private BindListener merlinOnBinder;
+    private ConnectListener merlinConnector;
     private DisconnectListener merlinDisconnector;
+
     private MerlinRegisterer<Connectable> connectableRegisterer;
     private MerlinRegisterer<Disconnectable> disconnectableRegisterer;
+    private MerlinRegisterer<Bindable> bindableRegisterer;
 
     MerlinBuilder() {
     }
 
     public MerlinBuilder withConnectableCallbacks() {
         connectableRegisterer = new MerlinRegisterer<Connectable>();
-        this.merlinReconnector = new Connector(connectableRegisterer);
+        this.merlinConnector = new Connector(connectableRegisterer);
         return this;
     }
 
@@ -35,8 +39,9 @@ public class MerlinBuilder {
         return this;
     }
 
-    public MerlinBuilder withBindListener(BindListener bindListener) {
-        this.bindListener = bindListener;
+    public MerlinBuilder withBindableCallbacks() {
+        bindableRegisterer = new MerlinRegisterer<Bindable>();
+        this.merlinOnBinder = new OnBinder(bindableRegisterer);
         return this;
     }
 
@@ -48,11 +53,11 @@ public class MerlinBuilder {
     public Merlin build(Context context) {
         MerlinServiceBinder merlinServiceBinder = new MerlinServiceBinder(
                 context,
-                merlinReconnector,
+                merlinConnector,
                 merlinDisconnector,
-                bindListener);
+                merlinOnBinder);
 
-        return new Merlin(merlinServiceBinder, connectableRegisterer, disconnectableRegisterer);
+        return new Merlin(merlinServiceBinder, connectableRegisterer, disconnectableRegisterer, bindableRegisterer);
     }
 
 }
