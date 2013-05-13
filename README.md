@@ -5,7 +5,7 @@ Merlin
 
 
 Merlin aims to simplify network monitoring by providing 3 registerable callbacks. 
-`onConnect()` , `onDisconnect()` and `onMerlinBind(NetworkStatus networkStatus)`.
+`onConnect()` , `onDisconnect()` and `onBind(NetworkStatus networkStatus)`.
 
 
 ##Usecases##
@@ -22,7 +22,7 @@ Merlin aims to simplify network monitoring by providing 3 registerable callbacks
 
 **Because** you probably want to tell the user they're now offline! or disable certain functionality until a reliqble connection is available again.
 
-####`onMerlinBind(NetworkStatus networkStatus)`####
+####`onBind(NetworkStatus networkStatus)`####
 
 **When** the MerlinService has binded, the current NetworkStatus is provided, although this is without pinging a host. 
 
@@ -83,6 +83,12 @@ The [MerlinActivity](https://github.com/novoda/merlin/blob/master/demo/src/com/n
 
 ##Changelog
 
+###0.2###
+-Removed bindListener.
+-Added bindable to match connectable and disconnectable.  
+-Tidied code up.
+
+
 ###0.2-SNAPSHOT###
-Initial release.
+-Initial release.
 
