@@ -92,3 +92,10 @@ The [MerlinActivity](https://github.com/novoda/merlin/blob/master/demo/src/com/n
 ###0.2-SNAPSHOT###
 -Initial release.
 
+
+##Contributing!
+
+If you would like to help out (and everyone should!!) please code against the **[develop branch](https://github.com/novoda/merlin/tree/develop)** 
+
+*and be sure write tests where possible!*
+
