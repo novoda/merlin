@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.novoda.merlin</groupId>
     <artifactId>merlin-parent</artifactId>
-    <version>0.2</version>
+    <version>0.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>merlin-core</artifactId>

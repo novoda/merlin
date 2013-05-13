@@ -10,7 +10,7 @@
 
   <groupId>com.novoda.merlin</groupId>
   <artifactId>merlin-parent</artifactId>
-  <version>0.2</version>
+  <version>0.3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Merlin</name>
 
