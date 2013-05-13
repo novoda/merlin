@@ -39,7 +39,7 @@ or if you're using maven
 
 **When** the network state changes from connected to disconnected.
 
-**Because** you probably want to tell the user they're now offline! or disable certain functionality until a reliqble connection is available again.
+**Because** you probably want to tell the user they're now offline! or disable certain functionality until a reliable connection is available again.
 
 ####`onBind(NetworkStatus networkStatus)`####
 
