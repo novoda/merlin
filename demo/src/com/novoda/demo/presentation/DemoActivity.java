@@ -39,7 +39,6 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         registerConnectable(this);
         registerDisconnectable(this);
         registerBindable(this);
-
     }
 
     @Override
