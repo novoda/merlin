@@ -1,11 +1,11 @@
-package com.novoda.demo.presentation;
+package com.novoda.merlin.demo.presentation;
 
 import android.os.Bundle;
 
-import com.novoda.demo.R;
-import com.novoda.demo.connectivity.display.NetworkStatusCroutonDisplayer;
-import com.novoda.demo.connectivity.display.NetworkStatusDisplayer;
-import com.novoda.demo.presentation.base.MerlinActivity;
+import com.novoda.merlin.demo.R;
+import com.novoda.merlin.demo.connectivity.display.NetworkStatusCroutonDisplayer;
+import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
+import com.novoda.merlin.demo.presentation.base.MerlinActivity;
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.registerable.bind.Bindable;

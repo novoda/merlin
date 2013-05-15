@@ -1,8 +1,8 @@
-package com.novoda.demo.connectivity.display;
+package com.novoda.merlin.demo.connectivity.display;
 
 import android.app.Activity;
 
-import com.novoda.demo.R;
+import com.novoda.merlin.demo.R;
 
 import de.keyboardsurfer.android.widget.crouton.Style;
 

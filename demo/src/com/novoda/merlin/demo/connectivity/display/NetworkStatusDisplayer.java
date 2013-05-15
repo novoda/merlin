@@ -1,4 +1,4 @@
-package com.novoda.demo.connectivity.display;
+package com.novoda.merlin.demo.connectivity.display;
 
 public interface NetworkStatusDisplayer {
     void displayConnected();
