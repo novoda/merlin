@@ -20,18 +20,6 @@ public abstract class MerlinActivity extends Activity {
 
     protected abstract Merlin createMerlin();
 
-    protected void registerConnectable(Connectable connectable) {
-        merlin.registerConnectable(connectable);
-    }
-
-    protected void registerDisconnectable(Disconnectable disconnectable) {
-        merlin.registerDisconnectable(disconnectable);
-    }
-
-    protected void registerBindable(Bindable bindable) {
-        merlin.registerBindable(bindable);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -42,6 +30,18 @@ public abstract class MerlinActivity extends Activity {
     protected void onPause() {
         super.onPause();
         merlin.unbind();
+    }
+
+    protected void registerConnectable(Connectable connectable) {
+        merlin.registerConnectable(connectable);
+    }
+
+    protected void registerDisconnectable(Disconnectable disconnectable) {
+        merlin.registerDisconnectable(disconnectable);
+    }
+
+    protected void registerBindable(Bindable bindable) {
+        merlin.registerBindable(bindable);
     }
 
 }
