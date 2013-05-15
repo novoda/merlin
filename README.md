@@ -102,6 +102,10 @@ The [MerlinActivity](https://github.com/novoda/merlin/blob/master/demo/src/com/n
 
 ##Changelog
 
+###0.3-SNAPSHOT###
+  - quick release to get bug fix out
+  - [Fixed issue #2](https://github.com/novoda/merlin/issues/2)
+
 ###0.2###
   - Removed bindListener.
   - Added bindable to match connectable and disconnectable.  
