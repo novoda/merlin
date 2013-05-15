@@ -3,6 +3,7 @@ package com.novoda.merlin;
 import android.content.Context;
 
 import com.novoda.merlin.registerable.MerlinRegisterer;
+import com.novoda.merlin.registerable.Registerer;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.bind.OnBinder;
 import com.novoda.merlin.registerable.connection.ConnectListener;
@@ -51,13 +52,9 @@ public class MerlinBuilder {
     }
 
     public Merlin build(Context context) {
-        MerlinServiceBinder merlinServiceBinder = new MerlinServiceBinder(
-                context,
-                merlinConnector,
-                merlinDisconnector,
-                merlinOnBinder);
-
-        return new Merlin(merlinServiceBinder, connectableRegisterer, disconnectableRegisterer, bindableRegisterer);
+        MerlinServiceBinder merlinServiceBinder = new MerlinServiceBinder(context, merlinConnector, merlinDisconnector, merlinOnBinder);
+        Registerer merlinRegisterer = new Registerer(connectableRegisterer, disconnectableRegisterer, bindableRegisterer);
+        return new Merlin(merlinServiceBinder, merlinRegisterer);
     }
 
 }
