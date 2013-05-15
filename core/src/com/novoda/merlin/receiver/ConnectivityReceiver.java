@@ -27,9 +27,13 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     private void notifyMerlinService(Context context, ConnectivityChangeEvent connectivityChangedEvent) {
         IBinder binder = peekService(context, new Intent(context, MerlinService.class));
         MerlinService merlinService = getMerlinService(binder);
-        if (merlinService != null) {
+        if (isAvailable(merlinService)) {
             merlinService.onConnectivityChanged(connectivityChangedEvent);
         }
+    }
+
+    private boolean isAvailable(MerlinService merlinService) {
+        return merlinService != null;
     }
 
     protected MerlinService getMerlinService(IBinder binder) {

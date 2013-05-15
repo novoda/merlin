@@ -7,12 +7,13 @@ import android.os.IBinder;
 
 import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
 import com.novoda.merlin.service.MerlinService;
-import robolectric.NovodaRobolectricTestRunner;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+
+import robolectric.NovodaRobolectricTestRunner;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -62,6 +63,15 @@ public class ConnectivityReceiverShould {
         connectivityReceiver.onReceive(context, intent);
 
         verify(merlinService).onConnectivityChanged(any(ConnectivityChangeEvent.class));
+    }
+
+    @Test
+    public void not_explode_when_the_merlin_service_is_null() throws Exception {
+        Intent intent = new Intent();
+        intent.setAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        merlinService = null;
+
+        connectivityReceiver.onReceive(context, intent);
     }
 
 }
