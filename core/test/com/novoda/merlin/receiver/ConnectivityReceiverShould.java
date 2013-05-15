@@ -3,7 +3,6 @@ package com.novoda.merlin.receiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.os.IBinder;
 
 import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
 import com.novoda.merlin.service.MerlinService;
@@ -33,7 +32,7 @@ public class ConnectivityReceiverShould {
         initMocks(this);
         connectivityReceiver = new ConnectivityReceiver() {
             @Override
-            protected MerlinService getMerlinService(IBinder binder) {
+            protected MerlinService getMerlinService(Context context) {
                 return merlinService;
             }
         };
