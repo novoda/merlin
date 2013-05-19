@@ -26,6 +26,11 @@ or if you're using maven
       <version>0.2</version>
     </dependency>
     
+    
+or if you're using gradle     
+    compile 'com.novoda.merlin:core:0.3-SNAPSHOT'
+    
+gradle users can also skip the setup as the manifests are merged automatically!    
 
 ##Usecases##
 
@@ -48,7 +53,7 @@ or if you're using maven
 **Because** you may need to know the current state of the network before a network change occurs. 
 
 
-##Setup
+##Setup (If you're not using gradle)
 
 You'll need to add a few things to your manifest :
 
