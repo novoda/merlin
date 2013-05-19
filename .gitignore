@@ -31,6 +31,7 @@ tmp/
 *.ipr
 *.iws
 .idea/
+.gradle/
 
 # Android
 local.properties
