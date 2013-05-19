@@ -25,13 +25,22 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     }
 
     private void notifyMerlinService(Context context, ConnectivityChangeEvent connectivityChangedEvent) {
-        IBinder binder = peekService(context, new Intent(context, MerlinService.class));
-        MerlinService merlinService = getMerlinService(binder);
-        merlinService.onConnectivityChanged(connectivityChangedEvent);
+        MerlinService merlinService = getMerlinService(context);
+        if (isAvailable(merlinService)) {
+            merlinService.onConnectivityChanged(connectivityChangedEvent);
+        }
     }
 
-    protected MerlinService getMerlinService(IBinder binder) {
-        return ((MerlinService.LocalBinder) binder).getService();
+    private static boolean isAvailable(Object object) {
+        return object != null;
+    }
+
+    protected MerlinService getMerlinService(Context context) {
+        IBinder binder = peekService(context, new Intent(context, MerlinService.class));
+        if (isAvailable(binder)) {
+            return ((MerlinService.LocalBinder) binder).getService();
+        }
+        return null;
     }
 
 }

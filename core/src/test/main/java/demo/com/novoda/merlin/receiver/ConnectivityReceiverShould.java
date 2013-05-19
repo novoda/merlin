@@ -1,18 +1,18 @@
-package main.java.demo.com.novoda.merlin.receiver;
+package com.novoda.merlin.receiver;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.os.IBinder;
 
-import main.java.demo.com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
-import main.java.demo.com.novoda.merlin.service.MerlinService;
-import robolectric.NovodaRobolectricTestRunner;
+import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
+import com.novoda.merlin.service.MerlinService;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+
+import robolectric.NovodaRobolectricTestRunner;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -32,7 +32,7 @@ public class ConnectivityReceiverShould {
         initMocks(this);
         connectivityReceiver = new ConnectivityReceiver() {
             @Override
-            protected MerlinService getMerlinService(IBinder binder) {
+            protected MerlinService getMerlinService(Context context) {
                 return merlinService;
             }
         };
@@ -62,6 +62,15 @@ public class ConnectivityReceiverShould {
         connectivityReceiver.onReceive(context, intent);
 
         verify(merlinService).onConnectivityChanged(any(ConnectivityChangeEvent.class));
+    }
+
+    @Test
+    public void not_explode_when_the_merlin_service_is_null() throws Exception {
+        Intent intent = new Intent();
+        intent.setAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        merlinService = null;
+
+        connectivityReceiver.onReceive(context, intent);
     }
 
 }
