@@ -28,7 +28,7 @@ or if you're using maven
     
     
 or if you're using gradle     
-    compile 'com.novoda.merlin:core:0.3-SNAPSHOT'
+    ``compile 'com.novoda.merlin:core:0.3-SNAPSHOT'``
     
 gradle users can also skip the setup as the manifests are merged automatically!    
 
