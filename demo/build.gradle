@@ -1,0 +1,16 @@
+apply plugin: 'android'
+
+dependencies {
+
+    compile 'de.keyboardsurfer.android.widget:crouton:1.7'
+
+    compile project(':core')
+
+}
+
+android {
+
+    compileSdkVersion 17
+    buildToolsVersion "17"
+
+}

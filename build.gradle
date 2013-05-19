@@ -1,0 +1,19 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.4'
+    }
+}
+
+allprojects {
+    version = '0.3-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://github.com/novoda/public-mvn-repo/raw/master/releases'
+        }
+    }
+}

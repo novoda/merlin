@@ -40,11 +40,11 @@ These permissions (if you don't already have them)
 
 this service
 
-    <service android:exported="false" android:name="com.novoda.merlin.service.MerlinService" />
+    <service android:exported="false" android:name="main.java.demo.com.novoda.merlin.service.MerlinService" />
 
 and this receiver
 
-    <receiver android:name="com.novoda.merlin.receiver.ConnectivityReceiver">
+    <receiver android:name="main.java.demo.com.novoda.merlin.receiver.ConnectivityReceiver">
       <intent-filter>
         <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
       </intent-filter>
