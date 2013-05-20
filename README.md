@@ -26,6 +26,11 @@ or if you're using maven
       <version>0.2</version>
     </dependency>
     
+    
+or if you're using gradle     
+    ``compile 'com.novoda.merlin:core:0.3-SNAPSHOT'``
+    
+gradle users can also skip the setup as the manifests are merged automatically!    
 
 ##Usecases##
 
@@ -48,7 +53,7 @@ or if you're using maven
 **Because** you may need to know the current state of the network before a network change occurs. 
 
 
-##Setup
+##Setup (If you're not using gradle)
 
 You'll need to add a few things to your manifest :
 
@@ -59,11 +64,11 @@ These permissions (if you don't already have them)
 
 this service
 
-    <service android:exported="false" android:name="com.novoda.merlin.service.MerlinService" />
+    <service android:exported="false" android:name="main.java.demo.com.novoda.merlin.service.MerlinService" />
 
 and this receiver
 
-    <receiver android:name="com.novoda.merlin.receiver.ConnectivityReceiver">
+    <receiver android:name="main.java.demo.com.novoda.merlin.receiver.ConnectivityReceiver">
       <intent-filter>
         <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
       </intent-filter>

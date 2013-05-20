@@ -12,6 +12,7 @@
 bin/
 gen/
 out/
+build/
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -30,6 +31,7 @@ tmp/
 *.ipr
 *.iws
 .idea/
+.gradle/
 
 # Android
 local.properties
