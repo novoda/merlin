@@ -13,6 +13,7 @@ import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.disconnection.Disconnector;
 import com.novoda.merlin.registerable.bind.BindListener;
+import com.novoda.merlin.service.MerlinService;
 import com.novoda.merlin.service.MerlinServiceBinder;
 
 public class MerlinBuilder {
@@ -48,6 +49,11 @@ public class MerlinBuilder {
 
     public MerlinBuilder withLogging(boolean withLogging) {
         Log.LOGGING = withLogging;
+        return this;
+    }
+
+    public MerlinBuilder disableComponentEnabledSetting() {
+        MerlinService.USE_COMPONENT_ENABLED_SETTING = false;
         return this;
     }
 

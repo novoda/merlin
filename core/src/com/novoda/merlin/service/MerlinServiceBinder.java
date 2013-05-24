@@ -30,7 +30,6 @@ public class MerlinServiceBinder {
     }
 
     public void bindService() {
-        Log.d("Bind Service");
         if (connection == null) {
             connection = new Connection(listenerHolder, hostname);
         }

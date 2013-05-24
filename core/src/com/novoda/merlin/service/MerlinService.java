@@ -14,8 +14,9 @@ import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
-
 public class MerlinService extends Service implements HostPinger.PingerCallback {
+
+    public static boolean USE_COMPONENT_ENABLED_SETTING = true;
 
     private final IBinder binder;
     private final CurrentNetworkStatusFetcher currentNetworkStatusFetcher;
@@ -59,9 +60,9 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     }
 
     private void setReceiverState(int receiverState) {
-        ComponentName receiver = new ComponentName(this, ConnectivityReceiver.class);
-        PackageManager pm = getPackageManager();
-        pm.setComponentEnabledSetting(receiver, receiverState, PackageManager.DONT_KILL_APP);
+        if (USE_COMPONENT_ENABLED_SETTING) {
+            getPackageManager().setComponentEnabledSetting(new ComponentName(this, ConnectivityReceiver.class), receiverState, PackageManager.DONT_KILL_APP);
+        }
     }
 
     public void setHostname(String hostname) {
