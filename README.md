@@ -23,7 +23,7 @@ or if you're using maven
     <dependency>
       <groupId>com.novoda.merlin</groupId>
       <artifactId>merlin-core</artifactId>
-      <version>0.2</version>
+      <version>0.4</version>
     </dependency>
     
     
@@ -106,6 +106,10 @@ Register for callbacks
 The [MerlinActivity](https://github.com/novoda/merlin/blob/master/demo/src/com/novoda/demo/presentation/base/MerlinActivity.java) within the demo shows a simple way to declutter Merlin from your main application code.    
 
 ##Changelog
+
+###0.4###
+  - workaround for issue #4 which causes the Android Runtime to restart after uninstalling
+  - code tidying
 
 ###0.3-SNAPSHOT###
   - quick release to get bug fix out
