@@ -2,9 +2,9 @@ apply plugin : 'java'
 
 dependencies {
 
-    compile group: 'com.google.android', name: 'android', version: '4.1.1.4'
-
     compile project(':core')
+
+    compile group: 'com.google.android', name: 'android', version: '4.1.1.4'
 
     testCompile 'org.robolectric:robolectric:2.0-alpha-2'
 

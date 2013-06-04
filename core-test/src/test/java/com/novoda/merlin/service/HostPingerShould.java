@@ -1,12 +1,13 @@
-package main.java.demo.com.novoda.merlin.service;
+package com.novoda.merlin.service;
 
-import main.java.demo.com.novoda.merlin.Merlin;
-import robolectric.NovodaRobolectricTestRunner;
+import com.novoda.merlin.Merlin;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+
+import robolectric.NovodaRobolectricTestRunner;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;

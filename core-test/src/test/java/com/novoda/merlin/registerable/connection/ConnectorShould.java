@@ -1,8 +1,7 @@
-package main.java.demo.com.novoda.merlin.registerable.connection;
+package com.novoda.merlin.registerable.connection;
 
-import main.java.demo.com.novoda.merlin.registerable.MerlinConnector;
-import main.java.demo.com.novoda.merlin.registerable.MerlinRegisterer;
-import robolectric.NovodaRobolectricTestRunner;
+import com.novoda.merlin.registerable.MerlinConnector;
+import com.novoda.merlin.registerable.MerlinRegisterer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +9,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import robolectric.NovodaRobolectricTestRunner;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

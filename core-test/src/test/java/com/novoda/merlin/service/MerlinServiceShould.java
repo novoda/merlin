@@ -1,4 +1,4 @@
-package main.java.demo.com.novoda.merlin.service;
+package com.novoda.merlin.service;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -7,18 +7,19 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 
-import main.java.demo.com.novoda.matcher.ComponentNameMatcher;
-import main.java.demo.com.novoda.merlin.receiver.ConnectivityReceiver;
-import main.java.demo.com.novoda.merlin.receiver.event.ConnectionEventPackager;
-import main.java.demo.com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
-import main.java.demo.com.novoda.merlin.registerable.connection.ConnectListener;
-import main.java.demo.com.novoda.merlin.registerable.disconnection.DisconnectListener;
-import robolectric.NovodaRobolectricTestRunner;
+import com.novoda.matcher.ComponentNameMatcher;
+import com.novoda.merlin.receiver.ConnectivityReceiver;
+import com.novoda.merlin.receiver.event.ConnectionEventPackager;
+import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
+import com.novoda.merlin.registerable.connection.ConnectListener;
+import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+
+import robolectric.NovodaRobolectricTestRunner;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;

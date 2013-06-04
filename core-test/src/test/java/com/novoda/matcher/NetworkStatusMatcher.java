@@ -1,6 +1,6 @@
-package main.java.demo.com.novoda.matcher;
+package com.novoda.matcher;
 
-import main.java.demo.com.novoda.merlin.NetworkStatus;
+import com.novoda.merlin.NetworkStatus;
 
 import org.mockito.ArgumentMatcher;
 

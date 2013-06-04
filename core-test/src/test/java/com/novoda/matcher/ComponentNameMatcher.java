@@ -1,4 +1,4 @@
-package main.java.demo.com.novoda.matcher;
+package com.novoda.matcher;
 
 import android.content.ComponentName;
 
