@@ -1,18 +1,42 @@
 apply plugin: 'android-library'
 
+
+configurations {
+    testCompile.extendsFrom compile
+}
+
 dependencies {
 
     compile 'com.google.android:support-v4:r11'
 
     compile 'com.github.kevinsawicki:http-request:4.0'
-//
-//    testCompile 'org.robolectric:robolectric:2.0-alpha-2'
-//
-//    testCompile 'junit:junit:4.8.1'
-//
-//    testCompile 'org.mockito:mockito-core:1.9.5'
-//
-//    testCompile 'org.easytesting:fest-assert-core:2.0M8'
+
+    testCompile group: 'com.google.android', name: 'android', version: '4.1.1.4'
+
+    testCompile 'org.robolectric:robolectric:2.0-alpha-2'
+
+    testCompile 'junit:junit:4.8.1'
+
+    testCompile 'org.mockito:mockito-core:1.9.5'
+
+    testCompile 'org.easytesting:fest-assert-core:2.0M8'
+}
+
+
+sourceSets {
+
+    roboTest {
+        java {
+            compileClasspath += configurations.testCompile
+            runtimeClasspath += configurations.testCompile
+        }
+    }
+
+}
+
+task robo(type : Test) {
+    testClassesDir = sourceSets.roboTest.output.classesDir
+    classpath = sourceSets.roboTest.runtimeClasspath
 
 }
 
