@@ -69,6 +69,18 @@
 
   </repositories>
 
+  <pluginRepositories>
+
+    <pluginRepository>
+      <id>public-mvn-repo.plugin-releases</id>
+      <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+
+  </pluginRepositories>
+
   <scm>
     <url>http://github.com/novoda/merlin/tree/${scm.branch}</url>
     <connection>scm:git:git://github.com/novoda/merlin.git</connection>
