@@ -7,6 +7,7 @@ Merlin
 Merlin aims to simplify network monitoring by providing 3 registerable callbacks. 
 `onConnect()` , `onDisconnect()` and `onBind(NetworkStatus networkStatus)`.
 
+
 [Download the jar from here](https://github.com/novoda/merlin/raw/master/releases/merlin-core-v0.4.1.jar)
 
 or if you're using Maven
@@ -32,11 +33,15 @@ or if you're using Maven
 
 ####`onConnect()`####
 
+![](https://raw.github.com/novoda/merlin/master/releases/res/on_connect.jpg)
+
 **When** the network state changes from disconnected to connected and a successful host ping has completed.
 
 **Because** you have just aquired a valid network connection, time to update stale data!
 
 ####`onDisconnect()`####
+
+![](https://raw.github.com/novoda/merlin/master/releases/res/on_disconnect.jpg)
 
 **When** the network state changes from connected to disconnected.
 
