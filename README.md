@@ -7,7 +7,7 @@ Merlin
 Merlin aims to simplify network monitoring by providing 3 registerable callbacks. 
 `onConnect()` , `onDisconnect()` and `onBind(NetworkStatus networkStatus)`.
 
-[Download the jar from here](https://github.com/novoda/merlin/raw/master/releases/merlin-core-v0.2.jar)
+[Download the jar from here](https://github.com/novoda/merlin/raw/master/releases/merlin-core-v0.4.1.jar)
 
 or if you're using Maven
 
@@ -24,7 +24,7 @@ or if you're using Maven
 <dependency>
   <groupId>com.novoda.merlin</groupId>
   <artifactId>merlin-core</artifactId>
-  <version>0.4</version>
+  <version>0.4.1</version>
 </dependency>
 ``` 
 
@@ -114,6 +114,11 @@ merlin.registerConnectable(new Connectable() {
 The [`MerlinActivity`](https://github.com/novoda/merlin/blob/master/demo/src/com/novoda/merlin/demo/presentation/base/MerlinActivity.java) within the demo shows a simple way to declutter Merlin from your main application code.    
 
 ##Changelog
+
+###0.4.1###
+  - added java doc to the MerlinBuilder
+  - added sources to the maven release
+  - added apache 2.0 license
 
 ###0.4###
   - workaround for issue #4 which causes the Android Runtime to restart after uninstalling
