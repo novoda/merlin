@@ -9,23 +9,24 @@ Merlin aims to simplify network monitoring by providing 3 registerable callbacks
 
 [Download the jar from here](https://github.com/novoda/merlin/raw/master/releases/merlin-core-v0.2.jar)
 
-or if you're using maven
+or if you're using Maven
 
-*The repository is needed until the project is released on maven central, sorry about that*
+*The repository is needed until the project is released on Maven Central, sorry about that*
 
-    <repositories>
-        <repository>
-          <id>public-mvn-repo-releases</id>
-          <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
-        </repository>
-    </repositories>
+```xml
+<repositories>
+    <repository>
+      <id>public-mvn-repo-releases</id>
+      <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
+    </repository>
+</repositories>
 
-    <dependency>
-      <groupId>com.novoda.merlin</groupId>
-      <artifactId>merlin-core</artifactId>
-      <version>0.4</version>
-    </dependency>
-    
+<dependency>
+  <groupId>com.novoda.merlin</groupId>
+  <artifactId>merlin-core</artifactId>
+  <version>0.4</version>
+</dependency>
+``` 
 
 ##Usecases##
 
@@ -43,7 +44,7 @@ or if you're using maven
 
 ####`onBind(NetworkStatus networkStatus)`####
 
-**When** the MerlinService has binded, the current NetworkStatus is provided, although this is without pinging a host. 
+**When** the `MerlinService` has binded, the current `NetworkStatus` is provided, although this is without pinging a host. 
 
 **Because** you may need to know the current state of the network before a network change occurs. 
 
@@ -54,51 +55,63 @@ You'll need to add a few things to your manifest :
 
 These permissions (if you don't already have them)
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+```
 
 this service
 
-    <service android:exported="false" android:name="com.novoda.merlin.service.MerlinService" />
+```xml
+<service android:exported="false" android:name="com.novoda.merlin.service.MerlinService" />
+```
 
 and this receiver
 
-    <receiver android:name="com.novoda.merlin.receiver.ConnectivityReceiver">
-      <intent-filter>
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-      </intent-filter>
-    </receiver>
+```xml
+<receiver android:name="com.novoda.merlin.receiver.ConnectivityReceiver">
+  <intent-filter>
+    <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+  </intent-filter>
+</receiver>
+```
 
 ##Simple usage
 
-Create Merlin (using Merlin.Builder())
+Create Merlin (using `Merlin.Builder()`)
 
-    merlin = new Merlin.Builder().withConnectableCallbacks().build(context);
+```java
+merlin = new Merlin.Builder().withConnectableCallbacks().build(context);
+```
 
 Bind and unbind the service in your activity
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        merlin.bind();
-    }
+```java
+@Override
+protected void onResume() {
+    super.onResume();
+    merlin.bind();
+}
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        merlin.unbind();
-    }
+@Override
+protected void onPause() {
+    super.onPause();
+    merlin.unbind();
+}
+```
 
 Register for callbacks
 
-    merlin.registerConnectable(new Connectable() {
-            @Override
-            public void onConnect() {
-                // Do something!
-            }
-    });
+```java
+merlin.registerConnectable(new Connectable() {
+        @Override
+        public void onConnect() {
+            // Do something!
+        }
+});
+```
     
-The [MerlinActivity](https://github.com/novoda/merlin/blob/master/demo/src/com/novoda/demo/presentation/base/MerlinActivity.java) within the demo shows a simple way to declutter Merlin from your main application code.    
+The [`MerlinActivity`](https://github.com/novoda/merlin/blob/master/demo/src/com/novoda/merlin/demo/presentation/base/MerlinActivity.java) within the demo shows a simple way to declutter Merlin from your main application code.    
 
 ##Changelog
 
