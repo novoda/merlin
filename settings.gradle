@@ -1,3 +1,2 @@
 include 'core'
 include 'demo'
-include 'core-test'
