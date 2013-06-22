@@ -17,7 +17,8 @@ dependencies {
 }
 ``` 
 
-for .jar and maven set up go here.
+####[if you're not using gradle yet... (maven and jar setup)](https://github.com/novoda/merlin/wiki/adding-via-jar-and-maven)####
+
 
 ##Usecases##
 
