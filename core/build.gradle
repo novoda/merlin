@@ -22,8 +22,8 @@ repositories {
 }
 
 dependencies {
-    compile 'com.google.android:support-v4:r11'
 
+    compile 'com.google.android:support-v4:r11'
     compile 'com.github.kevinsawicki:http-request:4.0'
 
     robolectricCompile 'org.robolectric:robolectric:2.0'
