@@ -83,6 +83,9 @@ The [`MerlinActivity`](https://github.com/novoda/merlin/blob/master/demo/src/com
 
 ##Changelog
 
+###0.5###
+  - moved to gradle! - The api hasn't changed from v0.4.1 but building the project will now require gradle.
+
 ###0.4.1###
   - added java doc to the MerlinBuilder
   - added sources to the maven release
