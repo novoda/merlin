@@ -41,6 +41,20 @@ sourceSets {
     }
 }
 
+apply plugin: 'idea'
+
+idea {
+    module {
+        testSourceDirs += sourceSets.robolectric.java.srcDirs
+        iml.generateTo = file('../')
+
+        Map robolectricScope = [plus: [configurations.robolectricCompile], minus: []]
+        Map testScope = ['TEST': robolectricScope]
+
+        scopes += testScope
+    }
+}
+
 tasks.withType(Test) {
     scanForTestClasses = false
     include "**/*Should.class"
