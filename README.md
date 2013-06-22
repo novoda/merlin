@@ -7,27 +7,17 @@ Merlin
 Merlin aims to simplify network monitoring by providing 3 registerable callbacks. 
 `onConnect()` , `onDisconnect()` and `onBind(NetworkStatus networkStatus)`.
 
+##Adding to your project##
 
-[Download the jar from here](https://github.com/novoda/merlin/raw/master/releases/merlin-core-v0.4.1.jar)
+If you're using gradle all you need is this : 
 
-or if you're using Maven
-
-*The repository is needed until the project is released on Maven Central, sorry about that*
-
-```xml
-<repositories>
-    <repository>
-      <id>public-mvn-repo-releases</id>
-      <url>https://github.com/novoda/public-mvn-repo/raw/master/releases</url>
-    </repository>
-</repositories>
-
-<dependency>
-  <groupId>com.novoda.merlin</groupId>
-  <artifactId>merlin-core</artifactId>
-  <version>0.4.1</version>
-</dependency>
+```groovy
+dependencies {
+    compile "com.novoda.merlin:dependency:1.0"
+}
 ``` 
+
+for .jar and maven set up go here.
 
 ##Usecases##
 
@@ -52,34 +42,6 @@ or if you're using Maven
 **When** the `MerlinService` has binded, the current `NetworkStatus` is provided, although this is without pinging a host. 
 
 **Because** you may need to know the current state of the network before a network change occurs. 
-
-
-##Setup
-
-You'll need to add a few things to your manifest :
-
-These permissions (if you don't already have them)
-
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-```
-
-this service
-
-```xml
-<service android:exported="false" android:name="com.novoda.merlin.service.MerlinService" />
-```
-
-and this receiver
-
-```xml
-<receiver android:name="com.novoda.merlin.receiver.ConnectivityReceiver">
-  <intent-filter>
-    <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-  </intent-filter>
-</receiver>
-```
 
 ##Simple usage
 
