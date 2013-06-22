@@ -6,13 +6,12 @@ import android.net.ConnectivityManager;
 
 import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
 import com.novoda.merlin.service.MerlinService;
+import com.novoda.robolectric.NovodaRobolectricTestRunner;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-
-import robolectric.NovodaRobolectricTestRunner;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;

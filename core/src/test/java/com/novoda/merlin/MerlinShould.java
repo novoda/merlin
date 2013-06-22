@@ -3,13 +3,12 @@ package com.novoda.merlin;
 import android.content.Context;
 
 import com.novoda.merlin.service.MerlinServiceBinder;
+import com.novoda.robolectric.NovodaRobolectricTestRunner;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-
-import robolectric.NovodaRobolectricTestRunner;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;

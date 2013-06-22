@@ -13,13 +13,12 @@ import com.novoda.merlin.receiver.event.ConnectionEventPackager;
 import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
+import com.novoda.robolectric.NovodaRobolectricTestRunner;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-
-import robolectric.NovodaRobolectricTestRunner;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
