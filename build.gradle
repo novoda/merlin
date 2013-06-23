@@ -8,6 +8,10 @@ buildscript {
 
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.6'
+}
+
 allprojects {
     version = '0.5'
 
