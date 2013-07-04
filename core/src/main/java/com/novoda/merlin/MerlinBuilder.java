@@ -50,7 +50,7 @@ public class MerlinBuilder {
         this.merlinDisconnector = new Disconnector(disconnectableRegisterer);
         return this;
     }
-
+    
     /**
      * Enables Merlin to provide bindable callbacks, without calling this, Merlin.registerBindable will throw a MerlinException
      *
@@ -60,6 +60,15 @@ public class MerlinBuilder {
         bindableRegisterer = new MerlinRegisterer<Bindable>();
         this.merlinOnBinder = new OnBinder(bindableRegisterer);
         return this;
+    }
+
+    /**
+     * Enables Merlin to provide connectable, disconnectable & bindable callbacks, without calling this, Merlin.registerConconnectable, Merlin.registerDisconnectable & Merlin.registerBindable will throw a MerlinException
+     *
+     * @return MerlinBuilder.
+     */
+    public MerlinBuilder withAllCallbacks() {
+        return withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks();
     }
 
     /**
