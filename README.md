@@ -79,7 +79,7 @@ merlin.registerConnectable(new Connectable() {
 });
 ```
     
-The [`MerlinActivity`](https://github.com/novoda/merlin/blob/master/demo/src/com/novoda/merlin/demo/presentation/base/MerlinActivity.java) within the demo shows a simple way to declutter Merlin from your main application code.    
+The [`MerlinActivity`](https://github.com/novoda/merlin/blob/master/demo/src/main/java/com/novoda/merlin/demo/presentation/base/MerlinActivity.java) within the demo shows a simple way to declutter Merlin from your main application code.
 
 ##Changelog
 
