@@ -101,6 +101,11 @@ uploadArchives {
                         }
 
                         developer {
+                            id 'blundell'
+                            name 'Paul Blundell'
+                        }
+
+                        developer {
                             id 'Electryc'
                             name 'Andrei Catinean'
                         }
