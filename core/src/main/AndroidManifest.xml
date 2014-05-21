@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  android:versionCode="1"
-  android:versionName="0.3-SNAPSHOT"
   package="com.novoda.merlin">
 
+  <!--using targetSdkVersion=18 to get Robolectric work, but for an APK it will be overridden by build.gradle anyway-->
   <uses-sdk
-    android:minSdkVersion="15"
-    android:targetSdkVersion="17" />
+    android:targetSdkVersion="18" />
 
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
