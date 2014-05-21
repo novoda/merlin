@@ -4,13 +4,20 @@ dependencies {
 
     compile project(':core')
 
-    compile 'de.keyboardsurfer.android.widget:crouton:1.7'
+    compile ('de.keyboardsurfer.android.widget:crouton:1.7') {
+        exclude module: 'support-v4'
+
+    }
 
 }
 
 android {
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+    }
 
-    compileSdkVersion 17
-    buildToolsVersion "17"
+    compileSdkVersion 19
+    buildToolsVersion "19.0.3"
 
 }
