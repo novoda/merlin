@@ -13,17 +13,17 @@ import com.novoda.merlin.receiver.event.ConnectionEventPackager;
 import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
-import com.novoda.robolectric.NovodaRobolectricTestRunner;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(NovodaRobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class MerlinServiceShould {
 
     @Mock private Intent intent;

@@ -5,15 +5,15 @@ import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
-import com.novoda.robolectric.NovodaRobolectricTestRunner;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
-@RunWith(NovodaRobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class RegistererShould {
 
     Registerer registerer;

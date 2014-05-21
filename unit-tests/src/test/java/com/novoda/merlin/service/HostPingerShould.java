@@ -1,19 +1,19 @@
 package com.novoda.merlin.service;
 
 import com.novoda.merlin.Merlin;
-import com.novoda.robolectric.NovodaRobolectricTestRunner;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(NovodaRobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class HostPingerShould {
 
     public static final int SUCCESS_CODE = 200;
