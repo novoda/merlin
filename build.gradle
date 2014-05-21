@@ -1,3 +1,4 @@
+apply plugin: 'maven'
 buildscript {
     repositories {
         mavenCentral()
@@ -8,17 +9,92 @@ buildscript {
 
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+def masterVersion = '0.5.1'
+
+group = 'com.novoda'
+version = masterVersion
+ext.packaging = 'aar'
+
+def isDevBuild
+def isCiBuild
+def isReleaseBuild
+
+def sonatypeRepositoryUrl
+
+if (hasProperty("release")) {
+    isReleaseBuild = true
+    sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+} else if (hasProperty("ci")) {
+    isCiBuild = true
+    version += "-SNAPSHOT"
+    sonatypeRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+} else {
+    isDevBuild = true
 }
 
-allprojects {
-    version = '0.5.1'
-
+uploadArchives {
     repositories {
-        mavenCentral()
-        maven {
-            url 'https://github.com/novoda/public-mvn-repo/raw/master/releases'
+        if (isDevBuild) {
+            mavenLocal()
+        } else {
+            mavenDeployer {
+
+                if (isReleaseBuild) {
+                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                }
+
+                repository(url: sonatypeRepositoryUrl) {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+
+                pom.project {
+                    name 'merlin'
+                    packaging 'aar'
+                    description 'Observes network connection status & gives callbacks'
+                    url 'https://github.com/novoda/merlin'
+
+                    scm {
+                        url 'scm:git@github.com:novoda/merlin.git'
+                        connection 'scm:git@github.com:novoda/merlin.git'
+                        developerConnection 'scm:git@github.com:novoda/merlin.git'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'ouchadam'
+                            name 'Adam Brown'
+                        }
+
+                        developer {
+                            id 'Electryc'
+                            name 'Andrei Catinean'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = '1.12'
+    }
+
+    allprojects {
+        version = masterVersion
+
+        repositories {
+            mavenCentral()
+            maven {
+                url 'https://github.com/novoda/public-mvn-repo/raw/master/releases'
+            }
         }
     }
 }
