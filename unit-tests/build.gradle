@@ -38,16 +38,6 @@ dependencies {
     testCompile 'junit:junit:4.+'
 }
 
-test {
-    inputs.files file("AndroidManifest.xml")
-    doFirst {
-        copy {
-            from project(":core").file("src/main/AndroidManifest.xml")
-            into projectDir
-        }
-    }
-}
-
 tasks.withType(Test) {
     scanForTestClasses = false
     include "**/*Should.class"
