@@ -1,16 +1,16 @@
 package com.novoda.merlin.registerable;
 
+import com.novoda.merlin.MerlinRobolectricTestRunner;
 import com.novoda.merlin.registerable.connection.Connectable;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(MerlinRobolectricTestRunner.class)
 public class MerlinRegistererShould {
 
     private MerlinRegisterer merlinRegisterer;

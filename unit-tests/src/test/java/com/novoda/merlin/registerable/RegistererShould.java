@@ -1,6 +1,7 @@
 package com.novoda.merlin.registerable;
 
 import com.novoda.merlin.MerlinException;
+import com.novoda.merlin.MerlinRobolectricTestRunner;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
@@ -8,12 +9,11 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(MerlinRobolectricTestRunner.class)
 public class RegistererShould {
 
     Registerer registerer;
