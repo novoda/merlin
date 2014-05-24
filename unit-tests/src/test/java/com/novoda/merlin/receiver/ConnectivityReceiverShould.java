@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 
+import com.novoda.merlin.MerlinRobolectricTestRunner;
 import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
 import com.novoda.merlin.service.MerlinService;
-import com.novoda.robolectric.NovodaRobolectricTestRunner;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(NovodaRobolectricTestRunner.class)
+@RunWith(MerlinRobolectricTestRunner.class)
 public class ConnectivityReceiverShould {
 
     private ConnectivityReceiver connectivityReceiver;

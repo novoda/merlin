@@ -8,12 +8,12 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 
 import com.novoda.matcher.ComponentNameMatcher;
+import com.novoda.merlin.MerlinRobolectricTestRunner;
 import com.novoda.merlin.receiver.ConnectivityReceiver;
 import com.novoda.merlin.receiver.event.ConnectionEventPackager;
 import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
-import com.novoda.robolectric.NovodaRobolectricTestRunner;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +23,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(NovodaRobolectricTestRunner.class)
+@RunWith(MerlinRobolectricTestRunner.class)
 public class MerlinServiceShould {
 
     @Mock private Intent intent;

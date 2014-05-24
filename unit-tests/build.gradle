@@ -3,7 +3,7 @@ apply plugin: 'java'
 repositories {
     mavenCentral()
     mavenLocal()
-    def sdkDir = getSdkDir()
+    def sdkDir = readSdkDirFromLocalProperties() ?: System.env.ANDROID_HOME;
     if (sdkDir != null) {
         ivy {
             url sdkDir + "/extras/android/m2repository/"
@@ -12,22 +12,15 @@ repositories {
     }
 }
 
-def getSdkDir() {
-    def localProperties = new File(rootDir, "local.properties")
-    def sdkDir = null;
-    if (localProperties.exists()) {
+private def readSdkDirFromLocalProperties() {
+    try {
         Properties properties = new Properties()
-        localProperties.withInputStream { instr ->
-            properties.load(instr)
-        }
-        sdkDir = properties.getProperty('sdk.dir')
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        properties.getProperty('sdk.dir').trim()
     }
-
-    if (sdkDir == null) {
-        sdkDir = "$System.env.ANDROID_HOME"
+    catch (Exception e) {
+        project.getLogger().debug("could not read local.properties", e)
     }
-
-    sdkDir
 }
 
 dependencies {
@@ -42,17 +35,7 @@ dependencies {
     testCompile 'org.robolectric:robolectric:2.3'
     testCompile 'org.easytesting:fest-assert-core:2.0M8'
     testCompile 'org.mockito:mockito-core:1.9.5'
-    testCompile group: 'junit', name: 'junit', version: '4.+'
-}
-
-test {
-    inputs.files file("AndroidManifest.xml")
-    doFirst {
-        copy {
-            from project(":core").file("src/main/AndroidManifest.xml")
-            into projectDir
-        }
-    }
+    testCompile 'junit:junit:4.+'
 }
 
 tasks.withType(Test) {
