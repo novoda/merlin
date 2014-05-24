@@ -2,10 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.novoda.merlin">
 
-  <!--using targetSdkVersion=18 to get Robolectric work, but for an APK it will be overridden by build.gradle anyway-->
-  <uses-sdk
-    android:targetSdkVersion="18" />
-
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
