@@ -2,12 +2,10 @@ package com.novoda.merlin.service;
 
 import android.os.AsyncTask;
 
-import com.github.kevinsawicki.http.HttpRequest;
 import com.novoda.merlin.Log;
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.service.request.MerlinRequest;
-
-import java.io.IOException;
+import com.novoda.merlin.service.request.RequestException;
 
 class HostPinger {
 
@@ -31,7 +29,7 @@ class HostPinger {
     }
 
     public static class ResponseCodeFetcher {
-        public int from(String hostname) throws IOException {
+        public int from(String hostname) {
             return MerlinRequest.head(hostname).getResponseCode();
         }
     }
@@ -77,8 +75,8 @@ class HostPinger {
                 Log.d("Pinging : " + hostAddress);
                 int responseCode = responseCodeFetcher.from(hostAddress);
                 return responseCode == SUCCESS;
-            } catch (IOException e) {
-                Log.e("Ping task failed due to IO Exception");
+            } catch (RequestException e) {
+                Log.e("Ping task failed due to " + e.getMessage());
                 return false;
             }
         }
