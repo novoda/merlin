@@ -8,7 +8,7 @@ import com.novoda.merlin.service.MerlinServiceBinder;
 
 public class Merlin {
 
-    public static final String DEFAULT_HOSTNAME = "http://www.google.com";
+    public static final String DEFAULT_HOSTNAME = "http://www.android.com";
 
     private final MerlinServiceBinder merlinServiceBinder;
     private final Registerer registerer;
