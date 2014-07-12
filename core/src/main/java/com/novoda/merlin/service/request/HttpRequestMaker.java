@@ -2,8 +2,6 @@ package com.novoda.merlin.service.request;
 
 import com.github.kevinsawicki.http.HttpRequest;
 
-import java.io.IOException;
-
 class HttpRequestMaker implements RequestMaker {
 
     @Override
@@ -22,8 +20,8 @@ class HttpRequestMaker implements RequestMaker {
         @Override
         public int getResponseCode() {
             try {
-                return request.getConnection().getResponseCode();
-            } catch (IOException e) {
+                return request.followRedirects(false).code();
+            } catch (HttpRequest.HttpRequestException e) {
                 throw new RequestException(e);
             }
         }

@@ -7,6 +7,9 @@ import com.novoda.merlin.Merlin;
 import com.novoda.merlin.service.request.MerlinRequest;
 import com.novoda.merlin.service.request.RequestException;
 
+import java.io.IOException;
+import java.net.InetAddress;
+
 class HostPinger {
 
     private final PingerCallback pingerCallback;
@@ -74,6 +77,7 @@ class HostPinger {
             try {
                 Log.d("Pinging : " + hostAddress);
                 int responseCode = responseCodeFetcher.from(hostAddress);
+                Log.d("Got response : " + responseCode);
                 return responseCode == SUCCESS;
             } catch (RequestException e) {
                 Log.e("Ping task failed due to " + e.getMessage());
