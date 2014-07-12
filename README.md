@@ -12,8 +12,14 @@ Merlin aims to simplify network monitoring by providing 3 registerable callbacks
 If you're using gradle all you need is this : 
 
 ```groovy
+repositories {
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+}
+
 dependencies {
-    compile "com.novoda.merlin:I_NEED_TO_UPLOAD_THIS:0.5"
+    compile "com.novoda:merlin:0.5.1-SNAPSHOT"
 }
 ``` 
 
