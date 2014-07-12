@@ -16,11 +16,9 @@ public class MerlinRequest implements Request {
         this.request = request;
     }
 
-
     @Override
     public int getResponseCode() {
         return request.getResponseCode();
     }
-
 
 }
