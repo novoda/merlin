@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.novoda.merlin.Log;
 import com.novoda.merlin.Merlin;
+import com.novoda.merlin.service.request.MerlinRequest;
 
 import java.io.IOException;
 
@@ -31,7 +32,7 @@ class HostPinger {
 
     public static class ResponseCodeFetcher {
         public int from(String hostname) throws IOException {
-            return HttpRequest.get(hostname).getConnection().getResponseCode();
+            return MerlinRequest.head(hostname).getResponseCode();
         }
     }
 
