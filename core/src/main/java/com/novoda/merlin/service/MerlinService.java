@@ -66,7 +66,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     }
 
     public void setHostname(String hostname) {
-        hostPinger.setHostAddress(hostname);
+        hostPinger.setEndpoint(hostname);
     }
 
     public void setBindStatusListener(BindListener bindListener) {

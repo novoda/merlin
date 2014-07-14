@@ -5,8 +5,8 @@ import com.github.kevinsawicki.http.HttpRequest;
 class HttpRequestMaker implements RequestMaker {
 
     @Override
-    public Request head(String hostname) {
-        return new MerlinHttpRequest(HttpRequest.head(hostname));
+    public Request head(String endpoint) {
+        return new MerlinHttpRequest(HttpRequest.head(endpoint));
     }
 
     private static class MerlinHttpRequest implements Request {
