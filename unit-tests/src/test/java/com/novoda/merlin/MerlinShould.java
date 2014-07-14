@@ -37,10 +37,10 @@ public class MerlinShould {
     public void bind_the_merlin_service_with_a_hostname_when_provided() throws Exception {
         String hostname = "start_the_merlin_service_with_a_hostname_when_provided";
 
-        merlin.setHostname(hostname);
+        merlin.setEndpoint(hostname);
         merlin.bind();
 
-        verify(serviceBinder).setHostname(hostname);
+        verify(serviceBinder).setEndpoint(hostname);
     }
 
     @Test

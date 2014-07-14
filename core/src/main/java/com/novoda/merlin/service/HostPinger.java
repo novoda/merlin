@@ -2,11 +2,10 @@ package com.novoda.merlin.service;
 
 import android.os.AsyncTask;
 
-import com.github.kevinsawicki.http.HttpRequest;
 import com.novoda.merlin.Log;
 import com.novoda.merlin.Merlin;
-
-import java.io.IOException;
+import com.novoda.merlin.service.request.MerlinRequest;
+import com.novoda.merlin.service.request.RequestException;
 
 class HostPinger {
 
@@ -30,13 +29,13 @@ class HostPinger {
     }
 
     public static class ResponseCodeFetcher {
-        public int from(String hostname) throws IOException {
-            return HttpRequest.get(hostname).getConnection().getResponseCode();
+        public int from(String endpoint) {
+            return MerlinRequest.head(endpoint).getResponseCode();
         }
     }
 
-    public void setHostAddress(String hostAddress) {
-        this.hostAddress = hostAddress;
+    public void setEndpoint(String endpoint) {
+        this.hostAddress = endpoint;
     }
 
     public void ping() {
@@ -46,8 +45,8 @@ class HostPinger {
 
     private String getHostAddress() {
         if (hostAddress == null) {
-            Log.d("Host address has not been set, using Merlin default : " + Merlin.DEFAULT_HOSTNAME);
-            return Merlin.DEFAULT_HOSTNAME;
+            Log.d("Host address has not been set, using Merlin default : " + Merlin.DEFAULT_ENDPOINT);
+            return Merlin.DEFAULT_ENDPOINT;
         }
         return hostAddress;
     }
@@ -76,8 +75,8 @@ class HostPinger {
                 Log.d("Pinging : " + hostAddress);
                 int responseCode = responseCodeFetcher.from(hostAddress);
                 return responseCode == SUCCESS;
-            } catch (IOException e) {
-                Log.e("Ping task failed due to IO Exception");
+            } catch (RequestException e) {
+                Log.e("Ping task failed due to " + e.getMessage());
                 return false;
             }
         }
