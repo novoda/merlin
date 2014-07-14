@@ -1,5 +1,5 @@
 package com.novoda.merlin.service.request;
 
 interface RequestMaker {
-    Request head(String hostname);
+    Request head(String endpoint);
 }

@@ -29,13 +29,13 @@ class HostPinger {
     }
 
     public static class ResponseCodeFetcher {
-        public int from(String hostname) {
-            return MerlinRequest.head(hostname).getResponseCode();
+        public int from(String endpoint) {
+            return MerlinRequest.head(endpoint).getResponseCode();
         }
     }
 
-    public void setHostAddress(String hostAddress) {
-        this.hostAddress = hostAddress;
+    public void setEndpoint(String endpoint) {
+        this.hostAddress = endpoint;
     }
 
     public void ping() {
@@ -45,8 +45,8 @@ class HostPinger {
 
     private String getHostAddress() {
         if (hostAddress == null) {
-            Log.d("Host address has not been set, using Merlin default : " + Merlin.DEFAULT_HOSTNAME);
-            return Merlin.DEFAULT_HOSTNAME;
+            Log.d("Host address has not been set, using Merlin default : " + Merlin.DEFAULT_ENDPOINT);
+            return Merlin.DEFAULT_ENDPOINT;
         }
         return hostAddress;
     }

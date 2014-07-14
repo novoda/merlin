@@ -51,7 +51,7 @@ public class HostPingerShould {
     @Test
     public void ping_against_a_provided_hostname() throws Exception {
         String hostname = "ping_against_a_provided_hostname";
-        hostPinger.setHostAddress(hostname);
+        hostPinger.setEndpoint(hostname);
 
         hostPinger.ping();
 
@@ -62,7 +62,7 @@ public class HostPingerShould {
     public void use_the_default_hostname_when_no_hostname_is_set() throws Exception {
         hostPinger.ping();
 
-        verify(responseCodeFetcher).from(Merlin.DEFAULT_HOSTNAME);
+        verify(responseCodeFetcher).from(Merlin.DEFAULT_ENDPOINT);
     }
 
 }

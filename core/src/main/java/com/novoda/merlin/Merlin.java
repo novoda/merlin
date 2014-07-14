@@ -8,7 +8,7 @@ import com.novoda.merlin.service.MerlinServiceBinder;
 
 public class Merlin {
 
-    public static final String DEFAULT_HOSTNAME = "http://www.google.com";
+    public static final String DEFAULT_ENDPOINT = "http://www.google.com";
 
     private final MerlinServiceBinder merlinServiceBinder;
     private final Registerer registerer;
@@ -18,8 +18,8 @@ public class Merlin {
         this.registerer = registerer;
     }
 
-    public void setHostname(String hostname) {
-        merlinServiceBinder.setHostname(hostname);
+    public void setEndpoint(String endpoint) {
+        merlinServiceBinder.setEndpoint(endpoint);
     }
 
     public void bind() {
