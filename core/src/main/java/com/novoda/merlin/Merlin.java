@@ -8,7 +8,7 @@ import com.novoda.merlin.service.MerlinServiceBinder;
 
 public class Merlin {
 
-    public static final String DEFAULT_ENDPOINT = "http://www.google.com";
+    public static final String DEFAULT_ENDPOINT = "http://www.android.com";
 
     private final MerlinServiceBinder merlinServiceBinder;
     private final Registerer registerer;
