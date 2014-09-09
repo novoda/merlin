@@ -21,7 +21,7 @@ public class MerlinRegistererShould {
     }
 
     @Test
-    public void register_registerables() throws Exception {
+    public void registerRegisterables() throws Exception {
         Registerable registerable = mock(Registerable.class);
 
         merlinRegisterer.register(registerable);
@@ -30,7 +30,7 @@ public class MerlinRegistererShould {
     }
 
     @Test
-    public void not_hold_references() throws Exception {
+    public void notHoldReferences() throws Exception {
         Registerable registerable = mock(Registerable.class);
 
         merlinRegisterer.register(registerable);
@@ -42,7 +42,7 @@ public class MerlinRegistererShould {
     }
 
     @Test
-    public void not_register_the_same_object_more_than_once() throws Exception {
+    public void notRegisterTheSameObjectMoreThanOnce() throws Exception {
         Connectable connectable = mock(Connectable.class);
 
         merlinRegisterer.register(connectable);

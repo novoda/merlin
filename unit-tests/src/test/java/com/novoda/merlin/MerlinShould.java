@@ -27,15 +27,15 @@ public class MerlinShould {
     }
 
     @Test
-    public void start_the_merlin_service() throws Exception {
+    public void startTheMerlinService() throws Exception {
         merlin.bind();
 
         verify(serviceBinder).bindService();
     }
 
     @Test
-    public void bind_the_merlin_service_with_a_hostname_when_provided() throws Exception {
-        String hostname = "start_the_merlin_service_with_a_hostname_when_provided";
+    public void bindTheMerlinServiceWithAHostnameWhenProvided() throws Exception {
+        String hostname = "startTheMerlinServiceWithAHostnameWhenProvided";
 
         merlin.setEndpoint(hostname);
         merlin.bind();
@@ -44,7 +44,7 @@ public class MerlinShould {
     }
 
     @Test
-    public void unbind_the_merlin_service() throws Exception {
+    public void unbindTheMerlinService() throws Exception {
         merlin.unbind();
 
         verify(serviceBinder).unbind();
