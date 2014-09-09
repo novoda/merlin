@@ -16,8 +16,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(MerlinRobolectricTestRunner.class)
 public class HostPingerShould {
 
-    public static final int SUCCESSCODE = 200;
-    public static final int NONSUCCESSCODE = 201;
+    public static final int SUCCESS_CODE = 200;
+    public static final int NON_SUCCESS_CODE = 201;
 
     @Mock private HostPinger.PingerCallback pingerCallback;
     @Mock private HostPinger.ResponseCodeFetcher responseCodeFetcher;
@@ -32,7 +32,7 @@ public class HostPingerShould {
 
     @Test
     public void callSuccessWhenHostResponseCodeIs200() throws Exception {
-        when(responseCodeFetcher.from(anyString())).thenReturn(SUCCESSCODE);
+        when(responseCodeFetcher.from(anyString())).thenReturn(SUCCESS_CODE);
 
         hostPinger.ping();
 
@@ -41,7 +41,7 @@ public class HostPingerShould {
 
     @Test
     public void callFailureWhenHostResponseCodeIsNot200() throws Exception {
-        when(responseCodeFetcher.from(anyString())).thenReturn(NONSUCCESSCODE);
+        when(responseCodeFetcher.from(anyString())).thenReturn(NON_SUCCESS_CODE);
 
         hostPinger.ping();
 
