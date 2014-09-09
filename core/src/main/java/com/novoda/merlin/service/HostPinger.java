@@ -2,13 +2,10 @@ package com.novoda.merlin.service;
 
 import android.os.AsyncTask;
 
-import com.novoda.merlin.Log;
+import com.novoda.merlin.MerlinLog;
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.service.request.MerlinRequest;
 import com.novoda.merlin.service.request.RequestException;
-
-import java.io.IOException;
-import java.net.InetAddress;
 
 class HostPinger {
 
@@ -48,7 +45,7 @@ class HostPinger {
 
     private String getHostAddress() {
         if (hostAddress == null) {
-            Log.d("Host address has not been set, using Merlin default : " + Merlin.DEFAULT_ENDPOINT);
+            MerlinLog.d("Host address has not been set, using Merlin default : " + Merlin.DEFAULT_ENDPOINT);
             return Merlin.DEFAULT_ENDPOINT;
         }
         return hostAddress;
@@ -75,12 +72,12 @@ class HostPinger {
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                Log.d("Pinging : " + hostAddress);
+                MerlinLog.d("Pinging : " + hostAddress);
                 int responseCode = responseCodeFetcher.from(hostAddress);
-                Log.d("Got response : " + responseCode);
+                MerlinLog.d("Got response : " + responseCode);
                 return responseCode == SUCCESS;
             } catch (RequestException e) {
-                Log.e("Ping task failed due to " + e.getMessage());
+                MerlinLog.e("Ping task failed due to " + e.getMessage());
                 return false;
             }
         }

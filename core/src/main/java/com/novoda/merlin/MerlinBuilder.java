@@ -78,7 +78,7 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withLogging(boolean withLogging) {
-        Log.LOGGING = withLogging;
+        MerlinLog.LOGGING = withLogging;
         return this;
     }
 
