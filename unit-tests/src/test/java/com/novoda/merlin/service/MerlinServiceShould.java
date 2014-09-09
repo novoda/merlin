@@ -55,7 +55,7 @@ public class MerlinServiceShould {
     }
 
     @Test
-    public void enable_connectivityReceiver_in_onBind() throws Exception {
+    public void enableConnectivityReceiverInOnBind() throws Exception {
         MerlinService spy = spy(merlinService);
         PackageManager packageManager = mock(PackageManager.class);
         ComponentName receiver = new ComponentName(context, ConnectivityReceiver.class);
@@ -68,7 +68,7 @@ public class MerlinServiceShould {
     }
 
     @Test
-    public void disable_connectivityReceiver_in_onUnbind() throws Exception {
+    public void disableConnectivityReceiverInOnUnbind() throws Exception {
         MerlinService spy = spy(merlinService);
         PackageManager packageManager = mock(PackageManager.class);
         ComponentName receiver = new ComponentName(context, ConnectivityReceiver.class);
@@ -81,7 +81,7 @@ public class MerlinServiceShould {
     }
 
     @Test
-    public void call_MerlinNetworkListener_onConnected_when_a_connected_connectivity_event_is_triggered() throws Exception {
+    public void callMerlinNetworkListenerOnConnectedWhenAConnectedConnectivityEventIsTriggered() throws Exception {
         boolean isConnected = true;
         ConnectivityChangeEvent connectivityChangeEvent = createConnectivityChangeEvent(isConnected);
 
@@ -91,7 +91,7 @@ public class MerlinServiceShould {
     }
 
     @Test
-    public void call_MerlinNetworkListener_onDisconnected_when_a_connected_connectivity_event_is_triggered() throws Exception {
+    public void callMerlinNetworkListenerOnDisconnectedWhenAConnectedConnectivityEventIsTriggered() throws Exception {
         boolean isConnected = false;
         ConnectivityChangeEvent connectivityChangeEvent = createConnectivityChangeEvent(isConnected);
 

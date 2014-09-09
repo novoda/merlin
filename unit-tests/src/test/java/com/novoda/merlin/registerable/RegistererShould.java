@@ -19,7 +19,7 @@ public class RegistererShould {
     Registerer registerer;
 
     @Test(expected = MerlinException.class)
-    public void throw_a_developer_exception_when_a_Connector_is_not_set_but_registerConnectable_is_called() throws Exception {
+    public void throwADeveloperExceptionWhenAConnectorIsNotSetButRegisterConnectableIsCalled() throws Exception {
         registerer = new Registerer(null, null, null);
         Connectable connectable = mock(Connectable.class);
 
@@ -27,7 +27,7 @@ public class RegistererShould {
     }
 
     @Test(expected = MerlinException.class)
-    public void throw_a_developer_exception_when_a_Disconnector_is_not_set_but_registerDisconnectable_is_called() throws Exception {
+    public void throwADeveloperExceptionWhenADisconnectorIsNotSetButRegisterDisconnectableIsCalled() throws Exception {
         registerer = new Registerer(null, null, null);
         Disconnectable disconnectable = mock(Disconnectable.class);
 
@@ -35,7 +35,7 @@ public class RegistererShould {
     }
 
     @Test(expected = MerlinException.class)
-    public void throw_a_developer_exception_when_a_OnBinder_is_not_set_but_registerBindable_is_called() throws Exception {
+    public void throwADeveloperExceptionWhenAOnBinderIsNotSetButRegisterBindableIsCalled() throws Exception {
         registerer = new Registerer(null, null, null);
         Bindable bindable = mock(Bindable.class);
 
@@ -43,7 +43,7 @@ public class RegistererShould {
     }
 
     @Test
-    public void register_objects_which_implement_Connectable() throws Exception {
+    public void registerObjectsWhichImplementConnectable() throws Exception {
         MerlinConnector<Connectable> connector = mock(MerlinConnector.class);
         Registerer registerer = new Registerer(connector, null, null);
         ConnectableClassImpl reconnectableClass = new ConnectableClassImpl();
@@ -54,7 +54,7 @@ public class RegistererShould {
     }
 
     @Test
-    public void register_objects_which_implement_Disconnectable() throws Exception {
+    public void registerObjectsWhichImplementDisconnectable() throws Exception {
         MerlinConnector<Disconnectable> disconnector = mock(MerlinConnector.class);
         Registerer registerer = new Registerer(null, disconnector, null);
         DisconnectableImpl disconnectableImpl = new DisconnectableImpl();
@@ -65,7 +65,7 @@ public class RegistererShould {
     }
 
     @Test
-    public void register_objects_which_implement_Bindable() throws Exception {
+    public void registerObjectsWhichImplementBindable() throws Exception {
         MerlinConnector<Bindable> onBinder = mock(MerlinConnector.class);
         Registerer registerer = new Registerer(null, null, onBinder);
         BindableImpl disconnectableImpl = new BindableImpl();
@@ -76,7 +76,7 @@ public class RegistererShould {
     }
 
     @Test
-    public void not_register_objects_which_do_not_implement_reconnectable() throws Exception {
+    public void notRegisterObjectsWhichDoNotImplementReconnectable() throws Exception {
         NonRegisterableClass nonReconnectableClass = new NonRegisterableClass();
         MerlinConnector<Connectable> merlinConnector = mock(MerlinConnector.class);
         MerlinConnector<Disconnectable> merlinDisconnector = mock(MerlinConnector.class);

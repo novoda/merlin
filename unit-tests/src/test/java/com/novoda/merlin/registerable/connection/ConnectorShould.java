@@ -30,7 +30,7 @@ public class ConnectorShould {
     }
 
     @Test
-    public void callback_registered_connectables() throws Exception {
+    public void callbackRegisteredConnectables() throws Exception {
         Connectable connectable = mock(Connectable.class);
         merlinConnector.register(connectable);
 
@@ -40,7 +40,7 @@ public class ConnectorShould {
     }
 
     @Test
-    public void callback_all_registered() throws Exception {
+    public void callbackAllRegistered() throws Exception {
         List<Connectable> connectables = createListOfConnectables();
 
         registerListOfConnectables(connectables);

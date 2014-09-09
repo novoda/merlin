@@ -38,23 +38,23 @@ public class ConnectivityReceiverShould {
     }
 
     @Test
-    public void not_notify_the_merlin_service_on_null_intents() throws Exception {
+    public void notNotifyTheMerlinServiceOnNullIntents() throws Exception {
         connectivityReceiver.onReceive(context, null);
 
         verifyZeroInteractions(merlinService);
     }
 
     @Test
-    public void not_notify_the_merlin_service_on_non_connectivity_intents() throws Exception {
+    public void notNotifyTheMerlinServiceOnNonConnectivityIntents() throws Exception {
         Intent intent = new Intent();
-        intent.setAction("not_notify_the_merlin_service_on_non_connectivity_intents");
+        intent.setAction("notNotifyTheMerlinServiceOnNonConnectivityIntents");
         connectivityReceiver.onReceive(context, intent);
 
         verifyZeroInteractions(merlinService);
     }
 
     @Test
-    public void notify_the_merlin_service_on_valid_connectivity_intents() throws Exception {
+    public void notifyTheMerlinServiceOnValidConnectivityIntents() throws Exception {
         Intent intent = new Intent();
         intent.setAction(ConnectivityManager.CONNECTIVITY_ACTION);
 
@@ -64,7 +64,7 @@ public class ConnectivityReceiverShould {
     }
 
     @Test
-    public void not_explode_when_the_merlin_service_is_null() throws Exception {
+    public void notExplodeWhenTheMerlinServiceIsNull() throws Exception {
         Intent intent = new Intent();
         intent.setAction(ConnectivityManager.CONNECTIVITY_ACTION);
         merlinService = null;

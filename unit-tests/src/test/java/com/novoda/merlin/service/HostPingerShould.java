@@ -31,7 +31,7 @@ public class HostPingerShould {
     }
 
     @Test
-    public void call_success_when_host_response_code_is_200() throws Exception {
+    public void callSuccessWhenHostResponseCodeIs200() throws Exception {
         when(responseCodeFetcher.from(anyString())).thenReturn(SUCCESS_CODE);
 
         hostPinger.ping();
@@ -40,7 +40,7 @@ public class HostPingerShould {
     }
 
     @Test
-    public void call_failure_when_host_response_code_is_not_200() throws Exception {
+    public void callFailureWhenHostResponseCodeIsNot200() throws Exception {
         when(responseCodeFetcher.from(anyString())).thenReturn(NON_SUCCESS_CODE);
 
         hostPinger.ping();
@@ -49,8 +49,8 @@ public class HostPingerShould {
     }
 
     @Test
-    public void ping_against_a_provided_hostname() throws Exception {
-        String hostname = "ping_against_a_provided_hostname";
+    public void pingAgainstAProvidedHostname() throws Exception {
+        String hostname = "pingAgainstAProvidedHostname";
         hostPinger.setEndpoint(hostname);
 
         hostPinger.ping();
@@ -59,7 +59,7 @@ public class HostPingerShould {
     }
 
     @Test
-    public void use_the_default_hostname_when_no_hostname_is_set() throws Exception {
+    public void useTheDefaultHostnameWhenNoHostnameIsSet() throws Exception {
         hostPinger.ping();
 
         verify(responseCodeFetcher).from(Merlin.DEFAULT_ENDPOINT);
