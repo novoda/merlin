@@ -48,7 +48,7 @@ public class Merlin {
 
     public static boolean isConnected(Context context) {
         NetworkInfo activeNetworkInfo = getNetworkInfo(context);
-        return (activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting());
+        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
     }
 
     private static NetworkInfo getNetworkInfo(Context context) {
