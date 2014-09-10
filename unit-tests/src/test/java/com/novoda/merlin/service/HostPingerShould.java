@@ -19,8 +19,10 @@ public class HostPingerShould {
     public static final int SUCCESS_CODE = 200;
     public static final int NON_SUCCESS_CODE = 201;
 
-    @Mock private HostPinger.PingerCallback pingerCallback;
-    @Mock private HostPinger.ResponseCodeFetcher responseCodeFetcher;
+    @Mock
+    private HostPinger.PingerCallback pingerCallback;
+    @Mock
+    private HostPinger.ResponseCodeFetcher responseCodeFetcher;
 
     private HostPinger hostPinger;
 

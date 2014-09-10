@@ -59,7 +59,7 @@ public class ConnectorShould {
     }
 
     private void initListOfConnectables(List<Connectable> connectables) {
-        for (int i = 0; i < 3; i ++) {
+        for (int i = 0; i < 3; i++) {
             connectables.add(mock(Connectable.class));
         }
     }

@@ -3,11 +3,11 @@ package com.novoda.merlin.registerable.disconnection;
 import com.novoda.merlin.registerable.MerlinConnector;
 import com.novoda.merlin.registerable.MerlinRegisterer;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -60,6 +60,5 @@ public class DisconnectorShould {
             merlinConnector.register(disconnectable);
         }
     }
-
 
 }

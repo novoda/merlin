@@ -2,7 +2,6 @@ package com.novoda.merlin.demo.presentation;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.NetworkStatus;
@@ -27,11 +26,10 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         findViewById(R.id.connectionStatus).setOnClickListener(networkStatusOnClick);
     }
 
-    private final View.OnClickListener networkStatusOnClick = new View.OnClickListener()
-    {
+    private final View.OnClickListener networkStatusOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(Merlin.isConnected(getApplicationContext())){
+            if (Merlin.isConnected(getApplicationContext())) {
                 onConnect();
                 return;
             }

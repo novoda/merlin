@@ -7,9 +7,6 @@ import com.novoda.merlin.Merlin;
 import com.novoda.merlin.service.request.MerlinRequest;
 import com.novoda.merlin.service.request.RequestException;
 
-import java.io.IOException;
-import java.net.InetAddress;
-
 class HostPinger {
 
     private final PingerCallback pingerCallback;
@@ -19,6 +16,7 @@ class HostPinger {
 
     interface PingerCallback {
         void onSuccess();
+
         void onFailure();
     }
 
