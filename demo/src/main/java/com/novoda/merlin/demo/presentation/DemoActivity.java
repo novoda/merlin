@@ -34,10 +34,10 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         @Override
         public void onClick(View v) {
             if (merlinsBeard.isConnected()) {
-                Toast.makeText(getApplicationContext(), "Connected to Network", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.toastConnected), Toast.LENGTH_LONG).show();
                 return;
             }
-            Toast.makeText(getApplicationContext(), "Disconnected from Network", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.toastDisconnected), Toast.LENGTH_LONG).show();
         }
     };
 
