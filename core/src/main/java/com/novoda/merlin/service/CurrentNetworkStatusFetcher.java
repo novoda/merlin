@@ -1,9 +1,8 @@
 package com.novoda.merlin.service;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
+import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 
 class CurrentNetworkStatusFetcher {
@@ -15,8 +14,7 @@ class CurrentNetworkStatusFetcher {
     }
 
     public void get(Context context) {
-        NetworkInfo activeNetworkInfo = getNetworkInfo(context);
-        if (isConnectable(activeNetworkInfo)) {
+        if (MerlinsBeard.from(context).isConnected()) {
             hostPinger.ping();
         } else {
             hostPinger.noNetworkToPing();
@@ -24,21 +22,11 @@ class CurrentNetworkStatusFetcher {
     }
 
     public NetworkStatus getWithoutPing(Context context) {
-        NetworkInfo activeNetworkInfo = getNetworkInfo(context);
-        if (isConnectable(activeNetworkInfo)) {
+        if (MerlinsBeard.from(context).isConnected()) {
             return NetworkStatus.newAvailableInstance();
         } else {
             return NetworkStatus.newUnavailableInstance();
         }
-    }
-
-    private static NetworkInfo getNetworkInfo(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo();
-    }
-
-    private static boolean isConnectable(NetworkInfo activeNetworkInfo) {
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }
