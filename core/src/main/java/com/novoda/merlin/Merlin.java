@@ -47,10 +47,13 @@ public class Merlin {
     }
 
     public static boolean isConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        NetworkInfo activeNetworkInfo = getNetworkInfo(context);
         return activeNetworkInfo.isConnected();
+    }
 
+    private static NetworkInfo getNetworkInfo(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo();
     }
 
     public static class Builder extends MerlinBuilder {
