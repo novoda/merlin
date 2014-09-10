@@ -1,6 +1,6 @@
 package com.novoda.merlin;
 
-public class Log {
+public class MerlinLog {
 
     static boolean LOGGING = false;
     private static final String TAG = "Merlin";

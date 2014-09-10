@@ -1,6 +1,6 @@
 package com.novoda.merlin.registerable;
 
-import com.novoda.merlin.Log;
+import com.novoda.merlin.MerlinLog;
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinException;
 import com.novoda.merlin.registerable.bind.Bindable;
@@ -77,7 +77,7 @@ public class Registerer {
                 return;
             }
         }
-        Log.d(object.getClass().getSimpleName() + "does not implement " + Connectable.class + " / " + Disconnectable.class + " / " + Bindable.class);
+        MerlinLog.d(object.getClass().getSimpleName() + "does not implement " + Connectable.class + " / " + Disconnectable.class + " / " + Bindable.class);
     }
 
 }
