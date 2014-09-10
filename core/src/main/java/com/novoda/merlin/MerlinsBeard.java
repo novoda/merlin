@@ -15,7 +15,7 @@ public class MerlinsBeard {
         return new MerlinsBeard(connectivityManager);
     }
 
-    private MerlinsBeard(ConnectivityManager connectivityManager) {
+    MerlinsBeard(ConnectivityManager connectivityManager) {
         this.connectivityManager = connectivityManager;
     }
 
