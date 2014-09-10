@@ -1,5 +1,9 @@
 package com.novoda.merlin;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.novoda.merlin.registerable.Registerer;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
@@ -40,6 +44,13 @@ public class Merlin {
 
     public void registerBindable(Bindable bindable) {
         registerer.registerBindable(bindable);
+    }
+
+    public static boolean isConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo.isConnected();
+
     }
 
     public static class Builder extends MerlinBuilder {

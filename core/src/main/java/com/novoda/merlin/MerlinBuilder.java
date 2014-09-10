@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.novoda.merlin.registerable.MerlinRegisterer;
 import com.novoda.merlin.registerable.Registerer;
+import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.bind.OnBinder;
 import com.novoda.merlin.registerable.connection.ConnectListener;
@@ -12,7 +13,6 @@ import com.novoda.merlin.registerable.connection.Connector;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.disconnection.Disconnector;
-import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.service.MerlinService;
 import com.novoda.merlin.service.MerlinServiceBinder;
 
@@ -50,7 +50,7 @@ public class MerlinBuilder {
         this.merlinDisconnector = new Disconnector(disconnectableRegisterer);
         return this;
     }
-    
+
     /**
      * Enables Merlin to provide bindable callbacks, without calling this, Merlin.registerBindable will throw a MerlinException
      *
@@ -83,10 +83,10 @@ public class MerlinBuilder {
     }
 
     /**
-     *  Disables using the method disableComponentEnabledSetting() to enable and disable the connectivity receiver -
-     *  This may be needed if you are experiencing the Android Runtime restarting after uninstalling your application - This appears to be an android bug, the issue is here http://code.google.com/p/android/issues/detail?id=55781&can=4&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
-     *  The repercussions of this are that whenever a connectivity changed event is triggered, the application will be created but killed after realising the MerlinService has not been bound
-     *  (assuming Application.onCreate() doesn't bind to the MerlinService).
+     * Disables using the method disableComponentEnabledSetting() to enable and disable the connectivity receiver -
+     * This may be needed if you are experiencing the Android Runtime restarting after uninstalling your application - This appears to be an android bug, the issue is here http://code.google.com/p/android/issues/detail?id=55781&can=4&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
+     * The repercussions of this are that whenever a connectivity changed event is triggered, the application will be created but killed after realising the MerlinService has not been bound
+     * (assuming Application.onCreate() doesn't bind to the MerlinService).
      *
      * @return MerlinBuilder.
      */
