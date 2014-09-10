@@ -3,5 +3,6 @@
 
   <string name="network_connected">Network connected</string>
   <string name="network_disconnected">Network disconnected</string>
+  <string name="current_status">Get Current Status</string>
 
 </resources>
