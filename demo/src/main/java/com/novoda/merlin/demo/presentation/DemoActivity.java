@@ -83,4 +83,3 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
     }
 
 }
-
