@@ -2,6 +2,7 @@ package com.novoda.merlin.demo.presentation;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinsBeard;
@@ -33,11 +34,10 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         @Override
         public void onClick(View v) {
             if (merlinsBeard.isConnected()) {
-                onConnect();
+                Toast.makeText(getApplicationContext(), "Connected to Network", Toast.LENGTH_LONG).show();
                 return;
             }
-
-            onDisconnect();
+            Toast.makeText(getApplicationContext(), "Disconnected from Network", Toast.LENGTH_LONG).show();
         }
     };
 
