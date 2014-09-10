@@ -1,19 +1,22 @@
 package com.novoda.merlin;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class MerlinsBeard {
 
-    private final Context context;
+    private ConnectivityManager connectivityManager;
 
-    public static MerlinsBeard from(Context context) {
-        return new MerlinsBeard(context);
+    public static MerlinsBeard from(ContextWrapper content) {
+        Context context = content.getApplicationContext();
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return new MerlinsBeard(connectivityManager);
     }
 
-    private MerlinsBeard(Context context) {
-        this.context = context;
+    private MerlinsBeard(ConnectivityManager connectivityManager) {
+        this.connectivityManager = connectivityManager;
     }
 
     public boolean isConnected() {
@@ -22,7 +25,6 @@ public class MerlinsBeard {
     }
 
     private NetworkInfo getNetworkInfo() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return connectivityManager.getActiveNetworkInfo();
     }
 }
