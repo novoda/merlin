@@ -13,7 +13,7 @@ public class MerlinsBeard {
     private ConnectivityManager connectivityManager;
 
     /**
-     * Use this method to create a MerlinsBeard object, this is how you can retrieve the current network state
+     * Use this method to create a MerlinsBeard object, this is how you can retrieve the current network state.
      *
      * @param context pass any context application or activity.
      * @return MerlinsBeard.

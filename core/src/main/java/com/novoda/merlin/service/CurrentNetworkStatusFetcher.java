@@ -1,28 +1,28 @@
 package com.novoda.merlin.service;
 
-import android.content.Context;
-
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 
 class CurrentNetworkStatusFetcher {
 
+    private MerlinsBeard merlinsBeard;
     private final HostPinger hostPinger;
 
-    public CurrentNetworkStatusFetcher(HostPinger hostPinger) {
+    public CurrentNetworkStatusFetcher(MerlinsBeard merlinsBeard, HostPinger hostPinger) {
+        this.merlinsBeard = merlinsBeard;
         this.hostPinger = hostPinger;
     }
 
-    public void get(Context context) {
-        if (MerlinsBeard.from(context).isConnected()) {
+    public void get() {
+        if (merlinsBeard.isConnected()) {
             hostPinger.ping();
         } else {
             hostPinger.noNetworkToPing();
         }
     }
 
-    public NetworkStatus getWithoutPing(Context context) {
-        if (MerlinsBeard.from(context).isConnected()) {
+    public NetworkStatus getWithoutPing() {
+        if (merlinsBeard.isConnected()) {
             return NetworkStatus.newAvailableInstance();
         } else {
             return NetworkStatus.newUnavailableInstance();
