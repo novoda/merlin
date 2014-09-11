@@ -34,12 +34,16 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         @Override
         public void onClick(View v) {
             if (merlinsBeard.isConnected()) {
-                Toast.makeText(getApplicationContext(), getString(R.string.toastConnected), Toast.LENGTH_LONG).show();
+                createToast(R.string.toastConnected);
                 return;
             }
-            Toast.makeText(getApplicationContext(), getString(R.string.toastDisconnected), Toast.LENGTH_LONG).show();
+            createToast(R.string.toastDisconnected);
         }
     };
+
+    private void createToast(int toastText) {
+        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected Merlin createMerlin() {
