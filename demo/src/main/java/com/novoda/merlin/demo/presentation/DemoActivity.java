@@ -35,9 +35,9 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         public void onClick(View v) {
             if (merlinsBeard.isConnected()) {
                 createToast(R.string.toastConnected);
-                return;
+            } else {
+                createToast(R.string.toastDisconnected);
             }
-            createToast(R.string.toastDisconnected);
         }
     };
 
