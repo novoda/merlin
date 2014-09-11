@@ -5,7 +5,7 @@ import com.novoda.merlin.NetworkStatus;
 
 class CurrentNetworkStatusFetcher {
 
-    private MerlinsBeard merlinsBeard;
+    private final MerlinsBeard merlinsBeard;
     private final HostPinger hostPinger;
 
     public CurrentNetworkStatusFetcher(MerlinsBeard merlinsBeard, HostPinger hostPinger) {
