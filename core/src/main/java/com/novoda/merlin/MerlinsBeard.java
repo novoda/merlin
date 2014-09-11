@@ -13,9 +13,10 @@ public class MerlinsBeard {
     private ConnectivityManager connectivityManager;
 
     /**
+     * Use this method to create a MerlinsBeard object, this is how you can retrieve the current network state
      *
-     * @param context used to retrieve a Connectivity Manager.
-     * @return MerlinsBeard
+     * @param context pass any context application or activity.
+     * @return MerlinsBeard.
      */
     public static MerlinsBeard from(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -27,9 +28,11 @@ public class MerlinsBeard {
     }
 
     /**
-     * Provides a boolean representing whether a network connection is available.
-     * NOTE: This does not ping a host in order to verify the network connection.
-     * @return boolean
+     * Provides a boolean representing whether a network connection has been established.
+     * NOTE: Therefore available does not necessarily mean that an internet connection
+     * is available.
+     *
+     * @return boolean true if a network connection is available.
      */
     public boolean isConnected() {
         NetworkInfo activeNetworkInfo = getNetworkInfo();
