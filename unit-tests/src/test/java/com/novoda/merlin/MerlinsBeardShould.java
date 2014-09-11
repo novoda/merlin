@@ -3,12 +3,12 @@ package com.novoda.merlin;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -35,7 +35,7 @@ public class MerlinsBeardShould {
         when(mockConnectivityManager.getActiveNetworkInfo()).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(false);
 
-        Assert.assertFalse(merlinsBeard.isConnected());
+        assertThat(merlinsBeard.isConnected()).isFalse();
     }
 
     @Test
@@ -43,7 +43,7 @@ public class MerlinsBeardShould {
         when(mockConnectivityManager.getActiveNetworkInfo()).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(true);
 
-        Assert.assertTrue(merlinsBeard.isConnected());
+        assertThat(merlinsBeard.isConnected()).isTrue();
     }
 
 }
