@@ -105,7 +105,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     }
 
     private void getCurrentNetworkStatus() {
-        currentNetworkStatusFetcher.get();
+        currentNetworkStatusFetcher.fetch();
     }
 
     @Override

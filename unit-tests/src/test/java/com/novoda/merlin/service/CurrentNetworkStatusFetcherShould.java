@@ -32,7 +32,7 @@ public class CurrentNetworkStatusFetcherShould {
     public void whenNetworkIsConnectedHostPingerPings() {
         when(mockMerlinsBeards.isConnected()).thenReturn(true);
 
-        currentNetworkStatusFetcher.get();
+        currentNetworkStatusFetcher.fetch();
 
         verify(mockHostPinger).ping();
     }
@@ -41,7 +41,7 @@ public class CurrentNetworkStatusFetcherShould {
     public void whenNetworkIsDisconnectedHostPingerPerformsNoNetworkToPing() {
         when(mockMerlinsBeards.isConnected()).thenReturn(false);
 
-        currentNetworkStatusFetcher.get();
+        currentNetworkStatusFetcher.fetch();
 
         verify(mockHostPinger).noNetworkToPing();
     }
