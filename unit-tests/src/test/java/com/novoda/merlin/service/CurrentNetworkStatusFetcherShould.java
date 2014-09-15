@@ -32,7 +32,7 @@ public class CurrentNetworkStatusFetcherShould {
     public void whenNetworkIsConnectedHostPingerPings() {
         when(mockMerlinsBeards.isConnected()).thenReturn(true);
 
-        currentNetworkStatusFetcher.fetch();
+        currentNetworkStatusFetcher.fetchWithPing();
 
         verify(mockHostPinger).ping();
     }
@@ -41,7 +41,7 @@ public class CurrentNetworkStatusFetcherShould {
     public void whenNetworkIsDisconnectedHostPingerPerformsNoNetworkToPing() {
         when(mockMerlinsBeards.isConnected()).thenReturn(false);
 
-        currentNetworkStatusFetcher.fetch();
+        currentNetworkStatusFetcher.fetchWithPing();
 
         verify(mockHostPinger).noNetworkToPing();
     }
@@ -50,7 +50,7 @@ public class CurrentNetworkStatusFetcherShould {
     public void whenNetworkIsConnectedGetWithoutPingReturnsNetworkStatusAvailable() {
         when(mockMerlinsBeards.isConnected()).thenReturn(true);
 
-        NetworkStatus networkStatus = currentNetworkStatusFetcher.getWithoutPing();
+        NetworkStatus networkStatus = currentNetworkStatusFetcher.fetchWithoutPing();
 
         assertThat(networkStatus).isEqualTo(NetworkStatus.newAvailableInstance());
     }
@@ -59,7 +59,7 @@ public class CurrentNetworkStatusFetcherShould {
     public void whenNetworkIsDisconnectedGetWithoutPingReturnsNetworkStatusUnavailable() {
         when(mockMerlinsBeards.isConnected()).thenReturn(false);
 
-        NetworkStatus networkStatus = currentNetworkStatusFetcher.getWithoutPing();
+        NetworkStatus networkStatus = currentNetworkStatusFetcher.fetchWithoutPing();
 
         assertThat(networkStatus).isEqualTo(NetworkStatus.newUnavailableInstance());
     }

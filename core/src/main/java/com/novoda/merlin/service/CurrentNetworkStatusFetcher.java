@@ -13,7 +13,7 @@ class CurrentNetworkStatusFetcher {
         this.hostPinger = hostPinger;
     }
 
-    public void fetch() {
+    public void fetchWithPing() {
         if (merlinsBeard.isConnected()) {
             hostPinger.ping();
         } else {
@@ -21,7 +21,7 @@ class CurrentNetworkStatusFetcher {
         }
     }
 
-    public NetworkStatus getWithoutPing() {
+    public NetworkStatus fetchWithoutPing() {
         if (merlinsBeard.isConnected()) {
             return NetworkStatus.newAvailableInstance();
         } else {
