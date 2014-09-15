@@ -3,12 +3,12 @@ package com.novoda.merlin.service;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 
-class CurrentNetworkStatusFetcher {
+class CurrentNetworkStatusRetriever {
 
     private final MerlinsBeard merlinsBeard;
     private final HostPinger hostPinger;
 
-    public CurrentNetworkStatusFetcher(MerlinsBeard merlinsBeard, HostPinger hostPinger) {
+    public CurrentNetworkStatusRetriever(MerlinsBeard merlinsBeard, HostPinger hostPinger) {
         this.merlinsBeard = merlinsBeard;
         this.hostPinger = hostPinger;
     }

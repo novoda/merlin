@@ -12,7 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class CurrentNetworkStatusFetcherShould {
+public class CurrentNetworkStatusRetrieverShould {
 
     @Mock
     private MerlinsBeard mockMerlinsBeards;
@@ -20,19 +20,19 @@ public class CurrentNetworkStatusFetcherShould {
     @Mock
     private HostPinger mockHostPinger;
 
-    private CurrentNetworkStatusFetcher currentNetworkStatusFetcher;
+    private CurrentNetworkStatusRetriever currentNetworkStatusRetriever;
 
     @Before
     public void setUp() {
         initMocks(this);
-        currentNetworkStatusFetcher = new CurrentNetworkStatusFetcher(mockMerlinsBeards, mockHostPinger);
+        currentNetworkStatusRetriever = new CurrentNetworkStatusRetriever(mockMerlinsBeards, mockHostPinger);
     }
 
     @Test
     public void whenNetworkIsConnectedHostPingerPings() {
         when(mockMerlinsBeards.isConnected()).thenReturn(true);
 
-        currentNetworkStatusFetcher.fetchWithPing();
+        currentNetworkStatusRetriever.fetchWithPing();
 
         verify(mockHostPinger).ping();
     }
@@ -41,7 +41,7 @@ public class CurrentNetworkStatusFetcherShould {
     public void whenNetworkIsDisconnectedHostPingerPerformsNoNetworkToPing() {
         when(mockMerlinsBeards.isConnected()).thenReturn(false);
 
-        currentNetworkStatusFetcher.fetchWithPing();
+        currentNetworkStatusRetriever.fetchWithPing();
 
         verify(mockHostPinger).noNetworkToPing();
     }
@@ -50,7 +50,7 @@ public class CurrentNetworkStatusFetcherShould {
     public void whenNetworkIsConnectedGetWithoutPingReturnsNetworkStatusAvailable() {
         when(mockMerlinsBeards.isConnected()).thenReturn(true);
 
-        NetworkStatus networkStatus = currentNetworkStatusFetcher.get();
+        NetworkStatus networkStatus = currentNetworkStatusRetriever.get();
 
         assertThat(networkStatus).isEqualTo(NetworkStatus.newAvailableInstance());
     }
@@ -59,7 +59,7 @@ public class CurrentNetworkStatusFetcherShould {
     public void whenNetworkIsDisconnectedGetWithoutPingReturnsNetworkStatusUnavailable() {
         when(mockMerlinsBeards.isConnected()).thenReturn(false);
 
-        NetworkStatus networkStatus = currentNetworkStatusFetcher.get();
+        NetworkStatus networkStatus = currentNetworkStatusRetriever.get();
 
         assertThat(networkStatus).isEqualTo(NetworkStatus.newUnavailableInstance());
     }
