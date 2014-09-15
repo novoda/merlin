@@ -111,8 +111,8 @@ The [`MerlinActivity`](https://github.com/novoda/merlin/blob/master/demo/src/mai
 
 ##Changelog
 
-###0.5.2###
-  - MerlinsBeard! - fix for issue 29 retrieve the current network state. NOTE: Does not perform a host ping to verify an internet connection.
+###0.6###
+  - MerlinsBeard! - fix for issue #29 retrieve the current network state. NOTE: Does not perform a host ping to verify an internet connection.
 
 ###0.5.1###
   - TODO
