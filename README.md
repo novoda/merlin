@@ -48,7 +48,13 @@ dependencies {
 
 **When** the `MerlinService` has binded, the current `NetworkStatus` is provided, although this is without pinging a host. 
 
-**Because** you may need to know the current state of the network before a network change occurs. 
+**Because** you may need to know the current state of the network before a network change occurs.
+
+###`isConnected()`###
+
+**When** you want to know the current network status, without performing a host ping.
+
+**Because** you need to know if a network connection is available quickly.
 
 ##Simple usage
 
@@ -84,10 +90,29 @@ merlin.registerConnectable(new Connectable() {
         }
 });
 ```
+
+Create MerlinsBeard
+
+```java
+merlinsBeard = MerlinsBeard.from(context);
+```
+
+Use MerlinsBeard to retrieve the current network state
+
+```java
+        if (merlinsBeard.isConnected()) {
+            // Connected, do something!
+        } else {
+            // Disconnected, do something!
+        }
+```
     
 The [`MerlinActivity`](https://github.com/novoda/merlin/blob/master/demo/src/main/java/com/novoda/merlin/demo/presentation/base/MerlinActivity.java) within the demo shows a simple way to declutter Merlin from your main application code.
 
 ##Changelog
+
+###0.5.1###
+  - MerlinsBeard! - fix for issue 29 retrieve the current network state. NOTE: Does not perform a host ping to verify an internet connection.
 
 ###0.5###
   - moved to gradle! - The api hasn't changed from v0.4.1 but building the project will now require gradle.
