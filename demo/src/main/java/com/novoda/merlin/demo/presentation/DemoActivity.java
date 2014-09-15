@@ -27,7 +27,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         networkStatusDisplayer = new NetworkStatusCroutonDisplayer(this);
         merlinsBeard = MerlinsBeard.from(this);
 
-        findViewById(R.id.currentStatus).setOnClickListener(networkStatusOnClick);
+        findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
     }
 
     private final View.OnClickListener networkStatusOnClick = new View.OnClickListener() {
