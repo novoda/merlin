@@ -15,8 +15,10 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(MerlinRobolectricTestRunner.class)
 public class MerlinShould {
 
-    @Mock private Context context;
-    @Mock private MerlinServiceBinder serviceBinder;
+    @Mock
+    private Context context;
+    @Mock
+    private MerlinServiceBinder serviceBinder;
 
     private Merlin merlin;
 

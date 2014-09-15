@@ -16,6 +16,7 @@ class HostPinger {
 
     interface PingerCallback {
         void onSuccess();
+
         void onFailure();
     }
 

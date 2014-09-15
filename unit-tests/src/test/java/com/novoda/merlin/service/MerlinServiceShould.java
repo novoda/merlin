@@ -26,10 +26,14 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(MerlinRobolectricTestRunner.class)
 public class MerlinServiceShould {
 
-    @Mock private Intent intent;
-    @Mock private Context context;
-    @Mock private ConnectListener connectListener;
-    @Mock private DisconnectListener disconnectListener;
+    @Mock
+    private Intent intent;
+    @Mock
+    private Context context;
+    @Mock
+    private ConnectListener connectListener;
+    @Mock
+    private DisconnectListener disconnectListener;
 
     private MerlinService merlinService;
 

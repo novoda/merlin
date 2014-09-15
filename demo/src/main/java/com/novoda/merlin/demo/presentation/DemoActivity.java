@@ -1,8 +1,11 @@
 package com.novoda.merlin.demo.presentation;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.novoda.merlin.Merlin;
+import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusCroutonDisplayer;
@@ -15,12 +18,31 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 public class DemoActivity extends MerlinActivity implements Connectable, Disconnectable, Bindable {
 
     private NetworkStatusDisplayer networkStatusDisplayer;
+    private MerlinsBeard merlinsBeard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         networkStatusDisplayer = new NetworkStatusCroutonDisplayer(this);
+        merlinsBeard = MerlinsBeard.from(this);
+
+        findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
+    }
+
+    private final View.OnClickListener networkStatusOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (merlinsBeard.isConnected()) {
+                showToast(R.string.toast_connected);
+            } else {
+                showToast(R.string.toast_disconnected);
+            }
+        }
+    };
+
+    private void showToast(int toastText) {
+        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -65,4 +87,3 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
     }
 
 }
-

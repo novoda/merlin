@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.receiver.ConnectivityReceiver;
 import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
@@ -19,7 +20,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     public static boolean USE_COMPONENT_ENABLED_SETTING = true;
 
     private final IBinder binder;
-    private final CurrentNetworkStatusFetcher currentNetworkStatusFetcher;
+    private CurrentNetworkStatusRetriever currentNetworkStatusRetriever;
     private final HostPinger hostPinger;
 
     private ConnectListener connectListener;
@@ -30,7 +31,12 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     public MerlinService() {
         binder = new LocalBinder();
         hostPinger = new HostPinger(this);
-        currentNetworkStatusFetcher = new CurrentNetworkStatusFetcher(hostPinger);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        currentNetworkStatusRetriever = new CurrentNetworkStatusRetriever(MerlinsBeard.from(this.getApplicationContext()), hostPinger);
     }
 
     public class LocalBinder extends Binder {
@@ -76,7 +82,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     private void callbackCurrentStatus(BindListener bindListener) {
         if (bindListener != null) {
             if (networkStatus == null) {
-                bindListener.onMerlinBind(currentNetworkStatusFetcher.getWithoutPing(this));
+                bindListener.onMerlinBind(currentNetworkStatusRetriever.get());
                 return;
             }
             bindListener.onMerlinBind(networkStatus);
@@ -99,7 +105,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     }
 
     private void getCurrentNetworkStatus() {
-        currentNetworkStatusFetcher.get(this);
+        currentNetworkStatusRetriever.fetchWithPing();
     }
 
     @Override

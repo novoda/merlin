@@ -23,8 +23,10 @@ public class ConnectivityReceiverShould {
 
     private ConnectivityReceiver connectivityReceiver;
 
-    @Mock Context context;
-    @Mock MerlinService merlinService;
+    @Mock
+    Context context;
+    @Mock
+    MerlinService merlinService;
 
     @Before
     public void setUp() throws Exception {
