@@ -111,8 +111,11 @@ The [`MerlinActivity`](https://github.com/novoda/merlin/blob/master/demo/src/mai
 
 ##Changelog
 
-###0.5.1###
+###0.5.2###
   - MerlinsBeard! - fix for issue 29 retrieve the current network state. NOTE: Does not perform a host ping to verify an internet connection.
+
+###0.5.1###
+  - TODO
 
 ###0.5###
   - moved to gradle! - The api hasn't changed from v0.4.1 but building the project will now require gradle.
