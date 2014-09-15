@@ -21,7 +21,7 @@ class CurrentNetworkStatusFetcher {
         }
     }
 
-    public NetworkStatus fetchWithoutPing() {
+    public NetworkStatus get() {
         if (merlinsBeard.isConnected()) {
             return NetworkStatus.newAvailableInstance();
         } else {

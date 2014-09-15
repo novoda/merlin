@@ -82,7 +82,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     private void callbackCurrentStatus(BindListener bindListener) {
         if (bindListener != null) {
             if (networkStatus == null) {
-                bindListener.onMerlinBind(currentNetworkStatusFetcher.fetchWithoutPing());
+                bindListener.onMerlinBind(currentNetworkStatusFetcher.get());
                 return;
             }
             bindListener.onMerlinBind(networkStatus);
