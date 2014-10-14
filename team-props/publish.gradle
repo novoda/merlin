@@ -1,7 +1,7 @@
 ext {
     PUBLISH_GROUP_ID = 'com.novoda'
     PUBLISH_ARTIFACT_ID = 'merlin'
-    PUBLISH_VERSION = '0.6'
+    PUBLISH_VERSION = project.version
 
     UPLOAD_NAME = PUBLISH_ARTIFACT_ID
     UPLOAD_DESCRIPTION = 'Merlin aims to simplify network monitoring by providing registerable callbacks.'
