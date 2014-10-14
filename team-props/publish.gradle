@@ -1,0 +1,14 @@
+ext {
+    PUBLISH_GROUP_ID = 'com.novoda'
+    PUBLISH_ARTIFACT_ID = 'merlin'
+    PUBLISH_VERSION = project.version
+
+    UPLOAD_NAME = PUBLISH_ARTIFACT_ID
+    UPLOAD_DESCRIPTION = 'Merlin aims to simplify network monitoring by providing registerable callbacks.'
+    UPLOAD_WEBSITE = 'https://github.com/novoda/merlin'
+    UPLOAD_ISSUE_TRACKER = "${UPLOAD_WEBSITE}/issues"
+    UPLOAD_REPOSITORY = "${UPLOAD_WEBSITE}.git"
+    UPLOAD_VERSION = PUBLISH_VERSION
+}
+
+apply from: 'https://gist.githubusercontent.com/hal9002/0772dffbd8a6a81bc176/raw' // novoda bintray upload helper
