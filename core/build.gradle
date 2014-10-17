@@ -18,83 +18,30 @@ android {
     buildToolsVersion "20.0.0"
 }
 
-group = 'com.novoda'
-ext.packaging = 'aar'
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url 'http://dl.bintray.com/novoda/maven' }
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6'
+        classpath 'com.novoda:gradle-android-release-plugin:0.0.3'
+    }
 
-def isDevBuild
-def isCiBuild
-def isReleaseBuild
-
-def sonatypeRepositoryUrl
-
-if (hasProperty("release")) {
-    isReleaseBuild = true
-    sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-} else if (hasProperty("ci")) {
-    isCiBuild = true
-    version += "-SNAPSHOT"
-    sonatypeRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-} else {
-    isDevBuild = true
 }
 
-uploadArchives {
-    configuration = configurations.archives
-    repositories {
-        if (isDevBuild) {
-            mavenLocal()
-        } else {
-            mavenDeployer {
+apply plugin: 'gradle-android-release-plugin'
 
-                if (isReleaseBuild) {
-                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                }
+publish {
+    userOrg = 'novoda'
+    groupId = 'com.novoda'
+    artifactId = 'merlin'
+    version = project.version
 
-                repository(url: sonatypeRepositoryUrl) {
-                    authentication(userName: sonatypeUsername,
-                            password: sonatypePassword)
-                }
-
-                pom.project {
-                    artifactId 'merlin'
-                    name 'Merlin'
-                    description 'Observes network connection status & gives callbacks'
-                    packaging 'aar'
-                    url 'https://github.com/novoda/merlin'
-                    inceptionYear '2013'
-
-                    scm {
-                        url 'https://github.com/novoda/merlin'
-                        connection 'scm:https://github.com/novoda/merlin.git'
-                        developerConnection 'scm:git@github.com:novoda/merlin.git'
-                    }
-
-                    licenses {
-                        license {
-                            name 'The Apache Software License, Version 2.0'
-                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                            distribution 'repo'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id 'ouchadam'
-                            name 'Adam Brown'
-                        }
-
-                        developer {
-                            id 'blundell'
-                            name 'Paul Blundell'
-                        }
-
-                        developer {
-                            id 'Electryc'
-                            name 'Andrei Catinean'
-                        }
-                    }
-                }
-            }
-        }
-    }
+    uploadName = 'merlin'
+    description = 'Observes network connection status & gives callbacks'
+    website = 'https://github.com/novoda/merlin'
+    issueTracker = "${website}/issues"
+    repository = "${website}.git"
 }
