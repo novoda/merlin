@@ -1,3 +1,22 @@
+Droidcon challenge
+==
+
+Add a unit test for the chance to win a **hudl2**!
+
+Each day of droidcon we'll announce a repo that's in need of some test love, to enter the competition you will need to follow these rules :
+
+1. Fork the repo on github.
+2. Add **one** unique passing unit test to the **unit-tests** module **without** touching the production code.
+3. Make a pull request against our repo on github (with your best gif)
+
+**At the end of each day one winner will be chosen at random from the pull requests made that day**
+
+Useful stuff:
+
+- Follow **[@novoda](http://twitter.com/novoda)** to stay in the loop
+- Using android-studio open the root build.gradle to import the project. Magic, no setup! *unless you're on windows*...
+- Run the all the tests from the command line with `./gradlew test`
+
 Merlin
 ======
 
