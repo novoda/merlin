@@ -39,6 +39,13 @@ public class MerlinsBeardShould {
     }
 
     @Test
+    public void returnFalseForIsConnectedWhenNetworkConnectionIsNull() {
+        when(mockConnectivityManager.getActiveNetworkInfo()).thenReturn(null);
+
+        assertThat(merlinsBeard.isConnected()).isFalse();
+    }
+
+    @Test
     public void returnTrueForIsConnectedWhenNetworkConnectionIsAvailable() {
         when(mockConnectivityManager.getActiveNetworkInfo()).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(true);
