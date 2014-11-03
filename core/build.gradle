@@ -26,14 +26,3 @@ publish {
     description = 'Observes network connection status & gives callbacks'
     website = 'https://github.com/novoda/merlin'
 }
-
-buildscript {
-    repositories {
-      jcenter()
-    }
-    dependencies {
-      classpath 'com.android.tools.build:gradle:0.13.2'
-      classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6'
-      classpath 'com.novoda:android-bintray-release:0.1.0'
-    }
-}
