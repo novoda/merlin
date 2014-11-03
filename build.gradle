@@ -1,24 +1,17 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.2'
-    }
-
-}
-
 task wrapper(type: Wrapper) {
     gradleVersion = '2.1'
 }
 
 allprojects {
     version = "0.6"
+    repositories { mavenCentral() }
+}
 
-    repositories {
-        mavenCentral()
-        maven {
-            url 'https://github.com/novoda/public-mvn-repo/raw/master/releases'
-        }
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+      classpath 'com.android.tools.build:gradle:0.13.2'
+      classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6'
+      classpath 'com.novoda:android-bintray-release:0.1.0'
     }
 }
