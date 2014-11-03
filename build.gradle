@@ -1,13 +1,3 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.2'
-    }
-
-}
-
 task wrapper(type: Wrapper) {
     gradleVersion = '2.1'
 }
@@ -17,8 +7,5 @@ allprojects {
 
     repositories {
         mavenCentral()
-        maven {
-            url 'https://github.com/novoda/public-mvn-repo/raw/master/releases'
-        }
     }
 }

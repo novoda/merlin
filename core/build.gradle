@@ -1,7 +1,5 @@
-apply plugin: 'maven'
-apply plugin: 'signing'
-
 apply plugin: 'com.android.library'
+apply plugin: 'android-bintray-release'
 
 dependencies {
     compile 'com.android.support:support-v4:19.1.0'
@@ -18,21 +16,6 @@ android {
     buildToolsVersion "20.0.0"
 }
 
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven { url 'http://dl.bintray.com/novoda/maven' }
-    }
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6'
-        classpath 'com.novoda:gradle-android-release-plugin:0.0.3'
-    }
-
-}
-
-apply plugin: 'gradle-android-release-plugin'
-
 publish {
     userOrg = 'novoda'
     groupId = 'com.novoda'
@@ -42,6 +25,15 @@ publish {
     uploadName = 'merlin'
     description = 'Observes network connection status & gives callbacks'
     website = 'https://github.com/novoda/merlin'
-    issueTracker = "${website}/issues"
-    repository = "${website}.git"
+}
+
+buildscript {
+    repositories {
+      jcenter()
+    }
+    dependencies {
+      classpath 'com.android.tools.build:gradle:0.13.2'
+      classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6'
+      classpath 'com.novoda:android-bintray-release:0.1.0'
+    }
 }
