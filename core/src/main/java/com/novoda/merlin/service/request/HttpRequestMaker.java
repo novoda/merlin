@@ -3,29 +3,40 @@ package com.novoda.merlin.service.request;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 class HttpRequestMaker implements RequestMaker {
 
-    /**
-     * 'HEAD' request method
-     */
-    private final String METHOD_HEAD = "HEAD";
+    private static final String METHOD_HEAD = "HEAD";
 
     @Override
     public Request head(String endpoint) {
         try {
-            URL url = new URL(endpoint);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod(METHOD_HEAD);
-            urlConnection.setInstanceFollowRedirects(false);
+            HttpURLConnection urlConnection = connectTo(endpoint);
+
+            setConnectionToHeadRequest(urlConnection);
+            disableRedirects(urlConnection);
+
             return new MerlinHttpRequest(urlConnection);
-        }
-        catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             throw new RequestException(e);
         } catch (IOException e) {
             throw new RequestException(e);
         }
+    }
+
+    private HttpURLConnection connectTo(String endpoint) throws IOException {
+        URL url = new URL(endpoint);
+        return (HttpURLConnection) url.openConnection();
+    }
+
+    private void setConnectionToHeadRequest(HttpURLConnection urlConnection) throws ProtocolException {
+        urlConnection.setRequestMethod(METHOD_HEAD);
+    }
+
+    private void disableRedirects(HttpURLConnection urlConnection) {
+        urlConnection.setInstanceFollowRedirects(false);
     }
 
     private static class MerlinHttpRequest implements Request {
@@ -37,7 +48,7 @@ class HttpRequestMaker implements RequestMaker {
         }
 
         @Override
-        public int getResponseCode(){
+        public int getResponseCode() {
             try {
                 return request.getResponseCode();
             } catch (IOException e) {
