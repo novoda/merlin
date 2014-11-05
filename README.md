@@ -13,13 +13,11 @@ If you're using gradle all you need is this :
 
 ```groovy
 repositories {
-    maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots"
-    }
+    jcenter()
 }
 
 dependencies {
-    compile "com.novoda:merlin:0.5.1-SNAPSHOT"
+    compile 'com.novoda:merlin:0.6.1'
 }
 ``` 
 
@@ -110,6 +108,9 @@ Use MerlinsBeard to retrieve the current network state
 The [`MerlinActivity`](https://github.com/novoda/merlin/blob/master/demo/src/main/java/com/novoda/merlin/demo/presentation/base/MerlinActivity.java) within the demo shows a simple way to declutter Merlin from your main application code.
 
 ##Changelog
+
+###0.6.1###
+  - Removes the dependency on `HttpRequest` #43
 
 ###0.6###
   - MerlinsBeard! - fix for issue #29 retrieve the current network state. NOTE: Does not perform a host ping to verify an internet connection.
