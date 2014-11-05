@@ -142,8 +142,7 @@ The [`MerlinActivity`](https://github.com/novoda/merlin/blob/master/demo/src/mai
 
 ##Contributing!
 
-If you would like to help out (and everyone should!!) please code against the **[develop branch](https://github.com/novoda/merlin/tree/develop)** 
-
+If you would like to help out (and everyone should!!) please fork and submit a PR
 *and be sure write tests where possible!*
 
 ##License##
