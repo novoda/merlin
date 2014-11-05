@@ -110,7 +110,7 @@ The [`MerlinActivity`](https://github.com/novoda/merlin/blob/master/demo/src/mai
 ##Changelog
 
 ###0.6.1###
-  - Removes the dependency on `HttpRequest` #43
+  - Removes the dependency on `HttpRequest` [#43](https://github.com/novoda/merlin/pull/43)
 
 ###0.6###
   - MerlinsBeard! - fix for issue #29 retrieve the current network state. NOTE: Does not perform a host ping to verify an internet connection.
