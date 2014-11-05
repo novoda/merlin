@@ -3,7 +3,6 @@ apply plugin: 'android-bintray-release'
 
 dependencies {
     compile 'com.android.support:support-v4:19.1.0'
-    compile 'com.github.kevinsawicki:http-request:5.6'
 }
 
 android {
