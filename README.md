@@ -1,4 +1,4 @@
-Merlin ![](http://ci.novoda.com/buildStatus/icon?job=Merlin)
+Merlin [![](http://ci.novoda.com/buildStatus/icon?job=Merlin)](http://ci.novoda.com/job/Merlin/lastSuccessfulBuild/console)
 ======
 
 ####*"An ok name for a library"*
