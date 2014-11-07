@@ -1,9 +1,7 @@
-Merlin
+Merlin ![](http://ci.novoda.com/buildStatus/icon?job=Merlin)
 ======
 
 ####*"An ok name for a library"*
-
-![](http://ci.novoda.com/buildStatus/icon?job=Merlin)
 
 Merlin aims to simplify network monitoring by providing 3 registerable callbacks. 
 `onConnect()` , `onDisconnect()` and `onBind(NetworkStatus networkStatus)`.
