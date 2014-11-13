@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'android-bintray-release'
+apply plugin: 'bintray-release'
 
 dependencies {
     compile 'com.android.support:support-v4:19.1.0'
