@@ -1,11 +1,11 @@
 # Merlin [![](http://ci.novoda.com/buildStatus/icon?job=merlin)](http://ci.novoda.com/job/merlin/lastSuccessfulBuild/console) [![](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
 
-An Ok name for a library.
+An ok name for a library.
 
 
 ## Description
 
-Merlin aims to simplify network monitoring by providing 3 registerable callbacks.
+Merlin aims to simplify network monitoring. Providing 3 registerable callbacks for network connectivity changes.
 `onConnect()` , `onDisconnect()` and `onBind(NetworkStatus networkStatus)`.
 
 
@@ -54,7 +54,7 @@ Register for callbacks:
 merlin.registerConnectable(new Connectable() {
     @Override
     public void onConnect() {
-        // Do something!
+        // Do something you haz internet!
     }
 });
 ```
