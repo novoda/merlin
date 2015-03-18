@@ -1,4 +1,4 @@
-# merlin [![](http://ci.novoda.com/buildStatus/icon?job=merlin)](http://ci.novoda.com/job/merlin/lastBuild/console) [![](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
+# merlin [![](https://ci.novoda.com/buildStatus/icon?job=merlin)](https://ci.novoda.com/job/merlin/lastBuild/console) [![](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
 
 An ok name for a library.
 
