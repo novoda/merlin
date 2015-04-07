@@ -28,6 +28,8 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     private boolean getIsConnected(Context context, Intent intent) {
         if (intent.hasExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY)) {
             return !intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
+        } else {
+            return MerlinsBeard.from(context).isConnected();
         }
     }
 
