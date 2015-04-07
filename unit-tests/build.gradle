@@ -30,7 +30,7 @@ dependencies {
 
     testCompile coreProject.android.libraryVariants.toList().first().javaCompile.classpath
     testCompile coreProject.android.libraryVariants.toList().first().javaCompile.outputs.files
-    testCompile files(coreProject.plugins.findPlugin("android-library").getBootClasspath())
+    testCompile files(coreProject.android.getBootClasspath())
 
     testCompile 'org.robolectric:robolectric:2.3'
     testCompile 'org.easytesting:fest-assert-core:2.0M8'
