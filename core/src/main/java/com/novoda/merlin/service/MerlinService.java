@@ -10,7 +10,7 @@ import android.os.IBinder;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.receiver.ConnectivityReceiver;
-import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
+import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;

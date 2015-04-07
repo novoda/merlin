@@ -1,4 +1,4 @@
-package com.novoda.merlin.receiver.event;
+package com.novoda.merlin.receiver;
 
 import com.novoda.merlin.NetworkStatus;
 
@@ -8,7 +8,7 @@ public class ConnectivityChangeEvent {
     private final String info;
     private final String reason;
 
-    ConnectivityChangeEvent(boolean isConnected, String info, String reason) {
+    public ConnectivityChangeEvent(boolean isConnected, String info, String reason) {
         this.isConnected = isConnected;
         this.info = info;
         this.reason = reason;

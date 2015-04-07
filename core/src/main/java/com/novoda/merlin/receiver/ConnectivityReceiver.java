@@ -6,8 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 
-import com.novoda.merlin.receiver.event.ConnectionEventPackager;
-import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
+import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.service.MerlinService;
 
 public class ConnectivityReceiver extends BroadcastReceiver {
@@ -15,13 +14,23 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent != null && connectivityAction(intent)) {
-            ConnectivityChangeEvent connectivityChangedEvent = ConnectionEventPackager.from(intent);
-            notifyMerlinService(context, connectivityChangedEvent);
+            boolean isConnected = getIsConnected(context, intent);
+            String info = intent.getStringExtra(ConnectivityManager.EXTRA_EXTRA_INFO);
+            String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
+            notifyMerlinService(context, new ConnectivityChangeEvent(isConnected, info, reason));
         }
     }
 
     private boolean connectivityAction(Intent intent) {
         return ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction());
+    }
+
+    private boolean getIsConnected(Context context, Intent intent) {
+        if (intent.hasExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY)) {
+            return !intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
+        } else {
+            return MerlinsBeard.from(context).isConnected();
+        }
     }
 
     private void notifyMerlinService(Context context, ConnectivityChangeEvent connectivityChangedEvent) {

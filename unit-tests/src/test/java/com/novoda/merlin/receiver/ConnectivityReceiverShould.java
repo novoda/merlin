@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 
 import com.novoda.merlin.MerlinRobolectricTestRunner;
-import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
 import com.novoda.merlin.service.MerlinService;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.robolectric.Robolectric;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -23,13 +23,13 @@ public class ConnectivityReceiverShould {
 
     private ConnectivityReceiver connectivityReceiver;
 
-    @Mock
     Context context;
     @Mock
     MerlinService merlinService;
 
     @Before
     public void setUp() throws Exception {
+        context = Robolectric.application;
         initMocks(this);
         connectivityReceiver = new ConnectivityReceiver() {
             @Override
