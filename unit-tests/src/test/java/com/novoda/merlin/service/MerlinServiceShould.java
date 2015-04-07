@@ -5,13 +5,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 
 import com.novoda.matcher.ComponentNameMatcher;
 import com.novoda.merlin.MerlinRobolectricTestRunner;
 import com.novoda.merlin.receiver.ConnectivityReceiver;
-import com.novoda.merlin.receiver.event.ConnectionEventPackager;
-import com.novoda.merlin.receiver.event.ConnectivityChangeEvent;
+import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
@@ -105,11 +103,7 @@ public class MerlinServiceShould {
     }
 
     private ConnectivityChangeEvent createConnectivityChangeEvent(boolean isConnected) {
-        when(intent.getStringExtra(ConnectivityManager.EXTRA_EXTRA_INFO)).thenReturn("info");
-        when(intent.getStringExtra(ConnectivityManager.EXTRA_REASON)).thenReturn("reason");
-        when(intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)).thenReturn(!isConnected);
-
-        return ConnectionEventPackager.from(intent);
+        return new ConnectivityChangeEvent(isConnected, "info", "reason");
     }
 
 }
