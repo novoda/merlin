@@ -10,20 +10,6 @@ import android.net.NetworkInfo;
  */
 public class MerlinsBeard {
 
-    public enum NetworkType {
-        WIFI(ConnectivityManager.TYPE_WIFI);
-
-        private final int networkType;
-
-        NetworkType(int networkType) {
-            this.networkType = networkType;
-        }
-
-        int getValue() {
-            return networkType;
-        }
-    }
-
     private ConnectivityManager connectivityManager;
 
     /**
@@ -58,19 +44,15 @@ public class MerlinsBeard {
     }
 
     /**
-     * Provides a boolean representing whether a network connection of the type {@link com.novoda.merlin.MerlinsBeard.NetworkType}
-     * has been established.
+     * Provides a boolean representing whether a wifi network connection has been established.
      *
      * NOTE: Therefore available does not necessarily mean that an internet connection
      * is available.
      *
-     * @param networkType The network type {@link com.novoda.merlin.MerlinsBeard.NetworkType} to check whether there is a connection established
-     *
-     * @return boolean true if a network connection of the type of the type {@link com.novoda.merlin.MerlinsBeard.NetworkType}
-     * is available.
+     * @return boolean true if a wifi network connection is available.
      */
-    public boolean isConnectedTo(NetworkType networkType) {
-        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(networkType.getValue());
+    public boolean isConnectedToWifi() {
+        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         return networkInfo != null && networkInfo.isConnected();
     }
 

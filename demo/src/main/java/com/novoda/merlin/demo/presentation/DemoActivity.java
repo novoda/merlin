@@ -15,8 +15,6 @@ import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
-import static com.novoda.merlin.MerlinsBeard.NetworkType.WIFI;
-
 public class DemoActivity extends MerlinActivity implements Connectable, Disconnectable, Bindable {
 
     private NetworkStatusDisplayer networkStatusDisplayer;
@@ -52,7 +50,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
 
         @Override
         public void onClick(View view) {
-            if (merlinsBeard.isConnectedTo(WIFI)) {
+            if (merlinsBeard.isConnectedToWifi()) {
                 showToast(R.string.toast_connected);
             } else {
                 showToast(R.string.toast_disconnected);

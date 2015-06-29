@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
-import static com.novoda.merlin.MerlinsBeard.NetworkType.*;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -56,25 +55,25 @@ public class MerlinsBeardShould {
 
     @Test
     public void returnTrueForIsConnectedToWifiWhenNetworkConnectedToWifiIsConnected() {
-        when(mockConnectivityManager.getNetworkInfo(WIFI.getValue())).thenReturn(mockNetworkInfo);
+        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(true);
 
-        assertThat(merlinsBeard.isConnectedTo(WIFI)).isTrue();
+        assertThat(merlinsBeard.isConnectedToWifi()).isTrue();
     }
 
     @Test
     public void returnFalseForIsConnectedToWifiWhenNetworkConnectedToWifiIsNotConnected() {
-        when(mockConnectivityManager.getNetworkInfo(WIFI.getValue())).thenReturn(mockNetworkInfo);
+        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(false);
 
-        assertThat(merlinsBeard.isConnectedTo(WIFI)).isFalse();
+        assertThat(merlinsBeard.isConnectedToWifi()).isFalse();
     }
 
     @Test
     public void returnFalseForIsConnectedToWifiWhenNetworkConnectionIsNotAvailable() {
-        when(mockConnectivityManager.getNetworkInfo(WIFI.getValue())).thenReturn(null);
+        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).thenReturn(null);
 
-        assertThat(merlinsBeard.isConnectedTo(WIFI)).isFalse();
+        assertThat(merlinsBeard.isConnectedToWifi()).isFalse();
     }
 
 }
