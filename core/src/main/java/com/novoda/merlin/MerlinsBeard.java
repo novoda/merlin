@@ -36,10 +36,24 @@ public class MerlinsBeard {
      */
     public boolean isConnected() {
         NetworkInfo activeNetworkInfo = getNetworkInfo();
-        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private NetworkInfo getNetworkInfo() {
         return connectivityManager.getActiveNetworkInfo();
     }
+
+    /**
+     * Provides a boolean representing whether a wifi network connection has been established.
+     *
+     * NOTE: Therefore available does not necessarily mean that an internet connection
+     * is available.
+     *
+     * @return boolean true if a wifi network connection is available.
+     */
+    public boolean isConnectedToWifi() {
+        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        return networkInfo != null && networkInfo.isConnected();
+    }
+
 }

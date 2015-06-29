@@ -28,6 +28,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         merlinsBeard = MerlinsBeard.from(this);
 
         findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
+        findViewById(R.id.wifi_connected).setOnClickListener(wifiConnectedOnClick);
     }
 
     private final View.OnClickListener networkStatusOnClick = new View.OnClickListener() {
@@ -44,6 +45,18 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
     private void showToast(int toastText) {
         Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
     }
+
+    private final View.OnClickListener wifiConnectedOnClick = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            if (merlinsBeard.isConnectedToWifi()) {
+                showToast(R.string.toast_connected);
+            } else {
+                showToast(R.string.toast_disconnected);
+            }
+        }
+    };
 
     @Override
     protected Merlin createMerlin() {
