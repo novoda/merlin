@@ -10,6 +10,20 @@ import android.net.NetworkInfo;
  */
 public class MerlinsBeard {
 
+    public enum NetworkType {
+        WIFI(ConnectivityManager.TYPE_WIFI);
+
+        private final int networkType;
+
+        NetworkType(int networkType) {
+            this.networkType = networkType;
+        }
+
+        int getValue() {
+            return networkType;
+        }
+    }
+
     private ConnectivityManager connectivityManager;
 
     /**
@@ -36,10 +50,16 @@ public class MerlinsBeard {
      */
     public boolean isConnected() {
         NetworkInfo activeNetworkInfo = getNetworkInfo();
-        return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private NetworkInfo getNetworkInfo() {
         return connectivityManager.getActiveNetworkInfo();
     }
+
+    public boolean isConnectedTo(NetworkType networkType) {
+        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(networkType.getValue());
+        return networkInfo != null && networkInfo.isConnected();
+    }
+
 }
