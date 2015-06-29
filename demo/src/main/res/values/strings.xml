@@ -6,6 +6,7 @@
   <string name="current_status">Get Current Status</string>
   <string name="toast_connected">Connected</string>
   <string name="toast_disconnected">Disconnected</string>
-  <string name="is_wifi_connected">Is wifi connected</string>
+  <string name="is_wifi_connected">Is connected to Wi-Fi</string>
+  <string name="is_mobile_connected">Is connected to mobile network</string>
 
 </resources>

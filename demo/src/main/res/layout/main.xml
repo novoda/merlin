@@ -21,4 +21,13 @@
     android:layout_below="@+id/current_status"
     android:text="@string/is_wifi_connected" />
 
+  <Button
+    android:id="@+id/mobile_connected"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:layout_below="@+id/wifi_connected"
+    android:text="@string/is_mobile_connected" />
+
 </RelativeLayout>
