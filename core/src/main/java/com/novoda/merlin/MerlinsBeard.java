@@ -57,6 +57,18 @@ public class MerlinsBeard {
         return connectivityManager.getActiveNetworkInfo();
     }
 
+    /**
+     * Provides a boolean representing whether a network connection of the type {@link com.novoda.merlin.MerlinsBeard.NetworkType}
+     * has been established.
+     *
+     * NOTE: Therefore available does not necessarily mean that an internet connection
+     * is available.
+     *
+     * @param networkType The network type {@link com.novoda.merlin.MerlinsBeard.NetworkType} to check whether there is a connection established
+     *
+     * @return boolean true if a network connection of the type of the type {@link com.novoda.merlin.MerlinsBeard.NetworkType}
+     * is available.
+     */
     public boolean isConnectedTo(NetworkType networkType) {
         NetworkInfo networkInfo = connectivityManager.getNetworkInfo(networkType.getValue());
         return networkInfo != null && networkInfo.isConnected();
