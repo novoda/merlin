@@ -2,6 +2,7 @@ package com.novoda.merlin;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.telephony.TelephonyManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +20,9 @@ public class MerlinsBeardShould {
     private ConnectivityManager mockConnectivityManager;
 
     @Mock
+    private TelephonyManager mockTelephonyManager;
+
+    @Mock
     private NetworkInfo mockNetworkInfo;
 
     private MerlinsBeard merlinsBeard;
@@ -27,7 +31,7 @@ public class MerlinsBeardShould {
     public void setUp() {
         initMocks(this);
 
-        merlinsBeard = new MerlinsBeard(mockConnectivityManager);
+        merlinsBeard = new MerlinsBeard(mockConnectivityManager, mockTelephonyManager);
     }
 
     @Test
