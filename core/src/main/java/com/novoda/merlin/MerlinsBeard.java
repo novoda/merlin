@@ -10,7 +10,7 @@ import android.net.NetworkInfo;
  */
 public class MerlinsBeard {
 
-    private ConnectivityManager connectivityManager;
+    private final ConnectivityManager connectivityManager;
 
     /**
      * Use this method to create a MerlinsBeard object, this is how you can retrieve the current network state.
@@ -44,15 +44,28 @@ public class MerlinsBeard {
     }
 
     /**
-     * Provides a boolean representing whether a wifi network connection has been established.
-     *
+     * Provides a boolean representing whether a Wi-Fi network connection has been established.
+     * <p/>
      * NOTE: Therefore available does not necessarily mean that an internet connection
      * is available.
      *
-     * @return boolean true if a wifi network connection is available.
+     * @return boolean true if a Wi-Fi network connection is available.
      */
     public boolean isConnectedToWifi() {
         NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        return networkInfo != null && networkInfo.isConnected();
+    }
+
+    /**
+     * Provides a boolean representing whether a mobile network connection has been established and is active.
+     * NOTE: Therefore available does not necessarily mean that an internet connection
+     * is available. Also, there can be only one network connection at a time, so this would return false if
+     * the active connection is the Wi-Fi one, even if there is a (inactive) mobile network connection established.
+     *
+     * @return boolean true if a mobile network connection is available.
+     */
+    public boolean isConnectedToMobileNetwork() {
+        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         return networkInfo != null && networkInfo.isConnected();
     }
 

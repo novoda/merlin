@@ -76,4 +76,27 @@ public class MerlinsBeardShould {
         assertThat(merlinsBeard.isConnectedToWifi()).isFalse();
     }
 
+    @Test
+    public void returnTrueForIsConnectedToMobileWhenNetworkConnectedToMobileIsConnected() {
+        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(mockNetworkInfo);
+        when(mockNetworkInfo.isConnected()).thenReturn(true);
+
+        assertThat(merlinsBeard.isConnectedToMobileNetwork()).isTrue();
+    }
+
+    @Test
+    public void returnFalseForIsConnectedToMobileWhenNetworkConnectedToMobileIsNotConnected() {
+        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(mockNetworkInfo);
+        when(mockNetworkInfo.isConnected()).thenReturn(false);
+
+        assertThat(merlinsBeard.isConnectedToMobileNetwork()).isFalse();
+    }
+
+    @Test
+    public void returnFalseForIsConnectedToMobileWhenNetworkConnectionIsNotAvailable() {
+        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(null);
+
+        assertThat(merlinsBeard.isConnectedToMobileNetwork()).isFalse();
+    }
+
 }
