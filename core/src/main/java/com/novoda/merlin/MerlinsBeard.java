@@ -3,7 +3,6 @@ package com.novoda.merlin;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.telephony.TelephonyManager;
 
 /**
  * This class provides a mechanism for retrieving the current
@@ -12,7 +11,6 @@ import android.telephony.TelephonyManager;
 public class MerlinsBeard {
 
     private final ConnectivityManager connectivityManager;
-    private final TelephonyManager telephonyManager;
 
     /**
      * Use this method to create a MerlinsBeard object, this is how you can retrieve the current network state.
@@ -22,13 +20,11 @@ public class MerlinsBeard {
      */
     public static MerlinsBeard from(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        TelephonyManager telephonyManager = (TelephonyManager) context.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-        return new MerlinsBeard(connectivityManager, telephonyManager);
+        return new MerlinsBeard(connectivityManager);
     }
 
-    MerlinsBeard(ConnectivityManager connectivityManager, TelephonyManager telephonyManager) {
+    MerlinsBeard(ConnectivityManager connectivityManager) {
         this.connectivityManager = connectivityManager;
-        this.telephonyManager = telephonyManager;
     }
 
     /**
@@ -49,7 +45,7 @@ public class MerlinsBeard {
 
     /**
      * Provides a boolean representing whether a Wi-Fi network connection has been established.
-     *
+     * <p/>
      * NOTE: Therefore available does not necessarily mean that an internet connection
      * is available.
      *
@@ -60,7 +56,6 @@ public class MerlinsBeard {
         return networkInfo != null && networkInfo.isConnected();
     }
 
-
     /**
      * Provides a boolean representing whether a mobile network connection has been established and is active.
      * NOTE: Therefore available does not necessarily mean that an internet connection
@@ -70,13 +65,8 @@ public class MerlinsBeard {
      * @return boolean true if a mobile network connection is available.
      */
     public boolean isConnectedToMobileNetwork() {
-        int simState = telephonyManager.getSimState();
-        if (simState == TelephonyManager.SIM_STATE_READY) {
-            NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-            return networkInfo != null && networkInfo.isConnected();
-        }
-        return false;
+        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        return networkInfo != null && networkInfo.isConnected();
     }
-
 
 }

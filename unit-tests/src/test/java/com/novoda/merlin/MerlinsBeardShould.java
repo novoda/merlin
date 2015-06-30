@@ -2,7 +2,6 @@ package com.novoda.merlin;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.telephony.TelephonyManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,9 +19,6 @@ public class MerlinsBeardShould {
     private ConnectivityManager mockConnectivityManager;
 
     @Mock
-    private TelephonyManager mockTelephonyManager;
-
-    @Mock
     private NetworkInfo mockNetworkInfo;
 
     private MerlinsBeard merlinsBeard;
@@ -31,7 +27,7 @@ public class MerlinsBeardShould {
     public void setUp() {
         initMocks(this);
 
-        merlinsBeard = new MerlinsBeard(mockConnectivityManager, mockTelephonyManager);
+        merlinsBeard = new MerlinsBeard(mockConnectivityManager);
     }
 
     @Test
@@ -82,7 +78,6 @@ public class MerlinsBeardShould {
 
     @Test
     public void returnTrueForIsConnectedToMobileWhenNetworkConnectedToMobileIsConnected() {
-        when(mockTelephonyManager.getSimState()).thenReturn(TelephonyManager.SIM_STATE_READY);
         when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(true);
 
@@ -91,16 +86,6 @@ public class MerlinsBeardShould {
 
     @Test
     public void returnFalseForIsConnectedToMobileWhenNetworkConnectedToMobileIsNotConnected() {
-        when(mockTelephonyManager.getSimState()).thenReturn(TelephonyManager.SIM_STATE_READY);
-        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(mockNetworkInfo);
-        when(mockNetworkInfo.isConnected()).thenReturn(false);
-
-        assertThat(merlinsBeard.isConnectedToMobileNetwork()).isFalse();
-    }
-
-    @Test
-    public void returnFalseForIsConnectedToMobileWhenSimIsNotReady() {
-        when(mockTelephonyManager.getSimState()).thenReturn(TelephonyManager.SIM_STATE_UNKNOWN);
         when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(false);
 
@@ -109,7 +94,6 @@ public class MerlinsBeardShould {
 
     @Test
     public void returnFalseForIsConnectedToMobileWhenNetworkConnectionIsNotAvailable() {
-        when(mockTelephonyManager.getSimState()).thenReturn(TelephonyManager.SIM_STATE_READY);
         when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(null);
 
         assertThat(merlinsBeard.isConnectedToMobileNetwork()).isFalse();
