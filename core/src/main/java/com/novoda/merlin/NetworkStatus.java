@@ -4,7 +4,7 @@ public class NetworkStatus {
 
     public enum State {
         AVAILABLE,
-        UNAVAILABLE;
+        UNAVAILABLE
     }
 
     private final State state;
@@ -34,10 +34,7 @@ public class NetworkStatus {
             return false;
         }
         NetworkStatus that = (NetworkStatus) o;
-        if (state != that.state) {
-            return false;
-        }
-        return true;
+        return state == that.state;
     }
 
     @Override

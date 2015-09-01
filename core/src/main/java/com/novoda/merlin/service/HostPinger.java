@@ -73,7 +73,7 @@ class HostPinger {
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                MerlinLog.d("Pinging : " + hostAddress);
+                MerlinLog.e("Pinging : " + hostAddress);
                 int responseCode = responseCodeFetcher.from(hostAddress);
                 MerlinLog.d("Got response : " + responseCode);
                 return responseCode == SUCCESS;

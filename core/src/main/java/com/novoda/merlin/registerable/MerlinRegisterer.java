@@ -8,12 +8,12 @@ public class MerlinRegisterer<T extends Registerable> implements MerlinConnector
     private final List<WeakRegisterableReference<T>> registerableList;
 
     public MerlinRegisterer() {
-        registerableList = new ArrayList<WeakRegisterableReference<T>>();
+        registerableList = new ArrayList<>();
     }
 
     @Override
     public void register(T what) {
-        WeakRegisterableReference<T> registerableReference = new WeakRegisterableReference<T>(what);
+        WeakRegisterableReference<T> registerableReference = new WeakRegisterableReference<>(what);
         if (!registerableList.contains(registerableReference)) {
             registerableList.add(registerableReference);
         }
@@ -21,7 +21,7 @@ public class MerlinRegisterer<T extends Registerable> implements MerlinConnector
 
     @Override
     public List<T> get() {
-        List<T> listOfWhat = new ArrayList<T>(registerableList.size());
+        List<T> listOfWhat = new ArrayList<>(registerableList.size());
         for (WeakRegisterableReference<T> referenceReference : registerableList) {
             T what = referenceReference.get();
             if (what != null) {
