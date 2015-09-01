@@ -35,7 +35,7 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withConnectableCallbacks() {
-        connectableRegisterer = new MerlinRegisterer<Connectable>();
+        connectableRegisterer = new MerlinRegisterer<>();
         this.merlinConnector = new Connector(connectableRegisterer);
         return this;
     }
@@ -46,7 +46,7 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withDisconnectableCallbacks() {
-        disconnectableRegisterer = new MerlinRegisterer<Disconnectable>();
+        disconnectableRegisterer = new MerlinRegisterer<>();
         this.merlinDisconnector = new Disconnector(disconnectableRegisterer);
         return this;
     }
@@ -57,7 +57,7 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withBindableCallbacks() {
-        bindableRegisterer = new MerlinRegisterer<Bindable>();
+        bindableRegisterer = new MerlinRegisterer<>();
         this.merlinOnBinder = new OnBinder(bindableRegisterer);
         return this;
     }

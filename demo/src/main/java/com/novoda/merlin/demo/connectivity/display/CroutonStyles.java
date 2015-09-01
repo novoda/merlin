@@ -25,7 +25,7 @@ public enum CroutonStyles {
 
     private final int stringResId;
 
-    private CroutonStyles(int stringResId) {
+    CroutonStyles(int stringResId) {
         this.stringResId = stringResId;
     }
 
