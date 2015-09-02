@@ -8,18 +8,12 @@ import com.novoda.merlin.service.MerlinServiceBinder;
 
 public class Merlin {
 
-    public static final String DEFAULT_ENDPOINT = "http://www.android.com";
-
     private final MerlinServiceBinder merlinServiceBinder;
     private final Registerer registerer;
 
     Merlin(MerlinServiceBinder merlinServiceBinder, Registerer registerer) {
         this.merlinServiceBinder = merlinServiceBinder;
         this.registerer = registerer;
-    }
-
-    public void setEndpoint(String endpoint) {
-        merlinServiceBinder.setEndpoint(endpoint);
     }
 
     public void bind() {

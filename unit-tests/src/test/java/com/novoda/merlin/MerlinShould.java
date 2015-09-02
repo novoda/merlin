@@ -36,16 +36,6 @@ public class MerlinShould {
     }
 
     @Test
-    public void bindTheMerlinServiceWithAHostnameWhenProvided() throws Exception {
-        String hostname = "startTheMerlinServiceWithAHostnameWhenProvided";
-
-        merlin.setEndpoint(hostname);
-        merlin.bind();
-
-        verify(serviceBinder).setEndpoint(hostname);
-    }
-
-    @Test
     public void unbindTheMerlinService() throws Exception {
         merlin.unbind();
 

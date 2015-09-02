@@ -45,10 +45,6 @@ class HostPinger {
     }
 
     private String getHostAddress() {
-        if (hostAddress == null) {
-            MerlinLog.d("Host address has not been set, using Merlin default : " + Merlin.DEFAULT_ENDPOINT);
-            return Merlin.DEFAULT_ENDPOINT;
-        }
         return hostAddress;
     }
 

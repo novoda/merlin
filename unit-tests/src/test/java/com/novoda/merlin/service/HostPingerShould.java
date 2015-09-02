@@ -59,12 +59,4 @@ public class HostPingerShould {
 
         verify(responseCodeFetcher).from(hostname);
     }
-
-    @Test
-    public void useTheDefaultHostnameWhenNoHostnameIsSet() throws Exception {
-        hostPinger.ping();
-
-        verify(responseCodeFetcher).from(Merlin.DEFAULT_ENDPOINT);
-    }
-
 }
