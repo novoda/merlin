@@ -104,7 +104,7 @@ public class MerlinBuilder {
      * @param endPoint by default "http://www.android.com".
      * @return MerlinBuilder.
      */
-    public MerlinBuilder setCustomEndPoint(String endPoint){
+    public MerlinBuilder setEndPoint(String endPoint){
         this.endPoint = endPoint;
         return this;
     }
