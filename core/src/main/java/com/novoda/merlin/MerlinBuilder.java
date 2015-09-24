@@ -26,7 +26,7 @@ public class MerlinBuilder {
     private MerlinRegisterer<Disconnectable> disconnectableRegisterer;
     private MerlinRegisterer<Bindable> bindableRegisterer;
 
-    private String endPoint = "http://www.android.com";
+    private String endPoint = Merlin.DEFAULT_ENDPOINT;
 
     MerlinBuilder() {
     }
@@ -115,7 +115,7 @@ public class MerlinBuilder {
      * @return Merlin.
      */
     public Merlin build(Context context) {
-        MerlinServiceBinder merlinServiceBinder = new MerlinServiceBinder(context, merlinConnector, merlinDisconnector, merlinOnBinder,endPoint);
+        MerlinServiceBinder merlinServiceBinder = new MerlinServiceBinder(context, merlinConnector, merlinDisconnector, merlinOnBinder, endPoint);
         Registerer merlinRegisterer = new Registerer(connectableRegisterer, disconnectableRegisterer, bindableRegisterer);
         return new Merlin(merlinServiceBinder, merlinRegisterer);
     }
