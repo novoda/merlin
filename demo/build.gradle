@@ -13,7 +13,7 @@ dependencies {
 android {
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 22
     }
 
     compileSdkVersion 23
