@@ -8,5 +8,6 @@
   <string name="toast_disconnected">Disconnected</string>
   <string name="is_wifi_connected">Is connected to Wi-Fi</string>
   <string name="is_mobile_connected">Is connected to mobile network</string>
+  <string name="get_network_subtype">Get network subtype</string>
 
 </resources>

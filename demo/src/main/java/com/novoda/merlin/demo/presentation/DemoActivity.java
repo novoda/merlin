@@ -1,6 +1,7 @@
 package com.novoda.merlin.demo.presentation;
 
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
 
     private NetworkStatusDisplayer networkStatusDisplayer;
     private MerlinsBeard merlinsBeard;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
         findViewById(R.id.wifi_connected).setOnClickListener(wifiConnectedOnClick);
         findViewById(R.id.mobile_connected).setOnClickListener(mobileConnectedOnClick);
+        findViewById(R.id.network_subtype).setOnClickListener(networkSubtypeOnClick);
     }
 
     private final View.OnClickListener networkStatusOnClick = new View.OnClickListener() {
@@ -67,8 +70,25 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         }
     };
 
-    private void showToast(int toastText) {
-        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
+    private final View.OnClickListener networkSubtypeOnClick = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            showToast(merlinsBeard.getNetworkInfoSubtypeName());
+        }
+    };
+
+    private void showToast(@StringRes int toastText) {
+        String message = getString(toastText);
+        showToast(message);
+    }
+
+    private void showToast(String toastText) {
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(this, toastText, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override
