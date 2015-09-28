@@ -74,7 +74,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
 
         @Override
         public void onClick(View view) {
-            showToast(merlinsBeard.getNetworkInfoSubtypeName());
+            showToast(merlinsBeard.getMobileNetworkSubtypeName());
         }
     };
 
