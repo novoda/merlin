@@ -66,5 +66,4 @@ public class HostPingerShould {
 
         verify(responseCodeFetcher).from(Merlin.DEFAULT_ENDPOINT);
     }
-
 }

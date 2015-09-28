@@ -20,9 +20,10 @@ public class MerlinServiceBinder {
     private String endpoint;
 
     public MerlinServiceBinder(Context context, ConnectListener connectListener, DisconnectListener disconnectListener,
-                               BindListener bindListener) {
+                               BindListener bindListener, String endpoint) {
         listenerHolder = new ListenerHolder(connectListener, disconnectListener, bindListener);
         this.context = context;
+        this.endpoint = endpoint;
     }
 
     public void setEndpoint(String hostname) {
