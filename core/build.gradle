@@ -2,17 +2,17 @@ apply plugin: 'com.android.library'
 apply plugin: 'bintray-release'
 
 dependencies {
-    compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.android.support:support-v4:23.0.1'
 }
 
 android {
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 22
     }
 
-    compileSdkVersion 19
-    buildToolsVersion "21.1.0"
+    compileSdkVersion 23
+    buildToolsVersion "22.0.1"
 }
 
 publish {

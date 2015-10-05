@@ -69,4 +69,12 @@ public class MerlinsBeard {
         return networkInfo != null && networkInfo.isConnected();
     }
 
+    public String getMobileNetworkSubtypeName() {
+        NetworkInfo networkInfo = getNetworkInfo();
+        if (networkInfo == null || !networkInfo.isConnected()) {
+            return "";
+        }
+        return networkInfo.getSubtypeName();
+    }
+
 }

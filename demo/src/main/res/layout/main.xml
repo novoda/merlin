@@ -30,4 +30,13 @@
     android:layout_below="@+id/wifi_connected"
     android:text="@string/is_mobile_connected" />
 
+  <Button
+    android:id="@+id/network_subtype"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:layout_below="@+id/mobile_connected"
+    android:text="@string/get_network_subtype" />
+
 </RelativeLayout>
