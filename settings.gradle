@@ -1,3 +1,2 @@
-include ':unit-tests'
 include 'core'
 include 'demo'
