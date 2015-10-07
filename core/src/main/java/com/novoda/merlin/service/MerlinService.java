@@ -6,11 +6,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.annotation.VisibleForTesting;
 
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
-import com.novoda.merlin.receiver.ConnectivityReceiver;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
+import com.novoda.merlin.receiver.ConnectivityReceiver;
 import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
@@ -67,8 +68,13 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     private void setReceiverState(int receiverState) {
         if (USE_COMPONENT_ENABLED_SETTING) {
-            getPackageManager().setComponentEnabledSetting(new ComponentName(this, ConnectivityReceiver.class), receiverState, PackageManager.DONT_KILL_APP);
+            getPackageManager().setComponentEnabledSetting(connectivityReceiverComponent(), receiverState, PackageManager.DONT_KILL_APP);
         }
+    }
+
+    @VisibleForTesting
+    protected ComponentName connectivityReceiverComponent() {
+        return new ComponentName(this, ConnectivityReceiver.class);
     }
 
     public void setHostname(String hostname) {
