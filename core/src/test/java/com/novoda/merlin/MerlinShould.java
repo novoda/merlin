@@ -7,12 +7,13 @@ import com.novoda.merlin.service.MerlinServiceBinder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(MerlinRobolectricTestRunner.class)
+@RunWith(JUnit4.class)
 public class MerlinShould {
 
     @Mock

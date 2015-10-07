@@ -3,22 +3,22 @@ package com.novoda.merlin.receiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.test.mock.MockContext;
 
-import com.novoda.merlin.MerlinRobolectricTestRunner;
 import com.novoda.merlin.service.MerlinService;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.mockito.Mock;
-import org.robolectric.Robolectric;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(MerlinRobolectricTestRunner.class)
+@RunWith(JUnit4.class)
 public class ConnectivityReceiverShould {
 
     private ConnectivityReceiver connectivityReceiver;
@@ -29,7 +29,7 @@ public class ConnectivityReceiverShould {
 
     @Before
     public void setUp() throws Exception {
-        context = Robolectric.application;
+        context = new MockContext();
         initMocks(this);
         connectivityReceiver = new ConnectivityReceiver() {
             @Override

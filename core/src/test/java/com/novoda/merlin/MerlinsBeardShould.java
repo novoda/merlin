@@ -6,13 +6,14 @@ import android.net.NetworkInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(MerlinRobolectricTestRunner.class)
+@RunWith(JUnit4.class)
 public class MerlinsBeardShould {
 
     @Mock

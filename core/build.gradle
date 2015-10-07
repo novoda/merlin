@@ -3,6 +3,15 @@ apply plugin: 'bintray-release'
 
 dependencies {
     compile 'com.android.support:support-v4:23.0.1'
+
+    testCompile 'org.easytesting:fest-assert-core:2.0M8'
+    testCompile 'org.mockito:mockito-core:1.9.5'
+    testCompile 'junit:junit:4.12'
+}
+
+tasks.withType(Test) {
+    scanForTestClasses = false
+    include "**/*Should.class"
 }
 
 android {
@@ -13,6 +22,10 @@ android {
 
     compileSdkVersion 23
     buildToolsVersion "22.0.1"
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 publish {

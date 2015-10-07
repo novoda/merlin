@@ -33,15 +33,10 @@ dependencies {
     testCompile files(coreProject.android.getBootClasspath())
 
     testCompile 'org.robolectric:robolectric:2.3'
-    testCompile 'org.easytesting:fest-assert-core:2.0M8'
-    testCompile 'org.mockito:mockito-core:1.9.5'
-    testCompile 'junit:junit:4.+'
+
 }
 
-tasks.withType(Test) {
-    scanForTestClasses = false
-    include "**/*Should.class"
-}
+
 
 buildscript {
     repositories {
