@@ -55,19 +55,20 @@ public class ConnectivityReceiverShould {
 
     @Test
     public void notNotifyTheMerlinServiceOnNonConnectivityIntents() throws Exception {
-        Intent intent = new Intent();
-        intent.setAction("notNotifyTheMerlinServiceOnNonConnectivityIntents");
-        connectivityReceiver.onReceive(context, intent);
+        Intent mockIntent = mock(Intent.class);
+        when(mockIntent.getAction()).thenReturn("notNotifyTheMerlinServiceOnNonConnectivityIntents");
+
+        connectivityReceiver.onReceive(context, mockIntent);
 
         verifyZeroInteractions(merlinService);
     }
 
     @Test
     public void notifyTheMerlinServiceOnValidConnectivityIntents() throws Exception {
-        Intent mock = mock(Intent.class);
-        when(mock.getAction()).thenReturn(ConnectivityManager.CONNECTIVITY_ACTION);
+        Intent mockIntent = mock(Intent.class);
+        when(mockIntent.getAction()).thenReturn(ConnectivityManager.CONNECTIVITY_ACTION);
 
-        connectivityReceiver.onReceive(context, mock);
+        connectivityReceiver.onReceive(context, mockIntent);
 
         verify(merlinService).onConnectivityChanged(any(ConnectivityChangeEvent.class));
     }
