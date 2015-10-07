@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.test.mock.MockContext;
 
+import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.service.MerlinService;
 
 import org.junit.Before;
@@ -14,8 +15,7 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(JUnit4.class)
@@ -35,6 +35,13 @@ public class ConnectivityReceiverShould {
             @Override
             protected MerlinService getMerlinService(Context context) {
                 return merlinService;
+            }
+
+            @Override
+            protected MerlinsBeard getMerlinsBeard(Context context) {
+                MerlinsBeard mockMerlinsBeard = mock(MerlinsBeard.class);
+                when(mockMerlinsBeard.isConnected()).thenReturn(true);
+                return mockMerlinsBeard;
             }
         };
     }
@@ -57,10 +64,10 @@ public class ConnectivityReceiverShould {
 
     @Test
     public void notifyTheMerlinServiceOnValidConnectivityIntents() throws Exception {
-        Intent intent = new Intent();
-        intent.setAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        Intent mock = mock(Intent.class);
+        when(mock.getAction()).thenReturn(ConnectivityManager.CONNECTIVITY_ACTION);
 
-        connectivityReceiver.onReceive(context, intent);
+        connectivityReceiver.onReceive(context, mock);
 
         verify(merlinService).onConnectivityChanged(any(ConnectivityChangeEvent.class));
     }
