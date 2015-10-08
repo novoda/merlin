@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
+import android.support.annotation.VisibleForTesting;
 
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.service.MerlinService;
@@ -29,7 +30,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         if (intent.hasExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY)) {
             return !intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
         } else {
-            return MerlinsBeard.from(context).isConnected();
+            return getMerlinsBeard(context).isConnected();
         }
     }
 
@@ -44,12 +45,18 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         return object != null;
     }
 
+    @VisibleForTesting
     protected MerlinService getMerlinService(Context context) {
         IBinder binder = peekService(context, new Intent(context, MerlinService.class));
         if (isAvailable(binder)) {
             return ((MerlinService.LocalBinder) binder).getService();
         }
         return null;
+    }
+
+    @VisibleForTesting
+    protected MerlinsBeard getMerlinsBeard(Context context) {
+        return MerlinsBeard.from(context);
     }
 
 }

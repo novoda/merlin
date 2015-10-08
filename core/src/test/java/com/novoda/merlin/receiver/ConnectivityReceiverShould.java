@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.test.mock.MockContext;
 
+import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.service.MerlinService;
 
 import org.junit.Before;
@@ -14,8 +15,7 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(JUnit4.class)
@@ -36,6 +36,13 @@ public class ConnectivityReceiverShould {
             protected MerlinService getMerlinService(Context context) {
                 return merlinService;
             }
+
+            @Override
+            protected MerlinsBeard getMerlinsBeard(Context context) {
+                MerlinsBeard mockMerlinsBeard = mock(MerlinsBeard.class);
+                when(mockMerlinsBeard.isConnected()).thenReturn(true);
+                return mockMerlinsBeard;
+            }
         };
     }
 
@@ -48,19 +55,20 @@ public class ConnectivityReceiverShould {
 
     @Test
     public void notNotifyTheMerlinServiceOnNonConnectivityIntents() throws Exception {
-        Intent intent = new Intent();
-        intent.setAction("notNotifyTheMerlinServiceOnNonConnectivityIntents");
-        connectivityReceiver.onReceive(context, intent);
+        Intent mockIntent = mock(Intent.class);
+        when(mockIntent.getAction()).thenReturn("notNotifyTheMerlinServiceOnNonConnectivityIntents");
+
+        connectivityReceiver.onReceive(context, mockIntent);
 
         verifyZeroInteractions(merlinService);
     }
 
     @Test
     public void notifyTheMerlinServiceOnValidConnectivityIntents() throws Exception {
-        Intent intent = new Intent();
-        intent.setAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        Intent mockIntent = mock(Intent.class);
+        when(mockIntent.getAction()).thenReturn(ConnectivityManager.CONNECTIVITY_ACTION);
 
-        connectivityReceiver.onReceive(context, intent);
+        connectivityReceiver.onReceive(context, mockIntent);
 
         verify(merlinService).onConnectivityChanged(any(ConnectivityChangeEvent.class));
     }
