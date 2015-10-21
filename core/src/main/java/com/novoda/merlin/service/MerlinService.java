@@ -22,7 +22,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     private final IBinder binder;
     private CurrentNetworkStatusRetriever currentNetworkStatusRetriever;
-    private final HostPinger hostPinger;
+    private HostPinger hostPinger;
 
     private ConnectListener connectListener;
     private DisconnectListener disconnectListener;
@@ -31,7 +31,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     public MerlinService() {
         binder = new LocalBinder();
-        hostPinger = new HostPinger(this);
+        hostPinger = HostPinger.newInstance(this);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     }
 
     public void setHostname(String hostname) {
-        hostPinger.setEndpoint(hostname);
+        hostPinger = HostPinger.newInstance(this, hostname);
     }
 
     public void setBindStatusListener(BindListener bindListener) {
