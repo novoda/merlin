@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
-import com.novoda.matcher.ComponentNameMatcher;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
-import com.novoda.merlin.receiver.ConnectivityReceiver;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
@@ -18,7 +16,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(JUnit4.class)
@@ -58,28 +57,32 @@ public class MerlinServiceShould {
 
     @Test
     public void enableConnectivityReceiverInOnBind() throws Exception {
-        MerlinService spy = spy(merlinService);
-        PackageManager packageManager = mock(PackageManager.class);
-        ComponentName receiver = new ComponentName(context, ConnectivityReceiver.class);
+        PackageManager mockPackageManager = mock(PackageManager.class);
+        ComponentName mockReceiver = mock(ComponentName.class);
+        MerlinService merlinService = new TestDoubleMerlinService(mockPackageManager, mockReceiver);
 
-        when(spy.getPackageManager()).thenReturn(packageManager);
+        merlinService.onBind(intent);
 
-        spy.onBind(intent);
-
-        verify(packageManager).setComponentEnabledSetting(ComponentNameMatcher.match(receiver), eq(PackageManager.COMPONENT_ENABLED_STATE_ENABLED), eq(PackageManager.DONT_KILL_APP));
+        verify(mockPackageManager).setComponentEnabledSetting(
+                mockReceiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP
+        );
     }
 
     @Test
     public void disableConnectivityReceiverInOnUnbind() throws Exception {
-        MerlinService spy = spy(merlinService);
-        PackageManager packageManager = mock(PackageManager.class);
-        ComponentName receiver = new ComponentName(context, ConnectivityReceiver.class);
+        PackageManager mockPackageManager = mock(PackageManager.class);
+        ComponentName mockReceiver = mock(ComponentName.class);
+        MerlinService merlinService = new TestDoubleMerlinService(mockPackageManager, mockReceiver);
 
-        when(spy.getPackageManager()).thenReturn(packageManager);
+        merlinService.onUnbind(intent);
 
-        spy.onUnbind(intent);
-
-        verify(packageManager).setComponentEnabledSetting(ComponentNameMatcher.match(receiver), eq(PackageManager.COMPONENT_ENABLED_STATE_DISABLED), eq(PackageManager.DONT_KILL_APP));
+        verify(mockPackageManager).setComponentEnabledSetting(
+                mockReceiver,
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP
+        );
     }
 
     @Test
@@ -104,6 +107,28 @@ public class MerlinServiceShould {
 
     private ConnectivityChangeEvent createConnectivityChangeEvent(boolean isConnected) {
         return new ConnectivityChangeEvent(isConnected, "info", "reason");
+    }
+
+    private static class TestDoubleMerlinService extends MerlinService {
+
+        private final PackageManager packageManager;
+        private final ComponentName receiver;
+
+        TestDoubleMerlinService(PackageManager packageManager, ComponentName receiver) {
+            this.packageManager = packageManager;
+            this.receiver = receiver;
+        }
+
+        @Override
+        public PackageManager getPackageManager() {
+            return packageManager;
+        }
+
+        @Override
+        protected ComponentName connectivityReceiverComponent() {
+            return receiver;
+        }
+
     }
 
 }
