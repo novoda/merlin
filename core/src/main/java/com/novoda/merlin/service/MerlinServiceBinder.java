@@ -1,28 +1,31 @@
 package com.novoda.merlin.service;
 
+import com.novoda.merlin.MerlinLog;
+import com.novoda.merlin.RxCallbacksManager;
+import com.novoda.merlin.registerable.bind.BindListener;
+import com.novoda.merlin.registerable.connection.ConnectListener;
+import com.novoda.merlin.registerable.disconnection.DisconnectListener;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import com.novoda.merlin.MerlinLog;
-import com.novoda.merlin.registerable.bind.BindListener;
-import com.novoda.merlin.registerable.connection.ConnectListener;
-import com.novoda.merlin.registerable.disconnection.DisconnectListener;
-
 public class MerlinServiceBinder {
 
     private final Context context;
     private final ListenerHolder listenerHolder;
+    private final RxCallbacksManager rxCallbacksManager;
 
     private Connection connection;
     private String endpoint;
 
     public MerlinServiceBinder(Context context, ConnectListener connectListener, DisconnectListener disconnectListener,
-                               BindListener bindListener, String endpoint) {
+                               BindListener bindListener, RxCallbacksManager rxCallbacksManager, String endpoint) {
         listenerHolder = new ListenerHolder(connectListener, disconnectListener, bindListener);
         this.context = context;
+        this.rxCallbacksManager = rxCallbacksManager;
         this.endpoint = endpoint;
     }
 
@@ -32,7 +35,7 @@ public class MerlinServiceBinder {
 
     public void bindService() {
         if (connection == null) {
-            connection = new Connection(listenerHolder, endpoint);
+            connection = new Connection(listenerHolder, rxCallbacksManager, endpoint);
         }
         Intent intent = new Intent(context, MerlinService.class);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
@@ -53,12 +56,14 @@ public class MerlinServiceBinder {
 
         private final ListenerHolder listenerHolder;
         private final String endpoint;
+        private final RxCallbacksManager rxCallbacksManager;
 
         private MerlinService merlinService;
 
-        Connection(ListenerHolder listenerHolder, String endpoint) {
+        Connection(ListenerHolder listenerHolder, RxCallbacksManager rxCallbacksManager, String endpoint) {
             this.listenerHolder = listenerHolder;
             this.endpoint = endpoint;
+            this.rxCallbacksManager = rxCallbacksManager;
         }
 
         @Override
@@ -68,6 +73,7 @@ public class MerlinServiceBinder {
             merlinService.setConnectListener(listenerHolder.connectListener);
             merlinService.setDisconnectListener(listenerHolder.disconnectListener);
             merlinService.setBindStatusListener(listenerHolder.bindListener);
+            merlinService.setRxCallbacksManager(rxCallbacksManager);
             merlinService.setHostname(endpoint);
         }
 
