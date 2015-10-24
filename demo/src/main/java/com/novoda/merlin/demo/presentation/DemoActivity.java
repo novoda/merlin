@@ -1,10 +1,5 @@
 package com.novoda.merlin.demo.presentation;
 
-import android.os.Bundle;
-import android.support.annotation.StringRes;
-import android.view.View;
-import android.widget.Toast;
-
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
@@ -15,6 +10,14 @@ import com.novoda.merlin.demo.presentation.base.MerlinActivity;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
+
+import android.os.Bundle;
+import android.support.annotation.StringRes;
+import android.view.View;
+import android.widget.Toast;
+
+import rx.Subscription;
+import rx.functions.Action1;
 
 public class DemoActivity extends MerlinActivity implements Connectable, Disconnectable, Bindable {
 
@@ -97,8 +100,23 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
                 .withConnectableCallbacks()
                 .withDisconnectableCallbacks()
                 .withBindableCallbacks()
+                .withRxCallbacks()
                 .withLogging(true)
                 .build(this);
+    }
+
+    @Override
+    protected Subscription createRxSubscription() {
+        return connectionStatusObservable.subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean connected) {
+                if (connected) {
+                    onConnect();
+                } else {
+                    onDisconnect();
+                }
+            }
+        });
     }
 
     @Override
