@@ -26,7 +26,7 @@ public class MerlinShould {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        merlin = new Merlin(serviceBinder, null);
+        merlin = new Merlin(serviceBinder, null, null);
     }
 
     @Test

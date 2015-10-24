@@ -1,11 +1,6 @@
 package com.novoda.merlin.service;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-
+import com.novoda.merlin.RxCallbacksManager;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
@@ -15,6 +10,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
+
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -31,6 +32,8 @@ public class MerlinServiceShould {
     private ConnectListener connectListener;
     @Mock
     private DisconnectListener disconnectListener;
+    @Mock
+    private RxCallbacksManager rxCallbacksManager;
 
     private MerlinService merlinService;
 
@@ -48,8 +51,10 @@ public class MerlinServiceShould {
                 // TODO : this is bad, but I blame not having a proper constructor
                 if (connectivityChangeEvent.isConnected()) {
                     connectListener.onConnect();
+                    rxCallbacksManager.onConnect();
                 } else {
                     disconnectListener.onDisconnect();
+                    rxCallbacksManager.onDisconnect();
                 }
             }
         };
@@ -93,6 +98,7 @@ public class MerlinServiceShould {
         merlinService.onConnectivityChanged(connectivityChangeEvent);
 
         verify(connectListener).onConnect();
+        verify(rxCallbacksManager).onConnect();
     }
 
     @Test
@@ -103,6 +109,7 @@ public class MerlinServiceShould {
         merlinService.onConnectivityChanged(connectivityChangeEvent);
 
         verify(disconnectListener).onDisconnect();
+        verify(rxCallbacksManager).onDisconnect();
     }
 
     private ConnectivityChangeEvent createConnectivityChangeEvent(boolean isConnected) {
