@@ -1,5 +1,7 @@
 package com.novoda.merlin;
 
+import android.content.Context;
+
 import com.novoda.merlin.registerable.MerlinRegisterer;
 import com.novoda.merlin.registerable.Registerer;
 import com.novoda.merlin.registerable.bind.BindListener;
@@ -13,8 +15,6 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.disconnection.Disconnector;
 import com.novoda.merlin.service.MerlinService;
 import com.novoda.merlin.service.MerlinServiceBinder;
-
-import android.content.Context;
 
 public class MerlinBuilder {
 
@@ -116,14 +116,13 @@ public class MerlinBuilder {
         return this;
     }
 
-
     /**
      * Sets custom endpoint
      *
      * @param endPoint by default "http://www.android.com".
      * @return MerlinBuilder.
      */
-    public MerlinBuilder setEndPoint(String endPoint){
+    public MerlinBuilder setEndPoint(String endPoint) {
         this.endPoint = endPoint;
         return this;
     }

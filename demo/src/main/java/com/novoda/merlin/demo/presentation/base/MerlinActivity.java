@@ -1,12 +1,12 @@
 package com.novoda.merlin.demo.presentation.base;
 
+import android.app.Activity;
+import android.os.Bundle;
+
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
-
-import android.app.Activity;
-import android.os.Bundle;
 
 import rx.Observable;
 import rx.Subscription;

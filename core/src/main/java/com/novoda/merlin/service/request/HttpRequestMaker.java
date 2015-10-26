@@ -14,7 +14,7 @@ class HttpRequestMaker implements RequestMaker {
     public Request head(String endpoint) {
         try {
             HttpURLConnection urlConnection = connectTo(endpoint);
-            urlConnection.setRequestProperty( "Accept-Encoding", "" );
+            urlConnection.setRequestProperty("Accept-Encoding", "");
 
             setConnectionToHeadRequest(urlConnection);
             disableRedirects(urlConnection);

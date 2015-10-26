@@ -1,5 +1,13 @@
 package com.novoda.merlin.service;
 
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Binder;
+import android.os.IBinder;
+import android.support.annotation.VisibleForTesting;
+
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.RxCallbacksManager;
@@ -8,14 +16,6 @@ import com.novoda.merlin.receiver.ConnectivityReceiver;
 import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
-
-import android.app.Service;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Binder;
-import android.os.IBinder;
-import android.support.annotation.VisibleForTesting;
 
 public class MerlinService extends Service implements HostPinger.PingerCallback {
 

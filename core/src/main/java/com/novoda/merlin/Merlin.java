@@ -8,7 +8,6 @@ import com.novoda.merlin.service.MerlinServiceBinder;
 
 import rx.Observable;
 
-
 public class Merlin {
 
     public static final String DEFAULT_ENDPOINT = "http://www.android.com";

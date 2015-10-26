@@ -1,16 +1,16 @@
 package com.novoda.merlin.service;
 
-import com.novoda.merlin.MerlinLog;
-import com.novoda.merlin.RxCallbacksManager;
-import com.novoda.merlin.registerable.bind.BindListener;
-import com.novoda.merlin.registerable.connection.ConnectListener;
-import com.novoda.merlin.registerable.disconnection.DisconnectListener;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+
+import com.novoda.merlin.MerlinLog;
+import com.novoda.merlin.RxCallbacksManager;
+import com.novoda.merlin.registerable.bind.BindListener;
+import com.novoda.merlin.registerable.connection.ConnectListener;
+import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
 public class MerlinServiceBinder {
 

@@ -41,12 +41,14 @@ public class NovodaCrouton {
     }
 
     private void setClickListener(final Crouton crouton) {
-        crouton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideCrouton(crouton);
-            }
-        });
+        crouton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        hideCrouton(crouton);
+                    }
+                }
+        );
     }
 
     private void hideCrouton(Crouton crouton) {
@@ -58,17 +60,19 @@ public class NovodaCrouton {
     }
 
     private void setLifecycle(final Crouton crouton) {
-        crouton.setLifecycleCallback(new LifecycleCallback() {
-            @Override
-            public void onDisplayed() {
-                currentCrouton = crouton;
-            }
+        crouton.setLifecycleCallback(
+                new LifecycleCallback() {
+                    @Override
+                    public void onDisplayed() {
+                        currentCrouton = crouton;
+                    }
 
-            @Override
-            public void onRemoved() {
-                currentCrouton = null;
-            }
-        });
+                    @Override
+                    public void onRemoved() {
+                        currentCrouton = null;
+                    }
+                }
+        );
     }
 
     public void close() {
