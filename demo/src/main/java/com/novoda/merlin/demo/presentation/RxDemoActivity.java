@@ -7,16 +7,15 @@ import android.widget.Toast;
 
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinsBeard;
-import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusCroutonDisplayer;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
-import com.novoda.merlin.demo.presentation.base.MerlinActivity;
-import com.novoda.merlin.registerable.bind.Bindable;
-import com.novoda.merlin.registerable.connection.Connectable;
-import com.novoda.merlin.registerable.disconnection.Disconnectable;
+import com.novoda.merlin.demo.presentation.base.RxMerlinActivity;
 
-public class DemoActivity extends MerlinActivity implements Connectable, Disconnectable, Bindable {
+import rx.Subscription;
+import rx.functions.Action1;
+
+public class RxDemoActivity extends RxMerlinActivity {
 
     private NetworkStatusDisplayer networkStatusDisplayer;
     private MerlinsBeard merlinsBeard;
@@ -94,36 +93,25 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
     @Override
     protected Merlin createMerlin() {
         return new Merlin.Builder()
-                .withConnectableCallbacks()
-                .withDisconnectableCallbacks()
-                .withBindableCallbacks()
+                .withRxCallbacks()
                 .withLogging(true)
                 .build(this);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        registerConnectable(this);
-        registerDisconnectable(this);
-        registerBindable(this);
-    }
-
-    @Override
-    public void onBind(NetworkStatus networkStatus) {
-        if (!networkStatus.isAvailable()) {
-            onDisconnect();
-        }
-    }
-
-    @Override
-    public void onConnect() {
-        networkStatusDisplayer.displayConnected();
-    }
-
-    @Override
-    public void onDisconnect() {
-        networkStatusDisplayer.displayDisconnected();
+    protected Subscription createRxSubscription() {
+        return connectionStatusObservable.subscribe(
+                new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean connected) {
+                        if (connected) {
+                            networkStatusDisplayer.displayConnected();
+                        } else {
+                            networkStatusDisplayer.displayDisconnected();
+                        }
+                    }
+                }
+        );
     }
 
     @Override
