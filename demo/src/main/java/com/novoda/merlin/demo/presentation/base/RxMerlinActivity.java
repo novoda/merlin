@@ -11,7 +11,7 @@ import rx.Subscription;
 public abstract class RxMerlinActivity extends Activity {
 
     protected Merlin merlin;
-    protected Observable<Boolean> connectionStatusObservable;
+    protected Observable<Merlin.ConnectionStatus> connectionStatusObservable;
     protected Subscription rxSubscription;
 
     @Override

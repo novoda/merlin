@@ -5,21 +5,21 @@ import rx.subjects.BehaviorSubject;
 
 public class RxCallbacksManager {
 
-    private final BehaviorSubject<Boolean> merlinRxConnectionStatusSubject;
+    private final BehaviorSubject<Merlin.ConnectionStatus> merlinRxConnectionStatusSubject;
 
     public RxCallbacksManager() {
         merlinRxConnectionStatusSubject = BehaviorSubject.create();
     }
 
-    public Observable<Boolean> getRxConnectionStatusObservable() {
+    public Observable<Merlin.ConnectionStatus> getRxConnectionStatusObservable() {
         return merlinRxConnectionStatusSubject.asObservable();
     }
 
     public void onConnect() {
-        merlinRxConnectionStatusSubject.onNext(true);
+        merlinRxConnectionStatusSubject.onNext(Merlin.ConnectionStatus.CONNECTED);
     }
 
     public void onDisconnect() {
-        merlinRxConnectionStatusSubject.onNext(false);
+        merlinRxConnectionStatusSubject.onNext(Merlin.ConnectionStatus.DISCONNECTED);
     }
 }

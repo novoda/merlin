@@ -101,10 +101,10 @@ public class RxDemoActivity extends RxMerlinActivity {
     @Override
     protected Subscription createRxSubscription() {
         return connectionStatusObservable.subscribe(
-                new Action1<Boolean>() {
+                new Action1<Merlin.ConnectionStatus>() {
                     @Override
-                    public void call(Boolean connected) {
-                        if (connected) {
+                    public void call(Merlin.ConnectionStatus connectionStatus) {
+                        if (connectionStatus == Merlin.ConnectionStatus.CONNECTED) {
                             networkStatusDisplayer.displayConnected();
                         } else {
                             networkStatusDisplayer.displayDisconnected();
