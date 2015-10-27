@@ -62,12 +62,11 @@ public class MerlinBuilder {
      */
     public MerlinBuilder withRxCallbacks() {
         rxCallbacksManager = new RxCallbacksManager();
-        if (connectableRegisterer == null && disconnectableRegisterer == null) {
-            return this.withConnectableCallbacks().withDisconnectableCallbacks();
-        } else if (connectableRegisterer == null) {
-            return this.withConnectableCallbacks();
-        } else if (disconnectableRegisterer == null) {
-            return this.withDisconnectableCallbacks();
+        if (connectableRegisterer == null) {
+            withConnectableCallbacks();
+        }
+        if (disconnectableRegisterer == null) {
+            withDisconnectableCallbacks();
         }
         return this;
     }
