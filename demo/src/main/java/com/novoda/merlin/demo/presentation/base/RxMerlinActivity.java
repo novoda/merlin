@@ -18,7 +18,7 @@ public abstract class RxMerlinActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         merlin = createMerlin();
-        connectionStatusObservable = merlin.getRxConnectionStatusObervable();
+        connectionStatusObservable = merlin.getConnectionStatusObservable();
     }
 
     protected abstract Merlin createMerlin();

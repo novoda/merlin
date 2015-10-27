@@ -83,7 +83,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide connectable, disconnectable & bindable callbacks, without calling this, Merlin.registerConconnectable, Merlin.registerDisconnectable, Merlin.registerBindable & Merlin.getRxConnectionStatusObervable will throw a MerlinException
+     * Enables Merlin to provide connectable, disconnectable & bindable callbacks, without calling this, Merlin.registerConconnectable, Merlin.registerDisconnectable, Merlin.registerBindable & Merlin.getConnectionStatusObservable will throw a MerlinException
      *
      * @return MerlinBuilder.
      */

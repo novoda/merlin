@@ -46,7 +46,7 @@ public class Merlin {
         registerer.registerBindable(bindable);
     }
 
-    public Observable<Boolean> getRxConnectionStatusObervable() {
+    public Observable<Boolean> getConnectionStatusObservable() {
         if (rxCallbacksManager == null) {
             throw new MerlinException(
                     "You must call " + Merlin.Builder.class.getSimpleName() + ".withRxJavaCallbacks()" +
