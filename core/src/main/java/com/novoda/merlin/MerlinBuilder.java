@@ -21,6 +21,7 @@ public class MerlinBuilder {
     private BindListener merlinOnBinder;
     private ConnectListener merlinConnector;
     private DisconnectListener merlinDisconnector;
+    private RxCallbacksManager rxCallbacksManager;
 
     private MerlinRegisterer<Connectable> connectableRegisterer;
     private MerlinRegisterer<Disconnectable> disconnectableRegisterer;
@@ -54,6 +55,23 @@ public class MerlinBuilder {
     }
 
     /**
+     * Enables Merlin to provide RxJava callbacks, without calling this, Merlin.getRxConnectionStatusObservable will throw a
+     * MerlinException
+     *
+     * @return MerlinBuilder.
+     */
+    public MerlinBuilder withRxCallbacks() {
+        rxCallbacksManager = new RxCallbacksManager();
+        if (connectableRegisterer == null) {
+            withConnectableCallbacks();
+        }
+        if (disconnectableRegisterer == null) {
+            withDisconnectableCallbacks();
+        }
+        return this;
+    }
+
+    /**
      * Enables Merlin to provide bindable callbacks, without calling this, Merlin.registerBindable will throw a MerlinException
      *
      * @return MerlinBuilder.
@@ -65,12 +83,12 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide connectable, disconnectable & bindable callbacks, without calling this, Merlin.registerConconnectable, Merlin.registerDisconnectable & Merlin.registerBindable will throw a MerlinException
+     * Enables Merlin to provide connectable, disconnectable & bindable callbacks, without calling this, Merlin.registerConconnectable, Merlin.registerDisconnectable, Merlin.registerBindable & Merlin.getConnectionStatusObservable will throw a MerlinException
      *
      * @return MerlinBuilder.
      */
     public MerlinBuilder withAllCallbacks() {
-        return withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks();
+        return withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks().withRxCallbacks();
     }
 
     /**
@@ -97,14 +115,13 @@ public class MerlinBuilder {
         return this;
     }
 
-
     /**
      * Sets custom endpoint
      *
      * @param endPoint by default "http://www.android.com".
      * @return MerlinBuilder.
      */
-    public MerlinBuilder setEndPoint(String endPoint){
+    public MerlinBuilder setEndPoint(String endPoint) {
         this.endPoint = endPoint;
         return this;
     }
@@ -115,9 +132,9 @@ public class MerlinBuilder {
      * @return Merlin.
      */
     public Merlin build(Context context) {
-        MerlinServiceBinder merlinServiceBinder = new MerlinServiceBinder(context, merlinConnector, merlinDisconnector, merlinOnBinder, endPoint);
+        MerlinServiceBinder merlinServiceBinder = new MerlinServiceBinder(context, merlinConnector, merlinDisconnector, merlinOnBinder, rxCallbacksManager, endPoint);
         Registerer merlinRegisterer = new Registerer(connectableRegisterer, disconnectableRegisterer, bindableRegisterer);
-        return new Merlin(merlinServiceBinder, merlinRegisterer);
+        return new Merlin(merlinServiceBinder, merlinRegisterer, rxCallbacksManager);
     }
 
 }

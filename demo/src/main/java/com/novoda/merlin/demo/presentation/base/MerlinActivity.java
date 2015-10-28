@@ -10,7 +10,7 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
 public abstract class MerlinActivity extends Activity {
 
-    private Merlin merlin;
+    protected Merlin merlin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

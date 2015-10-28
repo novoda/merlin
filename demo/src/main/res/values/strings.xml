@@ -9,5 +9,7 @@
   <string name="is_wifi_connected">Is connected to Wi-Fi</string>
   <string name="is_mobile_connected">Is connected to mobile network</string>
   <string name="get_network_subtype">Get network subtype</string>
+  <string name="demo_launch_button">Launch demo</string>
+  <string name="rx_demo_launch_button">Launch Rx demo</string>
 
 </resources>

@@ -10,6 +10,7 @@ import android.support.annotation.VisibleForTesting;
 
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
+import com.novoda.merlin.RxCallbacksManager;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.receiver.ConnectivityReceiver;
 import com.novoda.merlin.registerable.bind.BindListener;
@@ -26,6 +27,8 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     private ConnectListener connectListener;
     private DisconnectListener disconnectListener;
+
+    private RxCallbacksManager rxCallbacksManager;
 
     private NetworkStatus networkStatus;
 
@@ -85,6 +88,10 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         callbackCurrentStatus(bindListener);
     }
 
+    public void setRxCallbacksManager(RxCallbacksManager rxCallbacksManager) {
+        this.rxCallbacksManager = rxCallbacksManager;
+    }
+
     private void callbackCurrentStatus(BindListener bindListener) {
         if (bindListener != null) {
             if (networkStatus == null) {
@@ -120,6 +127,9 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         if (connectListener != null) {
             connectListener.onConnect();
         }
+        if (rxCallbacksManager != null) {
+            rxCallbacksManager.onConnect();
+        }
     }
 
     @Override
@@ -127,6 +137,9 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         networkStatus = NetworkStatus.newUnavailableInstance();
         if (disconnectListener != null) {
             disconnectListener.onDisconnect();
+        }
+        if (rxCallbacksManager != null) {
+            rxCallbacksManager.onDisconnect();
         }
     }
 
