@@ -1,5 +1,6 @@
 package com.novoda.merlin.receiver;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import com.novoda.merlin.service.MerlinService;
 
 public class ConnectivityReceiver extends BroadcastReceiver {
 
+    // Lint thinks we're not calling getAction, but we actually do
+    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent != null && connectivityAction(intent)) {
