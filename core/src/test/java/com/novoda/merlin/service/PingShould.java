@@ -13,8 +13,10 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(JUnit4.class)
 public class PingShould {
 
-    public static final int SUCCESS_CODE = 200;
-    public static final int NON_SUCCESS_CODE = 201;
+    public static final int OK = 200;
+    public static final int CREATED = 201;
+    public static final int NO_CONTENT = 204;
+    public static final int MOVED_PERMANENTLY = 301;
     private static final String HOST_ADDRESS = "any host address";
 
     @Mock
@@ -33,7 +35,7 @@ public class PingShould {
 
     @Test
     public void returnsTrueWhenHostResponseCodeIsSuccess() throws Exception {
-        when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(SUCCESS_CODE);
+        when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(OK);
 
         boolean isSuccess = ping.doSynchronousPing();
 
@@ -41,12 +43,29 @@ public class PingShould {
     }
 
     @Test
-    public void returnsFalseWhenHostResponseCodeIsNotSuccess() throws Exception {
-        when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(NON_SUCCESS_CODE);
+    public void returnsTrueWhenHostResponseCodeIsCreated() throws Exception {
+        when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(CREATED);
+
+        boolean isSuccess = ping.doSynchronousPing();
+
+        assertThat(isSuccess).isTrue();
+    }
+
+    @Test
+    public void returnsTrueWhenHostResponseCodeIsNoContent() throws Exception {
+        when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(NO_CONTENT);
+
+        boolean isSuccess = ping.doSynchronousPing();
+
+        assertThat(isSuccess).isTrue();
+    }
+
+    @Test
+    public void returnsFalseWhenHostResponseCodeIsMovedPermanently() throws Exception {
+        when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(MOVED_PERMANENTLY);
 
         boolean isSuccess = ping.doSynchronousPing();
 
         assertThat(isSuccess).isFalse();
     }
-
 }
