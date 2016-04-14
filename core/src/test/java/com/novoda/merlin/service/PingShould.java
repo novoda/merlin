@@ -13,10 +13,10 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(JUnit4.class)
 public class PingShould {
 
-    public static final int OK = 200;
-    public static final int CREATED = 201;
-    public static final int NO_CONTENT = 204;
-    public static final int MOVED_PERMANENTLY = 301;
+    private static final int OK = 200;
+    private static final int CREATED = 201;
+    private static final int NO_CONTENT = 204;
+    private static final int MOVED_PERMANENTLY = 301;
     private static final String HOST_ADDRESS = "any host address";
 
     @Mock
