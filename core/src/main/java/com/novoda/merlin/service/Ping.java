@@ -4,9 +4,7 @@ import com.novoda.merlin.MerlinLog;
 
 class Ping {
 
-    private static final int OK = 200;
-    private static final int NO_CONTENT = 204;
-
+    private static final int SUCCESS = 2;
     private final String hostAddress;
     private final HostPinger.ResponseCodeFetcher responseCodeFetcher;
 
@@ -23,7 +21,8 @@ class Ping {
     }
 
     private static boolean isSuccess(int responseCode) {
-        return responseCode == OK || responseCode == NO_CONTENT;
+        int startingNumber = (responseCode / 100);
+        return startingNumber == SUCCESS;
     }
 
 }
