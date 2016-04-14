@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   package="com.novoda.merlin.demo"
   android:versionCode="1"
   android:versionName="0.3-SNAPSHOT">
 
   <application
-    android:allowBackup="true"
-    android:label="Merlin demo">
+    android:allowBackup="false"
+    android:icon="@mipmap/ic_launcher"
+    android:label="Merlin demo"
+    tools:ignore="GoogleAppIndexingWarning">
     <activity
       android:name=".presentation.HomeActivity"
       android:label="Merlin Demo">
