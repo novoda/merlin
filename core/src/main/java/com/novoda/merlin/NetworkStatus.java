@@ -4,7 +4,7 @@ public class NetworkStatus {
 
     public enum State {
         AVAILABLE,
-        UNAVAILABLE;
+        UNAVAILABLE
     }
 
     private final State state;
