@@ -1,71 +1,70 @@
 package com.novoda.merlin.service;
 
-import org.junit.Before;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.junit.Test;
+import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.runners.Parameterized;
 import org.mockito.Mock;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(JUnit4.class)
+@RunWith(Enclosed.class)
 public class PingShould {
 
-    private static final int OK = 200;
-    private static final int CREATED = 201;
-    private static final int NO_CONTENT = 204;
-    private static final int MOVED_PERMANENTLY = 301;
     private static final String HOST_ADDRESS = "any host address";
 
-    @Mock
-    private HostPinger.PingerCallback mockPingerCallback;
+    @RunWith(Parameterized.class)
+    public static class GivenSuccessfulRequest {
 
-    @Mock
-    private HostPinger.ResponseCodeFetcher mockResponseCodeFetcher;
+        @Parameterized.Parameters(name = "{0}")
+        public static Collection<Integer[]> data() {
+            return ResponseCode.toParameterList();
+        }
 
-    private Ping ping;
+        private final Ping ping;
 
-    @Before
-    public void setUp() throws Exception {
-        initMocks(this);
-        ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher);
-    }
+        @Mock
+        private HostPinger.ResponseCodeFetcher mockResponseCodeFetcher;
 
-    @Test
-    public void returnsTrueWhenHostResponseCodeIsSuccess() throws Exception {
-        when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(OK);
+        private final int responseCode;
 
-        boolean isSuccess = ping.doSynchronousPing();
+        public GivenSuccessfulRequest(int responseCode) {
+            initMocks(this);
+            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher);
+            this.responseCode = responseCode;
+        }
 
-        assertThat(isSuccess).isTrue();
-    }
+        @Test
+        public void returnsTrue() {
+            when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(responseCode);
 
-    @Test
-    public void returnsTrueWhenHostResponseCodeIsCreated() throws Exception {
-        when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(CREATED);
+            boolean isSuccess = ping.doSynchronousPing();
 
-        boolean isSuccess = ping.doSynchronousPing();
+            assertThat(isSuccess).isTrue();
+        }
 
-        assertThat(isSuccess).isTrue();
-    }
+        private enum ResponseCode {
+            OK(200), CREATED(201), NO_CONTENT(204), MOVED_PERMANENTLY(301), NOT_FOUND(404), SERVER_ERROR(500);
 
-    @Test
-    public void returnsTrueWhenHostResponseCodeIsNoContent() throws Exception {
-        when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(NO_CONTENT);
+            private final int code;
 
-        boolean isSuccess = ping.doSynchronousPing();
+            ResponseCode(int code) {
+                this.code = code;
+            }
 
-        assertThat(isSuccess).isTrue();
-    }
-
-    @Test
-    public void returnsFalseWhenHostResponseCodeIsMovedPermanently() throws Exception {
-        when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(MOVED_PERMANENTLY);
-
-        boolean isSuccess = ping.doSynchronousPing();
-
-        assertThat(isSuccess).isFalse();
+            public static Collection<Integer[]> toParameterList() {
+                List<Integer[]> list = new ArrayList<>();
+                for (ResponseCode responseCode : values()) {
+                    list.add(new Integer[]{responseCode.code});
+                }
+                return list;
+            }
+        }
     }
 }
