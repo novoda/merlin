@@ -16,10 +16,7 @@ class Ping {
         MerlinLog.d("Pinging : " + hostAddress);
         int responseCode = responseCodeFetcher.from(hostAddress);
         MerlinLog.d("Got response : " + responseCode);
-        return isSuccess(responseCode);
+        return true;
     }
 
-    private static boolean isSuccess(int responseCode) {
-        return (responseCode >= 200 && responseCode < 300);
-    }
 }
