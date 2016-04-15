@@ -10,7 +10,7 @@ import rx.Observable;
 
 public class Merlin {
 
-    public static final String DEFAULT_ENDPOINT = "http://www.android.com";
+    public static final String DEFAULT_ENDPOINT = "http://connectivitycheck.android.com/generate_204";
 
     private final MerlinServiceBinder merlinServiceBinder;
     private final Registerer registerer;
