@@ -54,6 +54,8 @@ class HttpRequestMaker implements RequestMaker {
                 return request.getResponseCode();
             } catch (IOException e) {
                 throw new RequestException(e);
+            } finally {
+                request.disconnect();
             }
         }
 
