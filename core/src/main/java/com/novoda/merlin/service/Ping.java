@@ -1,6 +1,7 @@
 package com.novoda.merlin.service;
 
 import com.novoda.merlin.MerlinLog;
+import com.novoda.merlin.service.request.RequestException;
 
 class Ping {
 
@@ -14,8 +15,16 @@ class Ping {
 
     public boolean doSynchronousPing() {
         MerlinLog.d("Pinging : " + hostAddress);
-        int responseCode = responseCodeFetcher.from(hostAddress);
-        MerlinLog.d("Got response : " + responseCode);
+        try {
+            int responseCode = responseCodeFetcher.from(hostAddress);
+            MerlinLog.d("Got response : " + responseCode);
+        } catch (RequestException e) {
+            if (e.causedByIO()) {
+                return false;
+            }
+
+            throw e;
+        }
         return true;
     }
 
