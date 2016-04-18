@@ -69,6 +69,11 @@ public class MerlinsBeard {
         return networkInfo != null && networkInfo.isConnected();
     }
 
+    /**
+     * Provides a human-readable String describing the network subtype (e.g. UMTS, LTE) when connected to a mobile network.
+     *
+     * @return network subtype name, or empty string if not connected to a mobile network.
+     */
     public String getMobileNetworkSubtypeName() {
         NetworkInfo networkInfo = getNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnected()) {
