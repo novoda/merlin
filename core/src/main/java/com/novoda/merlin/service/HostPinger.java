@@ -3,6 +3,7 @@ package com.novoda.merlin.service;
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinLog;
 import com.novoda.merlin.service.request.MerlinRequest;
+import com.novoda.merlin.service.request.RequestException;
 
 class HostPinger {
 
@@ -16,6 +17,38 @@ class HostPinger {
 
         void onFailure();
 
+    }
+
+    interface ResponseCodeValidator {
+        boolean isResponseCodeValid(int responseCode);
+        boolean isResponseCodeValid(RequestException e);
+
+        ResponseCodeValidator DEFAULT_ENDPOINT_VALIDATOR = new ResponseCodeValidator() {
+            @Override
+            public boolean isResponseCodeValid(int responseCode) {
+                return responseCode == 204;
+            }
+
+            @Override
+            public boolean isResponseCodeValid(RequestException e) {
+                return false;
+            }
+        };
+
+        ResponseCodeValidator CUSTOM_ENDPOINT_VALIDATOR = new ResponseCodeValidator() {
+            @Override
+            public boolean isResponseCodeValid(int responseCode) {
+                return true;
+            }
+
+            @Override
+            public boolean isResponseCodeValid(RequestException e) {
+                if (e.causedByIO()) {
+                    return false;
+                }
+                throw e;
+            }
+        };
     }
 
     public static HostPinger newInstance(PingerCallback pingerCallback) {

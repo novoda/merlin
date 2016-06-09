@@ -40,7 +40,7 @@ public class PingShould {
 
         public GivenSuccessfulRequest(int responseCode) {
             initMocks(this);
-            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher);
+            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher, HostPinger.ResponseCodeValidator.CUSTOM_ENDPOINT_VALIDATOR);
             this.responseCode = responseCode;
         }
 
@@ -82,7 +82,7 @@ public class PingShould {
         @Before
         public void setUp() {
             initMocks(this);
-            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher);
+            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher, HostPinger.ResponseCodeValidator.CUSTOM_ENDPOINT_VALIDATOR);
         }
 
         @Test
