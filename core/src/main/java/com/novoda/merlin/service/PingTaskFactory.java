@@ -11,7 +11,7 @@ class PingTaskFactory {
     }
 
     public PingTask create(String hostAddress) {
-        Ping ping = new Ping(hostAddress, responseCodeFetcher, HostPinger.ResponseCodeValidator.CUSTOM_ENDPOINT_VALIDATOR);
+        Ping ping = new Ping(hostAddress, responseCodeFetcher, ResponseCodeValidator.CUSTOM, RequestExceptionHandler.CUSTOM);
         return new PingTask(ping, pingerCallback);
     }
 

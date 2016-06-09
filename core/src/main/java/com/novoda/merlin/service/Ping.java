@@ -7,15 +7,17 @@ class Ping {
 
     private final String hostAddress;
     private final HostPinger.ResponseCodeFetcher responseCodeFetcher;
-    private final HostPinger.ResponseCodeValidator validator;
+    private final ResponseCodeValidator validator;
+    private final RequestExceptionHandler handler;
 
-    Ping(String hostAddress, HostPinger.ResponseCodeFetcher responseCodeFetcher, HostPinger.ResponseCodeValidator validator) {
+    Ping(String hostAddress, HostPinger.ResponseCodeFetcher responseCodeFetcher, ResponseCodeValidator validator, RequestExceptionHandler handler) {
         this.hostAddress = hostAddress;
         this.responseCodeFetcher = responseCodeFetcher;
         this.validator = validator;
+        this.handler = handler;
     }
 
-    public boolean doSynchronousPing() {
+    public boolean doSynchronousPing() throws RequestException {
         MerlinLog.d("Pinging : " + hostAddress);
 //        try {
 //            responseCodeFetcher.from(hostAddress);
@@ -27,10 +29,11 @@ class Ping {
 //            throw e;
 //        }
 //        return true;
+//        return responseCodeFetcher.from(hostAddress);
         try {
             return validator.isResponseCodeValid(responseCodeFetcher.from(hostAddress));
         } catch (RequestException e) {
-            return validator.isResponseCodeValid(e);
+            return handler.handleRequestException(e);
         }
     }
 

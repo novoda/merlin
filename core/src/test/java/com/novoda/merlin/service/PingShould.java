@@ -40,7 +40,7 @@ public class PingShould {
 
         public GivenSuccessfulRequest(int responseCode) {
             initMocks(this);
-            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher, HostPinger.ResponseCodeValidator.CUSTOM_ENDPOINT_VALIDATOR);
+            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher, ResponseCodeValidator.CUSTOM, RequestExceptionHandler.CUSTOM);
             this.responseCode = responseCode;
         }
 
@@ -50,7 +50,7 @@ public class PingShould {
 
             boolean isSuccess = ping.doSynchronousPing();
 
-            assertThat(isSuccess).isTrue();
+            assertThat(isSuccess).isEqualTo(true);
         }
 
         private enum ResponseCode {
@@ -82,7 +82,7 @@ public class PingShould {
         @Before
         public void setUp() {
             initMocks(this);
-            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher, HostPinger.ResponseCodeValidator.CUSTOM_ENDPOINT_VALIDATOR);
+            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher, ResponseCodeValidator.CUSTOM, RequestExceptionHandler.CUSTOM);
         }
 
         @Test
