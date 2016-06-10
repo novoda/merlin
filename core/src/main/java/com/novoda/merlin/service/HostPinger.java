@@ -12,9 +12,9 @@ import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointRes
 class HostPinger {
 
     private final PingerCallback pingerCallback;
+    private final String hostAddress;
     private final PingFactory pingFactory;
     private final PingTaskFactory pingTaskFactory;
-    private final String hostAddress;
 
     interface PingerCallback {
 
