@@ -19,17 +19,6 @@ class Ping {
 
     public boolean doSynchronousPing() throws RequestException {
         MerlinLog.d("Pinging : " + hostAddress);
-//        try {
-//            responseCodeFetcher.from(hostAddress);
-//        } catch (RequestException e) {
-//            if (e.causedByIO()) {
-//                return false;
-//            }
-//
-//            throw e;
-//        }
-//        return true;
-//        return responseCodeFetcher.from(hostAddress);
         try {
             return validator.isResponseCodeValid(responseCodeFetcher.from(hostAddress));
         } catch (RequestException e) {

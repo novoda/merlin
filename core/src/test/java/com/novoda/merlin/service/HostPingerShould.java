@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -14,25 +15,30 @@ public class HostPingerShould {
     private static final String HOST_ADDRESS = "any host address";
 
     private HostPinger hostPinger;
-    private PingTaskFactory mockPingTaskFactory;
+
+    @Mock
     private PingTask mockPingTask;
+    @Mock
+    private Ping mockPing;
+    @Mock
+    private PingTaskFactory mockPingTaskFactory;
+    @Mock
+    private PingFactory mockPingFactory;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-
-        mockPingTask = mock(PingTask.class);
-        mockPingTaskFactory = mock(PingTaskFactory.class);
-        when(mockPingTaskFactory.create(HOST_ADDRESS)).thenReturn(mockPingTask);
-
-        hostPinger = new HostPinger(null, HOST_ADDRESS, mockPingTaskFactory);
+        when(mockPingFactory.create(HOST_ADDRESS)).thenReturn(mockPing);
+        when(mockPingTaskFactory.create(mockPing)).thenReturn(mockPingTask);
+        hostPinger = new HostPinger(mock(HostPinger.PingerCallback.class), HOST_ADDRESS, mockPingFactory, mockPingTaskFactory);
     }
 
     @Test
     public void createsPingTaskWhenPing() {
         hostPinger.ping();
 
-        verify(mockPingTaskFactory).create(HOST_ADDRESS);
+        verify(mockPingFactory).create(HOST_ADDRESS);
+        verify(mockPingTaskFactory).create(mockPing);
     }
 
     @Test

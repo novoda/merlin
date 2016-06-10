@@ -3,13 +3,13 @@ package com.novoda.merlin.service;
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinLog;
 import com.novoda.merlin.service.request.MerlinRequest;
-import com.novoda.merlin.service.request.RequestException;
 
 class HostPinger {
 
     private final PingerCallback pingerCallback;
-    private final String hostAddress;
+    private final PingFactory pingFactory;
     private final PingTaskFactory pingTaskFactory;
+    private final String hostAddress;
 
     interface PingerCallback {
 
@@ -21,23 +21,25 @@ class HostPinger {
 
     public static HostPinger newInstance(PingerCallback pingerCallback) {
         MerlinLog.d("Host address not set, using Merlin default : " + Merlin.DEFAULT_ENDPOINT);
-        return newInstance(pingerCallback, Merlin.DEFAULT_ENDPOINT);
+        PingFactory pingFactory = new PingFactory(new ResponseCodeFetcher(), ResponseCodeValidator.DEFAULT, RequestExceptionHandler.DEFAULT);
+        return new HostPinger(pingerCallback, Merlin.DEFAULT_ENDPOINT, pingFactory, new PingTaskFactory(pingerCallback));
     }
 
     public static HostPinger newInstance(PingerCallback pingerCallback, String hostAddress) {
-        ResponseCodeFetcher responseCodeFetcher = new ResponseCodeFetcher();
-        PingTaskFactory pingTaskFactory = new PingTaskFactory(pingerCallback, responseCodeFetcher);
-        return new HostPinger(pingerCallback, hostAddress, pingTaskFactory);
+        PingFactory pingFactory = new PingFactory(new ResponseCodeFetcher(), ResponseCodeValidator.CUSTOM, RequestExceptionHandler.CUSTOM);
+        return new HostPinger(pingerCallback, hostAddress, pingFactory, new PingTaskFactory(pingerCallback));
     }
 
-    HostPinger(PingerCallback pingerCallback, String hostAddress, PingTaskFactory pingTaskFactory) {
+    HostPinger(PingerCallback pingerCallback, String hostAddress, PingFactory pingFactory, PingTaskFactory pingTaskFactory) {
         this.pingerCallback = pingerCallback;
         this.hostAddress = hostAddress;
+        this.pingFactory = pingFactory;
         this.pingTaskFactory = pingTaskFactory;
     }
 
     public void ping() {
-        PingTask pingTask = pingTaskFactory.create(hostAddress);
+        Ping ping = pingFactory.create(hostAddress);
+        PingTask pingTask = pingTaskFactory.create(ping);
         pingTask.execute();
     }
 
