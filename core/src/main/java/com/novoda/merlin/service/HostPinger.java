@@ -4,7 +4,6 @@ import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinLog;
 import com.novoda.merlin.service.request.MerlinRequest;
 
-import static com.novoda.merlin.service.ResponseCodeValidator.CustomEndpointResponseCodeValidator;
 import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
 
 class HostPinger {
@@ -21,14 +20,14 @@ class HostPinger {
 
     }
 
-    public static HostPinger newInstance(PingerCallback pingerCallback) {
+    public static HostPinger withDefaultEndpointValidation(PingerCallback pingerCallback) {
         MerlinLog.d("Host address not set, using Merlin default: " + Merlin.DEFAULT_ENDPOINT);
         PingTaskFactory pingTaskFactory = new PingTaskFactory(pingerCallback, new ResponseCodeFetcher(), new DefaultEndpointResponseCodeValidator());
         return new HostPinger(pingerCallback, Merlin.DEFAULT_ENDPOINT, pingTaskFactory);
     }
 
-    public static HostPinger newInstance(PingerCallback pingerCallback, String hostAddress) {
-        PingTaskFactory pingTaskFactory = new PingTaskFactory(pingerCallback, new ResponseCodeFetcher(), new CustomEndpointResponseCodeValidator());
+    public static HostPinger withCustomEndpointAndValidation(PingerCallback pingerCallback, String hostAddress, ResponseCodeValidator validator) {
+        PingTaskFactory pingTaskFactory = new PingTaskFactory(pingerCallback, new ResponseCodeFetcher(), validator);
         return new HostPinger(pingerCallback, hostAddress, pingTaskFactory);
     }
 

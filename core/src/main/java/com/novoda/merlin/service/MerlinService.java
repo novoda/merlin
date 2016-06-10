@@ -34,7 +34,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     public MerlinService() {
         binder = new LocalBinder();
-        hostPinger = HostPinger.newInstance(this);
+        hostPinger = HostPinger.withDefaultEndpointValidation(this);
     }
 
     @Override
@@ -80,8 +80,8 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         return new ComponentName(this, ConnectivityReceiver.class);
     }
 
-    public void setHostname(String hostname) {
-        hostPinger = HostPinger.newInstance(this, hostname);
+    public void setHostname(String hostname, ResponseCodeValidator validator) {
+        hostPinger = HostPinger.withCustomEndpointAndValidation(this, hostname, validator);
     }
 
     public void setBindStatusListener(BindListener bindListener) {

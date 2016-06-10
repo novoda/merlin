@@ -9,7 +9,7 @@ import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import static com.novoda.merlin.service.ResponseCodeValidator.CustomEndpointResponseCodeValidator;
+import static com.novoda.merlin.service.ResponseCodeValidator.ResponseCodeAutoValidator;
 import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
 import static org.fest.assertions.api.Assertions.assertThat;
 
@@ -46,7 +46,7 @@ public class ResponseCodeValidatorTests {
     }
 
     @RunWith(Parameterized.class)
-    public static class CustomEndpointResponseCodeValidatorTest {
+    public static class ResponseCodeAutoValidatorTest {
 
         private final int responseCode;
 
@@ -57,13 +57,13 @@ public class ResponseCodeValidatorTests {
             return integers;
         }
 
-        public CustomEndpointResponseCodeValidatorTest(int responseCode) {
+        public ResponseCodeAutoValidatorTest(int responseCode) {
             this.responseCode = responseCode;
         }
 
         @Test
         public void anyResponseCodeIsValid() {
-            boolean actual = new CustomEndpointResponseCodeValidator().isResponseCodeValid(responseCode);
+            boolean actual = new ResponseCodeAutoValidator().isResponseCodeValid(responseCode);
             assertThat(actual).isTrue();
         }
     }
