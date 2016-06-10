@@ -1,5 +1,6 @@
 package com.novoda.merlin.service;
 
+import com.novoda.merlin.service.ResponseCodeValidator.CustomEndpointResponseCodeValidator;
 import com.novoda.merlin.service.request.RequestException;
 
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class PingShould {
 
         public GivenSuccessfulRequest(int responseCode) {
             initMocks(this);
-            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher, ResponseCodeValidator.CUSTOM, RequestExceptionHandler.CUSTOM);
+            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher, new CustomEndpointResponseCodeValidator(), new RequestExceptionHandler.CustomEndpointRequestExceptionHandler());
             this.responseCode = responseCode;
         }
 
@@ -82,7 +83,7 @@ public class PingShould {
         @Before
         public void setUp() {
             initMocks(this);
-            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher, ResponseCodeValidator.CUSTOM, RequestExceptionHandler.CUSTOM);
+            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher, new CustomEndpointResponseCodeValidator(), new RequestExceptionHandler.CustomEndpointRequestExceptionHandler());
         }
 
         @Test

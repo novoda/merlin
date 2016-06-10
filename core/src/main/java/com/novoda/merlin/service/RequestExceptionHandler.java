@@ -5,14 +5,14 @@ import com.novoda.merlin.service.request.RequestException;
 interface RequestExceptionHandler {
     boolean handleRequestException(RequestException e) throws RequestException;
 
-    RequestExceptionHandler DEFAULT = new RequestExceptionHandler() {
+    class DefaultEndpointRequestExceptionHandler implements RequestExceptionHandler {
         @Override
         public boolean handleRequestException(RequestException e) throws RequestException {
             return false;
         }
-    };
+    }
 
-    RequestExceptionHandler CUSTOM = new RequestExceptionHandler() {
+    class CustomEndpointRequestExceptionHandler implements RequestExceptionHandler {
         @Override
         public boolean handleRequestException(RequestException e) throws RequestException {
             if (e.causedByIO()) {
@@ -20,5 +20,5 @@ interface RequestExceptionHandler {
             }
             throw e;
         }
-    };
+    }
 }

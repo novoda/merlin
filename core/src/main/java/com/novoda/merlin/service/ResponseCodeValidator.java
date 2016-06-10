@@ -3,17 +3,17 @@ package com.novoda.merlin.service;
 interface ResponseCodeValidator {
     boolean isResponseCodeValid(int responseCode);
 
-    ResponseCodeValidator DEFAULT = new ResponseCodeValidator() {
+    class DefaultEndpointResponseCodeValidator implements ResponseCodeValidator {
         @Override
         public boolean isResponseCodeValid(int responseCode) {
             return responseCode == 204;
         }
-    };
+    }
 
-    ResponseCodeValidator CUSTOM = new ResponseCodeValidator() {
+    class CustomEndpointResponseCodeValidator implements ResponseCodeValidator {
         @Override
         public boolean isResponseCodeValid(int responseCode) {
             return true;
         }
-    };
+    }
 }
