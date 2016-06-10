@@ -1,21 +1,15 @@
 package com.novoda.merlin.service;
 
-import com.novoda.merlin.service.ResponseCodeValidator.CustomEndpointResponseCodeValidator;
 import com.novoda.merlin.service.request.RequestException;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.mockito.Mock;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static com.novoda.merlin.service.HostPinger.ResponseCodeFetcher;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -24,82 +18,70 @@ public class PingShould {
 
     private static final String HOST_ADDRESS = "any host address";
 
-    @RunWith(Parameterized.class)
     public static class GivenSuccessfulRequest {
 
-        @Parameterized.Parameters(name = "{0}")
-        public static Collection<Integer[]> data() {
-            return ResponseCode.toParameterList();
-        }
-
-        private final Ping ping;
+        private Ping ping;
 
         @Mock
-        private HostPinger.ResponseCodeFetcher mockResponseCodeFetcher;
+        private ResponseCodeFetcher mockResponseCodeFetcher;
+        @Mock
+        private ResponseCodeValidator mockResponseCodeValidator;
+        @Mock
+        private RequestExceptionHandler mockRequestExceptionHandler;
 
-        private final int responseCode;
+        private final int responseCode = 234;
 
-        public GivenSuccessfulRequest(int responseCode) {
+        @Before
+        public void setup() {
             initMocks(this);
-            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher, new CustomEndpointResponseCodeValidator(), new RequestExceptionHandler.CustomEndpointRequestExceptionHandler());
-            this.responseCode = responseCode;
+            ping = new Ping(
+                    HOST_ADDRESS,
+                    mockResponseCodeFetcher,
+                    mockResponseCodeValidator,
+                    mockRequestExceptionHandler
+            );
         }
 
         @Test
-        public void returnsTrue() {
+        public void responseCodeIsPassedToValidator() {
             when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(responseCode);
 
-            boolean isSuccess = ping.doSynchronousPing();
+            ping.doSynchronousPing();
 
-            assertThat(isSuccess).isEqualTo(true);
-        }
-
-        private enum ResponseCode {
-            OK(200), CREATED(201), NO_CONTENT(204), MOVED_PERMANENTLY(301), NOT_FOUND(404), SERVER_ERROR(500);
-
-            private final int code;
-
-            ResponseCode(int code) {
-                this.code = code;
-            }
-
-            public static Collection<Integer[]> toParameterList() {
-                List<Integer[]> list = new ArrayList<>();
-                for (ResponseCode responseCode : values()) {
-                    list.add(new Integer[]{responseCode.code});
-                }
-                return list;
-            }
+            verify(mockResponseCodeValidator).isResponseCodeValid(responseCode);
         }
     }
 
     public static class GivenFailingRequest {
 
         @Mock
-        private HostPinger.ResponseCodeFetcher mockResponseCodeFetcher;
+        private ResponseCodeFetcher mockResponseCodeFetcher;
+        @Mock
+        private ResponseCodeValidator mockResponseCodeValidator;
+        @Mock
+        private RequestExceptionHandler mockRequestExceptionHandler;
 
         private Ping ping;
 
         @Before
         public void setUp() {
             initMocks(this);
-            ping = new Ping(HOST_ADDRESS, mockResponseCodeFetcher, new CustomEndpointResponseCodeValidator(), new RequestExceptionHandler.CustomEndpointRequestExceptionHandler());
+            ping = new Ping(
+                    HOST_ADDRESS,
+                    mockResponseCodeFetcher,
+                    mockResponseCodeValidator,
+                    mockRequestExceptionHandler
+            );
         }
 
         @Test
-        public void returnsFalseIfFailureIsBecauseIO() {
-            when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenThrow(new RequestException(new IOException()));
-
-            boolean isSuccess = ping.doSynchronousPing();
-
-            assertThat(isSuccess).isFalse();
-        }
-
-        @Test(expected = RequestException.class)
-        public void propagatesExceptionIfNotBecauseIO() {
-            when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenThrow(new RequestException(new RuntimeException()));
+        public void exceptionIsPassedToHandler() {
+            RequestException expected = new RequestException(new RuntimeException());
+            when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenThrow(expected);
 
             ping.doSynchronousPing();
+
+            verify(mockRequestExceptionHandler).handleRequestException(expected);
         }
     }
 }
