@@ -8,13 +8,11 @@ class Ping {
     private final String hostAddress;
     private final HostPinger.ResponseCodeFetcher responseCodeFetcher;
     private final ResponseCodeValidator validator;
-    private final RequestExceptionHandler handler;
 
-    Ping(String hostAddress, HostPinger.ResponseCodeFetcher responseCodeFetcher, ResponseCodeValidator validator, RequestExceptionHandler handler) {
+    Ping(String hostAddress, HostPinger.ResponseCodeFetcher responseCodeFetcher, ResponseCodeValidator validator) {
         this.hostAddress = hostAddress;
         this.responseCodeFetcher = responseCodeFetcher;
         this.validator = validator;
-        this.handler = handler;
     }
 
     public boolean doSynchronousPing() {
@@ -22,7 +20,10 @@ class Ping {
         try {
             return validator.isResponseCodeValid(responseCodeFetcher.from(hostAddress));
         } catch (RequestException e) {
-            return handler.handleRequestException(e);
+            if (!e.causedByIO()) {
+                MerlinLog.e("Ping task failed due to " + e.getMessage());
+            }
+            return false;
         }
     }
 
