@@ -31,12 +31,5 @@ public class RequestExceptionHandlerTests {
             boolean actual = new CustomEndpointRequestExceptionHandler().handleRequestException(e);
             assertThat(actual).isFalse();
         }
-
-        @Test(expected = RequestException.class)
-        public void propagatesExceptionIfNotBecauseIO() {
-            RequestException e = new RequestException(new Throwable("tests!"));
-            new CustomEndpointRequestExceptionHandler().handleRequestException(e);
-        }
     }
-
 }
