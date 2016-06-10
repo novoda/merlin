@@ -21,6 +21,8 @@ public class PingShould {
 
     private static final String HOST_ADDRESS = "any host address";
 
+    private static final int RESPONSE_CODE = 201;
+
     public static class GivenSuccessfulRequest {
 
         private Ping ping;
@@ -29,8 +31,6 @@ public class PingShould {
         private ResponseCodeFetcher mockResponseCodeFetcher;
         @Mock
         private ResponseCodeValidator mockResponseCodeValidator;
-
-        private final int responseCode = 234;
 
         @Before
         public void setup() {
@@ -44,11 +44,11 @@ public class PingShould {
 
         @Test
         public void responseCodeIsPassedToValidator() {
-            when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(responseCode);
+            when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(RESPONSE_CODE);
 
             ping.doSynchronousPing();
 
-            verify(mockResponseCodeValidator).isResponseCodeValid(responseCode);
+            verify(mockResponseCodeValidator).isResponseCodeValid(RESPONSE_CODE);
         }
     }
 
