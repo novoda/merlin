@@ -1,6 +1,7 @@
 package com.novoda.merlin.service;
 
 interface ResponseCodeValidator {
+
     boolean isResponseCodeValid(int responseCode);
 
     class DefaultEndpointResponseCodeValidator implements ResponseCodeValidator {
