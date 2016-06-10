@@ -11,7 +11,6 @@ class HostPinger {
 
     private final PingerCallback pingerCallback;
     private final String hostAddress;
-    private final PingFactory pingFactory;
     private final PingTaskFactory pingTaskFactory;
 
     interface PingerCallback {
@@ -24,31 +23,23 @@ class HostPinger {
 
     public static HostPinger newInstance(PingerCallback pingerCallback) {
         MerlinLog.d("Host address not set, using Merlin default : " + Merlin.DEFAULT_ENDPOINT);
-        PingFactory pingFactory = new PingFactory(
-                new ResponseCodeFetcher(),
-                new DefaultEndpointResponseCodeValidator()
-        );
-        return new HostPinger(pingerCallback, Merlin.DEFAULT_ENDPOINT, pingFactory, new PingTaskFactory(pingerCallback));
+        PingTaskFactory pingTaskFactory = new PingTaskFactory(pingerCallback, new ResponseCodeFetcher(), new DefaultEndpointResponseCodeValidator());
+        return new HostPinger(pingerCallback, Merlin.DEFAULT_ENDPOINT, pingTaskFactory);
     }
 
     public static HostPinger newInstance(PingerCallback pingerCallback, String hostAddress) {
-        PingFactory pingFactory = new PingFactory(
-                new ResponseCodeFetcher(),
-                new CustomEndpointResponseCodeValidator()
-        );
-        return new HostPinger(pingerCallback, hostAddress, pingFactory, new PingTaskFactory(pingerCallback));
+        PingTaskFactory pingTaskFactory = new PingTaskFactory(pingerCallback, new ResponseCodeFetcher(), new CustomEndpointResponseCodeValidator());
+        return new HostPinger(pingerCallback, hostAddress, pingTaskFactory);
     }
 
-    HostPinger(PingerCallback pingerCallback, String hostAddress, PingFactory pingFactory, PingTaskFactory pingTaskFactory) {
+    HostPinger(PingerCallback pingerCallback, String hostAddress, PingTaskFactory pingTaskFactory) {
         this.pingerCallback = pingerCallback;
         this.hostAddress = hostAddress;
-        this.pingFactory = pingFactory;
         this.pingTaskFactory = pingTaskFactory;
     }
 
     public void ping() {
-        Ping ping = pingFactory.create(hostAddress);
-        PingTask pingTask = pingTaskFactory.create(ping);
+        PingTask pingTask = pingTaskFactory.create(hostAddress);
         pingTask.execute();
     }
 

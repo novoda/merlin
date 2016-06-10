@@ -19,26 +19,20 @@ public class HostPingerShould {
     @Mock
     private PingTask mockPingTask;
     @Mock
-    private Ping mockPing;
-    @Mock
     private PingTaskFactory mockPingTaskFactory;
-    @Mock
-    private PingFactory mockPingFactory;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        when(mockPingFactory.create(HOST_ADDRESS)).thenReturn(mockPing);
-        when(mockPingTaskFactory.create(mockPing)).thenReturn(mockPingTask);
-        hostPinger = new HostPinger(mock(HostPinger.PingerCallback.class), HOST_ADDRESS, mockPingFactory, mockPingTaskFactory);
+        when(mockPingTaskFactory.create(HOST_ADDRESS)).thenReturn(mockPingTask);
+        hostPinger = new HostPinger(mock(HostPinger.PingerCallback.class), HOST_ADDRESS, mockPingTaskFactory);
     }
 
     @Test
     public void createsPingTaskWhenPing() {
         hostPinger.ping();
 
-        verify(mockPingFactory).create(HOST_ADDRESS);
-        verify(mockPingTaskFactory).create(mockPing);
+        verify(mockPingTaskFactory).create(HOST_ADDRESS);
     }
 
     @Test
