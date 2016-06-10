@@ -15,48 +15,44 @@ import static org.fest.assertions.api.Assertions.assertThat;
 @RunWith(Enclosed.class)
 public class ResponseCodeValidatorTests {
 
-    private static final int NO_CONTENT = 204;
-
     @RunWith(Parameterized.class)
     public static class DefaultEndpointResponseCodeValidatorTest {
 
         private final int responseCode;
+        private final boolean isValid;
 
-        @Parameterized.Parameters(name = "{0}")
-        public static Collection<Integer[]> data() {
+        @Parameterized.Parameters(name = " response code {0} should return {1}")
+        public static Collection<Object[]> data() {
             return ResponseCode.toParameterList();
         }
 
-        public DefaultEndpointResponseCodeValidatorTest(int responseCode) {
+        public DefaultEndpointResponseCodeValidatorTest(int responseCode, boolean isValid) {
             this.responseCode = responseCode;
-        }
-
-        @Test
-        public void test204ReturnsTrue() {
-            boolean actual = new DefaultEndpointResponseCodeValidator().isResponseCodeValid(NO_CONTENT);
-            assertThat(actual).isTrue();
+            this.isValid = isValid;
         }
 
         @Test
         public void testOtherCodesReturnFalse() {
             boolean actual = new DefaultEndpointResponseCodeValidator().isResponseCodeValid(responseCode);
-            assertThat(actual).isFalse();
+            assertThat(actual).isEqualTo(isValid);
         }
     }
 
     enum ResponseCode {
-        OK(200), CREATED(201), MOVED_PERMANENTLY(301), NOT_FOUND(404), SERVER_ERROR(500);
+        OK(200, false), CREATED(201, false), NO_CONTENT(204, true), MOVED_PERMANENTLY(301, false), NOT_FOUND(404, false), SERVER_ERROR(500, false);
 
         private final int code;
+        private final boolean isValid;
 
-        ResponseCode(int code) {
+        ResponseCode(int code, boolean isValid) {
             this.code = code;
+            this.isValid = isValid;
         }
 
-        public static Collection<Integer[]> toParameterList() {
-            List<Integer[]> list = new ArrayList<>();
+        public static Collection<Object[]> toParameterList() {
+            List<Object[]> list = new ArrayList<>();
             for (ResponseCode responseCode : values()) {
-                list.add(new Integer[]{responseCode.code});
+                list.add(new Object[]{responseCode.code, responseCode.isValid});
             }
             return list;
         }
