@@ -5,7 +5,6 @@ import com.novoda.merlin.MerlinLog;
 import com.novoda.merlin.service.request.MerlinRequest;
 
 import static com.novoda.merlin.service.RequestExceptionHandler.CustomEndpointRequestExceptionHandler;
-import static com.novoda.merlin.service.RequestExceptionHandler.DefaultEndpointRequestExceptionHandler;
 import static com.novoda.merlin.service.ResponseCodeValidator.CustomEndpointResponseCodeValidator;
 import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
 
@@ -29,7 +28,7 @@ class HostPinger {
         PingFactory pingFactory = new PingFactory(
                 new ResponseCodeFetcher(),
                 new DefaultEndpointResponseCodeValidator(),
-                new DefaultEndpointRequestExceptionHandler()
+                new CustomEndpointRequestExceptionHandler()
         );
         return new HostPinger(pingerCallback, Merlin.DEFAULT_ENDPOINT, pingFactory, new PingTaskFactory(pingerCallback));
     }
