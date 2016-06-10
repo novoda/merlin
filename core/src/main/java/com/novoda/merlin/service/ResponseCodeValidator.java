@@ -10,11 +10,4 @@ public interface ResponseCodeValidator {
             return responseCode == 204;
         }
     }
-
-    class ResponseCodeAutoValidator implements ResponseCodeValidator {
-        @Override
-        public boolean isResponseCodeValid(int responseCode) {
-            return true;
-        }
-    }
 }
