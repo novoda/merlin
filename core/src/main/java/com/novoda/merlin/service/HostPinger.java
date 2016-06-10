@@ -22,7 +22,7 @@ class HostPinger {
     }
 
     public static HostPinger newInstance(PingerCallback pingerCallback) {
-        MerlinLog.d("Host address not set, using Merlin default : " + Merlin.DEFAULT_ENDPOINT);
+        MerlinLog.d("Host address not set, using Merlin default: " + Merlin.DEFAULT_ENDPOINT);
         PingTaskFactory pingTaskFactory = new PingTaskFactory(pingerCallback, new ResponseCodeFetcher(), new DefaultEndpointResponseCodeValidator());
         return new HostPinger(pingerCallback, Merlin.DEFAULT_ENDPOINT, pingTaskFactory);
     }
