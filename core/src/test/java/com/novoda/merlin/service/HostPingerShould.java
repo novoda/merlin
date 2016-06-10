@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -14,18 +15,17 @@ public class HostPingerShould {
     private static final String HOST_ADDRESS = "any host address";
 
     private HostPinger hostPinger;
-    private PingTaskFactory mockPingTaskFactory;
+
+    @Mock
     private PingTask mockPingTask;
+    @Mock
+    private PingTaskFactory mockPingTaskFactory;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-
-        mockPingTask = mock(PingTask.class);
-        mockPingTaskFactory = mock(PingTaskFactory.class);
         when(mockPingTaskFactory.create(HOST_ADDRESS)).thenReturn(mockPingTask);
-
-        hostPinger = new HostPinger(null, HOST_ADDRESS, mockPingTaskFactory);
+        hostPinger = new HostPinger(mock(HostPinger.PingerCallback.class), HOST_ADDRESS, mockPingTaskFactory);
     }
 
     @Test

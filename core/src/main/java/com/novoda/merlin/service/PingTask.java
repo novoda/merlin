@@ -2,9 +2,6 @@ package com.novoda.merlin.service;
 
 import android.os.AsyncTask;
 
-import com.novoda.merlin.MerlinLog;
-import com.novoda.merlin.service.request.RequestException;
-
 class PingTask extends AsyncTask<Void, Void, Boolean> {
 
     private final Ping ping;
@@ -17,12 +14,7 @@ class PingTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        try {
-            return ping.doSynchronousPing();
-        } catch (RequestException e) {
-            MerlinLog.e("Ping task failed due to " + e.getMessage());
-        }
-        return false;
+        return ping.doSynchronousPing();
     }
 
     @Override

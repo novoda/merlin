@@ -15,6 +15,9 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.disconnection.Disconnector;
 import com.novoda.merlin.service.MerlinService;
 import com.novoda.merlin.service.MerlinServiceBinder;
+import com.novoda.merlin.service.ResponseCodeValidator;
+
+import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
 
 public class MerlinBuilder {
 
@@ -28,6 +31,7 @@ public class MerlinBuilder {
     private MerlinRegisterer<Bindable> bindableRegisterer;
 
     private String endPoint = Merlin.DEFAULT_ENDPOINT;
+    private ResponseCodeValidator responseCodeValidator = new DefaultEndpointResponseCodeValidator();
 
     MerlinBuilder() {
     }
@@ -38,7 +42,7 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withConnectableCallbacks() {
-        connectableRegisterer = new MerlinRegisterer<Connectable>();
+        connectableRegisterer = new MerlinRegisterer<>();
         this.merlinConnector = new Connector(connectableRegisterer);
         return this;
     }
@@ -49,7 +53,7 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withDisconnectableCallbacks() {
-        disconnectableRegisterer = new MerlinRegisterer<Disconnectable>();
+        disconnectableRegisterer = new MerlinRegisterer<>();
         this.merlinDisconnector = new Disconnector(disconnectableRegisterer);
         return this;
     }
@@ -77,7 +81,7 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withBindableCallbacks() {
-        bindableRegisterer = new MerlinRegisterer<Bindable>();
+        bindableRegisterer = new MerlinRegisterer<>();
         this.merlinOnBinder = new OnBinder(bindableRegisterer);
         return this;
     }
@@ -118,11 +122,23 @@ public class MerlinBuilder {
     /**
      * Sets custom endpoint
      *
-     * @param endPoint by default "http://www.android.com".
+     * @param endPoint by default "http://connectivitycheck.android.com/generate_204".
      * @return MerlinBuilder.
      */
     public MerlinBuilder setEndPoint(String endPoint) {
         this.endPoint = endPoint;
+        return this;
+    }
+
+    /**
+     * Sets custom endpoint
+     *
+     * @param responseCodeValidator A validator implementation used for checking that the response code is what you expect.
+     *                              The default endpoint returns a 204 No Content response, so the default validator checks for that.
+     * @return MerlinBuilder.
+     */
+    public MerlinBuilder setResponseCodeValidator(ResponseCodeValidator responseCodeValidator) {
+        this.responseCodeValidator = responseCodeValidator;
         return this;
     }
 
@@ -132,7 +148,15 @@ public class MerlinBuilder {
      * @return Merlin.
      */
     public Merlin build(Context context) {
-        MerlinServiceBinder merlinServiceBinder = new MerlinServiceBinder(context, merlinConnector, merlinDisconnector, merlinOnBinder, rxCallbacksManager, endPoint);
+        MerlinServiceBinder merlinServiceBinder = new MerlinServiceBinder(
+                context,
+                merlinConnector,
+                merlinDisconnector,
+                merlinOnBinder,
+                rxCallbacksManager,
+                endPoint,
+                responseCodeValidator
+        );
         Registerer merlinRegisterer = new Registerer(connectableRegisterer, disconnectableRegisterer, bindableRegisterer);
         return new Merlin(merlinServiceBinder, merlinRegisterer, rxCallbacksManager);
     }
