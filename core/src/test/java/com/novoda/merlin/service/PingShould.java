@@ -33,7 +33,7 @@ public class PingShould {
         private ResponseCodeValidator mockResponseCodeValidator;
 
         @Before
-        public void setup() {
+        public void setUp() {
             initMocks(this);
             ping = new Ping(
                     HOST_ADDRESS,

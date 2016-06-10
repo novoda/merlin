@@ -21,9 +21,9 @@ public class ResponseCodeValidatorTests {
         private final int responseCode;
         private final boolean isValid;
 
-        @Parameterized.Parameters(name = " response code {0} should return {1}")
+        @Parameterized.Parameters(name = "response code {0} should return {1}")
         public static Collection<Object[]> data() {
-            return ResponseCode.toParameterList();
+            return Responses.toParameterList();
         }
 
         public DefaultEndpointResponseCodeValidatorTest(int responseCode, boolean isValid) {
@@ -38,21 +38,26 @@ public class ResponseCodeValidatorTests {
         }
     }
 
-    enum ResponseCode {
-        OK(200, false), CREATED(201, false), NO_CONTENT(204, true), MOVED_PERMANENTLY(301, false), NOT_FOUND(404, false), SERVER_ERROR(500, false);
+    enum Responses {
+        OK(200, false),
+        CREATED(201, false),
+        NO_CONTENT(204, true),
+        MOVED_PERMANENTLY(301, false),
+        NOT_FOUND(404, false),
+        SERVER_ERROR(500, false);
 
         private final int code;
         private final boolean isValid;
 
-        ResponseCode(int code, boolean isValid) {
+        Responses(int code, boolean isValid) {
             this.code = code;
             this.isValid = isValid;
         }
 
         public static Collection<Object[]> toParameterList() {
             List<Object[]> list = new ArrayList<>();
-            for (ResponseCode responseCode : values()) {
-                list.add(new Object[]{responseCode.code, responseCode.isValid});
+            for (Responses responses : values()) {
+                list.add(new Object[]{responses.code, responses.isValid});
             }
             return list;
         }
