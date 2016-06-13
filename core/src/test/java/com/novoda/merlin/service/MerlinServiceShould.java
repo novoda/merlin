@@ -3,19 +3,24 @@ package com.novoda.merlin.service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 
 import com.novoda.merlin.RxCallbacksManager;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.internal.util.reflection.Whitebox;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -112,6 +117,32 @@ public class MerlinServiceShould {
         verify(rxCallbacksManager).onDisconnect();
     }
 
+    @Test
+    public void updateCurrentNetworkStatusRetrieverWhenSetHostNameIsCalled() {
+        String newTestHostName = "someNewTestHostName";
+        Context context = mock(Context.class);
+        ContextWrapper contextWrapper = mock(ContextWrapper.class);
+        ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
+        Mockito.when(contextWrapper.getApplicationContext()).thenReturn(context);
+        Mockito.when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
+
+        MerlinService merlinService = new TestDoubleMerlinServiceReturningMockingContext(contextWrapper);
+
+        merlinService.onCreate();
+        merlinService.setHostname(newTestHostName, new ResponseCodeValidator() {
+            @Override
+            public boolean isResponseCodeValid(int responseCode) {
+                return true;
+            }
+        });
+
+        CurrentNetworkStatusRetriever currentNetworkStatusRetriever = (CurrentNetworkStatusRetriever) Whitebox.getInternalState(merlinService, "currentNetworkStatusRetriever");
+        HostPinger hostPinger = (HostPinger) Whitebox.getInternalState(currentNetworkStatusRetriever, "hostPinger");
+        String currentTestHostAddress = (String) Whitebox.getInternalState(hostPinger, "hostAddress");
+
+        Assert.assertEquals("Test hostname should be updated", newTestHostName, currentTestHostAddress);
+    }
+
     private ConnectivityChangeEvent createConnectivityChangeEvent(boolean isConnected) {
         return new ConnectivityChangeEvent(isConnected, "info", "reason");
     }
@@ -135,7 +166,19 @@ public class MerlinServiceShould {
         protected ComponentName connectivityReceiverComponent() {
             return receiver;
         }
-
     }
 
+    private static class TestDoubleMerlinServiceReturningMockingContext extends MerlinService {
+
+        private final ContextWrapper context;
+
+        TestDoubleMerlinServiceReturningMockingContext(ContextWrapper context) {
+            this.context = context;
+        }
+
+        @Override
+        public ContextWrapper getApplicationContext() {
+            return context;
+        }
+    }
 }
