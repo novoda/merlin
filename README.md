@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.novoda:merlin:0.7.0'
+    compile 'com.novoda:merlin:0.8.0'
 }
 ```
 
