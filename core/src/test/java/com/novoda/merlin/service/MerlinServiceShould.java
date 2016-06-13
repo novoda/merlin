@@ -7,10 +7,12 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+
 import com.novoda.merlin.RxCallbacksManager;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -127,7 +129,12 @@ public class MerlinServiceShould {
         MerlinService merlinService = new TestDoubleMerlinServiceReturningMockingContext(contextWrapper);
 
         merlinService.onCreate();
-        merlinService.setHostname(newTestHostName);
+        merlinService.setHostname(newTestHostName, new ResponseCodeValidator() {
+            @Override
+            public boolean isResponseCodeValid(int responseCode) {
+                return true;
+            }
+        });
 
         CurrentNetworkStatusRetriever currentNetworkStatusRetriever = (CurrentNetworkStatusRetriever) Whitebox.getInternalState(merlinService, "currentNetworkStatusRetriever");
         HostPinger hostPinger = (HostPinger) Whitebox.getInternalState(currentNetworkStatusRetriever, "hostPinger");
