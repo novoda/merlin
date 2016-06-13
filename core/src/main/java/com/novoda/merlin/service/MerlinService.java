@@ -82,6 +82,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     public void setHostname(String hostname, ResponseCodeValidator validator) {
         hostPinger = HostPinger.withCustomEndpointAndValidation(this, hostname, validator);
+        currentNetworkStatusRetriever = new CurrentNetworkStatusRetriever(MerlinsBeard.from(this.getApplicationContext()), hostPinger);
     }
 
     public void setBindStatusListener(BindListener bindListener) {
