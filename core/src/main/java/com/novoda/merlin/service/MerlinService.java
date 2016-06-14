@@ -40,7 +40,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     @Override
     public void onCreate() {
         super.onCreate();
-        currentNetworkStatusRetriever = new CurrentNetworkStatusRetriever(MerlinsBeard.from(this.getApplicationContext()), hostPinger);
+        currentNetworkStatusRetriever = new CurrentNetworkStatusRetriever(MerlinsBeard.from(this.getApplicationContext()));
     }
 
     public class LocalBinder extends Binder {
@@ -82,7 +82,6 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     public void setHostname(String hostname, ResponseCodeValidator validator) {
         hostPinger = HostPinger.withCustomEndpointAndValidation(this, hostname, validator);
-        currentNetworkStatusRetriever = new CurrentNetworkStatusRetriever(MerlinsBeard.from(this.getApplicationContext()), hostPinger);
     }
 
     public void setBindStatusListener(BindListener bindListener) {
@@ -119,7 +118,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     }
 
     private void getCurrentNetworkStatus() {
-        currentNetworkStatusRetriever.fetchWithPing();
+        currentNetworkStatusRetriever.fetchWithPing(hostPinger);
     }
 
     @Override

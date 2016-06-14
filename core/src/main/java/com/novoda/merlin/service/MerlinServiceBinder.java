@@ -17,8 +17,8 @@ public class MerlinServiceBinder {
     private final Context context;
     private final ListenerHolder listenerHolder;
     private final RxCallbacksManager rxCallbacksManager;
-    private final ResponseCodeValidator validator;
 
+    private ResponseCodeValidator validator;
     private Connection connection;
     private String endpoint;
 
@@ -31,8 +31,9 @@ public class MerlinServiceBinder {
         this.endpoint = endpoint;
     }
 
-    public void setEndpoint(String hostname) {
+    public void setEndpoint(String hostname, ResponseCodeValidator validator) {
         this.endpoint = hostname;
+        this.validator = validator;
     }
 
     public void bindService() {

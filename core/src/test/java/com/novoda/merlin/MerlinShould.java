@@ -3,6 +3,7 @@ package com.novoda.merlin;
 import android.content.Context;
 
 import com.novoda.merlin.service.MerlinServiceBinder;
+import com.novoda.merlin.service.ResponseCodeValidator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +21,8 @@ public class MerlinShould {
     private Context context;
     @Mock
     private MerlinServiceBinder serviceBinder;
+    @Mock
+    ResponseCodeValidator mockValidator;
 
     private Merlin merlin;
 
@@ -40,10 +43,10 @@ public class MerlinShould {
     public void bindTheMerlinServiceWithAHostnameWhenProvided() throws Exception {
         String hostname = "startTheMerlinServiceWithAHostnameWhenProvided";
 
-        merlin.setEndpoint(hostname);
+        merlin.setEndpoint(hostname, mockValidator);
         merlin.bind();
 
-        verify(serviceBinder).setEndpoint(hostname);
+        verify(serviceBinder).setEndpoint(hostname, mockValidator);
     }
 
     @Test

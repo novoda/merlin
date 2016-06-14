@@ -5,6 +5,7 @@ import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.service.MerlinServiceBinder;
+import com.novoda.merlin.service.ResponseCodeValidator;
 
 import rx.Observable;
 
@@ -22,8 +23,8 @@ public class Merlin {
         this.rxCallbacksManager = rxCallbacksManager;
     }
 
-    public void setEndpoint(String endpoint) {
-        merlinServiceBinder.setEndpoint(endpoint);
+    public void setEndpoint(String endpoint, ResponseCodeValidator validator) {
+        merlinServiceBinder.setEndpoint(endpoint, validator);
     }
 
     public void bind() {

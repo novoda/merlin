@@ -25,14 +25,14 @@ public class CurrentNetworkStatusRetrieverShould {
     @Before
     public void setUp() {
         initMocks(this);
-        currentNetworkStatusRetriever = new CurrentNetworkStatusRetriever(mockMerlinsBeards, mockHostPinger);
+        currentNetworkStatusRetriever = new CurrentNetworkStatusRetriever(mockMerlinsBeards);
     }
 
     @Test
     public void whenNetworkIsConnectedHostPingerPings() {
         when(mockMerlinsBeards.isConnected()).thenReturn(true);
 
-        currentNetworkStatusRetriever.fetchWithPing();
+        currentNetworkStatusRetriever.fetchWithPing(mockHostPinger);
 
         verify(mockHostPinger).ping();
     }
@@ -41,7 +41,7 @@ public class CurrentNetworkStatusRetrieverShould {
     public void whenNetworkIsDisconnectedHostPingerPerformsNoNetworkToPing() {
         when(mockMerlinsBeards.isConnected()).thenReturn(false);
 
-        currentNetworkStatusRetriever.fetchWithPing();
+        currentNetworkStatusRetriever.fetchWithPing(mockHostPinger);
 
         verify(mockHostPinger).noNetworkToPing();
     }
