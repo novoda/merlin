@@ -22,7 +22,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     public static boolean USE_COMPONENT_ENABLED_SETTING = true;
 
     private final IBinder binder;
-    private CurrentNetworkStatusRetriever currentNetworkStatusRetriever;
+    private NetworkStatusRetriever networkStatusRetriever;
     private HostPinger hostPinger;
 
     private ConnectListener connectListener;
@@ -34,13 +34,13 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     public MerlinService() {
         binder = new LocalBinder();
-        hostPinger = HostPinger.withDefaultEndpointValidation(this);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        currentNetworkStatusRetriever = new CurrentNetworkStatusRetriever(MerlinsBeard.from(this.getApplicationContext()));
+        hostPinger = buildDefaultHostPinger();
+        networkStatusRetriever = buildCurrentNetworkStatusRetriever();
     }
 
     public class LocalBinder extends Binder {
@@ -81,7 +81,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     }
 
     public void setHostname(String hostname, ResponseCodeValidator validator) {
-        hostPinger = HostPinger.withCustomEndpointAndValidation(this, hostname, validator);
+        hostPinger = buildHostPinger(hostname, validator);
     }
 
     public void setBindStatusListener(BindListener bindListener) {
@@ -95,7 +95,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     private void callbackCurrentStatus(BindListener bindListener) {
         if (bindListener != null) {
             if (networkStatus == null) {
-                bindListener.onMerlinBind(currentNetworkStatusRetriever.get());
+                bindListener.onMerlinBind(networkStatusRetriever.get());
                 return;
             }
             bindListener.onMerlinBind(networkStatus);
@@ -118,7 +118,22 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     }
 
     private void getCurrentNetworkStatus() {
-        currentNetworkStatusRetriever.fetchWithPing(hostPinger);
+        networkStatusRetriever.fetchWithPing(hostPinger);
+    }
+
+    @VisibleForTesting
+    protected NetworkStatusRetriever buildCurrentNetworkStatusRetriever() {
+        return new NetworkStatusRetriever(MerlinsBeard.from(this.getApplicationContext()));
+    }
+
+    @VisibleForTesting
+    protected HostPinger buildDefaultHostPinger() {
+        return HostPinger.withDefaultEndpointValidation(this);
+    }
+
+    @VisibleForTesting
+    protected HostPinger buildHostPinger(String hostName, ResponseCodeValidator validator) {
+        return HostPinger.withCustomEndpointAndValidation(this, hostName, validator);
     }
 
     @Override

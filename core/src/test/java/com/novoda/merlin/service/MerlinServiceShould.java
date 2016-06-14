@@ -7,24 +7,21 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.support.annotation.NonNull;
 
+import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.RxCallbacksManager;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.internal.util.reflection.Whitebox;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(JUnit4.class)
@@ -118,30 +115,67 @@ public class MerlinServiceShould {
         verify(rxCallbacksManager).onDisconnect();
     }
 
-    @Test @Ignore
-    public void updateCurrentNetworkStatusRetrieverWhenSetHostNameIsCalled() {
-        String newTestHostName = "someNewTestHostName";
+    @Test
+    public void useDefaultNetworkStatusRetrieverWhenPingingDefaultEndpoint() {
+        ContextWrapper contextWrapper = stubbedContextWrapper();
+
+        NetworkStatusRetriever mockRetriever = mock(NetworkStatusRetriever.class);
+        HostPinger mockDefaultPinger = mock(HostPinger.class);
+        HostPinger mockCustomPinger = mock(HostPinger.class);
+
+        MerlinService merlinService = buildStubbedMerlinService(contextWrapper, mockRetriever, mockDefaultPinger, mockCustomPinger);
+
+        merlinService.onCreate();
+        merlinService.onConnectivityChanged(networkAvailableEvent());
+        verify(mockRetriever).fetchWithPing(mockDefaultPinger);
+    }
+
+    @Test
+    public void useCustomNetworkStatusRetrieverWhenPingingCustomEndpoint() {
+        ContextWrapper contextWrapper = stubbedContextWrapper();
+
+        NetworkStatusRetriever mockRetriever = mock(NetworkStatusRetriever.class);
+        HostPinger mockDefaultPinger = mock(HostPinger.class);
+        HostPinger mockCustomPinger = mock(HostPinger.class);
+
+        MerlinService merlinService = buildStubbedMerlinService(contextWrapper, mockRetriever, mockDefaultPinger, mockCustomPinger);
+
+        merlinService.onCreate();
+        merlinService.setHostname("some new host name", mock(ResponseCodeValidator.class));
+        merlinService.onConnectivityChanged(networkAvailableEvent());
+        verify(mockRetriever).fetchWithPing(mockCustomPinger);
+    }
+
+    @NonNull
+    private ContextWrapper stubbedContextWrapper() {
         Context context = mock(Context.class);
         ContextWrapper contextWrapper = mock(ContextWrapper.class);
         ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
-        Mockito.when(contextWrapper.getApplicationContext()).thenReturn(context);
-        Mockito.when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
+        when(contextWrapper.getApplicationContext()).thenReturn(context);
+        when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
+        return contextWrapper;
+    }
 
-        MerlinService merlinService = new TestDoubleMerlinServiceReturningMockingContext(contextWrapper);
+    @NonNull
+    private MerlinService buildStubbedMerlinService(
+            ContextWrapper contextWrapper,
+            NetworkStatusRetriever retriever,
+            HostPinger defaultPinger,
+            HostPinger customPinger
+    ) {
+        return new TestDoubleMerlinServiceWithStubbedBuilders(
+                contextWrapper,
+                retriever,
+                defaultPinger,
+                customPinger
+        );
+    }
 
-        merlinService.onCreate();
-        merlinService.setHostname(newTestHostName, new ResponseCodeValidator() {
-            @Override
-            public boolean isResponseCodeValid(int responseCode) {
-                return true;
-            }
-        });
-
-        CurrentNetworkStatusRetriever currentNetworkStatusRetriever = (CurrentNetworkStatusRetriever) Whitebox.getInternalState(merlinService, "currentNetworkStatusRetriever");
-        HostPinger hostPinger = (HostPinger) Whitebox.getInternalState(currentNetworkStatusRetriever, "hostPinger");
-        String currentTestHostAddress = (String) Whitebox.getInternalState(hostPinger, "hostAddress");
-
-        Assert.assertEquals("Test hostname should be updated", newTestHostName, currentTestHostAddress);
+    @NonNull
+    private ConnectivityChangeEvent networkAvailableEvent() {
+        ConnectivityChangeEvent connectivityChangeEvent = mock(ConnectivityChangeEvent.class);
+        when(connectivityChangeEvent.asNetworkStatus()).thenReturn(NetworkStatus.newAvailableInstance());
+        return connectivityChangeEvent;
     }
 
     private ConnectivityChangeEvent createConnectivityChangeEvent(boolean isConnected) {
@@ -169,17 +203,43 @@ public class MerlinServiceShould {
         }
     }
 
-    private static class TestDoubleMerlinServiceReturningMockingContext extends MerlinService {
+    private static class TestDoubleMerlinServiceWithStubbedBuilders extends MerlinService {
 
         private final ContextWrapper context;
+        private final NetworkStatusRetriever networkStatusRetriever;
+        private final HostPinger defaultHostPinger;
+        private final HostPinger customHostPinger;
 
-        TestDoubleMerlinServiceReturningMockingContext(ContextWrapper context) {
+        TestDoubleMerlinServiceWithStubbedBuilders(
+                ContextWrapper context,
+                NetworkStatusRetriever networkStatusRetriever,
+                HostPinger defaultHostPinger,
+                HostPinger customHostPinger
+        ) {
             this.context = context;
+            this.networkStatusRetriever = networkStatusRetriever;
+            this.defaultHostPinger = defaultHostPinger;
+            this.customHostPinger = customHostPinger;
         }
 
         @Override
         public ContextWrapper getApplicationContext() {
             return context;
+        }
+
+        @Override
+        protected NetworkStatusRetriever buildCurrentNetworkStatusRetriever() {
+            return networkStatusRetriever;
+        }
+
+        @Override
+        protected HostPinger buildDefaultHostPinger() {
+            return defaultHostPinger;
+        }
+
+        @Override
+        protected HostPinger buildHostPinger(String hostName, ResponseCodeValidator validator) {
+            return customHostPinger;
         }
     }
 }
