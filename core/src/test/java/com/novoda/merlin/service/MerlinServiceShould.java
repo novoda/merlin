@@ -228,7 +228,7 @@ public class MerlinServiceShould {
         }
 
         @Override
-        protected NetworkStatusRetriever buildCurrentNetworkStatusRetriever() {
+        protected NetworkStatusRetriever buildNetworkStatusRetriever() {
             return networkStatusRetriever;
         }
 

@@ -40,7 +40,17 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     public void onCreate() {
         super.onCreate();
         hostPinger = buildDefaultHostPinger();
-        networkStatusRetriever = buildCurrentNetworkStatusRetriever();
+        networkStatusRetriever = buildNetworkStatusRetriever();
+    }
+
+    @VisibleForTesting
+    protected NetworkStatusRetriever buildNetworkStatusRetriever() {
+        return new NetworkStatusRetriever(MerlinsBeard.from(this.getApplicationContext()));
+    }
+
+    @VisibleForTesting
+    protected HostPinger buildDefaultHostPinger() {
+        return HostPinger.withDefaultEndpointValidation(this);
     }
 
     public class LocalBinder extends Binder {
@@ -84,6 +94,11 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         hostPinger = buildHostPinger(hostname, validator);
     }
 
+    @VisibleForTesting
+    protected HostPinger buildHostPinger(String hostName, ResponseCodeValidator validator) {
+        return HostPinger.withCustomEndpointAndValidation(this, hostName, validator);
+    }
+
     public void setBindStatusListener(BindListener bindListener) {
         callbackCurrentStatus(bindListener);
     }
@@ -119,21 +134,6 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     private void getCurrentNetworkStatus() {
         networkStatusRetriever.fetchWithPing(hostPinger);
-    }
-
-    @VisibleForTesting
-    protected NetworkStatusRetriever buildCurrentNetworkStatusRetriever() {
-        return new NetworkStatusRetriever(MerlinsBeard.from(this.getApplicationContext()));
-    }
-
-    @VisibleForTesting
-    protected HostPinger buildDefaultHostPinger() {
-        return HostPinger.withDefaultEndpointValidation(this);
-    }
-
-    @VisibleForTesting
-    protected HostPinger buildHostPinger(String hostName, ResponseCodeValidator validator) {
-        return HostPinger.withCustomEndpointAndValidation(this, hostName, validator);
     }
 
     @Override
