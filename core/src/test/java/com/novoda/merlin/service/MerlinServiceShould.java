@@ -3,9 +3,13 @@ package com.novoda.merlin.service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.support.annotation.NonNull;
 
+import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.RxCallbacksManager;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
@@ -17,8 +21,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(JUnit4.class)
@@ -112,30 +115,71 @@ public class MerlinServiceShould {
         verify(rxCallbacksManager).onDisconnect();
     }
 
-    private ConnectivityChangeEvent createConnectivityChangeEvent(boolean isConnected) {
-        return new ConnectivityChangeEvent(isConnected, "info", "reason");
+    @Test
+    public void useDefaultNetworkStatusRetrieverWhenPingingDefaultEndpoint() {
+        ContextWrapper contextWrapper = stubbedContextWrapper();
+
+        NetworkStatusRetriever mockRetriever = mock(NetworkStatusRetriever.class);
+        HostPinger mockDefaultPinger = mock(HostPinger.class);
+        HostPinger mockCustomPinger = mock(HostPinger.class);
+
+        MerlinService merlinService = buildStubbedMerlinService(contextWrapper, mockRetriever, mockDefaultPinger, mockCustomPinger);
+
+        merlinService.onCreate();
+        merlinService.onConnectivityChanged(networkAvailableEvent());
+        verify(mockRetriever).fetchWithPing(mockDefaultPinger);
     }
 
-    private static class TestDoubleMerlinService extends MerlinService {
+    @Test
+    public void useCustomNetworkStatusRetrieverWhenPingingCustomEndpoint() {
+        ContextWrapper contextWrapper = stubbedContextWrapper();
 
-        private final PackageManager packageManager;
-        private final ComponentName receiver;
+        NetworkStatusRetriever mockRetriever = mock(NetworkStatusRetriever.class);
+        HostPinger mockDefaultPinger = mock(HostPinger.class);
+        HostPinger mockCustomPinger = mock(HostPinger.class);
 
-        TestDoubleMerlinService(PackageManager packageManager, ComponentName receiver) {
-            this.packageManager = packageManager;
-            this.receiver = receiver;
-        }
+        MerlinService merlinService = buildStubbedMerlinService(contextWrapper, mockRetriever, mockDefaultPinger, mockCustomPinger);
 
-        @Override
-        public PackageManager getPackageManager() {
-            return packageManager;
-        }
+        merlinService.onCreate();
+        merlinService.setHostname("some new host name", mock(ResponseCodeValidator.class));
+        merlinService.onConnectivityChanged(networkAvailableEvent());
+        verify(mockRetriever).fetchWithPing(mockCustomPinger);
+    }
 
-        @Override
-        protected ComponentName connectivityReceiverComponent() {
-            return receiver;
-        }
+    @NonNull
+    private ContextWrapper stubbedContextWrapper() {
+        Context context = mock(Context.class);
+        ContextWrapper contextWrapper = mock(ContextWrapper.class);
+        ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
+        when(contextWrapper.getApplicationContext()).thenReturn(context);
+        when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
+        return contextWrapper;
+    }
 
+    @NonNull
+    private MerlinService buildStubbedMerlinService(
+            ContextWrapper contextWrapper,
+            NetworkStatusRetriever retriever,
+            HostPinger defaultPinger,
+            HostPinger customPinger
+    ) {
+        return new TestDoubleMerlinServiceWithStubbedBuilders(
+                contextWrapper,
+                retriever,
+                defaultPinger,
+                customPinger
+        );
+    }
+
+    @NonNull
+    private ConnectivityChangeEvent networkAvailableEvent() {
+        ConnectivityChangeEvent connectivityChangeEvent = mock(ConnectivityChangeEvent.class);
+        when(connectivityChangeEvent.asNetworkStatus()).thenReturn(NetworkStatus.newAvailableInstance());
+        return connectivityChangeEvent;
+    }
+
+    private ConnectivityChangeEvent createConnectivityChangeEvent(boolean isConnected) {
+        return new ConnectivityChangeEvent(isConnected, "info", "reason");
     }
 
 }

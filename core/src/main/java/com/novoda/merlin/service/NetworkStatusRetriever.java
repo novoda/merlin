@@ -3,17 +3,15 @@ package com.novoda.merlin.service;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 
-class CurrentNetworkStatusRetriever {
+class NetworkStatusRetriever {
 
     private final MerlinsBeard merlinsBeard;
-    private final HostPinger hostPinger;
 
-    public CurrentNetworkStatusRetriever(MerlinsBeard merlinsBeard, HostPinger hostPinger) {
+    public NetworkStatusRetriever(MerlinsBeard merlinsBeard) {
         this.merlinsBeard = merlinsBeard;
-        this.hostPinger = hostPinger;
     }
 
-    public void fetchWithPing() {
+    public void fetchWithPing(HostPinger hostPinger) {
         if (merlinsBeard.isConnected()) {
             hostPinger.ping();
         } else {
