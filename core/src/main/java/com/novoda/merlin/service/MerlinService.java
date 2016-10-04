@@ -3,8 +3,11 @@ package com.novoda.merlin.service;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.VisibleForTesting;
 
@@ -24,6 +27,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     private final IBinder binder;
     private NetworkStatusRetriever networkStatusRetriever;
     private HostPinger hostPinger;
+    private ConnectivityReceiver connectivityReceiver;
 
     private ConnectListener connectListener;
     private DisconnectListener disconnectListener;
@@ -66,7 +70,21 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     }
 
     private void enableConnectivityReceiver() {
-        setReceiverState(PackageManager.COMPONENT_ENABLED_STATE_ENABLED);
+        if (isSdkVersionLessThan(Build.VERSION_CODES.N)) {
+            setReceiverState(PackageManager.COMPONENT_ENABLED_STATE_ENABLED);
+        } else {
+            getApplicationContext().registerReceiver(getConnectivityReceiver(), getConnectivityActionIntentFilter());
+        }
+    }
+
+    @VisibleForTesting
+    protected boolean isSdkVersionLessThan(int version) {
+        return Build.VERSION.SDK_INT < version;
+    }
+
+    @VisibleForTesting
+    protected IntentFilter getConnectivityActionIntentFilter() {
+        return new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
     }
 
     @Override
@@ -76,7 +94,11 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     }
 
     private void disableConnectivityReceiver() {
-        setReceiverState(PackageManager.COMPONENT_ENABLED_STATE_DISABLED);
+        if (isSdkVersionLessThan(Build.VERSION_CODES.N)) {
+            setReceiverState(PackageManager.COMPONENT_ENABLED_STATE_DISABLED);
+        } else {
+            getApplicationContext().unregisterReceiver(getConnectivityReceiver());
+        }
     }
 
     private void setReceiverState(int receiverState) {
@@ -88,6 +110,14 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     @VisibleForTesting
     protected ComponentName connectivityReceiverComponent() {
         return new ComponentName(this, ConnectivityReceiver.class);
+    }
+
+    @VisibleForTesting
+    protected ConnectivityReceiver getConnectivityReceiver() {
+        if (null == connectivityReceiver) {
+            connectivityReceiver = new ConnectivityReceiver();
+        }
+        return connectivityReceiver;
     }
 
     public void setHostname(String hostname, ResponseCodeValidator validator) {

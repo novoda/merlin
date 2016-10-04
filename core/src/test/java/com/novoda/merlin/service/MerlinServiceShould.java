@@ -79,6 +79,21 @@ public class MerlinServiceShould {
     }
 
     @Test
+    public void enableConnectivityReceiverInOnBindOnApiLevel24() throws Exception {
+        ContextWrapper contextWrapper = stubbedContextWrapper();
+
+        NetworkStatusRetriever mockRetriever = mock(NetworkStatusRetriever.class);
+        HostPinger mockDefaultPinger = mock(HostPinger.class);
+        HostPinger mockCustomPinger = mock(HostPinger.class);
+
+        MerlinService merlinService = buildStubbedMerlinServiceApiLevel24(contextWrapper, mockRetriever, mockDefaultPinger, mockCustomPinger);
+
+        merlinService.onBind(intent);
+
+        verify(contextWrapper).registerReceiver(merlinService.getConnectivityReceiver(), merlinService.getConnectivityActionIntentFilter());
+    }
+
+    @Test
     public void disableConnectivityReceiverInOnUnbind() throws Exception {
         PackageManager mockPackageManager = mock(PackageManager.class);
         ComponentName mockReceiver = mock(ComponentName.class);
@@ -91,6 +106,21 @@ public class MerlinServiceShould {
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                 PackageManager.DONT_KILL_APP
         );
+    }
+
+    @Test
+    public void disableConnectivityReceiverInOnUnbindOnApiLevel24() throws Exception {
+        ContextWrapper contextWrapper = stubbedContextWrapper();
+
+        NetworkStatusRetriever mockRetriever = mock(NetworkStatusRetriever.class);
+        HostPinger mockDefaultPinger = mock(HostPinger.class);
+        HostPinger mockCustomPinger = mock(HostPinger.class);
+
+        MerlinService merlinService = buildStubbedMerlinServiceApiLevel24(contextWrapper, mockRetriever, mockDefaultPinger, mockCustomPinger);
+
+        merlinService.onUnbind(intent);
+
+        verify(contextWrapper).unregisterReceiver(merlinService.getConnectivityReceiver());
     }
 
     @Test
@@ -164,6 +194,20 @@ public class MerlinServiceShould {
             HostPinger customPinger
     ) {
         return new TestDoubleMerlinServiceWithStubbedBuilders(
+                contextWrapper,
+                retriever,
+                defaultPinger,
+                customPinger
+        );
+    }
+
+    @NonNull
+    private MerlinService buildStubbedMerlinServiceApiLevel24(
+            ContextWrapper contextWrapper,
+            NetworkStatusRetriever retriever,
+            HostPinger defaultPinger,
+            HostPinger customPinger) {
+        return new TestDoubleMerlinServiceWithStubbedBuildersAndSdkVersionN(
                 contextWrapper,
                 retriever,
                 defaultPinger,

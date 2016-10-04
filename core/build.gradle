@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'bintray-release'
 
 dependencies {
-    compile 'com.android.support:support-v4:23.2.1'
+    compile 'com.android.support:support-v4:24.2.1'
     compile 'io.reactivex:rxandroid:1.0.1'
 
     testCompile 'org.easytesting:fest-assert-core:2.0M8'
@@ -18,11 +18,11 @@ tasks.withType(Test) {
 android {
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 24
     }
 
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
 
     testOptions {
         unitTests.returnDefaultValues = true
