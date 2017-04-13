@@ -66,10 +66,10 @@ public class MerlinsBeard {
     private boolean isConnectedTo(int networkType) {
         if (androidVersion.isMarshmallowOrHigher()) {
             return connectedToNetworkTypeForMarshmallow(networkType);
-        } else {
-            NetworkInfo networkInfo = connectivityManager.getNetworkInfo(networkType);
-            return networkInfo != null && networkInfo.isConnected();
         }
+
+        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(networkType);
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     /**
