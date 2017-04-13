@@ -70,7 +70,7 @@ public class MerlinsBeardShould {
     }
 
     @Test
-    public void returnTrueForIsConnectedToWifiWhenNetworkConnectedToWifiIsConnectedAndAndroidVersionIsBelowMarshmallow() {
+    public void returnTrueWhenConnectedToWifiAndAndroidVersionIsBelowMarshmallow() {
         when(mockAndroidVersion.isMarshmallowOrHigher()).thenReturn(false);
         when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(true);
@@ -81,7 +81,7 @@ public class MerlinsBeardShould {
     }
 
     @Test
-    public void returnFalseForIsConnectedToWifiWhenNetworkConnectedToWifiIsNotConnectedAndAndroidVersionIsBelowMarshmallow() {
+    public void returnFalseWhenNotConnectedToWifiAndAndroidVersionIsBelowMarshmallow() {
         when(mockAndroidVersion.isMarshmallowOrHigher()).thenReturn(false);
         when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(false);
@@ -93,7 +93,7 @@ public class MerlinsBeardShould {
 
     @TargetApi(Build.VERSION_CODES.M)
     @Test
-    public void returnTrueForIsConnectedToWifiWhenNetworkConnectedToWifiIsConnectedAndAndroidVersionIsMarshmallowOrAbove() {
+    public void returnTrueWhenConnectedToWifiAndAndroidVersionIsMarshmallowOrAbove() {
         givenNetworkState(NetworkInfo.State.CONNECTED, ConnectivityManager.TYPE_WIFI);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
@@ -103,7 +103,7 @@ public class MerlinsBeardShould {
 
     @TargetApi(Build.VERSION_CODES.M)
     @Test
-    public void returnFalseForIsConnectedToWifiWhenNetworkConnectedToWifiIsNotConnectedAndAndroidVersionIsMarshmallowOrAbove() {
+    public void returnWhenConnectedToWifiAndAndroidVersionIsMarshmallowOrAbove() {
         givenNetworkState(NetworkInfo.State.DISCONNECTED, ConnectivityManager.TYPE_WIFI);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
@@ -112,7 +112,7 @@ public class MerlinsBeardShould {
     }
 
     @Test
-    public void returnFalseForIsConnectedToWifiWhenNetworkConnectionIsNotAvailable() {
+    public void returnFalseWhenConnectionIsNotAvailable() {
         when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).thenReturn(null);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
@@ -121,7 +121,7 @@ public class MerlinsBeardShould {
     }
 
     @Test
-    public void returnTrueForIsConnectedToMobileWhenNetworkConnectedToMobileIsConnectedAndAndroidVersionIsBelowMarshmallow() {
+    public void returnTrueWhenConnectedToMobileNetworkAndAndroidVersionIsBelowMarshmallow() {
         when(mockAndroidVersion.isMarshmallowOrHigher()).thenReturn(false);
         when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(true);
@@ -132,7 +132,7 @@ public class MerlinsBeardShould {
     }
 
     @Test
-    public void returnFalseForIsConnectedToMobileWhenNetworkConnectedToMobileIsNotConnectedAndAndroidVersionIsBelowMarshmallow() {
+    public void returnFalseWhenNotConnectedToMobileNetworkAndAndroidVersionIsBelowMarshmallow() {
         when(mockAndroidVersion.isMarshmallowOrHigher()).thenReturn(false);
         when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(false);
@@ -144,7 +144,7 @@ public class MerlinsBeardShould {
 
     @TargetApi(Build.VERSION_CODES.M)
     @Test
-    public void returnTrueForIsConnectedToMobileWhenNetworkConnectedToMobileIsConnectedAndAndroidVersionIsMarshmallowOrAbove() {
+    public void returnTrueWhenConnectedToMobileNetworkAndAndroidVersionIsMarshmallowOrAbove() {
         givenNetworkState(NetworkInfo.State.CONNECTED, ConnectivityManager.TYPE_MOBILE);
 
         boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
@@ -154,7 +154,7 @@ public class MerlinsBeardShould {
 
     @TargetApi(Build.VERSION_CODES.M)
     @Test
-    public void returnFalseForIsConnectedToMobileWhenNetworkConnectedToMobileIsNotConnectedAndAndroidVersionIsMarshmallowOrAbove() {
+    public void returnFalseWhenNotConnectedToMobileNetworkAndAndroidVersionIsMarshmallowOrAbove() {
         givenNetworkState(NetworkInfo.State.DISCONNECTED, ConnectivityManager.TYPE_MOBILE);
 
         boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
