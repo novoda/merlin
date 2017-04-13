@@ -22,6 +22,9 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(JUnit4.class)
 public class MerlinsBeardShould {
 
+    private static final boolean DISCONNECTED = false;
+    private static final boolean CONNECTED = true;
+
     @Mock
     private ConnectivityManager mockConnectivityManager;
 
@@ -94,7 +97,7 @@ public class MerlinsBeardShould {
     @TargetApi(Build.VERSION_CODES.M)
     @Test
     public void returnTrueWhenConnectedToWifiAndAndroidVersionIsMarshmallowOrAbove() {
-        givenNetworkState(NetworkInfo.State.CONNECTED, ConnectivityManager.TYPE_WIFI);
+        givenNetworkState(CONNECTED, ConnectivityManager.TYPE_WIFI);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
 
@@ -104,7 +107,7 @@ public class MerlinsBeardShould {
     @TargetApi(Build.VERSION_CODES.M)
     @Test
     public void returnWhenConnectedToWifiAndAndroidVersionIsMarshmallowOrAbove() {
-        givenNetworkState(NetworkInfo.State.DISCONNECTED, ConnectivityManager.TYPE_WIFI);
+        givenNetworkState(DISCONNECTED, ConnectivityManager.TYPE_WIFI);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
 
@@ -145,7 +148,7 @@ public class MerlinsBeardShould {
     @TargetApi(Build.VERSION_CODES.M)
     @Test
     public void returnTrueWhenConnectedToMobileNetworkAndAndroidVersionIsMarshmallowOrAbove() {
-        givenNetworkState(NetworkInfo.State.CONNECTED, ConnectivityManager.TYPE_MOBILE);
+        givenNetworkState(CONNECTED, ConnectivityManager.TYPE_MOBILE);
 
         boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
 
@@ -155,7 +158,7 @@ public class MerlinsBeardShould {
     @TargetApi(Build.VERSION_CODES.M)
     @Test
     public void returnFalseWhenNotConnectedToMobileNetworkAndAndroidVersionIsMarshmallowOrAbove() {
-        givenNetworkState(NetworkInfo.State.DISCONNECTED, ConnectivityManager.TYPE_MOBILE);
+        givenNetworkState(DISCONNECTED, ConnectivityManager.TYPE_MOBILE);
 
         boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
 
@@ -163,11 +166,11 @@ public class MerlinsBeardShould {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    private void givenNetworkState(NetworkInfo.State state, int networkType) {
+    private void givenNetworkState(boolean isConnected, int networkType) {
         Network network = Mockito.mock(Network.class);
         NetworkInfo networkInfo = Mockito.mock(NetworkInfo.class);
-        when(networkInfo.getState()).thenReturn(state);
         when(networkInfo.getType()).thenReturn(networkType);
+        when(networkInfo.isConnected()).thenReturn(isConnected);
         when(mockConnectivityManager.getNetworkInfo(network)).thenReturn(networkInfo);
         when(mockAndroidVersion.isMarshmallowOrHigher()).thenReturn(true);
         when(mockConnectivityManager.getAllNetworks()).thenReturn(new Network[]{network});
