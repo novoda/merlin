@@ -92,7 +92,7 @@ public class MerlinsBeard {
             NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
 
             if (networkInfo.getType() == networkType) {
-                return networkInfo.getState() == NetworkInfo.State.CONNECTED;
+                return networkInfo.isConnected();
             }
 
         }
