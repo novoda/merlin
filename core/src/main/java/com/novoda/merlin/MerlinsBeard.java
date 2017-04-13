@@ -52,6 +52,27 @@ public class MerlinsBeard {
     }
 
     /**
+     * Provides a boolean representing whether a mobile network connection has been established and is active.
+     * NOTE: Therefore available does not necessarily mean that an internet connection
+     * is available. Also, there can be only one network connection at a time, so this would return false if
+     * the active connection is the Wi-Fi one, even if there is a (inactive) mobile network connection established.
+     *
+     * @return boolean true if a mobile network connection is available.
+     */
+    public boolean isConnectedToMobileNetwork() {
+        return isConnectedTo(ConnectivityManager.TYPE_MOBILE);
+    }
+
+    private boolean isConnectedTo(int networkType) {
+        if (androidVersion.isMarshmallowOrHigher()) {
+            return connectedToNetworkTypeForMarshmallow(networkType);
+        } else {
+            NetworkInfo networkInfo = connectivityManager.getNetworkInfo(networkType);
+            return networkInfo != null && networkInfo.isConnected();
+        }
+    }
+
+    /**
      * Provides a boolean representing whether a Wi-Fi network connection has been established.
      * <p/>
      * NOTE: Therefore available does not necessarily mean that an internet connection
@@ -60,12 +81,7 @@ public class MerlinsBeard {
      * @return boolean true if a Wi-Fi network connection is available.
      */
     public boolean isConnectedToWifi() {
-        if (androidVersion.isMarshmallowOrHigher()) {
-            return connectedToNetworkTypeForMarshmallow(ConnectivityManager.TYPE_WIFI);
-        } else {
-            NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-            return networkInfo != null && networkInfo.isConnected();
-        }
+        return isConnectedTo(ConnectivityManager.TYPE_WIFI);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -82,23 +98,6 @@ public class MerlinsBeard {
         }
 
         return false;
-    }
-
-    /**
-     * Provides a boolean representing whether a mobile network connection has been established and is active.
-     * NOTE: Therefore available does not necessarily mean that an internet connection
-     * is available. Also, there can be only one network connection at a time, so this would return false if
-     * the active connection is the Wi-Fi one, even if there is a (inactive) mobile network connection established.
-     *
-     * @return boolean true if a mobile network connection is available.
-     */
-    public boolean isConnectedToMobileNetwork() {
-        if (androidVersion.isMarshmallowOrHigher()) {
-            return connectedToNetworkTypeForMarshmallow(ConnectivityManager.TYPE_MOBILE);
-        } else {
-            NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-            return networkInfo != null && networkInfo.isConnected();
-        }
     }
 
     /**
