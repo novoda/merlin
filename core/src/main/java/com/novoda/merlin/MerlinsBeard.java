@@ -63,15 +63,6 @@ public class MerlinsBeard {
         return isConnectedTo(ConnectivityManager.TYPE_MOBILE);
     }
 
-    private boolean isConnectedTo(int networkType) {
-        if (androidVersion.isMarshmallowOrHigher()) {
-            return connectedToNetworkTypeForMarshmallow(networkType);
-        }
-
-        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(networkType);
-        return networkInfo != null && networkInfo.isConnected();
-    }
-
     /**
      * Provides a boolean representing whether a Wi-Fi network connection has been established.
      * <p/>
@@ -82,6 +73,15 @@ public class MerlinsBeard {
      */
     public boolean isConnectedToWifi() {
         return isConnectedTo(ConnectivityManager.TYPE_WIFI);
+    }
+
+    private boolean isConnectedTo(int networkType) {
+        if (androidVersion.isMarshmallowOrHigher()) {
+            return connectedToNetworkTypeForMarshmallow(networkType);
+        }
+
+        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(networkType);
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
