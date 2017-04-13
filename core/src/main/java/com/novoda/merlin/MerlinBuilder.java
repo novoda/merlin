@@ -1,7 +1,13 @@
 package com.novoda.merlin;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 
+import com.novoda.merlin.receiver.ConnectivityReceiver;
 import com.novoda.merlin.registerable.MerlinRegisterer;
 import com.novoda.merlin.registerable.Registerer;
 import com.novoda.merlin.registerable.bind.BindListener;
@@ -13,6 +19,7 @@ import com.novoda.merlin.registerable.connection.Connector;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.disconnection.Disconnector;
+import com.novoda.merlin.service.AndroidVersion;
 import com.novoda.merlin.service.MerlinService;
 import com.novoda.merlin.service.MerlinServiceBinder;
 import com.novoda.merlin.service.ResponseCodeValidator;
@@ -32,6 +39,7 @@ public class MerlinBuilder {
 
     private String endPoint = Merlin.DEFAULT_ENDPOINT;
     private ResponseCodeValidator responseCodeValidator = new DefaultEndpointResponseCodeValidator();
+    private AndroidVersion androidVersion = new AndroidVersion();
 
     MerlinBuilder() {
     }
@@ -157,8 +165,18 @@ public class MerlinBuilder {
                 endPoint,
                 responseCodeValidator
         );
+
+        if (androidVersion.isNougatOrHigher()) {
+            registerConnectivityReceiverForAndroidNougat(context);
+        }
+
         Registerer merlinRegisterer = new Registerer(connectableRegisterer, disconnectableRegisterer, bindableRegisterer);
         return new Merlin(merlinServiceBinder, merlinRegisterer, rxCallbacksManager);
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    private Intent registerConnectivityReceiverForAndroidNougat(Context context) {
+        return context.registerReceiver(new ConnectivityReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
 }
