@@ -94,7 +94,7 @@ public class MerlinsBeardShould {
     @TargetApi(Build.VERSION_CODES.M)
     @Test
     public void returnTrueForIsConnectedToWifiWhenNetworkConnectedToWifiIsConnectedAndAndroidVersionIsMarshmallowOrAbove() {
-        givenWifiNetworkState(NetworkInfo.State.CONNECTED);
+        givenNetworkState(NetworkInfo.State.CONNECTED, ConnectivityManager.TYPE_WIFI);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
 
@@ -104,7 +104,7 @@ public class MerlinsBeardShould {
     @TargetApi(Build.VERSION_CODES.M)
     @Test
     public void returnFalseForIsConnectedToWifiWhenNetworkConnectedToWifiIsNotConnectedAndAndroidVersionIsMarshmallowOrAbove() {
-        givenWifiNetworkState(NetworkInfo.State.DISCONNECTED);
+        givenNetworkState(NetworkInfo.State.DISCONNECTED, ConnectivityManager.TYPE_WIFI);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
 
@@ -121,17 +121,19 @@ public class MerlinsBeardShould {
     }
 
     @Test
-    public void returnTrueForIsConnectedToMobileWhenNetworkConnectedToMobileIsConnected() {
+    public void returnTrueForIsConnectedToMobileWhenNetworkConnectedToMobileIsConnectedAndAndroidVersionIsBelowMarshmallow() {
+        when(mockAndroidVersion.isMarshmallowOrHigher()).thenReturn(false);
         when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(true);
 
-        boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
+        boolean connectedToconnectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
 
-        assertThat(connectedToMobileNetwork).isTrue();
+        assertThat(connectedToconnectedToMobileNetwork).isTrue();
     }
 
     @Test
-    public void returnFalseForIsConnectedToMobileWhenNetworkConnectedToMobileIsNotConnected() {
+    public void returnFalseForIsConnectedToMobileWhenNetworkConnectedToMobileIsNotConnectedAndAndroidVersionIsBelowMarshmallow() {
+        when(mockAndroidVersion.isMarshmallowOrHigher()).thenReturn(false);
         when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(mockNetworkInfo);
         when(mockNetworkInfo.isConnected()).thenReturn(false);
 
@@ -140,20 +142,32 @@ public class MerlinsBeardShould {
         assertThat(connectedToMobileNetwork).isFalse();
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Test
-    public void returnFalseForIsConnectedToMobileWhenNetworkConnectionIsNotAvailable() {
-        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(null);
+    public void returnTrueForIsConnectedToMobileWhenNetworkConnectedToMobileIsConnectedAndAndroidVersionIsMarshmallowOrAbove() {
+        givenNetworkState(NetworkInfo.State.CONNECTED, ConnectivityManager.TYPE_MOBILE);
+
+        boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
+
+        assertThat(connectedToMobileNetwork).isTrue();
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Test
+    public void returnFalseForIsConnectedToMobileWhenNetworkConnectedToMobileIsNotConnectedAndAndroidVersionIsMarshmallowOrAbove() {
+        givenNetworkState(NetworkInfo.State.DISCONNECTED, ConnectivityManager.TYPE_MOBILE);
 
         boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
 
         assertThat(connectedToMobileNetwork).isFalse();
     }
 
-    private void givenWifiNetworkState(NetworkInfo.State state) {
+    @TargetApi(Build.VERSION_CODES.M)
+    private void givenNetworkState(NetworkInfo.State state, int networkType) {
         Network network = Mockito.mock(Network.class);
         NetworkInfo networkInfo = Mockito.mock(NetworkInfo.class);
         when(networkInfo.getState()).thenReturn(state);
-        when(networkInfo.getType()).thenReturn(ConnectivityManager.TYPE_WIFI);
+        when(networkInfo.getType()).thenReturn(networkType);
         when(mockConnectivityManager.getNetworkInfo(network)).thenReturn(networkInfo);
         when(mockAndroidVersion.isMarshmallowOrHigher()).thenReturn(true);
         when(mockConnectivityManager.getAllNetworks()).thenReturn(new Network[]{network});

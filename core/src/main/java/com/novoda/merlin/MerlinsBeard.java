@@ -61,7 +61,7 @@ public class MerlinsBeard {
      */
     public boolean isConnectedToWifi() {
         if (androidVersion.isMarshmallowOrHigher()) {
-            return isConnectedToWifiForMarshmallow();
+            return connectedToNetworkTypeForMarshmallow(ConnectivityManager.TYPE_WIFI);
         } else {
             NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
             return networkInfo != null && networkInfo.isConnected();
@@ -69,13 +69,13 @@ public class MerlinsBeard {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    private boolean isConnectedToWifiForMarshmallow() {
+    private boolean connectedToNetworkTypeForMarshmallow(int networkType) {
         Network[] networks = connectivityManager.getAllNetworks();
 
         for (Network network : networks) {
             NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
 
-            if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            if (networkInfo.getType() == networkType) {
                 return networkInfo.getState() == NetworkInfo.State.CONNECTED;
             }
 
@@ -93,8 +93,12 @@ public class MerlinsBeard {
      * @return boolean true if a mobile network connection is available.
      */
     public boolean isConnectedToMobileNetwork() {
-        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        return networkInfo != null && networkInfo.isConnected();
+        if (androidVersion.isMarshmallowOrHigher()) {
+            return connectedToNetworkTypeForMarshmallow(ConnectivityManager.TYPE_MOBILE);
+        } else {
+            NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            return networkInfo != null && networkInfo.isConnected();
+        }
     }
 
     /**
