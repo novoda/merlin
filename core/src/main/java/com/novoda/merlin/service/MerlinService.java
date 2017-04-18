@@ -45,7 +45,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         hostPinger = buildDefaultHostPinger();
         networkStatusRetriever = buildNetworkStatusRetriever();
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        compatibilityLayer = new CompatibilityLayer(getApplicationContext(), connectivityManager, new AndroidVersion());
+        compatibilityLayer = new CompatibilityLayer(getApplicationContext(), connectivityManager, new AndroidVersion(), this);
     }
 
     @VisibleForTesting

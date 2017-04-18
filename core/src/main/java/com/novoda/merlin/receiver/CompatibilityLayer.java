@@ -8,20 +8,26 @@ import android.net.NetworkRequest;
 import android.os.Build;
 
 import com.novoda.merlin.service.AndroidVersion;
+import com.novoda.merlin.service.MerlinService;
 
 public class CompatibilityLayer {
 
     private final Context context;
     private final ConnectivityManager connectivityManager;
     private final AndroidVersion androidVersion;
+    private final MerlinService merlinService;
 
     private ConnectivityReceiver connectivityReceiver;
     private MerlinNetworkCallbacks merlinNetworkCallbacks;
 
-    public CompatibilityLayer(Context context, ConnectivityManager connectivityManager, AndroidVersion androidVersion) {
+    public CompatibilityLayer(Context context,
+                              ConnectivityManager connectivityManager,
+                              AndroidVersion androidVersion,
+                              MerlinService merlinService) {
         this.context = context;
         this.connectivityManager = connectivityManager;
         this.androidVersion = androidVersion;
+        this.merlinService = merlinService;
     }
 
     public void bind() {
@@ -40,7 +46,7 @@ public class CompatibilityLayer {
 
     private MerlinNetworkCallbacks getMerlinNetworkCallbacks() {
         if (merlinNetworkCallbacks == null) {
-            merlinNetworkCallbacks = new MerlinNetworkCallbacks();
+            merlinNetworkCallbacks = new MerlinNetworkCallbacks(connectivityManager, merlinService);
         }
         return merlinNetworkCallbacks;
     }
