@@ -2,9 +2,7 @@ package com.novoda.merlin.receiver;
 
 import android.annotation.TargetApi;
 import android.net.ConnectivityManager;
-import android.net.LinkProperties;
 import android.net.Network;
-import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 
@@ -33,16 +31,6 @@ public class MerlinNetworkCallbacks extends ConnectivityManager.NetworkCallback 
 
     @Override
     public void onLost(Network network) {
-        notifyMerlinService(network);
-    }
-
-    @Override
-    public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
-        notifyMerlinService(network);
-    }
-
-    @Override
-    public void onLinkPropertiesChanged(Network network, LinkProperties linkProperties) {
         notifyMerlinService(network);
     }
 
