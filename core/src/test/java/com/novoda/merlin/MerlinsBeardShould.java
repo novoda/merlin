@@ -115,9 +115,20 @@ public class MerlinsBeardShould {
     }
 
     @Test
-    public void returnFalseWhenConnectionToWifiIsNotAvailable() {
+    public void returnFalseWhenConnectionToWifiIsNotAvailableAndAndroidVersionIsBelowLollipop() {
         when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(false);
         when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).thenReturn(null);
+
+        boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
+
+        assertThat(connectedToWifi).isFalse();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Test
+    public void returnFalseWhenConnectionToWifiIsNotAvailableAndAndroidVersionIsLollipopOrAbove() {
+        when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(true);
+        when(mockConnectivityManager.getAllNetworks()).thenReturn(new Network[]{});
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
 
@@ -164,6 +175,27 @@ public class MerlinsBeardShould {
         boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
 
         assertThat(connectedToMobileNetwork).isFalse();
+    }
+
+    @Test
+    public void returnFalseWhenConnectionToMobileIsNotAvailableAndAndroidVersionIsBelowLollipop() {
+        when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(false);
+        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(null);
+
+        boolean connectedToWifi = merlinsBeard.isConnectedToMobileNetwork();
+
+        assertThat(connectedToWifi).isFalse();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Test
+    public void returnFalseWhenConnectionToMobileIsNotAvailableAndAndroidVersionIsLollipopOrAbove() {
+        when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(true);
+        when(mockConnectivityManager.getAllNetworks()).thenReturn(new Network[]{});
+
+        boolean connectedToWifi = merlinsBeard.isConnectedToMobileNetwork();
+
+        assertThat(connectedToWifi).isFalse();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
