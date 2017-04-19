@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'bintray-release'
 
 dependencies {
-    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:support-annotations:25.3.1'
     compile 'io.reactivex:rxandroid:1.0.1'
 
     testCompile 'org.easytesting:fest-assert-core:2.0M8'
