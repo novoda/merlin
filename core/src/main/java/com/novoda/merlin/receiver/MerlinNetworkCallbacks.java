@@ -23,31 +23,26 @@ public class MerlinNetworkCallbacks extends ConnectivityManager.NetworkCallback 
 
     @Override
     public void onAvailable(Network network) {
-        super.onAvailable(network);
         notifyMerlinService(network);
     }
 
     @Override
     public void onLosing(Network network, int maxMsToLive) {
-        super.onLosing(network, maxMsToLive);
         notifyMerlinService(network);
     }
 
     @Override
     public void onLost(Network network) {
-        super.onLost(network);
         notifyMerlinService(network);
     }
 
     @Override
     public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
-        super.onCapabilitiesChanged(network, networkCapabilities);
         notifyMerlinService(network);
     }
 
     @Override
     public void onLinkPropertiesChanged(Network network, LinkProperties linkProperties) {
-        super.onLinkPropertiesChanged(network, linkProperties);
         notifyMerlinService(network);
     }
 
