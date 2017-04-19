@@ -20,8 +20,6 @@ import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
 public class MerlinService extends Service implements HostPinger.PingerCallback {
 
-    public static boolean USE_COMPONENT_ENABLED_SETTING = true;
-
     private final IBinder binder;
     private NetworkStatusRetriever networkStatusRetriever;
     private HostPinger hostPinger;

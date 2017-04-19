@@ -13,7 +13,6 @@ import com.novoda.merlin.registerable.connection.Connector;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.disconnection.Disconnector;
-import com.novoda.merlin.service.MerlinService;
 import com.novoda.merlin.service.MerlinServiceBinder;
 import com.novoda.merlin.service.ResponseCodeValidator;
 
@@ -103,19 +102,6 @@ public class MerlinBuilder {
      */
     public MerlinBuilder withLogging(boolean withLogging) {
         MerlinLog.LOGGING = withLogging;
-        return this;
-    }
-
-    /**
-     * Disables using the method disableComponentEnabledSetting() to enable and disable the connectivity receiver -
-     * This may be needed if you are experiencing the Android Runtime restarting after uninstalling your application - This appears to be an android bug, the issue is here http://code.google.com/p/android/issues/detail?id=55781&can=4&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
-     * The repercussions of this are that whenever a connectivity changed event is triggered, the application will be created but killed after realising the MerlinService has not been bound
-     * (assuming Application.onCreate() doesn't bind to the MerlinService).
-     *
-     * @return MerlinBuilder.
-     */
-    public MerlinBuilder disableComponentEnabledSetting() {
-        MerlinService.USE_COMPONENT_ENABLED_SETTING = false;
         return this;
     }
 
