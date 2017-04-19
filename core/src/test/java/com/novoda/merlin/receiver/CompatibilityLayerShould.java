@@ -12,9 +12,10 @@ import com.novoda.merlin.service.MerlinService;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -45,7 +46,7 @@ public class CompatibilityLayerShould {
 
         compatibilityLayer.bind();
 
-        verify(context).registerReceiver(any(ConnectivityReceiver.class), any(IntentFilter.class));
+        verify(context).registerReceiver(eq(compatibilityLayer.getConnectivityReceiver()), Matchers.refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -55,7 +56,7 @@ public class CompatibilityLayerShould {
 
         compatibilityLayer.bind();
 
-        verify(connectivityManager).registerNetworkCallback(any(NetworkRequest.class), any(MerlinNetworkCallbacks.class));
+        verify(connectivityManager).registerNetworkCallback(Matchers.refEq((new NetworkRequest.Builder()).build()), eq(compatibilityLayer.getMerlinNetworkCallbacks()));
     }
 
     @Test
@@ -64,7 +65,7 @@ public class CompatibilityLayerShould {
 
         compatibilityLayer.unbind();
 
-        verify(context).unregisterReceiver(any(ConnectivityReceiver.class));
+        verify(context).unregisterReceiver(compatibilityLayer.getConnectivityReceiver());
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -74,7 +75,7 @@ public class CompatibilityLayerShould {
 
         compatibilityLayer.unbind();
 
-        verify(connectivityManager).unregisterNetworkCallback(any(MerlinNetworkCallbacks.class));
+        verify(connectivityManager).unregisterNetworkCallback(compatibilityLayer.getMerlinNetworkCallbacks());
     }
 
 }
