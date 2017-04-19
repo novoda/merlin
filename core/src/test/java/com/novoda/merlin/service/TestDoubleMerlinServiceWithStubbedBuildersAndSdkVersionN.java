@@ -2,7 +2,6 @@ package com.novoda.merlin.service;
 
 import android.content.ContextWrapper;
 import android.content.IntentFilter;
-import android.os.Build;
 
 public class TestDoubleMerlinServiceWithStubbedBuildersAndSdkVersionN extends TestDoubleMerlinServiceWithStubbedBuilders {
 
@@ -13,11 +12,6 @@ public class TestDoubleMerlinServiceWithStubbedBuildersAndSdkVersionN extends Te
             HostPinger defaultHostPinger,
             HostPinger customHostPinger) {
         super(context, networkStatusRetriever, defaultHostPinger, customHostPinger);
-    }
-
-    @Override
-    protected boolean isSdkVersionLessThan(int version) {
-        return Build.VERSION_CODES.N < version;
     }
 
     @Override

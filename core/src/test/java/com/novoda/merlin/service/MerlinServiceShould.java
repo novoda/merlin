@@ -1,11 +1,9 @@
 package com.novoda.merlin.service;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 
@@ -61,66 +59,6 @@ public class MerlinServiceShould {
                 }
             }
         };
-    }
-
-    @Test
-    public void enableConnectivityReceiverInOnBind() throws Exception {
-        PackageManager mockPackageManager = mock(PackageManager.class);
-        ComponentName mockReceiver = mock(ComponentName.class);
-        MerlinService merlinService = new TestDoubleMerlinService(mockPackageManager, mockReceiver);
-
-        merlinService.onBind(intent);
-
-        verify(mockPackageManager).setComponentEnabledSetting(
-                mockReceiver,
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP
-        );
-    }
-
-    @Test
-    public void enableConnectivityReceiverInOnBindOnApiLevel24() throws Exception {
-        ContextWrapper contextWrapper = stubbedContextWrapper();
-
-        NetworkStatusRetriever mockRetriever = mock(NetworkStatusRetriever.class);
-        HostPinger mockDefaultPinger = mock(HostPinger.class);
-        HostPinger mockCustomPinger = mock(HostPinger.class);
-
-        MerlinService merlinService = buildStubbedMerlinServiceApiLevel24(contextWrapper, mockRetriever, mockDefaultPinger, mockCustomPinger);
-
-        merlinService.onBind(intent);
-
-        verify(contextWrapper).registerReceiver(merlinService.getConnectivityReceiver(), merlinService.getConnectivityActionIntentFilter());
-    }
-
-    @Test
-    public void disableConnectivityReceiverInOnUnbind() throws Exception {
-        PackageManager mockPackageManager = mock(PackageManager.class);
-        ComponentName mockReceiver = mock(ComponentName.class);
-        MerlinService merlinService = new TestDoubleMerlinService(mockPackageManager, mockReceiver);
-
-        merlinService.onUnbind(intent);
-
-        verify(mockPackageManager).setComponentEnabledSetting(
-                mockReceiver,
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-        );
-    }
-
-    @Test
-    public void disableConnectivityReceiverInOnUnbindOnApiLevel24() throws Exception {
-        ContextWrapper contextWrapper = stubbedContextWrapper();
-
-        NetworkStatusRetriever mockRetriever = mock(NetworkStatusRetriever.class);
-        HostPinger mockDefaultPinger = mock(HostPinger.class);
-        HostPinger mockCustomPinger = mock(HostPinger.class);
-
-        MerlinService merlinService = buildStubbedMerlinServiceApiLevel24(contextWrapper, mockRetriever, mockDefaultPinger, mockCustomPinger);
-
-        merlinService.onUnbind(intent);
-
-        verify(contextWrapper).unregisterReceiver(merlinService.getConnectivityReceiver());
     }
 
     @Test
