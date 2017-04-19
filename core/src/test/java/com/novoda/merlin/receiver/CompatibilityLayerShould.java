@@ -53,7 +53,7 @@ public class CompatibilityLayerShould {
     public void registerMerlinNetworkCallbackWhenAndroidVersionIsLollipopOrAbove() {
         when(androidVersion.isLollipopOrHigher()).thenReturn(true);
 
-        compatibilityLayer.unbind();
+        compatibilityLayer.bind();
 
         verify(connectivityManager).registerNetworkCallback(any(NetworkRequest.class), any(MerlinNetworkCallbacks.class));
     }
