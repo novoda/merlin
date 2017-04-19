@@ -76,16 +76,16 @@ public class MerlinsBeard {
     }
 
     private boolean isConnectedTo(int networkType) {
-        if (androidVersion.isMarshmallowOrHigher()) {
-            return connectedToNetworkTypeForMarshmallow(networkType);
+        if (androidVersion.isLollipopOrHigher()) {
+            return connectedToNetworkTypeForLollipop(networkType);
         }
 
         NetworkInfo networkInfo = connectivityManager.getNetworkInfo(networkType);
         return networkInfo != null && networkInfo.isConnected();
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    private boolean connectedToNetworkTypeForMarshmallow(int networkType) {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private boolean connectedToNetworkTypeForLollipop(int networkType) {
         Network[] networks = connectivityManager.getAllNetworks();
 
         for (Network network : networks) {
