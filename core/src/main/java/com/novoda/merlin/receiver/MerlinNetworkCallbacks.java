@@ -36,11 +36,15 @@ public class MerlinNetworkCallbacks extends ConnectivityManager.NetworkCallback 
 
     private void notifyMerlinService(Network network) {
         NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
-        boolean connected = networkInfo.isConnected();
-        String reason = networkInfo.getReason();
-        String extraInfo = networkInfo.getExtraInfo();
+        if (null != networkInfo) {
+            boolean connected = networkInfo.isConnected();
+            String reason = networkInfo.getReason();
+            String extraInfo = networkInfo.getExtraInfo();
 
-        merlinService.onConnectivityChanged(new ConnectivityChangeEvent(connected, extraInfo, reason));
+            merlinService.onConnectivityChanged(new ConnectivityChangeEvent(connected, extraInfo, reason));
+        } else {
+            merlinService.onConnectivityChanged(new ConnectivityChangeEvent(false));
+        }
     }
 
 }

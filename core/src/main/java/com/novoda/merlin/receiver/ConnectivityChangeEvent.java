@@ -8,6 +8,10 @@ public class ConnectivityChangeEvent {
     private final String info;
     private final String reason;
 
+    public ConnectivityChangeEvent(boolean isConnected) {
+        this(isConnected, "", "");
+    }
+
     public ConnectivityChangeEvent(boolean isConnected, String info, String reason) {
         this.isConnected = isConnected;
         this.info = info;
