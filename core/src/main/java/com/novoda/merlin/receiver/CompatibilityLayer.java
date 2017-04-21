@@ -6,7 +6,6 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkRequest;
 import android.os.Build;
-import android.support.annotation.VisibleForTesting;
 
 import com.novoda.merlin.service.AndroidVersion;
 import com.novoda.merlin.service.MerlinService;
@@ -56,8 +55,7 @@ public class CompatibilityLayer {
         context.registerReceiver(getConnectivityReceiver(), getConnectivityActionIntentFilter());
     }
 
-    @VisibleForTesting
-    protected ConnectivityReceiver getConnectivityReceiver() {
+    private ConnectivityReceiver getConnectivityReceiver() {
         if (connectivityReceiver == null) {
             connectivityReceiver = new ConnectivityReceiver();
         }

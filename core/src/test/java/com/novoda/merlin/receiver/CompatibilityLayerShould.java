@@ -41,21 +41,21 @@ public class CompatibilityLayerShould {
     }
 
     @Test
-    public void registerBroadcastReceiverWhenAndroidVersionIsBelowLollipop() {
-        when(androidVersion.isLollipopOrHigher()).thenReturn(false);
+    public void givenRegisteredBroadcastReceiverWhenBindingForASecondTimeThenOriginalBroadcastReceieverIsRegisteredAgain() {
+        ArgumentCaptor<ConnectivityReceiver> broadcastReceiver = givenRegisteredBroadcastReceiver();
 
         compatibilityLayer.bind();
 
-        verify(context).registerReceiver(eq(compatibilityLayer.getConnectivityReceiver()), Matchers.refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
+        verify(context, times(2)).registerReceiver(eq(broadcastReceiver.getValue()), Matchers.refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
     }
 
     @Test
-    public void unregisterBroadcastReceiverWhenAndroidVersionIsBelowLollipop() {
-        when(androidVersion.isLollipopOrHigher()).thenReturn(false);
+    public void givenRegisteredBroadcastReceiverWhenUnbindingThenUnregistersOriginallyRegisteredBroadcastReceiver() {
+        ArgumentCaptor<ConnectivityReceiver> broadcastReceiver = givenRegisteredBroadcastReceiver();
 
         compatibilityLayer.unbind();
 
-        verify(context).unregisterReceiver(compatibilityLayer.getConnectivityReceiver());
+        verify(context).unregisterReceiver(broadcastReceiver.getValue());
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -76,6 +76,14 @@ public class CompatibilityLayerShould {
         compatibilityLayer.unbind();
 
         verify(connectivityManager).unregisterNetworkCallback(merlinNetworkCallback.getValue());
+    }
+
+    private ArgumentCaptor<ConnectivityReceiver> givenRegisteredBroadcastReceiver() {
+        when(androidVersion.isLollipopOrHigher()).thenReturn(false);
+        compatibilityLayer.bind();
+        ArgumentCaptor<ConnectivityReceiver> argumentCaptor = ArgumentCaptor.forClass(ConnectivityReceiver.class);
+        verify(context).registerReceiver(argumentCaptor.capture(), Matchers.refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
+        return argumentCaptor;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
