@@ -64,7 +64,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     @Override
     public IBinder onBind(Intent intent) {
-        compatibilityLayer.bind();
+        compatibilityLayer.register();
         return binder;
     }
 
@@ -75,7 +75,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     @Override
     public boolean onUnbind(Intent intent) {
-        compatibilityLayer.unbind();
+        compatibilityLayer.unregister();
         return super.onUnbind(intent);
     }
 

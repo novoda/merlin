@@ -30,7 +30,7 @@ public class CompatibilityLayer {
         this.merlinService = merlinService;
     }
 
-    public void bind() {
+    public void register() {
         if (androidVersion.isLollipopOrHigher()) {
             registerNetworkCallbacks();
         } else {
@@ -66,7 +66,7 @@ public class CompatibilityLayer {
         return new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
     }
 
-    public void unbind() {
+    public void unregister() {
         if (androidVersion.isLollipopOrHigher()) {
             unregisterNetworkCallbacks();
         } else {
