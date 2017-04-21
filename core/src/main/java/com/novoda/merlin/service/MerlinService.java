@@ -12,7 +12,7 @@ import android.support.annotation.VisibleForTesting;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.RxCallbacksManager;
-import com.novoda.merlin.receiver.CompatibilityLayer;
+import com.novoda.merlin.receiver.ConnectivityChangesRegistrar;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
@@ -31,7 +31,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     private NetworkStatus networkStatus;
 
-    private CompatibilityLayer compatibilityLayer;
+    private ConnectivityChangesRegistrar connectivityChangesRegistrar;
 
     public MerlinService() {
         binder = new LocalBinder();
@@ -43,7 +43,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         hostPinger = buildDefaultHostPinger();
         networkStatusRetriever = buildNetworkStatusRetriever();
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        compatibilityLayer = new CompatibilityLayer(getApplicationContext(), connectivityManager, new AndroidVersion(), this);
+        connectivityChangesRegistrar = new ConnectivityChangesRegistrar(getApplicationContext(), connectivityManager, new AndroidVersion(), this);
     }
 
     @VisibleForTesting
@@ -64,7 +64,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     @Override
     public IBinder onBind(Intent intent) {
-        compatibilityLayer.register();
+        connectivityChangesRegistrar.register();
         return binder;
     }
 
@@ -75,7 +75,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     @Override
     public boolean onUnbind(Intent intent) {
-        compatibilityLayer.unregister();
+        connectivityChangesRegistrar.unregister();
         return super.onUnbind(intent);
     }
 

@@ -10,7 +10,7 @@ import android.os.Build;
 import com.novoda.merlin.service.AndroidVersion;
 import com.novoda.merlin.service.MerlinService;
 
-public class CompatibilityLayer {
+public class ConnectivityChangesRegistrar {
 
     private final Context context;
     private final ConnectivityManager connectivityManager;
@@ -20,10 +20,10 @@ public class CompatibilityLayer {
     private ConnectivityReceiver connectivityReceiver;
     private MerlinNetworkCallbacks merlinNetworkCallbacks;
 
-    public CompatibilityLayer(Context context,
-                              ConnectivityManager connectivityManager,
-                              AndroidVersion androidVersion,
-                              MerlinService merlinService) {
+    public ConnectivityChangesRegistrar(Context context,
+                                        ConnectivityManager connectivityManager,
+                                        AndroidVersion androidVersion,
+                                        MerlinService merlinService) {
         this.context = context;
         this.connectivityManager = connectivityManager;
         this.androidVersion = androidVersion;

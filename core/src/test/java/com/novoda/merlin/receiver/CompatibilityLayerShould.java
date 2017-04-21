@@ -31,20 +31,20 @@ public class CompatibilityLayerShould {
     @Mock
     private MerlinService merlinService;
 
-    private CompatibilityLayer compatibilityLayer;
+    private ConnectivityChangesRegistrar connectivityChangesRegistrar;
 
     @Before
     public void setUp() {
         initMocks(this);
 
-        compatibilityLayer = new CompatibilityLayer(context, connectivityManager, androidVersion, merlinService);
+        connectivityChangesRegistrar = new ConnectivityChangesRegistrar(context, connectivityManager, androidVersion, merlinService);
     }
 
     @Test
     public void givenRegisteredBroadcastReceiverWhenBindingForASecondTimeThenOriginalBroadcastReceieverIsRegisteredAgain() {
         ArgumentCaptor<ConnectivityReceiver> broadcastReceiver = givenRegisteredBroadcastReceiver();
 
-        compatibilityLayer.register();
+        connectivityChangesRegistrar.register();
 
         verify(context, times(2)).registerReceiver(eq(broadcastReceiver.getValue()), Matchers.refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
     }
@@ -53,7 +53,7 @@ public class CompatibilityLayerShould {
     public void givenRegisteredBroadcastReceiverWhenUnbindingThenUnregistersOriginallyRegisteredBroadcastReceiver() {
         ArgumentCaptor<ConnectivityReceiver> broadcastReceiver = givenRegisteredBroadcastReceiver();
 
-        compatibilityLayer.unregister();
+        connectivityChangesRegistrar.unregister();
 
         verify(context).unregisterReceiver(broadcastReceiver.getValue());
     }
@@ -63,7 +63,7 @@ public class CompatibilityLayerShould {
     public void givenRegisteredMerlinNetworkCallbacksWhenBindingForASecondTimeThenOriginalNetworkCallbacksIsRegisteredAgain() {
         ArgumentCaptor<MerlinNetworkCallbacks> merlinNetworkCallback = givenRegisteredMerlinNetworkCallbacks();
 
-        compatibilityLayer.register();
+        connectivityChangesRegistrar.register();
 
         verify(connectivityManager, times(2)).registerNetworkCallback(Matchers.refEq((new NetworkRequest.Builder()).build()), eq(merlinNetworkCallback.getValue()));
     }
@@ -73,14 +73,14 @@ public class CompatibilityLayerShould {
     public void givenRegisteredMerlinNetworkCallbackWhenUnbindingThenUnregistersOriginallyRegisteredNetworkCallbacks() {
         ArgumentCaptor<MerlinNetworkCallbacks> merlinNetworkCallback = givenRegisteredMerlinNetworkCallbacks();
 
-        compatibilityLayer.unregister();
+        connectivityChangesRegistrar.unregister();
 
         verify(connectivityManager).unregisterNetworkCallback(merlinNetworkCallback.getValue());
     }
 
     private ArgumentCaptor<ConnectivityReceiver> givenRegisteredBroadcastReceiver() {
         when(androidVersion.isLollipopOrHigher()).thenReturn(false);
-        compatibilityLayer.register();
+        connectivityChangesRegistrar.register();
         ArgumentCaptor<ConnectivityReceiver> argumentCaptor = ArgumentCaptor.forClass(ConnectivityReceiver.class);
         verify(context).registerReceiver(argumentCaptor.capture(), Matchers.refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
         return argumentCaptor;
@@ -89,7 +89,7 @@ public class CompatibilityLayerShould {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private ArgumentCaptor<MerlinNetworkCallbacks> givenRegisteredMerlinNetworkCallbacks() {
         when(androidVersion.isLollipopOrHigher()).thenReturn(true);
-        compatibilityLayer.register();
+        connectivityChangesRegistrar.register();
         ArgumentCaptor<MerlinNetworkCallbacks> argumentCaptor = ArgumentCaptor.forClass(MerlinNetworkCallbacks.class);
         verify(connectivityManager).registerNetworkCallback(Matchers.refEq((new NetworkRequest.Builder()).build()), argumentCaptor.capture());
         return argumentCaptor;
