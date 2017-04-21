@@ -20,7 +20,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class CompatibilityLayerShould {
+public class ConnectivityChangesRegistrarShould {
 
     @Mock
     private Context context;
