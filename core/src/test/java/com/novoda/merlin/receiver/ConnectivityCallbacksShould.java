@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class MerlinNetworkCallbacksShould {
+public class ConnectivityCallbacksShould {
 
     private static final boolean CONNECTED = true;
     private static final boolean DISCONNECTED = false;
@@ -35,12 +35,12 @@ public class MerlinNetworkCallbacksShould {
     @Mock
     private Network network;
 
-    private MerlinNetworkCallbacks networkCallbacks;
+    private ConnectivityCallbacks networkCallbacks;
 
     @Before
     public void setUp() {
         initMocks(this);
-        networkCallbacks = new MerlinNetworkCallbacks(connectivityManager, merlinService);
+        networkCallbacks = new ConnectivityCallbacks(connectivityManager, merlinService);
     }
 
     @Test

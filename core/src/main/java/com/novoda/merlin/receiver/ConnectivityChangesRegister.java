@@ -18,7 +18,7 @@ public class ConnectivityChangesRegister {
     private final MerlinService merlinService;
 
     private ConnectivityReceiver connectivityReceiver;
-    private MerlinNetworkCallbacks merlinNetworkCallbacks;
+    private ConnectivityCallbacks connectivityCallbacks;
 
     public ConnectivityChangesRegister(Context context,
                                        ConnectivityManager connectivityManager,
@@ -41,14 +41,14 @@ public class ConnectivityChangesRegister {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void registerNetworkCallbacks() {
         NetworkRequest.Builder builder = new NetworkRequest.Builder();
-        connectivityManager.registerNetworkCallback(builder.build(), getMerlinNetworkCallbacks());
+        connectivityManager.registerNetworkCallback(builder.build(), getConnectivityCallbacks());
     }
 
-    private MerlinNetworkCallbacks getMerlinNetworkCallbacks() {
-        if (merlinNetworkCallbacks == null) {
-            merlinNetworkCallbacks = new MerlinNetworkCallbacks(connectivityManager, merlinService);
+    private ConnectivityCallbacks getConnectivityCallbacks() {
+        if (connectivityCallbacks == null) {
+            connectivityCallbacks = new ConnectivityCallbacks(connectivityManager, merlinService);
         }
-        return merlinNetworkCallbacks;
+        return connectivityCallbacks;
     }
 
     private void registerBroadcastReceiver() {
@@ -76,7 +76,7 @@ public class ConnectivityChangesRegister {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void unregisterNetworkCallbacks() {
-        connectivityManager.unregisterNetworkCallback(getMerlinNetworkCallbacks());
+        connectivityManager.unregisterNetworkCallback(getConnectivityCallbacks());
     }
 
     private void unregisterBroadcastReceiver() {

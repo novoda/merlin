@@ -9,12 +9,12 @@ import android.os.Build;
 import com.novoda.merlin.service.MerlinService;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class MerlinNetworkCallbacks extends ConnectivityManager.NetworkCallback {
+public class ConnectivityCallbacks extends ConnectivityManager.NetworkCallback {
 
     private final ConnectivityManager connectivityManager;
     private final MerlinService merlinService;
 
-    public MerlinNetworkCallbacks(ConnectivityManager connectivityManager, MerlinService merlinService) {
+    public ConnectivityCallbacks(ConnectivityManager connectivityManager, MerlinService merlinService) {
         this.connectivityManager = connectivityManager;
         this.merlinService = merlinService;
     }

@@ -61,7 +61,7 @@ public class ConnectivityChangesRegisterShould {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
     public void givenRegisteredMerlinNetworkCallbacksWhenBindingForASecondTimeThenOriginalNetworkCallbacksIsRegisteredAgain() {
-        ArgumentCaptor<MerlinNetworkCallbacks> merlinNetworkCallback = givenRegisteredMerlinNetworkCallbacks();
+        ArgumentCaptor<ConnectivityCallbacks> merlinNetworkCallback = givenRegisteredMerlinNetworkCallbacks();
 
         connectivityChangesRegister.register();
 
@@ -71,7 +71,7 @@ public class ConnectivityChangesRegisterShould {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
     public void givenRegisteredMerlinNetworkCallbackWhenUnbindingThenUnregistersOriginallyRegisteredNetworkCallbacks() {
-        ArgumentCaptor<MerlinNetworkCallbacks> merlinNetworkCallback = givenRegisteredMerlinNetworkCallbacks();
+        ArgumentCaptor<ConnectivityCallbacks> merlinNetworkCallback = givenRegisteredMerlinNetworkCallbacks();
 
         connectivityChangesRegister.unregister();
 
@@ -87,10 +87,10 @@ public class ConnectivityChangesRegisterShould {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private ArgumentCaptor<MerlinNetworkCallbacks> givenRegisteredMerlinNetworkCallbacks() {
+    private ArgumentCaptor<ConnectivityCallbacks> givenRegisteredMerlinNetworkCallbacks() {
         when(androidVersion.isLollipopOrHigher()).thenReturn(true);
         connectivityChangesRegister.register();
-        ArgumentCaptor<MerlinNetworkCallbacks> argumentCaptor = ArgumentCaptor.forClass(MerlinNetworkCallbacks.class);
+        ArgumentCaptor<ConnectivityCallbacks> argumentCaptor = ArgumentCaptor.forClass(ConnectivityCallbacks.class);
         verify(connectivityManager).registerNetworkCallback(Matchers.refEq((new NetworkRequest.Builder()).build()), argumentCaptor.capture());
         return argumentCaptor;
     }
