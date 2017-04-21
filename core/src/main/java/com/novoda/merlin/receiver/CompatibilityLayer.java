@@ -45,8 +45,7 @@ public class CompatibilityLayer {
         connectivityManager.registerNetworkCallback(builder.build(), getMerlinNetworkCallbacks());
     }
 
-    @VisibleForTesting
-    protected MerlinNetworkCallbacks getMerlinNetworkCallbacks() {
+    private MerlinNetworkCallbacks getMerlinNetworkCallbacks() {
         if (merlinNetworkCallbacks == null) {
             merlinNetworkCallbacks = new MerlinNetworkCallbacks(connectivityManager, merlinService);
         }
