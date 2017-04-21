@@ -12,7 +12,7 @@ import android.support.annotation.VisibleForTesting;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.RxCallbacksManager;
-import com.novoda.merlin.receiver.ConnectivityChangesRegistrar;
+import com.novoda.merlin.receiver.ConnectivityChangesRegister;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
@@ -31,7 +31,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     private NetworkStatus networkStatus;
 
-    private ConnectivityChangesRegistrar connectivityChangesRegistrar;
+    private ConnectivityChangesRegister connectivityChangesRegister;
 
     public MerlinService() {
         binder = new LocalBinder();
@@ -43,7 +43,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         hostPinger = buildDefaultHostPinger();
         networkStatusRetriever = buildNetworkStatusRetriever();
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        connectivityChangesRegistrar = new ConnectivityChangesRegistrar(getApplicationContext(), connectivityManager, new AndroidVersion(), this);
+        connectivityChangesRegister = new ConnectivityChangesRegister(getApplicationContext(), connectivityManager, new AndroidVersion(), this);
     }
 
     @VisibleForTesting
@@ -64,7 +64,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     @Override
     public IBinder onBind(Intent intent) {
-        connectivityChangesRegistrar.register();
+        connectivityChangesRegister.register();
         return binder;
     }
 
@@ -75,7 +75,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     @Override
     public boolean onUnbind(Intent intent) {
-        connectivityChangesRegistrar.unregister();
+        connectivityChangesRegister.unregister();
         return super.onUnbind(intent);
     }
 

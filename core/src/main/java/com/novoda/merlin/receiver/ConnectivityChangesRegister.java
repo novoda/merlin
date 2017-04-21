@@ -10,7 +10,7 @@ import android.os.Build;
 import com.novoda.merlin.service.AndroidVersion;
 import com.novoda.merlin.service.MerlinService;
 
-public class ConnectivityChangesRegistrar {
+public class ConnectivityChangesRegister {
 
     private final Context context;
     private final ConnectivityManager connectivityManager;
@@ -20,10 +20,10 @@ public class ConnectivityChangesRegistrar {
     private ConnectivityReceiver connectivityReceiver;
     private MerlinNetworkCallbacks merlinNetworkCallbacks;
 
-    public ConnectivityChangesRegistrar(Context context,
-                                        ConnectivityManager connectivityManager,
-                                        AndroidVersion androidVersion,
-                                        MerlinService merlinService) {
+    public ConnectivityChangesRegister(Context context,
+                                       ConnectivityManager connectivityManager,
+                                       AndroidVersion androidVersion,
+                                       MerlinService merlinService) {
         this.context = context;
         this.connectivityManager = connectivityManager;
         this.androidVersion = androidVersion;
