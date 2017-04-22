@@ -140,20 +140,6 @@ public class MerlinServiceShould {
     }
 
     @NonNull
-    private MerlinService buildStubbedMerlinServiceApiLevel24(
-            ContextWrapper contextWrapper,
-            NetworkStatusRetriever retriever,
-            HostPinger defaultPinger,
-            HostPinger customPinger) {
-        return new TestDoubleMerlinServiceWithStubbedBuildersAndSdkVersionN(
-                contextWrapper,
-                retriever,
-                defaultPinger,
-                customPinger
-        );
-    }
-
-    @NonNull
     private ConnectivityChangeEvent networkAvailableEvent() {
         ConnectivityChangeEvent connectivityChangeEvent = mock(ConnectivityChangeEvent.class);
         when(connectivityChangeEvent.asNetworkStatus()).thenReturn(NetworkStatus.newAvailableInstance());
