@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 dependencies {
 
     compile project(':core')
+    compile project(':merlin-rxjava')
 
     compile('de.keyboardsurfer.android.widget:crouton:1.7') {
         exclude module: 'support-v4'
