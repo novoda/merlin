@@ -43,10 +43,6 @@ public class Merlin {
         registerer.registerBindable(bindable);
     }
 
-    public enum ConnectionStatus {
-        CONNECTED, DISCONNECTED
-    }
-
     public static class Builder extends MerlinBuilder {
     }
 
