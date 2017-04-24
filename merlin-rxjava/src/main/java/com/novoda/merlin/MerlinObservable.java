@@ -51,6 +51,7 @@ public class MerlinObservable {
 
                 merlin.bind();
             }
-        }, Emitter.BackpressureMode.BUFFER);
+        }, Emitter.BackpressureMode.BUFFER)
+                .distinctUntilChanged();
     }
 }
