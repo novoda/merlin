@@ -7,7 +7,6 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import com.novoda.merlin.MerlinLog;
-import com.novoda.merlin.RxCallbacksManager;
 import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
@@ -16,18 +15,16 @@ public class MerlinServiceBinder {
 
     private final Context context;
     private final ListenerHolder listenerHolder;
-    private final RxCallbacksManager rxCallbacksManager;
 
     private ResponseCodeValidator validator;
     private Connection connection;
     private String endpoint;
 
     public MerlinServiceBinder(Context context, ConnectListener connectListener, DisconnectListener disconnectListener,
-                               BindListener bindListener, RxCallbacksManager rxCallbacksManager, String endpoint, ResponseCodeValidator validator) {
+                               BindListener bindListener, String endpoint, ResponseCodeValidator validator) {
         this.validator = validator;
         listenerHolder = new ListenerHolder(connectListener, disconnectListener, bindListener);
         this.context = context;
-        this.rxCallbacksManager = rxCallbacksManager;
         this.endpoint = endpoint;
     }
 
@@ -38,7 +35,7 @@ public class MerlinServiceBinder {
 
     public void bindService() {
         if (connection == null) {
-            connection = new Connection(listenerHolder, rxCallbacksManager, endpoint, validator);
+            connection = new Connection(listenerHolder, endpoint, validator);
         }
         Intent intent = new Intent(context, MerlinService.class);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
@@ -59,15 +56,13 @@ public class MerlinServiceBinder {
 
         private final ListenerHolder listenerHolder;
         private final String endpoint;
-        private final RxCallbacksManager rxCallbacksManager;
         private final ResponseCodeValidator validator;
 
         private MerlinService merlinService;
 
-        Connection(ListenerHolder listenerHolder, RxCallbacksManager rxCallbacksManager, String endpoint, ResponseCodeValidator validator) {
+        Connection(ListenerHolder listenerHolder, String endpoint, ResponseCodeValidator validator) {
             this.listenerHolder = listenerHolder;
             this.endpoint = endpoint;
-            this.rxCallbacksManager = rxCallbacksManager;
             this.validator = validator;
         }
 
@@ -78,7 +73,6 @@ public class MerlinServiceBinder {
             merlinService.setConnectListener(listenerHolder.connectListener);
             merlinService.setDisconnectListener(listenerHolder.disconnectListener);
             merlinService.setBindStatusListener(listenerHolder.bindListener);
-            merlinService.setRxCallbacksManager(rxCallbacksManager);
             merlinService.setHostname(endpoint, validator);
         }
 

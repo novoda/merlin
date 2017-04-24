@@ -7,20 +7,16 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.service.MerlinServiceBinder;
 import com.novoda.merlin.service.ResponseCodeValidator;
 
-import rx.Observable;
-
 public class Merlin {
 
     public static final String DEFAULT_ENDPOINT = "http://connectivitycheck.android.com/generate_204";
 
     private final MerlinServiceBinder merlinServiceBinder;
     private final Registerer registerer;
-    private final RxCallbacksManager rxCallbacksManager;
 
-    Merlin(MerlinServiceBinder merlinServiceBinder, Registerer registerer, RxCallbacksManager rxCallbacksManager) {
+    Merlin(MerlinServiceBinder merlinServiceBinder, Registerer registerer) {
         this.merlinServiceBinder = merlinServiceBinder;
         this.registerer = registerer;
-        this.rxCallbacksManager = rxCallbacksManager;
     }
 
     public void setEndpoint(String endpoint, ResponseCodeValidator validator) {
@@ -49,16 +45,6 @@ public class Merlin {
 
     public enum ConnectionStatus {
         CONNECTED, DISCONNECTED
-    }
-
-    public Observable<ConnectionStatus> getConnectionStatusObservable() {
-        if (rxCallbacksManager == null) {
-            throw new MerlinException(
-                    "You must call " + Merlin.Builder.class.getSimpleName() + ".withRxJavaCallbacks()" +
-                            " before asking for a " + Observable.class.getSimpleName()
-            );
-        }
-        return rxCallbacksManager.getRxConnectionStatusObservable();
     }
 
     public static class Builder extends MerlinBuilder {
