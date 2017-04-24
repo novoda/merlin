@@ -1,2 +1,3 @@
+include ':merlin-rxjava'
 include 'core'
 include 'demo'
