@@ -21,4 +21,8 @@ public class AndroidVersion {
     public boolean isNougatOrHigher() {
         return deviceVersion >= Build.VERSION_CODES.N;
     }
+
+    public boolean isLollipopOrHigher() {
+        return deviceVersion >= Build.VERSION_CODES.LOLLIPOP;
+    }
 }
