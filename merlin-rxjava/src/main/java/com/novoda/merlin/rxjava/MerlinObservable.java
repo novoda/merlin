@@ -46,8 +46,7 @@ public class MerlinObservable {
 
                 emitter.setCancellation(new Cancellable() {
                     @Override
-                    public void cancel() throws
-                                         Exception {
+                    public void cancel() throws Exception {
                         merlin.unbind();
                     }
                 });
