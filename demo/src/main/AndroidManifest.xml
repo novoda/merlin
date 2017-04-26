@@ -23,8 +23,8 @@
       android:name=".presentation.DemoActivity"
       android:label="Demo Activity" />
     <activity
-      android:name=".presentation.RxDemoActivity"
-      android:label="RxDemo Activity" />
+      android:name=".presentation.RxJavaDemoActivity"
+      android:label="RxJava Demo Activity" />
   </application>
 
 </manifest>

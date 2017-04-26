@@ -27,7 +27,7 @@ public class HomeActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(HomeActivity.this, RxDemoActivity.class));
+                        startActivity(new Intent(HomeActivity.this, RxJavaDemoActivity.class));
                     }
                 }
         );

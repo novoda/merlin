@@ -17,7 +17,7 @@ import rx.Subscription;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
-public class RxDemoActivity extends Activity {
+public class RxJavaDemoActivity extends Activity {
 
     private NetworkStatusDisplayer networkStatusDisplayer;
     private MerlinsBeard merlinsBeard;
