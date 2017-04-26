@@ -1,7 +1,10 @@
-package com.novoda.merlin;
+package com.novoda.merlin.rxjava;
 
 import android.content.Context;
 
+import com.novoda.merlin.Merlin;
+import com.novoda.merlin.MerlinBuilder;
+import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
@@ -14,7 +17,7 @@ import rx.functions.Cancellable;
 public class MerlinObservable {
 
     public static Observable<NetworkStatus.State> from(Context context) {
-        MerlinBuilder builder = new MerlinBuilder();
+        MerlinBuilder builder = new Merlin.Builder();
         builder.withAllCallbacks();
         final Merlin merlin = builder.build(context);
 
