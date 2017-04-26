@@ -6,7 +6,7 @@ import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.Toast;
 
-import com.novoda.merlin.MerlinObservable;
+import com.novoda.merlin.rxjava.MerlinObservable;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
