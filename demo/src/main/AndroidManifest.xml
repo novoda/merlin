@@ -25,6 +25,9 @@
     <activity
       android:name=".presentation.RxJavaDemoActivity"
       android:label="RxJava Demo Activity" />
+    <activity
+      android:name=".presentation.RxJava2DemoActivity"
+      android:label="RxJava2 Demo Activity" />
   </application>
 
 </manifest>

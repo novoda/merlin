@@ -11,12 +11,21 @@
     android:text="@string/demo_launch_button" />
 
   <Button
-    android:id="@+id/rx_demo_launch_button"
+    android:id="@+id/rx_java_demo_launch_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@id/demo_launch_button"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
-    android:text="@string/rx_demo_launch_button" />
+    android:text="@string/rx_java_demo_launch_button" />
+
+  <Button
+    android:id="@+id/rx_java2_demo_launch_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/rx_java_demo_launch_button"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:text="@string/rx_java2_demo_launch_button" />
 
 </RelativeLayout>

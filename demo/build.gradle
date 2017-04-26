@@ -4,6 +4,7 @@ dependencies {
 
     compile project(':core')
     compile project(':merlin-rxjava')
+    compile project(':merlin-rxjava2')
 
     compile('de.keyboardsurfer.android.widget:crouton:1.7') {
         exclude module: 'support-v4'
@@ -20,4 +21,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
 
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
 }

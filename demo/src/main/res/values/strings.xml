@@ -10,6 +10,7 @@
   <string name="is_mobile_connected">Is connected to mobile network</string>
   <string name="get_network_subtype">Get network subtype</string>
   <string name="demo_launch_button">Launch demo</string>
-  <string name="rx_demo_launch_button">Launch Rx demo</string>
+  <string name="rx_java_demo_launch_button">Launch RxJava demo</string>
+  <string name="rx_java2_demo_launch_button">Launch RxJava2 demo</string>
 
 </resources>
