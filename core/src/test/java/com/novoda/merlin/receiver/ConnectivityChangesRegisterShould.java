@@ -41,7 +41,7 @@ public class ConnectivityChangesRegisterShould {
     }
 
     @Test
-    public void givenRegisteredBroadcastReceiverWhenBindingForASecondTimeThenOriginalBroadcastReceieverIsRegisteredAgain() {
+    public void givenRegisteredBroadcastReceiver_whenBindingForASecondTime_thenOriginalBroadcastReceieverIsRegisteredAgain() {
         ArgumentCaptor<ConnectivityReceiver> broadcastReceiver = givenRegisteredBroadcastReceiver();
 
         connectivityChangesRegister.register();
@@ -50,7 +50,7 @@ public class ConnectivityChangesRegisterShould {
     }
 
     @Test
-    public void givenRegisteredBroadcastReceiverWhenUnbindingThenUnregistersOriginallyRegisteredBroadcastReceiver() {
+    public void givenRegisteredBroadcastReceiver_whenUnbinding_thenUnregistersOriginallyRegisteredBroadcastReceiver() {
         ArgumentCaptor<ConnectivityReceiver> broadcastReceiver = givenRegisteredBroadcastReceiver();
 
         connectivityChangesRegister.unregister();
@@ -60,7 +60,7 @@ public class ConnectivityChangesRegisterShould {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
-    public void givenRegisteredMerlinNetworkCallbacksWhenBindingForASecondTimeThenOriginalNetworkCallbacksIsRegisteredAgain() {
+    public void givenRegisteredMerlinNetworkCallbacks_whenBindingForASecondTime_thenOriginalNetworkCallbacksIsRegisteredAgain() {
         ArgumentCaptor<ConnectivityCallbacks> merlinNetworkCallback = givenRegisteredMerlinNetworkCallbacks();
 
         connectivityChangesRegister.register();
@@ -70,7 +70,7 @@ public class ConnectivityChangesRegisterShould {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
-    public void givenRegisteredMerlinNetworkCallbackWhenUnbindingThenUnregistersOriginallyRegisteredNetworkCallbacks() {
+    public void givenRegisteredMerlinNetworkCallback_whenUnbinding_thenUnregistersOriginallyRegisteredNetworkCallbacks() {
         ArgumentCaptor<ConnectivityCallbacks> merlinNetworkCallback = givenRegisteredMerlinNetworkCallbacks();
 
         connectivityChangesRegister.unregister();
