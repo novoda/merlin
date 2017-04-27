@@ -21,7 +21,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
             boolean isConnected = getIsConnected(context, intent);
             String info = intent.getStringExtra(ConnectivityManager.EXTRA_EXTRA_INFO);
             String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
-            notifyMerlinService(context, new ConnectivityChangeEvent(isConnected, info, reason));
+            notifyMerlinService(context, ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(isConnected, info, reason));
         }
     }
 

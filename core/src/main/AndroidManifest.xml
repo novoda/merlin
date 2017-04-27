@@ -7,19 +7,9 @@
 
   <application>
 
-    <!-- SERVICE -->
-
     <service
-      android:exported="false"
-      android:name="com.novoda.merlin.service.MerlinService" />
-
-    <!-- RECEIVER -->
-
-    <receiver android:name="com.novoda.merlin.receiver.ConnectivityReceiver">
-      <intent-filter>
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-      </intent-filter>
-    </receiver>
+      android:name="com.novoda.merlin.service.MerlinService"
+      android:exported="false" />
 
   </application>
 

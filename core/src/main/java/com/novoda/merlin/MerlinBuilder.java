@@ -1,13 +1,7 @@
 package com.novoda.merlin;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.os.Build;
 
-import com.novoda.merlin.receiver.ConnectivityReceiver;
 import com.novoda.merlin.registerable.MerlinRegisterer;
 import com.novoda.merlin.registerable.Registerer;
 import com.novoda.merlin.registerable.bind.BindListener;
@@ -19,8 +13,6 @@ import com.novoda.merlin.registerable.connection.Connector;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.disconnection.Disconnector;
-import com.novoda.merlin.service.AndroidVersion;
-import com.novoda.merlin.service.MerlinService;
 import com.novoda.merlin.service.MerlinServiceBinder;
 import com.novoda.merlin.service.ResponseCodeValidator;
 
@@ -39,7 +31,6 @@ public class MerlinBuilder {
 
     private String endPoint = Merlin.DEFAULT_ENDPOINT;
     private ResponseCodeValidator responseCodeValidator = new DefaultEndpointResponseCodeValidator();
-    private AndroidVersion androidVersion = new AndroidVersion();
 
     MerlinBuilder() {
     }
@@ -115,19 +106,6 @@ public class MerlinBuilder {
     }
 
     /**
-     * Disables using the method disableComponentEnabledSetting() to enable and disable the connectivity receiver -
-     * This may be needed if you are experiencing the Android Runtime restarting after uninstalling your application - This appears to be an android bug, the issue is here http://code.google.com/p/android/issues/detail?id=55781&can=4&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
-     * The repercussions of this are that whenever a connectivity changed event is triggered, the application will be created but killed after realising the MerlinService has not been bound
-     * (assuming Application.onCreate() doesn't bind to the MerlinService).
-     *
-     * @return MerlinBuilder.
-     */
-    public MerlinBuilder disableComponentEnabledSetting() {
-        MerlinService.USE_COMPONENT_ENABLED_SETTING = false;
-        return this;
-    }
-
-    /**
      * Sets custom endpoint
      *
      * @param endPoint by default "http://connectivitycheck.android.com/generate_204".
@@ -166,17 +144,8 @@ public class MerlinBuilder {
                 responseCodeValidator
         );
 
-        if (androidVersion.isNougatOrHigher()) {
-            registerConnectivityReceiverForAndroidNougat(context);
-        }
-
         Registerer merlinRegisterer = new Registerer(connectableRegisterer, disconnectableRegisterer, bindableRegisterer);
         return new Merlin(merlinServiceBinder, merlinRegisterer, rxCallbacksManager);
-    }
-
-    @TargetApi(Build.VERSION_CODES.N)
-    private Intent registerConnectivityReceiverForAndroidNougat(Context context) {
-        return context.registerReceiver(new ConnectivityReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
 }
