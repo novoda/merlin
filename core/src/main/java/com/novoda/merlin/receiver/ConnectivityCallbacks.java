@@ -41,9 +41,9 @@ public class ConnectivityCallbacks extends ConnectivityManager.NetworkCallback {
             String reason = networkInfo.getReason();
             String extraInfo = networkInfo.getExtraInfo();
 
-            merlinService.onConnectivityChanged(new ConnectivityChangeEvent(connected, extraInfo, reason));
+            merlinService.onConnectivityChanged(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(connected, extraInfo, reason));
         } else {
-            merlinService.onConnectivityChanged(new ConnectivityChangeEvent(false));
+            merlinService.onConnectivityChanged(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(false));
         }
     }
 

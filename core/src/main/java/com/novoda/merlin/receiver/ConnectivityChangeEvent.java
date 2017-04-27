@@ -4,15 +4,22 @@ import com.novoda.merlin.NetworkStatus;
 
 public class ConnectivityChangeEvent {
 
+    private static final String WITHOUT_REASON = "";
+    private static final String WITHOUT_INFO = "";
+
     private final boolean isConnected;
     private final String info;
     private final String reason;
 
-    public ConnectivityChangeEvent(boolean isConnected) {
-        this(isConnected, "", "");
+    public static ConnectivityChangeEvent createWithoutNetworkInfo(boolean isConnected) {
+        return new ConnectivityChangeEvent(isConnected, WITHOUT_INFO, WITHOUT_REASON);
     }
 
-    public ConnectivityChangeEvent(boolean isConnected, String info, String reason) {
+    public static ConnectivityChangeEvent createWithNetworkInfoChangeEvent(boolean isConnected, String info, String reason) {
+        return new ConnectivityChangeEvent(isConnected, info, reason);
+    }
+
+    private ConnectivityChangeEvent(boolean isConnected, String info, String reason) {
         this.isConnected = isConnected;
         this.info = info;
         this.reason = reason;
@@ -36,11 +43,11 @@ public class ConnectivityChangeEvent {
 
     @Override
     public String toString() {
-        return "ConnectivityChangeEvent{" +
-                "isConnected=" + isConnected +
-                ", info='" + info + '\'' +
-                ", reason='" + reason + '\'' +
-                '}';
+        return "ConnectivityChangeEvent{"
+                + "isConnected=" + isConnected
+                + ", info='" + info + '\''
+                + ", reason='" + reason + '\''
+                + '}';
     }
 
     @Override
