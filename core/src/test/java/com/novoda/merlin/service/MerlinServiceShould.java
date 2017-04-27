@@ -140,7 +140,7 @@ public class MerlinServiceShould {
     }
 
     private ConnectivityChangeEvent createConnectivityChangeEvent(boolean isConnected) {
-        return new ConnectivityChangeEvent(isConnected, "info", "reason");
+        return ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(isConnected, "info", "reason");
     }
 
 }

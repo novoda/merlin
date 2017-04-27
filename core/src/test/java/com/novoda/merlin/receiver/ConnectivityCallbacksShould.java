@@ -84,7 +84,7 @@ public class ConnectivityCallbacksShould {
     private void thenConnectivityChangeEventContains(NetworkInfo networkInfo) {
         ArgumentCaptor<ConnectivityChangeEvent> argumentCaptor = ArgumentCaptor.forClass(ConnectivityChangeEvent.class);
         verify(merlinService).onConnectivityChanged(argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue()).isEqualTo(new ConnectivityChangeEvent(
+        assertThat(argumentCaptor.getValue()).isEqualTo(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(
                 networkInfo.isConnected(),
                 networkInfo.getExtraInfo(),
                 networkInfo.getReason()

@@ -13,10 +13,10 @@ import com.novoda.merlin.service.MerlinService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -41,16 +41,16 @@ public class ConnectivityChangesRegisterShould {
     }
 
     @Test
-    public void givenRegisteredBroadcastReceiverWhenBindingForASecondTimeThenOriginalBroadcastReceieverIsRegisteredAgain() {
+    public void givenRegisteredBroadcastReceiver_whenBindingForASecondTime_thenOriginalBroadcastReceieverIsRegisteredAgain() {
         ArgumentCaptor<ConnectivityReceiver> broadcastReceiver = givenRegisteredBroadcastReceiver();
 
         connectivityChangesRegister.register();
 
-        verify(context, times(2)).registerReceiver(eq(broadcastReceiver.getValue()), Matchers.refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
+        verify(context, times(2)).registerReceiver(eq(broadcastReceiver.getValue()), refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
     }
 
     @Test
-    public void givenRegisteredBroadcastReceiverWhenUnbindingThenUnregistersOriginallyRegisteredBroadcastReceiver() {
+    public void givenRegisteredBroadcastReceiver_whenUnbinding_thenUnregistersOriginallyRegisteredBroadcastReceiver() {
         ArgumentCaptor<ConnectivityReceiver> broadcastReceiver = givenRegisteredBroadcastReceiver();
 
         connectivityChangesRegister.unregister();
@@ -60,17 +60,17 @@ public class ConnectivityChangesRegisterShould {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
-    public void givenRegisteredMerlinNetworkCallbacksWhenBindingForASecondTimeThenOriginalNetworkCallbacksIsRegisteredAgain() {
+    public void givenRegisteredMerlinNetworkCallbacks_whenBindingForASecondTime_thenOriginalNetworkCallbacksIsRegisteredAgain() {
         ArgumentCaptor<ConnectivityCallbacks> merlinNetworkCallback = givenRegisteredMerlinNetworkCallbacks();
 
         connectivityChangesRegister.register();
 
-        verify(connectivityManager, times(2)).registerNetworkCallback(Matchers.refEq((new NetworkRequest.Builder()).build()), eq(merlinNetworkCallback.getValue()));
+        verify(connectivityManager, times(2)).registerNetworkCallback(refEq((new NetworkRequest.Builder()).build()), eq(merlinNetworkCallback.getValue()));
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
-    public void givenRegisteredMerlinNetworkCallbackWhenUnbindingThenUnregistersOriginallyRegisteredNetworkCallbacks() {
+    public void givenRegisteredMerlinNetworkCallback_whenUnbinding_thenUnregistersOriginallyRegisteredNetworkCallbacks() {
         ArgumentCaptor<ConnectivityCallbacks> merlinNetworkCallback = givenRegisteredMerlinNetworkCallbacks();
 
         connectivityChangesRegister.unregister();
@@ -82,7 +82,7 @@ public class ConnectivityChangesRegisterShould {
         when(androidVersion.isLollipopOrHigher()).thenReturn(false);
         connectivityChangesRegister.register();
         ArgumentCaptor<ConnectivityReceiver> argumentCaptor = ArgumentCaptor.forClass(ConnectivityReceiver.class);
-        verify(context).registerReceiver(argumentCaptor.capture(), Matchers.refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
+        verify(context).registerReceiver(argumentCaptor.capture(), refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
         return argumentCaptor;
     }
 
@@ -91,7 +91,7 @@ public class ConnectivityChangesRegisterShould {
         when(androidVersion.isLollipopOrHigher()).thenReturn(true);
         connectivityChangesRegister.register();
         ArgumentCaptor<ConnectivityCallbacks> argumentCaptor = ArgumentCaptor.forClass(ConnectivityCallbacks.class);
-        verify(connectivityManager).registerNetworkCallback(Matchers.refEq((new NetworkRequest.Builder()).build()), argumentCaptor.capture());
+        verify(connectivityManager).registerNetworkCallback(refEq((new NetworkRequest.Builder()).build()), argumentCaptor.capture());
         return argumentCaptor;
     }
 
