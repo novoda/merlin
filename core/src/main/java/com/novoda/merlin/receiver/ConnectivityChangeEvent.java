@@ -4,6 +4,7 @@ import com.novoda.merlin.NetworkStatus;
 
 public class ConnectivityChangeEvent {
 
+    private static final boolean WITHOUT_CONNECTION = false;
     private static final String WITHOUT_REASON = "";
     private static final String WITHOUT_INFO = "";
 
@@ -11,8 +12,8 @@ public class ConnectivityChangeEvent {
     private final String info;
     private final String reason;
 
-    public static ConnectivityChangeEvent createWithoutNetworkInfo(boolean isConnected) {
-        return new ConnectivityChangeEvent(isConnected, WITHOUT_INFO, WITHOUT_REASON);
+    static ConnectivityChangeEvent createWithoutConnection() {
+        return new ConnectivityChangeEvent(WITHOUT_CONNECTION, WITHOUT_INFO, WITHOUT_REASON);
     }
 
     public static ConnectivityChangeEvent createWithNetworkInfoChangeEvent(boolean isConnected, String info, String reason) {

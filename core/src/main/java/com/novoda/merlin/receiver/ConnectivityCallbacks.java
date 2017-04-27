@@ -43,7 +43,7 @@ class ConnectivityCallbacks extends ConnectivityManager.NetworkCallback {
 
             merlinService.onConnectivityChanged(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(connected, extraInfo, reason));
         } else {
-            merlinService.onConnectivityChanged(ConnectivityChangeEvent.createWithoutNetworkInfo(false));
+            merlinService.onConnectivityChanged(ConnectivityChangeEvent.createWithoutConnection());
         }
     }
 
