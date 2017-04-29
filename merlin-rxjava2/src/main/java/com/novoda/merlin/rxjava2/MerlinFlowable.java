@@ -19,13 +19,24 @@ import io.reactivex.functions.Cancellable;
 public class MerlinFlowable {
 
     public static Flowable<NetworkStatus.State> from(Context context) {
-        MerlinBuilder builder = new Merlin.Builder();
-        builder.withAllCallbacks();
-        final Merlin merlin = builder.build(context);
+        MerlinBuilder merlinBuilder = new Merlin.Builder();
+        merlinBuilder.withAllCallbacks();
+        return from(context, merlinBuilder);
+    }
 
+    public static Flowable<NetworkStatus.State> from(Context context, MerlinBuilder merlinBuilder) {
+        return from(merlinBuilder.build(context));
+    }
+
+    public static Flowable<NetworkStatus.State> from(Merlin merlin) {
+        return createFlowable(merlin);
+    }
+
+    private static Flowable<NetworkStatus.State> createFlowable(final Merlin merlin) {
         return Flowable.create(new FlowableOnSubscribe<NetworkStatus.State>() {
             @Override
-            public void subscribe(@NonNull final FlowableEmitter<NetworkStatus.State> emitter) throws Exception {
+            public void subscribe(@NonNull final FlowableEmitter<NetworkStatus.State> emitter) throws
+                                                                                               Exception {
                 merlin.registerConnectable(new Connectable() {
                     @Override
                     public void onConnect() {
@@ -47,13 +58,13 @@ public class MerlinFlowable {
                 });
                 emitter.setCancellable(new Cancellable() {
                     @Override
-                    public void cancel() throws Exception {
+                    public void cancel() throws
+                                         Exception {
                         merlin.unbind();
                     }
                 });
 
                 merlin.bind();
-
             }
         }, BackpressureStrategy.BUFFER)
                        .distinctUntilChanged();

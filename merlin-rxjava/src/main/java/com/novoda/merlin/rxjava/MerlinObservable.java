@@ -17,10 +17,20 @@ import rx.functions.Cancellable;
 public class MerlinObservable {
 
     public static Observable<NetworkStatus.State> from(Context context) {
-        MerlinBuilder builder = new Merlin.Builder();
-        builder.withAllCallbacks();
-        final Merlin merlin = builder.build(context);
+        MerlinBuilder merlinBuilder = new Merlin.Builder();
+        merlinBuilder.withAllCallbacks();
+        return from(context, merlinBuilder);
+    }
 
+    public static Observable<NetworkStatus.State> from(Context context, MerlinBuilder merlinBuilder) {
+        return from(merlinBuilder.build(context));
+    }
+
+    public static Observable<NetworkStatus.State> from(Merlin merlin) {
+        return createObservable(merlin);
+    }
+
+    private static Observable<NetworkStatus.State> createObservable(final Merlin merlin) {
         return Observable.create(new Action1<Emitter<NetworkStatus.State>>() {
             @Override
             public void call(final Emitter<NetworkStatus.State> emitter) {
@@ -46,7 +56,8 @@ public class MerlinObservable {
 
                 emitter.setCancellation(new Cancellable() {
                     @Override
-                    public void cancel() throws Exception {
+                    public void cancel() throws
+                                         Exception {
                         merlin.unbind();
                     }
                 });
@@ -54,6 +65,6 @@ public class MerlinObservable {
                 merlin.bind();
             }
         }, Emitter.BackpressureMode.BUFFER)
-                .distinctUntilChanged();
+                         .distinctUntilChanged();
     }
 }
