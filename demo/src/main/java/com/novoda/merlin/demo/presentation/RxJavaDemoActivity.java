@@ -97,16 +97,8 @@ public class RxJavaDemoActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        Subscription merlinSubscription = MerlinObservable.from(this).subscribe(new Action1<NetworkStatus.State>() {
-            @Override
-            public void call(NetworkStatus.State state) {
-                if (NetworkStatus.State.AVAILABLE == state) {
-                    networkStatusDisplayer.displayConnected();
-                } else {
-                    networkStatusDisplayer.displayDisconnected();
-                }
-            }
-        });
+        Subscription merlinSubscription = MerlinObservable.from(this)
+                                                          .subscribe(new NetworkAction(networkStatusDisplayer));
         subscriptions.add(merlinSubscription);
     }
 
@@ -115,6 +107,24 @@ public class RxJavaDemoActivity extends Activity {
         super.onPause();
         networkStatusDisplayer.reset();
         subscriptions.clear();
+    }
+
+    private static class NetworkAction implements Action1<NetworkStatus.State> {
+
+        private final NetworkStatusDisplayer networkStatusDisplayer;
+
+        NetworkAction(NetworkStatusDisplayer networkStatusDisplayer) {
+            this.networkStatusDisplayer = networkStatusDisplayer;
+        }
+
+        @Override
+        public void call(NetworkStatus.State state) {
+            if (NetworkStatus.State.AVAILABLE == state) {
+                networkStatusDisplayer.displayConnected();
+            } else {
+                networkStatusDisplayer.displayDisconnected();
+            }
+        }
     }
 
 }

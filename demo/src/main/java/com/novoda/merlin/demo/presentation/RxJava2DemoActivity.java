@@ -98,16 +98,8 @@ public class RxJava2DemoActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-         Disposable merlinDisposable = MerlinFlowable.from(this).subscribe(new Consumer<NetworkStatus.State>() {
-             @Override
-             public void accept(@NonNull NetworkStatus.State state) throws Exception {
-                 if (NetworkStatus.State.AVAILABLE == state) {
-                     networkStatusDisplayer.displayConnected();
-                 } else {
-                     networkStatusDisplayer.displayDisconnected();
-                 }
-             }
-         });
+         Disposable merlinDisposable = MerlinFlowable.from(this)
+                                                     .subscribe(new NetworkConsumer(networkStatusDisplayer));
         disposables.add(merlinDisposable);
     }
 
@@ -116,6 +108,24 @@ public class RxJava2DemoActivity extends Activity {
         super.onPause();
         networkStatusDisplayer.reset();
         disposables.clear();
+    }
+
+    private static class NetworkConsumer implements Consumer<NetworkStatus.State> {
+
+        private final NetworkStatusDisplayer networkStatusDisplayer;
+
+        NetworkConsumer(NetworkStatusDisplayer networkStatusDisplayer) {
+            this.networkStatusDisplayer = networkStatusDisplayer;
+        }
+
+        @Override
+        public void accept(@NonNull NetworkStatus.State state) throws Exception {
+            if (NetworkStatus.State.AVAILABLE == state) {
+                networkStatusDisplayer.displayConnected();
+            } else {
+                networkStatusDisplayer.displayDisconnected();
+            }
+        }
     }
 
 }
