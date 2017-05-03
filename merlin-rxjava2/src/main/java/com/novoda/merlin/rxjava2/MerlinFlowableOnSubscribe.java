@@ -21,8 +21,7 @@ class MerlinFlowableOnSubscribe implements FlowableOnSubscribe<NetworkStatus.Sta
     }
 
     @Override
-    public void subscribe(@NonNull final FlowableEmitter<NetworkStatus.State> emitter) throws
-                                                                                       Exception {
+    public void subscribe(@NonNull final FlowableEmitter<NetworkStatus.State> emitter) throws Exception {
         merlin.registerConnectable(new Connectable() {
             @Override
             public void onConnect() {
@@ -44,8 +43,7 @@ class MerlinFlowableOnSubscribe implements FlowableOnSubscribe<NetworkStatus.Sta
         });
         emitter.setCancellable(new Cancellable() {
             @Override
-            public void cancel() throws
-                                 Exception {
+            public void cancel() throws Exception {
                 merlin.unbind();
             }
         });
