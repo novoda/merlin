@@ -12,13 +12,12 @@ import io.reactivex.Flowable;
 public class MerlinFlowable {
 
     public static Flowable<NetworkStatus.State> from(Context context) {
-        MerlinBuilder merlinBuilder = new Merlin.Builder();
-        merlinBuilder.withAllCallbacks();
-        return from(context, merlinBuilder);
+        return from(context, new Merlin.Builder());
     }
 
     public static Flowable<NetworkStatus.State> from(Context context, MerlinBuilder merlinBuilder) {
-        return from(merlinBuilder.build(context));
+        return from(merlinBuilder.withAllCallbacks()
+                                 .build(context));
     }
 
     public static Flowable<NetworkStatus.State> from(Merlin merlin) {
