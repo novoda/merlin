@@ -21,33 +21,50 @@ class MerlinFlowableOnSubscribe implements FlowableOnSubscribe<NetworkStatus.Sta
     }
 
     @Override
-    public void subscribe(@NonNull final FlowableEmitter<NetworkStatus.State> emitter) throws Exception {
-        merlin.registerConnectable(new Connectable() {
+    public void subscribe(@NonNull FlowableEmitter<NetworkStatus.State> emitter) throws Exception {
+        merlin.registerConnectable(createConnectable(emitter));
+        merlin.registerDisconnectable(createDisconnectable(emitter));
+        merlin.registerBindable(createBindable(emitter));
+
+        emitter.setCancellable(createCancellable());
+
+        merlin.bind();
+    }
+
+    private Connectable createConnectable(final FlowableEmitter<NetworkStatus.State> emitter) {
+        return new Connectable() {
             @Override
             public void onConnect() {
                 emitter.onNext(NetworkStatus.State.AVAILABLE);
             }
-        });
-        merlin.registerDisconnectable(new Disconnectable() {
+        };
+    }
+
+    private Disconnectable createDisconnectable(final FlowableEmitter<NetworkStatus.State> emitter) {
+        return new Disconnectable() {
             @Override
             public void onDisconnect() {
                 emitter.onNext(NetworkStatus.State.UNAVAILABLE);
             }
-        });
-        merlin.registerBindable(new Bindable() {
+        };
+    }
+
+    private Bindable createBindable(final FlowableEmitter<NetworkStatus.State> emitter) {
+        return new Bindable() {
             @Override
             public void onBind(NetworkStatus networkStatus) {
                 NetworkStatus.State current = networkStatus.isAvailable() ? NetworkStatus.State.AVAILABLE : NetworkStatus.State.UNAVAILABLE;
                 emitter.onNext(current);
             }
-        });
-        emitter.setCancellable(new Cancellable() {
+        };
+    }
+
+    private Cancellable createCancellable() {
+        return new Cancellable() {
             @Override
             public void cancel() throws Exception {
                 merlin.unbind();
             }
-        });
-
-        merlin.bind();
+        };
     }
 }
