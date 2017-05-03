@@ -11,13 +11,10 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subscribers.TestSubscriber;
 
-import java.util.List;
-
 import org.junit.Test;
 
 import org.mockito.ArgumentCaptor;
 
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -42,9 +39,8 @@ public class MerlinFlowableShould {
         verify(merlin).registerConnectable(argumentCaptor.capture());
         argumentCaptor.getValue()
                       .onConnect();
-        List<NetworkStatus.State> stateList = testSubscriber.values();
-        assertTrue(stateList.size() == 1);
-        assertTrue(stateList.get(0) == NetworkStatus.State.AVAILABLE);
+
+        testSubscriber.assertValue(NetworkStatus.State.AVAILABLE);
     }
 
     @Test
@@ -57,9 +53,8 @@ public class MerlinFlowableShould {
         verify(merlin).registerDisconnectable(argumentCaptor.capture());
         argumentCaptor.getValue()
                       .onDisconnect();
-        List<NetworkStatus.State> stateList = testSubscriber.values();
-        assertTrue(stateList.size() == 1);
-        assertTrue(stateList.get(0) == NetworkStatus.State.UNAVAILABLE);
+
+        testSubscriber.assertValue(NetworkStatus.State.UNAVAILABLE);
     }
 
     @Test
@@ -72,9 +67,8 @@ public class MerlinFlowableShould {
         verify(merlin).registerBindable(argumentCaptor.capture());
         argumentCaptor.getValue()
                       .onBind(NetworkStatus.newAvailableInstance());
-        List<NetworkStatus.State> stateList = testSubscriber.values();
-        assertTrue(stateList.size() == 1);
-        assertTrue(stateList.get(0) == NetworkStatus.State.AVAILABLE);
+
+        testSubscriber.assertValue(NetworkStatus.State.AVAILABLE);
     }
 
     @Test
@@ -87,9 +81,8 @@ public class MerlinFlowableShould {
         verify(merlin).registerBindable(argumentCaptor.capture());
         argumentCaptor.getValue()
                       .onBind(NetworkStatus.newUnavailableInstance());
-        List<NetworkStatus.State> stateList = testSubscriber.values();
-        assertTrue(stateList.size() == 1);
-        assertTrue(stateList.get(0) == NetworkStatus.State.UNAVAILABLE);
+
+        testSubscriber.assertValue(NetworkStatus.State.UNAVAILABLE);
     }
 
     @Test
