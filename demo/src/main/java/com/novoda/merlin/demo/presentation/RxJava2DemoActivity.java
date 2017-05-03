@@ -100,8 +100,7 @@ public class RxJava2DemoActivity extends Activity {
         super.onResume();
          Disposable merlinDisposable = MerlinFlowable.from(this).subscribe(new Consumer<NetworkStatus.State>() {
              @Override
-             public void accept(@NonNull NetworkStatus.State state) throws
-                                                                    Exception {
+             public void accept(@NonNull NetworkStatus.State state) throws Exception {
                  if (NetworkStatus.State.AVAILABLE == state) {
                      networkStatusDisplayer.displayConnected();
                  } else {
