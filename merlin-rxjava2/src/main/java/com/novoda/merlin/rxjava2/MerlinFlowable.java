@@ -25,7 +25,7 @@ public class MerlinFlowable {
     }
 
     private static Flowable<NetworkStatus.State> createFlowable(Merlin merlin) {
-        return Flowable.create(new MerlinFlowableOnSubscribe(merlin), BackpressureStrategy.BUFFER)
+        return Flowable.create(new MerlinFlowableOnSubscribe(merlin), BackpressureStrategy.LATEST)
                        .distinctUntilChanged();
     }
 }
