@@ -12,7 +12,7 @@ import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.functions.Cancellable;
 
-class MerlinFlowableOnSubscribe implements FlowableOnSubscribe<NetworkStatus.State> {
+class MerlinFlowableOnSubscribe implements FlowableOnSubscribe<NetworkStatus> {
 
     private Merlin merlin;
 
@@ -21,7 +21,7 @@ class MerlinFlowableOnSubscribe implements FlowableOnSubscribe<NetworkStatus.Sta
     }
 
     @Override
-    public void subscribe(@NonNull FlowableEmitter<NetworkStatus.State> emitter) throws Exception {
+    public void subscribe(@NonNull FlowableEmitter<NetworkStatus> emitter) throws Exception {
         merlin.registerConnectable(createConnectable(emitter));
         merlin.registerDisconnectable(createDisconnectable(emitter));
         merlin.registerBindable(createBindable(emitter));
@@ -31,29 +31,28 @@ class MerlinFlowableOnSubscribe implements FlowableOnSubscribe<NetworkStatus.Sta
         merlin.bind();
     }
 
-    private Connectable createConnectable(final FlowableEmitter<NetworkStatus.State> emitter) {
+    private Connectable createConnectable(final FlowableEmitter<NetworkStatus> emitter) {
         return new Connectable() {
             @Override
             public void onConnect() {
-                emitter.onNext(NetworkStatus.State.AVAILABLE);
+                emitter.onNext(NetworkStatus.newAvailableInstance());
             }
         };
     }
 
-    private Disconnectable createDisconnectable(final FlowableEmitter<NetworkStatus.State> emitter) {
+    private Disconnectable createDisconnectable(final FlowableEmitter<NetworkStatus> emitter) {
         return new Disconnectable() {
             @Override
             public void onDisconnect() {
-                emitter.onNext(NetworkStatus.State.UNAVAILABLE);
+                emitter.onNext(NetworkStatus.newUnavailableInstance());
             }
         };
     }
 
-    private Bindable createBindable(final FlowableEmitter<NetworkStatus.State> emitter) {
+    private Bindable createBindable(final FlowableEmitter<NetworkStatus> emitter) {
         return new Bindable() {
             @Override
-            public void onBind(NetworkStatus networkStatus) {
-                NetworkStatus.State current = networkStatus.isAvailable() ? NetworkStatus.State.AVAILABLE : NetworkStatus.State.UNAVAILABLE;
+            public void onBind(NetworkStatus current) {
                 emitter.onNext(current);
             }
         };

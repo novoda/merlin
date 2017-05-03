@@ -8,14 +8,14 @@ import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.subscribers.TestSubscriber;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+
+import io.reactivex.disposables.Disposable;
+import io.reactivex.subscribers.TestSubscriber;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -26,7 +26,7 @@ public class MerlinFlowableShould {
     @Mock
     Merlin merlin;
 
-    TestSubscriber<NetworkStatus.State> testSubscriber;
+    TestSubscriber<NetworkStatus> testSubscriber;
 
     @Before
     public void setUp() {
@@ -38,54 +38,55 @@ public class MerlinFlowableShould {
 
     @Test
     public void unbindWhenDisposed() {
-        Disposable disposable = MerlinFlowable.from(merlin).subscribe();
+        Disposable disposable = MerlinFlowable.from(merlin)
+                                              .subscribe();
         disposable.dispose();
 
         verify(merlin).unbind();
     }
 
     @Test
-    public void receiveOneAvailableNetworkStatusStateOnConnect() {
+    public void receiveOneAvailableNetworkStatusOnConnect() {
         ArgumentCaptor<Connectable> argumentCaptor = ArgumentCaptor.forClass(Connectable.class);
 
         verify(merlin).registerConnectable(argumentCaptor.capture());
         argumentCaptor.getValue()
                       .onConnect();
 
-        testSubscriber.assertValue(NetworkStatus.State.AVAILABLE);
+        testSubscriber.assertValue(NetworkStatus.newAvailableInstance());
     }
 
     @Test
-    public void receiveOneUnavailableNetworkStatusStateOnDisconnect() {
+    public void receiveOneUnavailableNetworkStatusOnDisconnect() {
         ArgumentCaptor<Disconnectable> argumentCaptor = ArgumentCaptor.forClass(Disconnectable.class);
 
         verify(merlin).registerDisconnectable(argumentCaptor.capture());
         argumentCaptor.getValue()
                       .onDisconnect();
 
-        testSubscriber.assertValue(NetworkStatus.State.UNAVAILABLE);
+        testSubscriber.assertValue(NetworkStatus.newUnavailableInstance());
     }
 
     @Test
-    public void receiveOneAvailableNetworkStatusStateOnBindWhenConnected() {
+    public void receiveOneAvailableNetworkStatusOnBindWhenConnected() {
         ArgumentCaptor<Bindable> argumentCaptor = ArgumentCaptor.forClass(Bindable.class);
 
         verify(merlin).registerBindable(argumentCaptor.capture());
         argumentCaptor.getValue()
                       .onBind(NetworkStatus.newAvailableInstance());
 
-        testSubscriber.assertValue(NetworkStatus.State.AVAILABLE);
+        testSubscriber.assertValue(NetworkStatus.newAvailableInstance());
     }
 
     @Test
-    public void receiveOneUnavailableNetworkStatusStateOnBindWhenDisconnected() {
+    public void receiveOneUnavailableNetworkStatusOnBindWhenDisconnected() {
         ArgumentCaptor<Bindable> argumentCaptor = ArgumentCaptor.forClass(Bindable.class);
 
         verify(merlin).registerBindable(argumentCaptor.capture());
         argumentCaptor.getValue()
                       .onBind(NetworkStatus.newUnavailableInstance());
 
-        testSubscriber.assertValue(NetworkStatus.State.UNAVAILABLE);
+        testSubscriber.assertValue(NetworkStatus.newUnavailableInstance());
     }
 
     @Test

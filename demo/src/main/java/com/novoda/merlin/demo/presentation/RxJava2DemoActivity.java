@@ -110,7 +110,7 @@ public class RxJava2DemoActivity extends Activity {
         disposables.clear();
     }
 
-    private static class NetworkConsumer implements Consumer<NetworkStatus.State> {
+    private static class NetworkConsumer implements Consumer<NetworkStatus> {
 
         private final NetworkStatusDisplayer networkStatusDisplayer;
 
@@ -119,8 +119,8 @@ public class RxJava2DemoActivity extends Activity {
         }
 
         @Override
-        public void accept(@NonNull NetworkStatus.State state) throws Exception {
-            if (NetworkStatus.State.AVAILABLE == state) {
+        public void accept(@NonNull NetworkStatus networkStatus) throws Exception {
+            if (networkStatus.isAvailable()) {
                 networkStatusDisplayer.displayConnected();
             } else {
                 networkStatusDisplayer.displayDisconnected();
