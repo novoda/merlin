@@ -8,21 +8,36 @@ import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 
 import rx.Subscription;
 import rx.observers.AssertableSubscriber;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class MerlinObservableShould {
 
+    @Mock
+    Merlin merlin;
+
+    AssertableSubscriber<NetworkStatus.State> testSubscriber;
+
+    @Before
+    public void setUp() {
+        initMocks(this);
+
+        testSubscriber = MerlinObservable.from(merlin)
+                                         .test();
+    }
+
     @Test
     public void unbindWhenUnsubscribed() {
-        Merlin merlin = mock(Merlin.class);
         Subscription subscription = MerlinObservable.from(merlin)
                                                     .subscribe();
         subscription.unsubscribe();
@@ -32,10 +47,7 @@ public class MerlinObservableShould {
 
     @Test
     public void receiveOneAvailableNetworkStatusStateOnConnect() {
-        Merlin merlin = mock(Merlin.class);
         ArgumentCaptor<Connectable> argumentCaptor = ArgumentCaptor.forClass(Connectable.class);
-        AssertableSubscriber<NetworkStatus.State> testSubscriber = MerlinObservable.from(merlin)
-                                                                                   .test();
 
         verify(merlin).registerConnectable(argumentCaptor.capture());
         argumentCaptor.getValue()
@@ -46,10 +58,7 @@ public class MerlinObservableShould {
 
     @Test
     public void receiveOneUnavailableNetworkStatusStateOnDisconnect() {
-        Merlin merlin = mock(Merlin.class);
         ArgumentCaptor<Disconnectable> argumentCaptor = ArgumentCaptor.forClass(Disconnectable.class);
-        AssertableSubscriber<NetworkStatus.State > testSubscriber = MerlinObservable.from(merlin)
-                                                                                    .test();
 
         verify(merlin).registerDisconnectable(argumentCaptor.capture());
         argumentCaptor.getValue()
@@ -60,10 +69,7 @@ public class MerlinObservableShould {
 
     @Test
     public void receiveOneAvailableNetworkStatusStateOnBindWhenConnected() {
-        Merlin merlin = mock(Merlin.class);
         ArgumentCaptor<Bindable> argumentCaptor = ArgumentCaptor.forClass(Bindable.class);
-        AssertableSubscriber<NetworkStatus.State> testSubscriber = MerlinObservable.from(merlin)
-                                                                                   .test();
 
         verify(merlin).registerBindable(argumentCaptor.capture());
         argumentCaptor.getValue()
@@ -74,10 +80,7 @@ public class MerlinObservableShould {
 
     @Test
     public void receiveOneUnavailableNetworkStatusStateOnBindWhenDisconnected() {
-        Merlin merlin = mock(Merlin.class);
         ArgumentCaptor<Bindable> argumentCaptor = ArgumentCaptor.forClass(Bindable.class);
-        AssertableSubscriber<NetworkStatus.State> testSubscriber = MerlinObservable.from(merlin)
-                                                                                   .test();
 
         verify(merlin).registerBindable(argumentCaptor.capture());
         argumentCaptor.getValue()
