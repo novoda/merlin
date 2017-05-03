@@ -19,7 +19,6 @@ import rx.observers.TestSubscriber;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class MerlinObservableShould {
@@ -31,7 +30,7 @@ public class MerlinObservableShould {
                                                     .subscribe();
         subscription.unsubscribe();
 
-        verify(merlin, times(1)).unbind();
+        verify(merlin).unbind();
     }
 
     @Test

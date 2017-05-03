@@ -17,10 +17,8 @@ import org.junit.Test;
 
 import org.mockito.ArgumentCaptor;
 
-import static com.novoda.merlin.rxjava2.MerlinFlowable.from;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class MerlinFlowableShould {
@@ -28,10 +26,10 @@ public class MerlinFlowableShould {
     @Test
     public void unbindWhenDisposed() {
         Merlin merlin = mock(Merlin.class);
-        Disposable disposable = from(merlin).subscribe();
+        Disposable disposable = MerlinFlowable.from(merlin).subscribe();
         disposable.dispose();
 
-        verify(merlin, times(1)).unbind();
+        verify(merlin).unbind();
     }
 
     @Test
