@@ -25,7 +25,7 @@ public class MerlinObservable {
     }
 
     private static Observable<NetworkStatus.State> createObservable(Merlin merlin) {
-        return Observable.create(new MerlinAction(merlin), Emitter.BackpressureMode.BUFFER)
+        return Observable.create(new MerlinAction(merlin), Emitter.BackpressureMode.LATEST)
                          .distinctUntilChanged();
     }
 }
