@@ -1,5 +1,7 @@
 package com.novoda.merlin.rxjava;
 
+import android.content.Context;
+
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.registerable.bind.Bindable;
@@ -90,5 +92,12 @@ public class MerlinObservableShould {
         List<NetworkStatus.State> stateList = testSubscriber.getOnNextEvents();
         assertTrue(stateList.size() == 1);
         assertTrue(stateList.get(0) == NetworkStatus.State.UNAVAILABLE);
+    }
+
+    @Test
+    public void notCrashWhenCreatingWithAMerlinBuilderWithoutCallbacks() {
+        Context context = mock(Context.class);
+        Merlin.Builder merlinBuilder = new Merlin.Builder();
+        MerlinObservable.from(context, merlinBuilder).subscribe();
     }
 }
