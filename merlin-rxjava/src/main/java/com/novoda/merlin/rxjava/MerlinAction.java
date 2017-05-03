@@ -10,7 +10,7 @@ import rx.Emitter;
 import rx.functions.Action1;
 import rx.functions.Cancellable;
 
-class MerlinAction implements Action1<Emitter<NetworkStatus.State>> {
+class MerlinAction implements Action1<Emitter<NetworkStatus>> {
 
     private Merlin merlin;
 
@@ -19,7 +19,7 @@ class MerlinAction implements Action1<Emitter<NetworkStatus.State>> {
     }
 
     @Override
-    public void call(Emitter<NetworkStatus.State> stateEmitter) {
+    public void call(Emitter<NetworkStatus> stateEmitter) {
         merlin.registerConnectable(createConnectable(stateEmitter));
         merlin.registerDisconnectable(createDisconnectable(stateEmitter));
         merlin.registerBindable(createBindable(stateEmitter));
@@ -29,29 +29,28 @@ class MerlinAction implements Action1<Emitter<NetworkStatus.State>> {
         merlin.bind();
     }
 
-    private Connectable createConnectable(final Emitter<NetworkStatus.State> stateEmitter) {
+    private Connectable createConnectable(final Emitter<NetworkStatus> stateEmitter) {
         return new Connectable() {
             @Override
             public void onConnect() {
-                stateEmitter.onNext(NetworkStatus.State.AVAILABLE);
+                stateEmitter.onNext(NetworkStatus.newAvailableInstance());
             }
         };
     }
 
-    private Disconnectable createDisconnectable(final Emitter<NetworkStatus.State> stateEmitter) {
+    private Disconnectable createDisconnectable(final Emitter<NetworkStatus> stateEmitter) {
         return new Disconnectable() {
             @Override
             public void onDisconnect() {
-                stateEmitter.onNext(NetworkStatus.State.UNAVAILABLE);
+                stateEmitter.onNext(NetworkStatus.newUnavailableInstance());
             }
         };
     }
 
-    private Bindable createBindable(final Emitter<NetworkStatus.State> stateEmitter) {
+    private Bindable createBindable(final Emitter<NetworkStatus> stateEmitter) {
         return new Bindable() {
             @Override
-            public void onBind(NetworkStatus networkStatus) {
-                NetworkStatus.State current = networkStatus.isAvailable() ? NetworkStatus.State.AVAILABLE : NetworkStatus.State.UNAVAILABLE;
+            public void onBind(NetworkStatus current) {
                 stateEmitter.onNext(current);
             }
         };

@@ -26,7 +26,7 @@ public class MerlinObservableShould {
     @Mock
     Merlin merlin;
 
-    AssertableSubscriber<NetworkStatus.State> testSubscriber;
+    AssertableSubscriber<NetworkStatus> testSubscriber;
 
     @Before
     public void setUp() {
@@ -46,47 +46,47 @@ public class MerlinObservableShould {
     }
 
     @Test
-    public void receiveOneAvailableNetworkStatusStateOnConnect() {
+    public void receiveOneAvailableNetworkStatusOnConnect() {
         ArgumentCaptor<Connectable> argumentCaptor = ArgumentCaptor.forClass(Connectable.class);
 
         verify(merlin).registerConnectable(argumentCaptor.capture());
         argumentCaptor.getValue()
                       .onConnect();
 
-        testSubscriber.assertValue(NetworkStatus.State.AVAILABLE);
+        testSubscriber.assertValue(NetworkStatus.newAvailableInstance());
     }
 
     @Test
-    public void receiveOneUnavailableNetworkStatusStateOnDisconnect() {
+    public void receiveOneUnavailableNetworkStatusOnDisconnect() {
         ArgumentCaptor<Disconnectable> argumentCaptor = ArgumentCaptor.forClass(Disconnectable.class);
 
         verify(merlin).registerDisconnectable(argumentCaptor.capture());
         argumentCaptor.getValue()
                       .onDisconnect();
 
-        testSubscriber.assertValue(NetworkStatus.State.UNAVAILABLE);
+        testSubscriber.assertValue(NetworkStatus.newUnavailableInstance());
     }
 
     @Test
-    public void receiveOneAvailableNetworkStatusStateOnBindWhenConnected() {
+    public void receiveOneAvailableNetworkStatusOnBindWhenConnected() {
         ArgumentCaptor<Bindable> argumentCaptor = ArgumentCaptor.forClass(Bindable.class);
 
         verify(merlin).registerBindable(argumentCaptor.capture());
         argumentCaptor.getValue()
                       .onBind(NetworkStatus.newAvailableInstance());
 
-        testSubscriber.assertValue(NetworkStatus.State.AVAILABLE);
+        testSubscriber.assertValue(NetworkStatus.newAvailableInstance());
     }
 
     @Test
-    public void receiveOneUnavailableNetworkStatusStateOnBindWhenDisconnected() {
+    public void receiveOneUnavailableNetworkStatusOnBindWhenDisconnected() {
         ArgumentCaptor<Bindable> argumentCaptor = ArgumentCaptor.forClass(Bindable.class);
 
         verify(merlin).registerBindable(argumentCaptor.capture());
         argumentCaptor.getValue()
                       .onBind(NetworkStatus.newUnavailableInstance());
 
-        testSubscriber.assertValue(NetworkStatus.State.UNAVAILABLE);
+        testSubscriber.assertValue(NetworkStatus.newUnavailableInstance());
     }
 
     @Test

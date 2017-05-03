@@ -109,7 +109,7 @@ public class RxJavaDemoActivity extends Activity {
         subscriptions.clear();
     }
 
-    private static class NetworkAction implements Action1<NetworkStatus.State> {
+    private static class NetworkAction implements Action1<NetworkStatus> {
 
         private final NetworkStatusDisplayer networkStatusDisplayer;
 
@@ -118,8 +118,8 @@ public class RxJavaDemoActivity extends Activity {
         }
 
         @Override
-        public void call(NetworkStatus.State state) {
-            if (NetworkStatus.State.AVAILABLE == state) {
+        public void call(NetworkStatus networkStatus) {
+            if (networkStatus.isAvailable()) {
                 networkStatusDisplayer.displayConnected();
             } else {
                 networkStatusDisplayer.displayDisconnected();
