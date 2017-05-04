@@ -1,25 +1,29 @@
 package com.novoda.merlin.demo.presentation;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.Toast;
 
-import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinsBeard;
+import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusCroutonDisplayer;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
-import com.novoda.merlin.demo.presentation.base.RxMerlinActivity;
+import com.novoda.merlin.rxjava2.MerlinFlowable;
 
-import rx.Subscription;
-import rx.functions.Action1;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
-public class RxDemoActivity extends RxMerlinActivity {
+public class RxJava2DemoActivity extends Activity {
 
     private NetworkStatusDisplayer networkStatusDisplayer;
     private MerlinsBeard merlinsBeard;
     private Toast toast;
+    private CompositeDisposable disposables;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,7 @@ public class RxDemoActivity extends RxMerlinActivity {
         setContentView(R.layout.main);
         networkStatusDisplayer = new NetworkStatusCroutonDisplayer(this);
         merlinsBeard = MerlinsBeard.from(this);
+        disposables = new CompositeDisposable();
 
         findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
         findViewById(R.id.wifi_connected).setOnClickListener(wifiConnectedOnClick);
@@ -91,33 +96,37 @@ public class RxDemoActivity extends RxMerlinActivity {
     }
 
     @Override
-    protected Merlin createMerlin() {
-        return new Merlin.Builder()
-                .withRxCallbacks()
-                .withLogging(true)
-                .build(this);
-    }
-
-    @Override
-    protected Subscription createRxSubscription() {
-        return connectionStatusObservable.subscribe(
-                new Action1<Merlin.ConnectionStatus>() {
-                    @Override
-                    public void call(Merlin.ConnectionStatus connectionStatus) {
-                        if (connectionStatus == Merlin.ConnectionStatus.CONNECTED) {
-                            networkStatusDisplayer.displayConnected();
-                        } else {
-                            networkStatusDisplayer.displayDisconnected();
-                        }
-                    }
-                }
-        );
+    protected void onResume() {
+        super.onResume();
+         Disposable merlinDisposable = MerlinFlowable.from(this)
+                                                     .distinctUntilChanged()
+                                                     .subscribe(new NetworkConsumer(networkStatusDisplayer));
+        disposables.add(merlinDisposable);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         networkStatusDisplayer.reset();
+        disposables.clear();
+    }
+
+    private static class NetworkConsumer implements Consumer<NetworkStatus> {
+
+        private final NetworkStatusDisplayer networkStatusDisplayer;
+
+        NetworkConsumer(NetworkStatusDisplayer networkStatusDisplayer) {
+            this.networkStatusDisplayer = networkStatusDisplayer;
+        }
+
+        @Override
+        public void accept(@NonNull NetworkStatus networkStatus) throws Exception {
+            if (networkStatus.isAvailable()) {
+                networkStatusDisplayer.displayConnected();
+            } else {
+                networkStatusDisplayer.displayDisconnected();
+            }
+        }
     }
 
 }

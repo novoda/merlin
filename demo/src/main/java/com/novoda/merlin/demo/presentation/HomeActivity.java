@@ -23,11 +23,20 @@ public class HomeActivity extends Activity {
                 }
         );
 
-        findViewById(R.id.rx_demo_launch_button).setOnClickListener(
+        findViewById(R.id.rx_java_demo_launch_button).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(HomeActivity.this, RxDemoActivity.class));
+                        startActivity(new Intent(HomeActivity.this, RxJavaDemoActivity.class));
+                    }
+                }
+        );
+
+        findViewById(R.id.rx_java2_demo_launch_button).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(HomeActivity.this, RxJava2DemoActivity.class));
                     }
                 }
         );

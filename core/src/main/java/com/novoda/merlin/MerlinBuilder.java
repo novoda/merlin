@@ -23,7 +23,6 @@ public class MerlinBuilder {
     private BindListener merlinOnBinder;
     private ConnectListener merlinConnector;
     private DisconnectListener merlinDisconnector;
-    private RxCallbacksManager rxCallbacksManager;
 
     private MerlinRegisterer<Connectable> connectableRegisterer;
     private MerlinRegisterer<Disconnectable> disconnectableRegisterer;
@@ -58,23 +57,6 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide RxJava callbacks, without calling this, Merlin.getRxConnectionStatusObservable will throw a
-     * MerlinException
-     *
-     * @return MerlinBuilder.
-     */
-    public MerlinBuilder withRxCallbacks() {
-        rxCallbacksManager = new RxCallbacksManager();
-        if (connectableRegisterer == null) {
-            withConnectableCallbacks();
-        }
-        if (disconnectableRegisterer == null) {
-            withDisconnectableCallbacks();
-        }
-        return this;
-    }
-
-    /**
      * Enables Merlin to provide bindable callbacks, without calling this, Merlin.registerBindable will throw a MerlinException
      *
      * @return MerlinBuilder.
@@ -91,7 +73,7 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withAllCallbacks() {
-        return withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks().withRxCallbacks();
+        return withConnectableCallbacks().withDisconnectableCallbacks().withBindableCallbacks();
     }
 
     /**
@@ -139,13 +121,12 @@ public class MerlinBuilder {
                 merlinConnector,
                 merlinDisconnector,
                 merlinOnBinder,
-                rxCallbacksManager,
                 endPoint,
                 responseCodeValidator
         );
 
         Registerer merlinRegisterer = new Registerer(connectableRegisterer, disconnectableRegisterer, bindableRegisterer);
-        return new Merlin(merlinServiceBinder, merlinRegisterer, rxCallbacksManager);
+        return new Merlin(merlinServiceBinder, merlinRegisterer);
     }
 
 }
