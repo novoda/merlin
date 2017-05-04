@@ -98,6 +98,7 @@ public class RxJavaDemoActivity extends Activity {
     protected void onResume() {
         super.onResume();
         Subscription merlinSubscription = MerlinObservable.from(this)
+                                                          .distinctUntilChanged()
                                                           .subscribe(new NetworkAction(networkStatusDisplayer));
         subscriptions.add(merlinSubscription);
     }
