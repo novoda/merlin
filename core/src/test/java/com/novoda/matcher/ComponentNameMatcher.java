@@ -6,7 +6,7 @@ import org.mockito.ArgumentMatcher;
 
 import static org.mockito.Matchers.argThat;
 
-public class ComponentNameMatcher extends ArgumentMatcher<ComponentName> {
+class ComponentNameMatcher implements ArgumentMatcher<ComponentName> {
 
     private final ComponentName expected;
 
@@ -19,9 +19,7 @@ public class ComponentNameMatcher extends ArgumentMatcher<ComponentName> {
     }
 
     @Override
-    public boolean matches(Object o) {
-        ComponentName actual = (ComponentName) o;
-
-        return actual.getClassName().equals(expected.getClassName());
+    public boolean matches(ComponentName argument) {
+        return argument.getClassName().equals(expected.getClassName());
     }
 }

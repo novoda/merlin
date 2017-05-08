@@ -6,7 +6,7 @@ import org.mockito.ArgumentMatcher;
 
 import static org.mockito.Matchers.argThat;
 
-public class NetworkStatusMatcher extends ArgumentMatcher<NetworkStatus> {
+class NetworkStatusMatcher implements ArgumentMatcher<NetworkStatus> {
 
     private final NetworkStatus expected;
 
@@ -19,10 +19,7 @@ public class NetworkStatusMatcher extends ArgumentMatcher<NetworkStatus> {
     }
 
     @Override
-    public boolean matches(Object o) {
-        NetworkStatus actual = (NetworkStatus) o;
-
-        return actual.equals(expected);
+    public boolean matches(NetworkStatus argument) {
+        return argument.equals(expected);
     }
-
 }
