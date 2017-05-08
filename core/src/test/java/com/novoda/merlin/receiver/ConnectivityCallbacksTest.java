@@ -9,15 +9,16 @@ import android.os.Build;
 import com.novoda.merlin.service.MerlinService;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
 
-@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class ConnectivityCallbacksTest {
 
     private static final boolean CONNECTED = true;
@@ -27,6 +28,11 @@ public class ConnectivityCallbacksTest {
     private static final String ANY_EXTRA_INFO = "extra info";
 
     private static final int MAX_MS_TO_LIVE = 0;
+
+    private static final Network MISSING_NETWORK = null;
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
     private ConnectivityManager connectivityManager;
@@ -39,37 +45,58 @@ public class ConnectivityCallbacksTest {
 
     @Before
     public void setUp() {
-        initMocks(this);
         networkCallbacks = new ConnectivityCallbacks(connectivityManager, merlinService);
     }
 
     @Test
-    public void notifyMerlinServiceOfAvailableNetwork() {
-        NetworkInfo networkInfo = givenNetworkInfoWith(CONNECTED, ANY_REASON, ANY_EXTRA_INFO);
+    public void givenConnectedNetworkInfo_whenNetworkIsAvailable_thenNotifiesMerlinServiceOfConnectedNetwork() {
+        NetworkInfo connectedNetworkInfo = givenNetworkInfoWith(CONNECTED, ANY_REASON, ANY_EXTRA_INFO);
 
         networkCallbacks.onAvailable(network);
 
-        thenConnectivityChangeEventContains(networkInfo);
+        thenNotifiesMerlinServiceOf(connectedNetworkInfo);
     }
 
     @Test
-    public void notifyMerlinServiceOfLosingNetwork() {
-        NetworkInfo networkInfo = givenNetworkInfoWith(DISCONNECTED, ANY_REASON, ANY_EXTRA_INFO);
+    public void givenDisconnectedNetworkInfo_whenLosingNetwork_thenNotifiesMerlinServiceOfDisconnectedNetwork() {
+        NetworkInfo disconnectedNetworkInfo = givenNetworkInfoWith(DISCONNECTED, ANY_REASON, ANY_EXTRA_INFO);
 
         networkCallbacks.onLosing(network, MAX_MS_TO_LIVE);
 
-        thenConnectivityChangeEventContains(networkInfo);
+        thenNotifiesMerlinServiceOf(disconnectedNetworkInfo);
     }
 
     @Test
-    public void notifyMerlinServiceOfLostNetwork() {
-        NetworkInfo networkInfo = givenNetworkInfoWith(DISCONNECTED, ANY_REASON, ANY_EXTRA_INFO);
+    public void givenDisconnectedNetworkInfo_whenNetworkIsLost_thenNotifiesMerlinServiceOfLostNetwork() {
+        NetworkInfo disconnectedNetworkInfo = givenNetworkInfoWith(DISCONNECTED, ANY_REASON, ANY_EXTRA_INFO);
 
         networkCallbacks.onLost(network);
 
-        thenConnectivityChangeEventContains(networkInfo);
+        thenNotifiesMerlinServiceOf(disconnectedNetworkInfo);
     }
 
+    @Test
+    public void givenMissingNetwork_whenNetworkIsAvailable_thenNotifiesMerlinServiceOfMissingNetwork() {
+        networkCallbacks.onAvailable(MISSING_NETWORK);
+
+        thenNotifiesMerlinServiceOfMissingNetwork();
+    }
+
+    @Test
+    public void givenMissingNetwork_whenLosingNetwork_thenNotifiesMerlinServiceOfMissingNetwork() {
+        networkCallbacks.onLosing(MISSING_NETWORK, MAX_MS_TO_LIVE);
+
+        thenNotifiesMerlinServiceOfMissingNetwork();
+    }
+
+    @Test
+    public void givenMissingNetwork_whenNetworkIsLost_thenNotifiesMerlinServiceOfMissingNetwork() {
+        networkCallbacks.onLost(MISSING_NETWORK);
+
+        thenNotifiesMerlinServiceOfMissingNetwork();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private NetworkInfo givenNetworkInfoWith(boolean connected, String reason, String extraInfo) {
         NetworkInfo networkInfo = mock(NetworkInfo.class);
 
@@ -81,7 +108,7 @@ public class ConnectivityCallbacksTest {
         return networkInfo;
     }
 
-    private void thenConnectivityChangeEventContains(NetworkInfo networkInfo) {
+    private void thenNotifiesMerlinServiceOf(NetworkInfo networkInfo) {
         ArgumentCaptor<ConnectivityChangeEvent> argumentCaptor = ArgumentCaptor.forClass(ConnectivityChangeEvent.class);
         verify(merlinService).onConnectivityChanged(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(
@@ -89,6 +116,12 @@ public class ConnectivityCallbacksTest {
                 networkInfo.getExtraInfo(),
                 networkInfo.getReason()
         ));
+    }
+
+    private void thenNotifiesMerlinServiceOfMissingNetwork() {
+        ArgumentCaptor<ConnectivityChangeEvent> argumentCaptor = ArgumentCaptor.forClass(ConnectivityChangeEvent.class);
+        verify(merlinService).onConnectivityChanged(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue()).isEqualTo(ConnectivityChangeEvent.createWithoutConnection());
     }
 
 }
