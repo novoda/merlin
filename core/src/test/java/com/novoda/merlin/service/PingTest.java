@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(Enclosed.class)
-public class PingShould {
+public class PingTest {
 
     private static final String HOST_ADDRESS = "any host address";
 

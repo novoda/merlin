@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class ConnectivityCallbacksShould {
+public class ConnectivityCallbacksTest {
 
     private static final boolean CONNECTED = true;
     private static final boolean DISCONNECTED = false;

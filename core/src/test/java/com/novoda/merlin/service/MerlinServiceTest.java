@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(JUnit4.class)
-public class MerlinServiceShould {
+public class MerlinServiceTest {
 
     @Mock
     private Intent intent;

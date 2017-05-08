@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(JUnit4.class)
-public class MerlinsBeardShould {
+public class MerlinsBeardTest {
 
     private static final boolean DISCONNECTED = false;
     private static final boolean CONNECTED = true;

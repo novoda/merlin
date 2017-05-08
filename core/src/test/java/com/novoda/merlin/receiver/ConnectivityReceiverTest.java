@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(JUnit4.class)
-public class ConnectivityReceiverShould {
+public class ConnectivityReceiverTest {
 
     private ConnectivityReceiver connectivityReceiver;
 

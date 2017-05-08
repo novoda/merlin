@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(JUnit4.class)
-public class MerlinShould {
+public class MerlinTest {
 
     @Mock
     private Context context;
