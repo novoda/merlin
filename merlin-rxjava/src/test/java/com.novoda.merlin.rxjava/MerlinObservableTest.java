@@ -10,7 +10,6 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 
@@ -21,7 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class MerlinObservableShould {
+public class MerlinObservableTest {
 
     @Mock
     Merlin merlin;
@@ -33,13 +32,13 @@ public class MerlinObservableShould {
         initMocks(this);
 
         testSubscriber = MerlinObservable.from(merlin)
-                                         .test();
+                .test();
     }
 
     @Test
     public void unbindWhenUnsubscribed() {
         Subscription subscription = MerlinObservable.from(merlin)
-                                                    .subscribe();
+                .subscribe();
         subscription.unsubscribe();
 
         verify(merlin).unbind();
@@ -51,7 +50,7 @@ public class MerlinObservableShould {
 
         verify(merlin).registerConnectable(argumentCaptor.capture());
         argumentCaptor.getValue()
-                      .onConnect();
+                .onConnect();
 
         testSubscriber.assertValue(NetworkStatus.newAvailableInstance());
     }
@@ -62,7 +61,7 @@ public class MerlinObservableShould {
 
         verify(merlin).registerDisconnectable(argumentCaptor.capture());
         argumentCaptor.getValue()
-                      .onDisconnect();
+                .onDisconnect();
 
         testSubscriber.assertValue(NetworkStatus.newUnavailableInstance());
     }
@@ -73,7 +72,7 @@ public class MerlinObservableShould {
 
         verify(merlin).registerBindable(argumentCaptor.capture());
         argumentCaptor.getValue()
-                      .onBind(NetworkStatus.newAvailableInstance());
+                .onBind(NetworkStatus.newAvailableInstance());
 
         testSubscriber.assertValue(NetworkStatus.newAvailableInstance());
     }
@@ -84,7 +83,7 @@ public class MerlinObservableShould {
 
         verify(merlin).registerBindable(argumentCaptor.capture());
         argumentCaptor.getValue()
-                      .onBind(NetworkStatus.newUnavailableInstance());
+                .onBind(NetworkStatus.newUnavailableInstance());
 
         testSubscriber.assertValue(NetworkStatus.newUnavailableInstance());
     }
