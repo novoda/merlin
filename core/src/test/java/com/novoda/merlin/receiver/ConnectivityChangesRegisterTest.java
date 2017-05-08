@@ -20,7 +20,7 @@ import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class ConnectivityChangesRegisterShould {
+public class ConnectivityChangesRegisterTest {
 
     @Mock
     private Context context;

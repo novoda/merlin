@@ -13,7 +13,7 @@ import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointRes
 import static org.fest.assertions.api.Assertions.assertThat;
 
 @RunWith(Enclosed.class)
-public class ResponseCodeValidatorTests {
+public class ResponseCodeValidatorTest {
 
     @RunWith(Parameterized.class)
     public static class DefaultEndpointResponseCodeValidatorTest {

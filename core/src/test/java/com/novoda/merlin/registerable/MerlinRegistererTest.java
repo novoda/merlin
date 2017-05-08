@@ -11,7 +11,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 @RunWith(JUnit4.class)
-public class MerlinRegistererShould {
+public class MerlinRegistererTest {
 
     private MerlinRegisterer merlinRegisterer;
 

@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(JUnit4.class)
-public class ConnectorShould {
+public class ConnectorTest {
 
     private MerlinConnector<Connectable> merlinConnector;
 

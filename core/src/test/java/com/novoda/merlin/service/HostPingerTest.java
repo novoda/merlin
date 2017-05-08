@@ -10,7 +10,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(JUnit4.class)
-public class HostPingerShould {
+public class HostPingerTest {
 
     private static final String HOST_ADDRESS = "any host address";
 
