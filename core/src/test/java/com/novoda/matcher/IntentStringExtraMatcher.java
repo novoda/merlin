@@ -6,7 +6,7 @@ import org.mockito.ArgumentMatcher;
 
 import static org.mockito.Matchers.argThat;
 
-public class IntentStringExtraMatcher extends ArgumentMatcher<Intent> {
+class IntentStringExtraMatcher implements ArgumentMatcher<Intent> {
 
     private final Intent expected;
     private final String extraKey;
@@ -21,9 +21,7 @@ public class IntentStringExtraMatcher extends ArgumentMatcher<Intent> {
     }
 
     @Override
-    public boolean matches(Object o) {
-        Intent actual = (Intent) o;
-
-        return actual.getStringExtra(extraKey).equals(expected.getStringExtra(extraKey));
+    public boolean matches(Intent argument) {
+        return argument.getStringExtra(extraKey).equals(expected.getStringExtra(extraKey));
     }
 }
