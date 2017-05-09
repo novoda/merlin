@@ -17,7 +17,9 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class ConnectivityCallbacksTest {
 
@@ -100,10 +102,10 @@ public class ConnectivityCallbacksTest {
     private NetworkInfo givenNetworkInfoWith(boolean connected, String reason, String extraInfo) {
         NetworkInfo networkInfo = mock(NetworkInfo.class);
 
-        when(networkInfo.isConnected()).thenReturn(connected);
-        when(networkInfo.getReason()).thenReturn(reason);
-        when(networkInfo.getExtraInfo()).thenReturn(extraInfo);
-        when(connectivityManager.getNetworkInfo(network)).thenReturn(networkInfo);
+        given(networkInfo.isConnected()).willReturn(connected);
+        given(networkInfo.getReason()).willReturn(reason);
+        given(networkInfo.getExtraInfo()).willReturn(extraInfo);
+        given(connectivityManager.getNetworkInfo(network)).willReturn(networkInfo);
 
         return networkInfo;
     }
