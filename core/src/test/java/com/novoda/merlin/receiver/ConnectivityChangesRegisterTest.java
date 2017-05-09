@@ -11,16 +11,21 @@ import com.novoda.merlin.service.AndroidVersion;
 import com.novoda.merlin.service.MerlinService;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ConnectivityChangesRegisterTest {
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
     private Context context;
@@ -35,13 +40,11 @@ public class ConnectivityChangesRegisterTest {
 
     @Before
     public void setUp() {
-        initMocks(this);
-
         connectivityChangesRegister = new ConnectivityChangesRegister(context, connectivityManager, androidVersion, merlinService);
     }
 
     @Test
-    public void givenRegisteredBroadcastReceiver_whenBindingForASecondTime_thenOriginalBroadcastReceieverIsRegisteredAgain() {
+    public void givenRegisteredBroadcastReceiver_whenBindingForASecondTime_thenOriginalBroadcastReceiverIsRegisteredAgain() {
         ArgumentCaptor<ConnectivityReceiver> broadcastReceiver = givenRegisteredBroadcastReceiver();
 
         connectivityChangesRegister.register();
