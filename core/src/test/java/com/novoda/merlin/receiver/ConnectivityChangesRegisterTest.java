@@ -18,9 +18,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.refEq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class ConnectivityChangesRegisterTest {
 
@@ -82,7 +84,7 @@ public class ConnectivityChangesRegisterTest {
     }
 
     private ArgumentCaptor<ConnectivityReceiver> givenRegisteredBroadcastReceiver() {
-        when(androidVersion.isLollipopOrHigher()).thenReturn(false);
+        given(androidVersion.isLollipopOrHigher()).willReturn(false);
         connectivityChangesRegister.register();
         ArgumentCaptor<ConnectivityReceiver> argumentCaptor = ArgumentCaptor.forClass(ConnectivityReceiver.class);
         verify(context).registerReceiver(argumentCaptor.capture(), refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
@@ -91,7 +93,7 @@ public class ConnectivityChangesRegisterTest {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private ArgumentCaptor<ConnectivityCallbacks> givenRegisteredMerlinNetworkCallbacks() {
-        when(androidVersion.isLollipopOrHigher()).thenReturn(true);
+        given(androidVersion.isLollipopOrHigher()).willReturn(true);
         connectivityChangesRegister.register();
         ArgumentCaptor<ConnectivityCallbacks> argumentCaptor = ArgumentCaptor.forClass(ConnectivityCallbacks.class);
         verify(connectivityManager).registerNetworkCallback(refEq((new NetworkRequest.Builder()).build()), argumentCaptor.capture());
