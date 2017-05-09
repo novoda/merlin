@@ -34,6 +34,7 @@ public class ConnectivityReceiverTest {
     @Before
     public void setUp() throws Exception {
         context = new MockContext();
+        // TODO: See https://github.com/novoda/merlin/issues/111
         connectivityReceiver = new ConnectivityReceiver() {
             @Override
             protected MerlinService getMerlinService(Context context) {

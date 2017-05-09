@@ -13,13 +13,18 @@ import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class MerlinServiceTest {
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
     private Intent intent;
@@ -34,7 +39,6 @@ public class MerlinServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        initMocks(this);
         merlinService = new MerlinService() {
 
             @Override
@@ -43,7 +47,7 @@ public class MerlinServiceTest {
 
             @Override
             public void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent) {
-                // TODO : this is bad, but I blame not having a proper constructor
+                // TODO : See https://github.com/novoda/merlin/issues/112
                 if (connectivityChangeEvent.isConnected()) {
                     connectListener.onConnect();
                 } else {
