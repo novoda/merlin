@@ -1,42 +1,56 @@
 package com.novoda.merlin.service;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 public class HostPingerTest {
 
     private static final String HOST_ADDRESS = "any host address";
 
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @Mock
+    private PingTask pingTask;
+    @Mock
+    private PingTaskFactory pingTaskFactory;
+    @Mock
+    private HostPinger.PingerCallback pingerCallback;
+
     private HostPinger hostPinger;
 
-    @Mock
-    private PingTask mockPingTask;
-    @Mock
-    private PingTaskFactory mockPingTaskFactory;
-
     @Before
-    public void setUp() throws Exception {
-        initMocks(this);
-        when(mockPingTaskFactory.create(HOST_ADDRESS)).thenReturn(mockPingTask);
-        hostPinger = new HostPinger(mock(HostPinger.PingerCallback.class), HOST_ADDRESS, mockPingTaskFactory);
+    public void setUp() {
+        given(pingTaskFactory.create(HOST_ADDRESS)).willReturn(pingTask);
+        hostPinger = new HostPinger(pingerCallback, HOST_ADDRESS, pingTaskFactory);
     }
 
     @Test
-    public void createsPingTaskWhenPing() {
+    public void whenPinging_thenCreatesPingTask() {
         hostPinger.ping();
 
-        verify(mockPingTaskFactory).create(HOST_ADDRESS);
+        verify(pingTaskFactory).create(HOST_ADDRESS);
     }
 
     @Test
-    public void createsExecutesPingTaskWhenPing() {
+    public void whenPinging_thenExecutesPingTask() {
         hostPinger.ping();
 
-        verify(mockPingTask).execute();
+        verify(pingTask).execute();
+    }
+
+    @Test
+    public void whenNoNetworkToPing_thenCallsOnFailure() {
+        hostPinger.noNetworkToPing();
+
+        verify(pingerCallback).onFailure();
     }
 
 }
