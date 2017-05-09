@@ -87,16 +87,12 @@ public class RegistererTest {
     @Test
     public void givenRegisterer_whenRegisteringNonRegisterable_thenDoesNotRegister() {
         Object nonRegisterableObject = new Object();
-        MerlinConnector<Connectable> merlinConnector = mock(MerlinConnector.class);
-        MerlinConnector<Disconnectable> merlinDisconnector = mock(MerlinConnector.class);
-        MerlinConnector<Bindable> merlinOnBinder = mock(MerlinConnector.class);
-        Registerer registerer = new Registerer(merlinConnector, merlinDisconnector, merlinOnBinder);
 
         registerer.register(nonRegisterableObject);
 
-        verify(merlinConnector, never()).register(any(Connectable.class));
-        verify(merlinDisconnector, never()).register(any(Disconnectable.class));
-        verify(merlinOnBinder, never()).register(any(Bindable.class));
+        verifyZeroInteractions(connector);
+        verifyZeroInteractions(disconnector);
+        verifyZeroInteractions(binder);
     }
 
 }
