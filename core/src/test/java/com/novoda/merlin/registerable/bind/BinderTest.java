@@ -25,12 +25,12 @@ public class BinderTest {
 
     private MerlinConnector<Bindable> merlinBinder;
 
-    private OnBinder binder;
+    private Binder binder;
 
     @Before
     public void setUp() {
         merlinBinder = new MerlinRegisterer<>();
-        binder = new OnBinder(merlinBinder);
+        binder = new Binder(merlinBinder);
     }
 
     @Test
