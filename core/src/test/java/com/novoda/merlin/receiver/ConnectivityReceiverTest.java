@@ -11,8 +11,6 @@ import com.novoda.merlin.service.MerlinService;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -20,7 +18,6 @@ import org.mockito.junit.MockitoRule;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-@RunWith(JUnit4.class)
 public class ConnectivityReceiverTest {
 
     @Rule

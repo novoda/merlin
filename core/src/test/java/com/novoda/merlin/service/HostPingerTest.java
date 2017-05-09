@@ -2,14 +2,11 @@ package com.novoda.merlin.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(JUnit4.class)
 public class HostPingerTest {
 
     private static final String HOST_ADDRESS = "any host address";

@@ -10,8 +10,6 @@ import com.novoda.merlin.service.AndroidVersion;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -19,7 +17,6 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(JUnit4.class)
 public class MerlinsBeardTest {
 
     private static final boolean DISCONNECTED = false;

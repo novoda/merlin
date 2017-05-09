@@ -7,12 +7,9 @@ import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(JUnit4.class)
 public class RegistererTest {
 
     Registerer registerer;

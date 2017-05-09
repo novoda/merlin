@@ -6,8 +6,6 @@ import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.runners.Enclosed;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
 import static com.novoda.merlin.service.HostPinger.ResponseCodeFetcher;
@@ -16,7 +14,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(Enclosed.class)
 public class PingTest {
 
     private static final String HOST_ADDRESS = "any host address";
