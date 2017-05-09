@@ -13,12 +13,12 @@ public class MerlinRegistererTest {
     private MerlinRegisterer merlinRegisterer;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         merlinRegisterer = new MerlinRegisterer();
     }
 
     @Test
-    public void registerRegisterables() throws Exception {
+    public void givenRegisterable_whenRegistering_thenAddsRegisterableToList() {
         Registerable registerable = mock(Registerable.class);
 
         merlinRegisterer.register(registerable);
@@ -27,10 +27,8 @@ public class MerlinRegistererTest {
     }
 
     @Test
-    public void notHoldReferences() throws Exception {
-        Registerable registerable = mock(Registerable.class);
-
-        merlinRegisterer.register(registerable);
+    public void givenRegisteredRegisterable_whenSystemPerformsGc_thenDoesNotHoldRegisterableReference() {
+        Registerable registerable = givenRegisteredRegisterable();
 
         registerable = null;
         System.gc();
@@ -39,7 +37,7 @@ public class MerlinRegistererTest {
     }
 
     @Test
-    public void notRegisterTheSameObjectMoreThanOnce() throws Exception {
+    public void givenConnectableRegisterable_whenRegisteringMultipleTimes_thenDoesNotRegisterTheSameObjectMoreThanOnce() {
         Connectable connectable = mock(Connectable.class);
 
         merlinRegisterer.register(connectable);
@@ -47,6 +45,12 @@ public class MerlinRegistererTest {
         merlinRegisterer.register(connectable);
 
         assertThat(merlinRegisterer.get()).hasSize(1);
+    }
+
+    private Registerable givenRegisteredRegisterable() {
+        Registerable registerable = mock(Registerable.class);
+        merlinRegisterer.register(registerable);
+        return registerable;
     }
 
 }
