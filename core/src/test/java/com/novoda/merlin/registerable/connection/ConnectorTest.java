@@ -7,16 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
 
-@RunWith(JUnit4.class)
 public class ConnectorTest {
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private MerlinConnector<Connectable> merlinConnector;
 
@@ -24,8 +26,7 @@ public class ConnectorTest {
 
     @Before
     public void setUp() throws Exception {
-        initMocks(this);
-        merlinConnector = new MerlinRegisterer<Connectable>();
+        merlinConnector = new MerlinRegisterer<>();
         connector = new Connector(merlinConnector);
     }
 
@@ -53,7 +54,7 @@ public class ConnectorTest {
     }
 
     private List<Connectable> createListOfConnectables() {
-        List<Connectable> connectables = new ArrayList<Connectable>();
+        List<Connectable> connectables = new ArrayList<>();
         initListOfConnectables(connectables);
         return connectables;
     }

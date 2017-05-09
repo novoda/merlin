@@ -8,7 +8,7 @@ public class MerlinRegisterer<T extends Registerable> implements MerlinConnector
     private final List<WeakRegisterableReference<T>> registerableList;
 
     public MerlinRegisterer() {
-        registerableList = new ArrayList<WeakRegisterableReference<T>>();
+        registerableList = new ArrayList<>();
     }
 
     @Override
