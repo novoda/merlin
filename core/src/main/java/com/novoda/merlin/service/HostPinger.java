@@ -20,13 +20,13 @@ class HostPinger {
 
     }
 
-    public static HostPinger withDefaultEndpointValidation(PingerCallback pingerCallback) {
+    static HostPinger withDefaultEndpointValidation(PingerCallback pingerCallback) {
         MerlinLog.d("Host address not set, using Merlin default: " + Merlin.DEFAULT_ENDPOINT);
         PingTaskFactory pingTaskFactory = new PingTaskFactory(pingerCallback, new ResponseCodeFetcher(), new DefaultEndpointResponseCodeValidator());
         return new HostPinger(pingerCallback, Merlin.DEFAULT_ENDPOINT, pingTaskFactory);
     }
 
-    public static HostPinger withCustomEndpointAndValidation(PingerCallback pingerCallback, String hostAddress, ResponseCodeValidator validator) {
+    static HostPinger withCustomEndpointAndValidation(PingerCallback pingerCallback, String hostAddress, ResponseCodeValidator validator) {
         PingTaskFactory pingTaskFactory = new PingTaskFactory(pingerCallback, new ResponseCodeFetcher(), validator);
         return new HostPinger(pingerCallback, hostAddress, pingTaskFactory);
     }
@@ -37,16 +37,16 @@ class HostPinger {
         this.pingTaskFactory = pingTaskFactory;
     }
 
-    public void ping() {
+    void ping() {
         PingTask pingTask = pingTaskFactory.create(hostAddress);
         pingTask.execute();
     }
 
-    public void noNetworkToPing() {
+    void noNetworkToPing() {
         pingerCallback.onFailure();
     }
 
-    public static class ResponseCodeFetcher {
+    static class ResponseCodeFetcher {
 
         public int from(String endpoint) {
             return MerlinRequest.head(endpoint).getResponseCode();
