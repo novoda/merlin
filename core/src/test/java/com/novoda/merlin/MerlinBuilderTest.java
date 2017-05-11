@@ -1,28 +1,38 @@
 package com.novoda.merlin;
 
-import android.test.mock.MockApplication;
+import android.content.Context;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class MerlinBuilderTest {
 
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @Mock
+    private Context context;
+
     @Test
-    public void buildInstanceWithLoggingEnabled() throws Exception {
-        Merlin merlin = new MerlinBuilder()
+    public void whenBuildingMerlinInstanceWithLogging_thenLogsWithMerlinLog() {
+        new MerlinBuilder()
                 .withLogging(true)
-                .build(new MockApplication());
+                .build(context);
 
         assertTrue(MerlinLog.LOGGING);
     }
 
     @Test
-    public void buildInstanceWithLoggingDisabled() throws Exception {
-        Merlin merlin = new MerlinBuilder()
+    public void whenBuildingMerlinInstanceWithoutLogging_thenDoesNotLogWithMerlinLog() throws Exception {
+        new MerlinBuilder()
                 .withLogging(false)
-                .build(new MockApplication());
+                .build(context);
 
         assertFalse(MerlinLog.LOGGING);
     }
