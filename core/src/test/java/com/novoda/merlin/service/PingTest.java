@@ -5,14 +5,16 @@ import com.novoda.merlin.service.request.RequestException;
 import java.io.IOException;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static com.novoda.merlin.service.HostPinger.ResponseCodeFetcher;
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PingTest {
 
@@ -20,70 +22,60 @@ public class PingTest {
 
     private static final int RESPONSE_CODE = 201;
 
-    public static class GivenSuccessfulRequest {
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-        private Ping ping;
+    @Mock
+    private ResponseCodeFetcher responseCodeFetcher;
+    @Mock
+    private ResponseCodeValidator responseCodeValidator;
 
-        @Mock
-        private ResponseCodeFetcher mockResponseCodeFetcher;
-        @Mock
-        private ResponseCodeValidator mockResponseCodeValidator;
+    private Ping ping;
 
-        @Before
-        public void setUp() {
-            initMocks(this);
-            ping = new Ping(
-                    HOST_ADDRESS,
-                    mockResponseCodeFetcher,
-                    mockResponseCodeValidator
-            );
-        }
-
-        @Test
-        public void responseCodeIsPassedToValidator() {
-            when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenReturn(RESPONSE_CODE);
-
-            ping.doSynchronousPing();
-
-            verify(mockResponseCodeValidator).isResponseCodeValid(RESPONSE_CODE);
-        }
+    @Before
+    public void setUp() {
+        ping = new Ping(
+                HOST_ADDRESS,
+                responseCodeFetcher,
+                responseCodeValidator
+        );
     }
 
-    public static class GivenFailingRequest {
+    @Test
+    public void givenSuccessfulRequest_whenSynchronouslyPinging_thenChecksResponseCodeIsValid() {
+        given(responseCodeFetcher.from(HOST_ADDRESS)).willReturn(RESPONSE_CODE);
 
-        @Mock
-        private ResponseCodeFetcher mockResponseCodeFetcher;
-        @Mock
-        private ResponseCodeValidator mockResponseCodeValidator;
+        ping.doSynchronousPing();
 
-        private Ping ping;
-
-        @Before
-        public void setUp() {
-            initMocks(this);
-            ping = new Ping(
-                    HOST_ADDRESS,
-                    mockResponseCodeFetcher,
-                    mockResponseCodeValidator
-            );
-        }
-
-        @Test
-        public void returnsFalseIfFailureIsBecauseIO() {
-            when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenThrow(new RequestException(new IOException()));
-
-            boolean isSuccess = ping.doSynchronousPing();
-
-            assertThat(isSuccess).isFalse();
-        }
-
-        @Test
-        public void returnsFalseIfFailureIsNotBecauseIO() {
-            when(mockResponseCodeFetcher.from(HOST_ADDRESS)).thenThrow(new RequestException(new RuntimeException()));
-
-            boolean isSuccess = ping.doSynchronousPing();
-
-            assertThat(isSuccess).isFalse();
-        }
+        verify(responseCodeValidator).isResponseCodeValid(RESPONSE_CODE);
     }
+
+    @Test
+    public void givenSuccessfulRequest_whenSynchronouslyPinging_thenReturnsTrue() {
+        given(responseCodeFetcher.from(HOST_ADDRESS)).willReturn(RESPONSE_CODE);
+        given(responseCodeValidator.isResponseCodeValid(RESPONSE_CODE)).willReturn(true);
+
+        boolean isSuccess = ping.doSynchronousPing();
+
+        assertThat(isSuccess).isTrue();
+    }
+
+    @Test
+    public void givenRequestFailsWithIOException_whenSynchronouslyPinging_thenReturnsFalse() {
+        given(responseCodeFetcher.from(HOST_ADDRESS)).willThrow(new RequestException(new IOException()));
+
+        boolean isSuccess = ping.doSynchronousPing();
+
+        assertThat(isSuccess).isFalse();
+    }
+
+    @Test
+    public void givenRequestFailsWithRuntimeException_whenSynchronouslyPinging_thenReturnsFalse() {
+        given(responseCodeFetcher.from(HOST_ADDRESS)).willThrow(new RequestException(new RuntimeException()));
+
+        boolean isSuccess = ping.doSynchronousPing();
+
+        assertThat(isSuccess).isFalse();
+    }
+
 }
