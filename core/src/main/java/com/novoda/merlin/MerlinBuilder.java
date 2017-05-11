@@ -6,7 +6,7 @@ import com.novoda.merlin.registerable.MerlinRegisterer;
 import com.novoda.merlin.registerable.Registerer;
 import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.bind.Bindable;
-import com.novoda.merlin.registerable.bind.OnBinder;
+import com.novoda.merlin.registerable.bind.Binder;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.connection.Connector;
@@ -63,7 +63,7 @@ public class MerlinBuilder {
      */
     public MerlinBuilder withBindableCallbacks() {
         bindableRegisterer = new MerlinRegisterer<>();
-        this.merlinOnBinder = new OnBinder(bindableRegisterer);
+        this.merlinOnBinder = new Binder(bindableRegisterer);
         return this;
     }
 

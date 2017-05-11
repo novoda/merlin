@@ -5,14 +5,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-@RunWith(Enclosed.class)
 public class ResponseCodeValidatorTest {
 
     @RunWith(Parameterized.class)
@@ -32,13 +30,15 @@ public class ResponseCodeValidatorTest {
         }
 
         @Test
-        public void testOtherCodesReturnFalse() {
+        public void whenCheckingResponseCodeValidity() {
             boolean actual = new DefaultEndpointResponseCodeValidator().isResponseCodeValid(responseCode);
+
             assertThat(actual).isEqualTo(isValid);
         }
     }
 
-    enum Responses {
+    private enum Responses {
+
         OK(200, false),
         CREATED(201, false),
         NO_CONTENT(204, true),

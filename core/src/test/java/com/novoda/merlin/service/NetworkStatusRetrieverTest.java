@@ -4,51 +4,57 @@ import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class NetworkStatusRetrieverTest {
 
-    @Mock
-    private MerlinsBeard mockMerlinsBeards;
+    private static boolean CONNECTED = true;
+    private static boolean DISCONNECTED = false;
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    private HostPinger mockHostPinger;
+    private MerlinsBeard merlinsBeards;
+    @Mock
+    private HostPinger hostPinger;
 
     private NetworkStatusRetriever networkStatusRetriever;
 
     @Before
     public void setUp() {
-        initMocks(this);
-        networkStatusRetriever = new NetworkStatusRetriever(mockMerlinsBeards);
+        networkStatusRetriever = new NetworkStatusRetriever(merlinsBeards);
     }
 
     @Test
-    public void whenNetworkIsConnectedHostPingerPings() {
-        when(mockMerlinsBeards.isConnected()).thenReturn(true);
+    public void givenMerlinsBeardIsConnected_whenFetchingWithPing_thenPingsUsingHostPinger() {
+        given(merlinsBeards.isConnected()).willReturn(CONNECTED);
 
-        networkStatusRetriever.fetchWithPing(mockHostPinger);
+        networkStatusRetriever.fetchWithPing(hostPinger);
 
-        verify(mockHostPinger).ping();
+        verify(hostPinger).ping();
     }
 
     @Test
-    public void whenNetworkIsDisconnectedHostPingerPerformsNoNetworkToPing() {
-        when(mockMerlinsBeards.isConnected()).thenReturn(false);
+    public void givenMerlinsBeardIsDisconnected_whenFetchingWithPing_thenCallsNoNetworkToPing() {
+        given(merlinsBeards.isConnected()).willReturn(DISCONNECTED);
 
-        networkStatusRetriever.fetchWithPing(mockHostPinger);
+        networkStatusRetriever.fetchWithPing(hostPinger);
 
-        verify(mockHostPinger).noNetworkToPing();
+        verify(hostPinger).noNetworkToPing();
     }
 
     @Test
-    public void whenNetworkIsConnectedGetWithoutPingReturnsNetworkStatusAvailable() {
-        when(mockMerlinsBeards.isConnected()).thenReturn(true);
+    public void givenMerlinsBeardIsConnected_whenGettingNetworkStatus_thenReturnsNetworkStatusAvailable() {
+        given(merlinsBeards.isConnected()).willReturn(CONNECTED);
 
         NetworkStatus networkStatus = networkStatusRetriever.get();
 
@@ -56,8 +62,8 @@ public class NetworkStatusRetrieverTest {
     }
 
     @Test
-    public void whenNetworkIsDisconnectedGetWithoutPingReturnsNetworkStatusUnavailable() {
-        when(mockMerlinsBeards.isConnected()).thenReturn(false);
+    public void givenMerlinsBeardIsDisconnected_whenGettingNetworkStatus_thenReturnsNetworkStatusUnavailable() {
+        given(merlinsBeards.isConnected()).willReturn(DISCONNECTED);
 
         NetworkStatus networkStatus = networkStatusRetriever.get();
 

@@ -15,21 +15,20 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DisconnectorTest {
 
-    private MerlinConnector<Disconnectable> merlinConnector;
+    private MerlinConnector<Disconnectable> merlinDisconnector;
 
     private Disconnector disconnector;
 
     @Before
     public void setUp() {
         initMocks(this);
-        merlinConnector = new MerlinRegisterer<Disconnectable>();
-        disconnector = new Disconnector(merlinConnector);
+        merlinDisconnector = new MerlinRegisterer<>();
+        disconnector = new Disconnector(merlinDisconnector);
     }
 
     @Test
-    public void callback_registered_disconnectable() throws Exception {
-        Disconnectable disconnectable = mock(Disconnectable.class);
-        merlinConnector.register(disconnectable);
+    public void givenRegisteredDisconnectable_whenCallingOnDisconect_thenCallsDisconnectForDisconnectable() {
+        Disconnectable disconnectable = givenRegisteredDisconnectable();
 
         disconnector.onDisconnect();
 
@@ -37,10 +36,8 @@ public class DisconnectorTest {
     }
 
     @Test
-    public void callback_registered_disconnectables() throws Exception {
-        List<Disconnectable> disconnectables = new ArrayList<Disconnectable>(3);
-        init_disconnectables_list(disconnectables);
-        register_disconnectables_list(disconnectables);
+    public void givenMultipleRegisteredDisconnectables_whenCallingOnConnect_thenCallsConnectForAllDisconnectables() {
+        List<Disconnectable> disconnectables = givenMultipleRegisteredDisconnectables();
 
         disconnector.onDisconnect();
 
@@ -49,16 +46,22 @@ public class DisconnectorTest {
         }
     }
 
-    private void init_disconnectables_list(List<Disconnectable> disconnectables) {
+    private List<Disconnectable> givenMultipleRegisteredDisconnectables() {
+        List<Disconnectable> disconnectables = new ArrayList<>(3);
+
         for (int disconnectableIndex = 0; disconnectableIndex < disconnectables.size(); disconnectableIndex++) {
-            disconnectables.add(mock(Disconnectable.class));
+            Disconnectable disconnectable = mock(Disconnectable.class);
+            disconnectables.add(disconnectable);
+            merlinDisconnector.register(disconnectable);
         }
+
+        return disconnectables;
     }
 
-    private void register_disconnectables_list(List<Disconnectable> disconnectables) {
-        for (Disconnectable disconnectable : disconnectables) {
-            merlinConnector.register(disconnectable);
-        }
+    private Disconnectable givenRegisteredDisconnectable() {
+        Disconnectable disconnectable = mock(Disconnectable.class);
+        merlinDisconnector.register(disconnectable);
+        return disconnectable;
     }
 
 }

@@ -1,113 +1,98 @@
 package com.novoda.merlin.registerable;
 
 import com.novoda.merlin.MerlinException;
-import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(JUnit4.class)
 public class RegistererTest {
 
-    Registerer registerer;
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @Mock
+    private MerlinConnector<Connectable> connector;
+    @Mock
+    private MerlinConnector<Disconnectable> disconnector;
+    @Mock
+    private MerlinConnector<Bindable> binder;
+
+    private Registerer registerer;
+
+    @Before
+    public void setUp() {
+        registerer = new Registerer(connector, disconnector, binder);
+    }
 
     @Test(expected = MerlinException.class)
-    public void throwADeveloperExceptionWhenAConnectorIsNotSetButRegisterConnectableIsCalled() throws Exception {
+    public void givenMissingConnector_whenRegisteringConnectable_thenThrowsDeveloperException() {
         registerer = new Registerer(null, null, null);
-        Connectable connectable = mock(Connectable.class);
 
+        Connectable connectable = mock(Connectable.class);
         registerer.registerConnectable(connectable);
     }
 
     @Test(expected = MerlinException.class)
-    public void throwADeveloperExceptionWhenADisconnectorIsNotSetButRegisterDisconnectableIsCalled() throws Exception {
+    public void givenMissingDisconnector_thenRegisteringDisconnectable_thenThrowsDeveloperException() {
         registerer = new Registerer(null, null, null);
-        Disconnectable disconnectable = mock(Disconnectable.class);
 
+        Disconnectable disconnectable = mock(Disconnectable.class);
         registerer.registerDisconnectable(disconnectable);
     }
 
     @Test(expected = MerlinException.class)
-    public void throwADeveloperExceptionWhenAOnBinderIsNotSetButRegisterBindableIsCalled() throws Exception {
+    public void givenMissingBinder_whenRegisteringBindable_thenThrowsDeveloperException() {
         registerer = new Registerer(null, null, null);
-        Bindable bindable = mock(Bindable.class);
 
+        Bindable bindable = mock(Bindable.class);
         registerer.registerBindable(bindable);
     }
 
     @Test
-    public void registerObjectsWhichImplementConnectable() throws Exception {
-        MerlinConnector<Connectable> connector = mock(MerlinConnector.class);
-        Registerer registerer = new Registerer(connector, null, null);
-        ConnectableClassImpl reconnectableClass = new ConnectableClassImpl();
+    public void givenConnector_whenRegisteringConnectable_thenRegistersConnectableWithConnector() {
+        Connectable connectable = mock(Connectable.class);
 
-        registerer.registerConnectable(reconnectableClass);
+        registerer.registerConnectable(connectable);
 
-        verify(connector).register(reconnectableClass);
+        verify(connector).register(connectable);
     }
 
     @Test
-    public void registerObjectsWhichImplementDisconnectable() throws Exception {
-        MerlinConnector<Disconnectable> disconnector = mock(MerlinConnector.class);
-        Registerer registerer = new Registerer(null, disconnector, null);
-        DisconnectableImpl disconnectableImpl = new DisconnectableImpl();
+    public void givenDisconnector_whenRegisteringDisconnectable_thenRegistersDisconnectableWithDisconnector() {
+        Disconnectable disconnectable = mock(Disconnectable.class);
 
-        registerer.registerDisconnectable(disconnectableImpl);
+        registerer.registerDisconnectable(disconnectable);
 
-        verify(disconnector).register(disconnectableImpl);
+        verify(disconnector).register(disconnectable);
     }
 
     @Test
-    public void registerObjectsWhichImplementBindable() throws Exception {
-        MerlinConnector<Bindable> onBinder = mock(MerlinConnector.class);
-        Registerer registerer = new Registerer(null, null, onBinder);
-        BindableImpl disconnectableImpl = new BindableImpl();
+    public void givenBinder_whenRegisteringBindable_thenRegistersBindableWithBinder() {
+        Bindable bindable = mock(Bindable.class);
 
-        registerer.registerBindable(disconnectableImpl);
+        registerer.registerBindable(bindable);
 
-        verify(onBinder).register(disconnectableImpl);
+        verify(binder).register(bindable);
     }
 
     @Test
-    public void notRegisterObjectsWhichDoNotImplementReconnectable() throws Exception {
-        NonRegisterableClass nonReconnectableClass = new NonRegisterableClass();
-        MerlinConnector<Connectable> merlinConnector = mock(MerlinConnector.class);
-        MerlinConnector<Disconnectable> merlinDisconnector = mock(MerlinConnector.class);
-        MerlinConnector<Bindable> merlinOnBinder = mock(MerlinConnector.class);
-        Registerer registerer = new Registerer(merlinConnector, merlinDisconnector, merlinOnBinder);
+    public void givenRegisterer_whenRegisteringNonRegisterable_thenDoesNotRegister() {
+        Object nonRegisterableObject = new Object();
 
-        registerer.register(nonReconnectableClass);
+        registerer.register(nonRegisterableObject);
 
-        verify(merlinConnector, never()).register(any(Connectable.class));
-        verify(merlinDisconnector, never()).register(any(Disconnectable.class));
-        verify(merlinOnBinder, never()).register(any(Bindable.class));
-    }
-
-    private static class ConnectableClassImpl implements Connectable {
-        @Override
-        public void onConnect() {
-        }
-    }
-
-    private static class DisconnectableImpl implements Disconnectable {
-        @Override
-        public void onDisconnect() {
-        }
-    }
-
-    private static class BindableImpl implements Bindable {
-        @Override
-        public void onBind(NetworkStatus networkStatus) {
-        }
-    }
-
-    private static class NonRegisterableClass {
+        verifyZeroInteractions(connector);
+        verifyZeroInteractions(disconnector);
+        verifyZeroInteractions(binder);
     }
 
 }

@@ -5,24 +5,29 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.support.annotation.NonNull;
 
-import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
-import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-@RunWith(JUnit4.class)
 public class MerlinServiceTest {
+
+    private static final boolean IS_CONNECTED = true;
+    private static final boolean NOT_CONNECTED = false;
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
     private Intent intent;
@@ -32,12 +37,17 @@ public class MerlinServiceTest {
     private ConnectListener connectListener;
     @Mock
     private DisconnectListener disconnectListener;
+    @Mock
+    private HostPinger defaultPinger;
+    @Mock
+    private HostPinger customPinger;
+    @Mock
+    private NetworkStatusRetriever networkStatusRetriever;
 
     private MerlinService merlinService;
 
     @Before
-    public void setUp() throws Exception {
-        initMocks(this);
+    public void setUp() {
         merlinService = new MerlinService() {
 
             @Override
@@ -46,7 +56,7 @@ public class MerlinServiceTest {
 
             @Override
             public void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent) {
-                // TODO : this is bad, but I blame not having a proper constructor
+                // TODO : See https://github.com/novoda/merlin/issues/112
                 if (connectivityChangeEvent.isConnected()) {
                     connectListener.onConnect();
                 } else {
@@ -57,9 +67,8 @@ public class MerlinServiceTest {
     }
 
     @Test
-    public void callMerlinNetworkListenerOnConnectedWhenAConnectedConnectivityEventIsTriggered() throws Exception {
-        boolean isConnected = true;
-        ConnectivityChangeEvent connectivityChangeEvent = createConnectivityChangeEvent(isConnected);
+    public void givenConnectedEvent_whenConnectivityChanges_thenCallsOnConnect() {
+        ConnectivityChangeEvent connectivityChangeEvent = createConnectivityChangeEvent(IS_CONNECTED);
 
         merlinService.onConnectivityChanged(connectivityChangeEvent);
 
@@ -67,9 +76,8 @@ public class MerlinServiceTest {
     }
 
     @Test
-    public void callMerlinNetworkListenerOnDisconnectedWhenAConnectedConnectivityEventIsTriggered() throws Exception {
-        boolean isConnected = false;
-        ConnectivityChangeEvent connectivityChangeEvent = createConnectivityChangeEvent(isConnected);
+    public void givenDisconnectedEvent_whenConnectivityChanges_thenCallsOnDisconnect() {
+        ConnectivityChangeEvent connectivityChangeEvent = createConnectivityChangeEvent(NOT_CONNECTED);
 
         merlinService.onConnectivityChanged(connectivityChangeEvent);
 
@@ -77,47 +85,41 @@ public class MerlinServiceTest {
     }
 
     @Test
-    public void useDefaultNetworkStatusRetrieverWhenPingingDefaultEndpoint() {
+    public void givenConnectedEvent_whenConnectivityChanges_thenFetchesUsingDefaultPinger() {
         ContextWrapper contextWrapper = stubbedContextWrapper();
 
-        NetworkStatusRetriever mockRetriever = mock(NetworkStatusRetriever.class);
-        HostPinger mockDefaultPinger = mock(HostPinger.class);
-        HostPinger mockCustomPinger = mock(HostPinger.class);
-
-        MerlinService merlinService = buildStubbedMerlinService(contextWrapper, mockRetriever, mockDefaultPinger, mockCustomPinger);
+        MerlinService merlinService = buildStubbedMerlinService(contextWrapper, networkStatusRetriever, defaultPinger, customPinger);
 
         merlinService.onCreate();
-        merlinService.onConnectivityChanged(networkAvailableEvent());
-        verify(mockRetriever).fetchWithPing(mockDefaultPinger);
+        merlinService.onConnectivityChanged(createConnectivityChangeEvent(IS_CONNECTED));
+        verify(networkStatusRetriever).fetchWithPing(defaultPinger);
     }
 
     @Test
-    public void useCustomNetworkStatusRetrieverWhenPingingCustomEndpoint() {
+    public void givenConnectedEvent_andCustomEndpoint_whenConnectivityChanges_thenFetchesUsingCustomPinger() {
         ContextWrapper contextWrapper = stubbedContextWrapper();
 
-        NetworkStatusRetriever mockRetriever = mock(NetworkStatusRetriever.class);
-        HostPinger mockDefaultPinger = mock(HostPinger.class);
-        HostPinger mockCustomPinger = mock(HostPinger.class);
-
-        MerlinService merlinService = buildStubbedMerlinService(contextWrapper, mockRetriever, mockDefaultPinger, mockCustomPinger);
+        MerlinService merlinService = buildStubbedMerlinService(contextWrapper, networkStatusRetriever, defaultPinger, customPinger);
 
         merlinService.onCreate();
         merlinService.setHostname("some new host name", mock(ResponseCodeValidator.class));
-        merlinService.onConnectivityChanged(networkAvailableEvent());
-        verify(mockRetriever).fetchWithPing(mockCustomPinger);
+        merlinService.onConnectivityChanged(createConnectivityChangeEvent(IS_CONNECTED));
+        verify(networkStatusRetriever).fetchWithPing(customPinger);
     }
 
-    @NonNull
     private ContextWrapper stubbedContextWrapper() {
         Context context = mock(Context.class);
         ContextWrapper contextWrapper = mock(ContextWrapper.class);
         ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
-        when(contextWrapper.getApplicationContext()).thenReturn(context);
-        when(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connectivityManager);
+        given(contextWrapper.getApplicationContext()).willReturn(context);
+        given(context.getSystemService(Context.CONNECTIVITY_SERVICE)).willReturn(connectivityManager);
         return contextWrapper;
     }
 
-    @NonNull
+    private ConnectivityChangeEvent createConnectivityChangeEvent(boolean isConnected) {
+        return ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(isConnected, "info", "reason");
+    }
+
     private MerlinService buildStubbedMerlinService(
             ContextWrapper contextWrapper,
             NetworkStatusRetriever retriever,
@@ -130,17 +132,6 @@ public class MerlinServiceTest {
                 defaultPinger,
                 customPinger
         );
-    }
-
-    @NonNull
-    private ConnectivityChangeEvent networkAvailableEvent() {
-        ConnectivityChangeEvent connectivityChangeEvent = mock(ConnectivityChangeEvent.class);
-        when(connectivityChangeEvent.asNetworkStatus()).thenReturn(NetworkStatus.newAvailableInstance());
-        return connectivityChangeEvent;
-    }
-
-    private ConnectivityChangeEvent createConnectivityChangeEvent(boolean isConnected) {
-        return ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(isConnected, "info", "reason");
     }
 
 }
