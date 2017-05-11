@@ -8,8 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class MerlinBuilderTest {
 
@@ -25,7 +24,7 @@ public class MerlinBuilderTest {
                 .withLogging(true)
                 .build(context);
 
-        assertTrue(MerlinLog.LOGGING);
+        assertThat(MerlinLog.LOGGING).isTrue();
     }
 
     @Test
@@ -34,7 +33,7 @@ public class MerlinBuilderTest {
                 .withLogging(false)
                 .build(context);
 
-        assertFalse(MerlinLog.LOGGING);
+        assertThat(MerlinLog.LOGGING).isFalse();
     }
 
 }
