@@ -9,41 +9,45 @@ import android.os.Build;
 import com.novoda.merlin.service.AndroidVersion;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.BDDMockito.given;
 
 public class MerlinsBeardTest {
 
     private static final boolean DISCONNECTED = false;
     private static final boolean CONNECTED = true;
 
-    @Mock
-    private ConnectivityManager mockConnectivityManager;
+    private static final boolean BELOW_LOLLIPOP = false;
+    private static final boolean LOLLIPOP_OR_ABOVE = true;
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    private NetworkInfo mockNetworkInfo;
-
+    private ConnectivityManager connectivityManager;
     @Mock
-    private AndroidVersion mockAndroidVersion;
+    private NetworkInfo networkInfo;
+    @Mock
+    private AndroidVersion androidVersion;
 
     private MerlinsBeard merlinsBeard;
 
     @Before
     public void setUp() {
-        initMocks(this);
-
-        merlinsBeard = new MerlinsBeard(mockConnectivityManager, mockAndroidVersion);
+        merlinsBeard = new MerlinsBeard(connectivityManager, androidVersion);
     }
 
     @Test
-    public void returnFalseForIsConnectedWhenNetworkConnectionIsUnavailable() {
-        when(mockConnectivityManager.getActiveNetworkInfo()).thenReturn(mockNetworkInfo);
-        when(mockNetworkInfo.isConnected()).thenReturn(false);
+    public void givenNetworkIsDisconnected_whenCheckingForConnectivity_thenReturnsFalse() {
+        given(connectivityManager.getActiveNetworkInfo()).willReturn(networkInfo);
+        given(networkInfo.isConnected()).willReturn(DISCONNECTED);
 
         boolean connected = merlinsBeard.isConnected();
 
@@ -51,8 +55,8 @@ public class MerlinsBeardTest {
     }
 
     @Test
-    public void returnFalseForIsConnectedWhenNetworkConnectionIsNull() {
-        when(mockConnectivityManager.getActiveNetworkInfo()).thenReturn(null);
+    public void givenNetworkIsNull_whenCheckingForConnectivity_thenReturnsFalse() {
+        given(connectivityManager.getActiveNetworkInfo()).willReturn(null);
 
         boolean connected = merlinsBeard.isConnected();
 
@@ -60,9 +64,9 @@ public class MerlinsBeardTest {
     }
 
     @Test
-    public void returnTrueForIsConnectedWhenNetworkConnectionIsAvailable() {
-        when(mockConnectivityManager.getActiveNetworkInfo()).thenReturn(mockNetworkInfo);
-        when(mockNetworkInfo.isConnected()).thenReturn(true);
+    public void givenNetworkIsConnected_whenCheckingForConnectivity_thenReturnsTrue() {
+        given(connectivityManager.getActiveNetworkInfo()).willReturn(networkInfo);
+        given(networkInfo.isConnected()).willReturn(CONNECTED);
 
         boolean connected = merlinsBeard.isConnected();
 
@@ -70,10 +74,8 @@ public class MerlinsBeardTest {
     }
 
     @Test
-    public void returnTrueWhenConnectedToWifiAndAndroidVersionIsBelowLollipop() {
-        when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(false);
-        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).thenReturn(mockNetworkInfo);
-        when(mockNetworkInfo.isConnected()).thenReturn(true);
+    public void givenNetworkIsConnectedViaWifi_andAndroidVersionIsBelowLollipop_whenCheckingIfConnectedToWifi_thenReturnsTrue() {
+        givenNetworkStateForBelowLollipop(CONNECTED, ConnectivityManager.TYPE_WIFI);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
 
@@ -81,10 +83,8 @@ public class MerlinsBeardTest {
     }
 
     @Test
-    public void returnFalseWhenNotConnectedToWifiAndAndroidVersionIsBelowLollipop() {
-        when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(false);
-        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).thenReturn(mockNetworkInfo);
-        when(mockNetworkInfo.isConnected()).thenReturn(false);
+    public void givenNetworkIsDisconnected_andAndroidVersionIsBelowLollipop_whenCheckingIfConnectedToWifi_thenReturnsFalse() {
+        givenNetworkStateForBelowLollipop(DISCONNECTED, ConnectivityManager.TYPE_WIFI);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
 
@@ -93,7 +93,7 @@ public class MerlinsBeardTest {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
-    public void returnTrueWhenConnectedToWifiAndAndroidVersionIsLollipopOrAbove() {
+    public void givenNetworkIsConnectedViaWifi_andAndroidVersionIsLollipopOrAbove_whenCheckingIfConnectedToWifi_thenReturnsTrue() {
         givenNetworkStateForLollipopOrAbove(CONNECTED, ConnectivityManager.TYPE_WIFI);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
@@ -103,7 +103,7 @@ public class MerlinsBeardTest {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
-    public void returnFalseWhenNotConnectedToWifiAndAndroidVersionIsLollipopOrAbove() {
+    public void givenNetworkIsDisconnected_andAndroidVersionIsLollipopOrAbove_whenCheckingIfConnectedToWifi_thenReturnsFalse() {
         givenNetworkStateForLollipopOrAbove(DISCONNECTED, ConnectivityManager.TYPE_WIFI);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
@@ -112,9 +112,9 @@ public class MerlinsBeardTest {
     }
 
     @Test
-    public void returnFalseWhenConnectionToWifiIsNotAvailableAndAndroidVersionIsBelowLollipop() {
-        when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(false);
-        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).thenReturn(null);
+    public void givenNetworkConnectivityInfoIsUnavailable_andAndroidVersionIsBelowLollipop_whenCheckingIfConnectedToWifi_thenReturnsFalse() {
+        given(androidVersion.isLollipopOrHigher()).willReturn(BELOW_LOLLIPOP);
+        given(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)).willReturn(null);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
 
@@ -123,9 +123,9 @@ public class MerlinsBeardTest {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
-    public void returnFalseWhenConnectionToWifiIsNotAvailableAndAndroidVersionIsLollipopOrAbove() {
-        when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(true);
-        when(mockConnectivityManager.getAllNetworks()).thenReturn(new Network[]{});
+    public void givenNetworkConnectivityInfoIsUnavailable_andAndroidVersionIsLollipopOrAbove_whenCheckingIfConnectedToWifi_thenReturnsFalse() {
+        given(androidVersion.isLollipopOrHigher()).willReturn(LOLLIPOP_OR_ABOVE);
+        given(connectivityManager.getAllNetworks()).willReturn(new Network[]{});
 
         boolean connectedToWifi = merlinsBeard.isConnectedToWifi();
 
@@ -133,21 +133,17 @@ public class MerlinsBeardTest {
     }
 
     @Test
-    public void returnTrueWhenConnectedToMobileNetworkAndAndroidVersionIsBelowLollipop() {
-        when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(false);
-        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(mockNetworkInfo);
-        when(mockNetworkInfo.isConnected()).thenReturn(true);
+    public void givenNetworkIsConnectedViaMobile_andAndroidVersionIsBelowLollipop_whenCheckingIfConnectedToMobile_thenReturnsTrue() {
+        givenNetworkStateForBelowLollipop(CONNECTED, ConnectivityManager.TYPE_MOBILE);
 
-        boolean connectedToconnectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
+        boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
 
-        assertThat(connectedToconnectedToMobileNetwork).isTrue();
+        assertThat(connectedToMobileNetwork).isTrue();
     }
 
     @Test
-    public void returnFalseWhenNotConnectedToMobileNetworkAndAndroidVersionIsBelowLollipop() {
-        when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(false);
-        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(mockNetworkInfo);
-        when(mockNetworkInfo.isConnected()).thenReturn(false);
+    public void givenNetworkIsDisconnected_andAndroidVersionIsBelowLollipop_whenCheckingIfConnectedToMobile_thenReturnsFalse() {
+        givenNetworkStateForBelowLollipop(DISCONNECTED, ConnectivityManager.TYPE_WIFI);
 
         boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
 
@@ -156,7 +152,7 @@ public class MerlinsBeardTest {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
-    public void returnTrueWhenConnectedToMobileNetworkAndAndroidVersionIsLollipopOrAbove() {
+    public void givenNetworkIsConnectedViaMobile_andAndroidVersionIsLollipopOrAbove_whenCheckingIfConnectedToMobile_thenReturnsTrue() {
         givenNetworkStateForLollipopOrAbove(CONNECTED, ConnectivityManager.TYPE_MOBILE);
 
         boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
@@ -166,7 +162,7 @@ public class MerlinsBeardTest {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
-    public void returnFalseWhenNotConnectedToMobileNetworkAndAndroidVersionIsLollipopOrAbove() {
+    public void givenNetworkIsDisconnected_andAndroidVersionIsLollipopOrAbove_whenCheckingIfConnectedToMobile_thenReturnsFalse() {
         givenNetworkStateForLollipopOrAbove(DISCONNECTED, ConnectivityManager.TYPE_MOBILE);
 
         boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
@@ -175,9 +171,9 @@ public class MerlinsBeardTest {
     }
 
     @Test
-    public void returnFalseWhenConnectionToMobileIsNotAvailableAndAndroidVersionIsBelowLollipop() {
-        when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(false);
-        when(mockConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).thenReturn(null);
+    public void givenNetworkConnectivityInfoIsUnavailable_andAndroidVersionIsLollipopOrAbove_whenCheckingIfConnectedToMobile_thenReturnsFalse() {
+        given(androidVersion.isLollipopOrHigher()).willReturn(false);
+        given(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)).willReturn(null);
 
         boolean connectedToWifi = merlinsBeard.isConnectedToMobileNetwork();
 
@@ -186,9 +182,9 @@ public class MerlinsBeardTest {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Test
-    public void returnFalseWhenConnectionToMobileIsNotAvailableAndAndroidVersionIsLollipopOrAbove() {
-        when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(true);
-        when(mockConnectivityManager.getAllNetworks()).thenReturn(new Network[]{});
+    public void givenNoAvailableNetworks_andAndroidVersionIsLollipopOrAbove_whenCheckingIfConnectedToMobile_thenReturnsFalse() {
+        given(androidVersion.isLollipopOrHigher()).willReturn(true);
+        given(connectivityManager.getAllNetworks()).willReturn(new Network[]{});
 
         boolean connectedToWifi = merlinsBeard.isConnectedToMobileNetwork();
 
@@ -199,11 +195,18 @@ public class MerlinsBeardTest {
     private void givenNetworkStateForLollipopOrAbove(boolean isConnected, int networkType) {
         Network network = Mockito.mock(Network.class);
         NetworkInfo networkInfo = Mockito.mock(NetworkInfo.class);
-        when(networkInfo.getType()).thenReturn(networkType);
-        when(networkInfo.isConnected()).thenReturn(isConnected);
-        when(mockConnectivityManager.getNetworkInfo(network)).thenReturn(networkInfo);
-        when(mockAndroidVersion.isLollipopOrHigher()).thenReturn(true);
-        when(mockConnectivityManager.getAllNetworks()).thenReturn(new Network[]{network});
+        given(networkInfo.getType()).willReturn(networkType);
+        given(networkInfo.isConnected()).willReturn(isConnected);
+        given(connectivityManager.getNetworkInfo(network)).willReturn(networkInfo);
+        given(androidVersion.isLollipopOrHigher()).willReturn(LOLLIPOP_OR_ABOVE);
+        given(connectivityManager.getAllNetworks()).willReturn(new Network[]{network});
+    }
+
+    private void givenNetworkStateForBelowLollipop(boolean isConnected, int networkType) {
+        NetworkInfo networkInfo = Mockito.mock(NetworkInfo.class);
+        given(androidVersion.isLollipopOrHigher()).willReturn(BELOW_LOLLIPOP);
+        given(connectivityManager.getNetworkInfo(networkType)).willReturn(networkInfo);
+        given(networkInfo.isConnected()).willReturn(isConnected);
     }
 
 }
