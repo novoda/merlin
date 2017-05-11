@@ -29,7 +29,7 @@ public class MerlinTest {
     @Mock
     private MerlinServiceBinder serviceBinder;
     @Mock
-    private ResponseCodeValidator mockValidator;
+    private ResponseCodeValidator validator;
     @Mock
     private Registerer registerer;
 
@@ -44,10 +44,10 @@ public class MerlinTest {
     public void whenBindingWithACustomEndpoint_thenSetsEndPoint() {
         String hostname = "startTheMerlinServiceWithAHostnameWhenProvided";
 
-        merlin.setEndpoint(hostname, mockValidator);
+        merlin.setEndpoint(hostname, validator);
         merlin.bind();
 
-        verify(serviceBinder).setEndpoint(hostname, mockValidator);
+        verify(serviceBinder).setEndpoint(hostname, validator);
     }
 
     @Test
