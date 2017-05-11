@@ -30,13 +30,15 @@ public class ResponseCodeValidatorTest {
         }
 
         @Test
-        public void testOtherCodesReturnFalse() {
+        public void whenCheckingResponseCodeValidity() {
             boolean actual = new DefaultEndpointResponseCodeValidator().isResponseCodeValid(responseCode);
+
             assertThat(actual).isEqualTo(isValid);
         }
     }
 
-    enum Responses {
+    private enum Responses {
+
         OK(200, false),
         CREATED(201, false),
         NO_CONTENT(204, true),
