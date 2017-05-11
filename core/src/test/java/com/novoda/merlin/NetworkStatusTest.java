@@ -2,23 +2,22 @@ package com.novoda.merlin;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class NetworkStatusTest {
 
     @Test
-    public void isAvailableReturnsTrueWhenNetworkStatusNewAvailableInstanceCreated() {
+    public void givenNewAvailableInstance_whenCheckingIsAvailable_thenReturnsTrue() {
         NetworkStatus networkStatus = NetworkStatus.newAvailableInstance();
 
-        assertTrue(networkStatus.isAvailable());
+        assertThat(networkStatus.isAvailable()).isTrue();
     }
 
     @Test
-    public void isAvailableReturnsFalseWhenNetworkStatusNewUnavailableInstanceCreated() {
+    public void givenNewUnavailableInstance_whenCheckingIsAvailable_thenReturnsFalse() {
         NetworkStatus networkStatus = NetworkStatus.newUnavailableInstance();
 
-        assertFalse(networkStatus.isAvailable());
+        assertThat(networkStatus.isAvailable()).isFalse();
     }
 
 }
