@@ -6,7 +6,7 @@ dependencies {
     compile project(':merlin-rxjava')
     compile project(':merlin-rxjava2')
 
-    compile('de.keyboardsurfer.android.widget:crouton:1.7') {
+    compile(libraries.app.crouton) {
         exclude module: 'support-v4'
     }
 
@@ -14,12 +14,11 @@ dependencies {
 
 android {
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 25
+        minSdkVersion versions.androidSdk.min
     }
 
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion versions.androidSdk.compile
+    buildToolsVersion versions.androidSdk.buildTools
 
     packagingOptions {
         exclude 'META-INF/rxjava.properties'

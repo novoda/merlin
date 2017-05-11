@@ -1,16 +1,14 @@
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.10'
-}
-
 allprojects {
     version = "0.10.0"
     repositories { mavenCentral() }
 }
 
 buildscript {
+    apply from: 'dependencies.gradle'
+
     repositories { jcenter() }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
-        classpath 'com.novoda:bintray-release:0.2.4'
+        classpath libraries.build.androidGradle
+        classpath libraries.build.bintrayRelease
     }
 }
