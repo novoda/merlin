@@ -44,7 +44,7 @@ public class ConnectivityReceiverTest {
             @Override
             protected MerlinsBeard getMerlinsBeard(Context context) {
                 MerlinsBeard mockMerlinsBeard = mock(MerlinsBeard.class);
-                when(mockMerlinsBeard.isConnected()).thenReturn(true);
+                given(mockMerlinsBeard.isConnected()).willReturn(true);
                 return mockMerlinsBeard;
             }
         };
