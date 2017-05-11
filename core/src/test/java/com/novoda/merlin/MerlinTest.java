@@ -2,42 +2,46 @@ package com.novoda.merlin;
 
 import android.content.Context;
 
+import com.novoda.merlin.registerable.Registerer;
+import com.novoda.merlin.registerable.bind.Bindable;
+import com.novoda.merlin.registerable.connection.Connectable;
+import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.service.MerlinServiceBinder;
 import com.novoda.merlin.service.ResponseCodeValidator;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class MerlinTest {
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
     private Context context;
     @Mock
     private MerlinServiceBinder serviceBinder;
     @Mock
-    ResponseCodeValidator mockValidator;
+    private ResponseCodeValidator mockValidator;
+    @Mock
+    private Registerer registerer;
 
     private Merlin merlin;
 
     @Before
-    public void setUp() throws Exception {
-        initMocks(this);
-        merlin = new Merlin(serviceBinder, null);
+    public void setUp() {
+        merlin = new Merlin(serviceBinder, registerer);
     }
 
     @Test
-    public void startTheMerlinService() throws Exception {
-        merlin.bind();
-
-        verify(serviceBinder).bindService();
-    }
-
-    @Test
-    public void bindTheMerlinServiceWithAHostnameWhenProvided() throws Exception {
+    public void whenBindingWithACustomEndpoint_thenSetsEndPoint() {
         String hostname = "startTheMerlinServiceWithAHostnameWhenProvided";
 
         merlin.setEndpoint(hostname, mockValidator);
@@ -47,10 +51,44 @@ public class MerlinTest {
     }
 
     @Test
-    public void unbindTheMerlinService() throws Exception {
+    public void whenBinding_thenBindsService() {
+        merlin.bind();
+
+        verify(serviceBinder).bindService();
+    }
+
+    @Test
+    public void whenUnbinding_thenUnbindsService() {
         merlin.unbind();
 
         verify(serviceBinder).unbind();
+    }
+
+    @Test
+    public void whenRegisteringConnectable_thenRegistersConnectable() {
+        Connectable connectable = mock(Connectable.class);
+
+        merlin.registerConnectable(connectable);
+
+        verify(registerer).registerConnectable(connectable);
+    }
+
+    @Test
+    public void whenRegisteringDisconnectable_thenRegistersDisconnectable() {
+        Disconnectable disconnectable = mock(Disconnectable.class);
+
+        merlin.registerDisconnectable(disconnectable);
+
+        verify(registerer).registerDisconnectable(disconnectable);
+    }
+
+    @Test
+    public void whenRegisteringBindable_thenRegistersBindable() {
+        Bindable bindable = mock(Bindable.class);
+
+        merlin.registerBindable(bindable);
+
+        verify(registerer).registerBindable(bindable);
     }
 
 }
