@@ -32,8 +32,6 @@ public class MerlinBuilder {
     private String endPoint = Merlin.DEFAULT_ENDPOINT;
     private ResponseCodeValidator responseCodeValidator = new DefaultEndpointResponseCodeValidator();
 
-    private boolean withLogging;
-
     MerlinBuilder() {
     }
 
