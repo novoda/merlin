@@ -14,6 +14,14 @@ public final class Logger {
         HANDLES.add(handle);
     }
 
+    public static void detach(LogHandle handle) {
+        HANDLES.remove(handle);
+    }
+
+    public static void detachAll() {
+        HANDLES.clear();
+    }
+
     public static void v(Object... message) {
         for (int i = 0; i < HANDLES.size(); i++) {
             LogHandle handle = HANDLES.get(i);

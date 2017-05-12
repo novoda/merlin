@@ -1,7 +1,7 @@
 package com.novoda.merlin.service;
 
-import com.novoda.merlin.MerlinLog;
 import com.novoda.merlin.service.request.RequestException;
+import com.novoda.support.Logger;
 
 class Ping {
 
@@ -16,12 +16,12 @@ class Ping {
     }
 
     public boolean doSynchronousPing() {
-        MerlinLog.d("Pinging: " + hostAddress);
+        Logger.d("Pinging: " + hostAddress);
         try {
             return validator.isResponseCodeValid(responseCodeFetcher.from(hostAddress));
         } catch (RequestException e) {
             if (!e.causedByIO()) {
-                MerlinLog.e("Ping task failed due to " + e.getMessage());
+                Logger.e("Ping task failed due to " + e.getMessage());
             }
             return false;
         }

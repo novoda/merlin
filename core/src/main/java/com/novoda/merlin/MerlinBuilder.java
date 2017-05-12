@@ -15,6 +15,7 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.disconnection.Disconnector;
 import com.novoda.merlin.service.MerlinServiceBinder;
 import com.novoda.merlin.service.ResponseCodeValidator;
+import com.novoda.support.Logger;
 
 import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
 
@@ -30,6 +31,8 @@ public class MerlinBuilder {
 
     private String endPoint = Merlin.DEFAULT_ENDPOINT;
     private ResponseCodeValidator responseCodeValidator = new DefaultEndpointResponseCodeValidator();
+
+    private boolean withLogging;
 
     MerlinBuilder() {
     }
@@ -77,13 +80,23 @@ public class MerlinBuilder {
     }
 
     /**
-     * Sets the internal Merlin Logging state. Uses the TAG : Merlin
+     * Sets the internal Merlin logging state to report to a given LogHandle.
      *
-     * @param withLogging by default Logging is disabled. withLogging = true will enable logging, withLogging = false will disable.
+     * @param logHandle that should be used when logging.
      * @return MerlinBuilder.
      */
-    public MerlinBuilder withLogging(boolean withLogging) {
-        MerlinLog.LOGGING = withLogging;
+    public MerlinBuilder withLogging(Logger.LogHandle logHandle) {
+        Logger.attach(logHandle);
+        return this;
+    }
+
+    /**
+     * Removes all log handles from the Logger.
+     *
+     * @return MerlinBuilder.
+     */
+    public MerlinBuilder withoutLogging() {
+        Logger.detachAll();
         return this;
     }
 

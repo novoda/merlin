@@ -1,8 +1,8 @@
 package com.novoda.merlin.registerable.connection;
 
-import com.novoda.merlin.MerlinLog;
 import com.novoda.merlin.registerable.MerlinCallbackManager;
 import com.novoda.merlin.registerable.MerlinConnector;
+import com.novoda.support.Logger;
 
 public class Connector extends MerlinCallbackManager<Connectable> implements ConnectListener {
 
@@ -12,7 +12,7 @@ public class Connector extends MerlinCallbackManager<Connectable> implements Con
 
     @Override
     public void onConnect() {
-        MerlinLog.d("onConnect");
+        Logger.d("onConnect");
         for (Connectable connectable : getRegisterables()) {
             connectable.onConnect();
         }
