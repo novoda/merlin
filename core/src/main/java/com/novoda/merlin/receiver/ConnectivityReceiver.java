@@ -1,10 +1,8 @@
 package com.novoda.merlin.receiver;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
@@ -13,19 +11,17 @@ import com.novoda.merlin.service.MerlinService;
 
 public class ConnectivityReceiver extends BroadcastReceiver {
 
-    private final MerlinsBeardRetriever merlinsBeardRetriever;
-    private final ServiceRetriever serviceRetriever;
-    private final ConnectivityChangeEventCreator creator;
+    private final ConnectivityChangeNotifier connectivityChangeNotifier;
 
     public ConnectivityReceiver() {
-        this.merlinsBeardRetriever = new MerlinsBeardRetriever() {
+        MerlinsBeardRetriever merlinsBeardRetriever = new MerlinsBeardRetriever() {
             @Override
             public MerlinsBeard getMerlinsBeard(Context context) {
                 return MerlinsBeard.from(context);
             }
         };
 
-        this.serviceRetriever = new ServiceRetriever() {
+        ServiceRetriever serviceRetriever = new ServiceRetriever() {
             @Override
             public MerlinService getService(Context context) {
                 IBinder binder = peekService(context, new Intent(context, MerlinService.class));
@@ -41,39 +37,17 @@ public class ConnectivityReceiver extends BroadcastReceiver {
             }
         };
 
-        this.creator = new ConnectivityChangeEventCreator();
+        ConnectivityChangeEventCreator creator = new ConnectivityChangeEventCreator();
+        connectivityChangeNotifier = new ConnectivityChangeNotifier(merlinsBeardRetriever, serviceRetriever, creator);
     }
 
-    ConnectivityReceiver(MerlinsBeardRetriever merlinsBeardRetriever,
-                         ServiceRetriever serviceRetriever,
-                         ConnectivityChangeEventCreator creator) {
-        this.merlinsBeardRetriever = merlinsBeardRetriever;
-        this.serviceRetriever = serviceRetriever;
-        this.creator = creator;
+    ConnectivityReceiver(ConnectivityChangeNotifier connectivityChangeNotifier) {
+        this.connectivityChangeNotifier = connectivityChangeNotifier;
     }
 
-    // Lint thinks we're not calling getAction, but we actually do
-    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent != null && connectivityAction(intent)) {
-            MerlinsBeard merlinsBeard = merlinsBeardRetriever.getMerlinsBeard(context);
-            ConnectivityChangeEvent connectivityChangeEvent = creator.createFrom(intent, merlinsBeard);
-            notifyMerlinService(context, connectivityChangeEvent);
-        }
-    }
-
-    private boolean connectivityAction(Intent intent) {
-        return ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction());
-    }
-
-    private void notifyMerlinService(Context context, ConnectivityChangeEvent connectivityChangedEvent) {
-        MerlinService merlinService = getMerlinService(context);
-        if (merlinService == null) {
-            return;
-        }
-
-        merlinService.onConnectivityChanged(connectivityChangedEvent);
+        connectivityChangeNotifier.notify(context, intent);
     }
 
     interface ServiceRetriever {
@@ -85,10 +59,6 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     interface MerlinsBeardRetriever {
 
         MerlinsBeard getMerlinsBeard(Context context);
-    }
-
-    private MerlinService getMerlinService(Context context) {
-        return serviceRetriever.getService(context);
     }
 
 }
