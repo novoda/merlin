@@ -3,7 +3,6 @@ package com.novoda.merlin.receiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.test.mock.MockContext;
 
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.service.MerlinService;
@@ -24,31 +23,34 @@ public class ConnectivityReceiverTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
+    private Context context;
+    @Mock
     private Intent intent;
     @Mock
     private MerlinService merlinService;
+    @Mock
+    private MerlinsBeard merlinsBeard;
 
-    private Context context;
     private ConnectivityReceiver connectivityReceiver;
 
     @Before
     public void setUp() throws Exception {
-        context = new MockContext();
-        // TODO: See https://github.com/novoda/merlin/issues/111
-        connectivityReceiver = new ConnectivityReceiver() {
-            @Override
-            protected MerlinService getMerlinService(Context context) {
-                return merlinService;
-            }
-
-            @Override
-            protected MerlinsBeard getMerlinsBeard(Context context) {
-                MerlinsBeard merlinsBeard = mock(MerlinsBeard.class);
-                given(merlinsBeard.isConnected()).willReturn(true);
-                return merlinsBeard;
-            }
-        };
+        connectivityReceiver = new ConnectivityReceiver(merlinsBeardRetriever, serviceRetriever);
     }
+
+    private final ConnectivityReceiver.MerlinsBeardRetriever merlinsBeardRetriever = new ConnectivityReceiver.MerlinsBeardRetriever() {
+        @Override
+        public MerlinsBeard getMerlinsBeard(Context context) {
+            return merlinsBeard;
+        }
+    };
+
+    private final ConnectivityReceiver.ServiceRetriever serviceRetriever = new ConnectivityReceiver.ServiceRetriever() {
+        @Override
+        public MerlinService getService(Context context) {
+            return merlinService;
+        }
+    };
 
     @Test
     public void givenNullIntent_whenReceivingAnIntent_thenDoesNotNotifyMerlinService() {
