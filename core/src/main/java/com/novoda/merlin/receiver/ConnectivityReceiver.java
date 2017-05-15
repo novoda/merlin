@@ -18,23 +18,14 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent != null && connectivityAction(intent)) {
-            boolean isConnected = getIsConnected(context, intent);
-            String info = intent.getStringExtra(ConnectivityManager.EXTRA_EXTRA_INFO);
-            String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
-            notifyMerlinService(context, ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(isConnected, info, reason));
+            ConnectivityChangeEventCreator creator = new ConnectivityChangeEventCreator(getMerlinsBeard(context));
+            ConnectivityChangeEvent connectivityChangeEvent = creator.createFrom(intent);
+            notifyMerlinService(context, connectivityChangeEvent);
         }
     }
 
     private boolean connectivityAction(Intent intent) {
         return ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction());
-    }
-
-    private boolean getIsConnected(Context context, Intent intent) {
-        if (intent.hasExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY)) {
-            return !intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-        } else {
-            return getMerlinsBeard(context).isConnected();
-        }
     }
 
     private void notifyMerlinService(Context context, ConnectivityChangeEvent connectivityChangedEvent) {
