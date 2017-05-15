@@ -16,6 +16,7 @@ import com.novoda.merlin.registerable.disconnection.Disconnector;
 import com.novoda.merlin.service.MerlinServiceBinder;
 import com.novoda.merlin.service.ResponseCodeValidator;
 import com.novoda.support.Logger;
+import com.novoda.support.MerlinBackwardsCompatibleLog;
 
 import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
 
@@ -78,23 +79,18 @@ public class MerlinBuilder {
     }
 
     /**
-     * Sets the internal Merlin logging state to report to a given LogHandle.
+     * Deprecated, use directly {@link Logger} instead. To provide backwards compatibility
+     * this method will clear the {@link Logger} and attach a new {@link MerlinBackwardsCompatibleLog}
+     * which will absorb or log depending on the withLogging passed.
      *
-     * @param logHandle that should be used when logging.
-     * @return MerlinBuilder.
+     * @param withLogging by default logging is disabled. withLogging = true will attach the default {@link MerlinBackwardsCompatibleLog}
+     * @return MerlinBuilder
      */
-    public MerlinBuilder withLogging(Logger.LogHandle logHandle) {
-        Logger.attach(logHandle);
-        return this;
-    }
-
-    /**
-     * Removes all log handles from the Logger.
-     *
-     * @return MerlinBuilder.
-     */
-    public MerlinBuilder withoutLogging() {
+    @Deprecated
+    public MerlinBuilder withLogging(boolean withLogging) {
         Logger.detachAll();
+        Logger.attach(new MerlinBackwardsCompatibleLog(withLogging));
+
         return this;
     }
 
