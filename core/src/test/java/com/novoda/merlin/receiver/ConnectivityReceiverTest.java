@@ -30,27 +30,29 @@ public class ConnectivityReceiverTest {
     private MerlinService merlinService;
     @Mock
     private MerlinsBeard merlinsBeard;
+    @Mock
+    private ConnectivityChangeEventCreator connectivityChangeEventCreator;
+    @Mock
+    private ConnectivityChangeEvent connectivityChangeEvent;
 
     private ConnectivityReceiver connectivityReceiver;
 
     @Before
     public void setUp() throws Exception {
-        connectivityReceiver = new ConnectivityReceiver(merlinsBeardRetriever, serviceRetriever);
+        connectivityReceiver = new ConnectivityReceiver(new ConnectivityReceiver.MerlinsBeardRetriever() {
+            @Override
+            public MerlinsBeard getMerlinsBeard(Context context1) {
+                return merlinsBeard;
+            }
+        }, new ConnectivityReceiver.ServiceRetriever() {
+            @Override
+            public MerlinService getService(Context context1) {
+                return merlinService;
+            }
+        }, connectivityChangeEventCreator);
+
+        given(connectivityChangeEventCreator.createFrom(any(Intent.class), any(MerlinsBeard.class))).willReturn(connectivityChangeEvent);
     }
-
-    private final ConnectivityReceiver.MerlinsBeardRetriever merlinsBeardRetriever = new ConnectivityReceiver.MerlinsBeardRetriever() {
-        @Override
-        public MerlinsBeard getMerlinsBeard(Context context) {
-            return merlinsBeard;
-        }
-    };
-
-    private final ConnectivityReceiver.ServiceRetriever serviceRetriever = new ConnectivityReceiver.ServiceRetriever() {
-        @Override
-        public MerlinService getService(Context context) {
-            return merlinService;
-        }
-    };
 
     @Test
     public void givenNullIntent_whenReceivingAnIntent_thenDoesNotNotifyMerlinService() {

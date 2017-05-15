@@ -7,20 +7,14 @@ import com.novoda.merlin.MerlinsBeard;
 
 class ConnectivityChangeEventCreator {
 
-    private final MerlinsBeard merlinsBeard;
-
-    ConnectivityChangeEventCreator(MerlinsBeard merlinsBeard) {
-        this.merlinsBeard = merlinsBeard;
-    }
-
-    ConnectivityChangeEvent createFrom(Intent intent) {
-        boolean isConnected = getConnectivity(intent);
+    ConnectivityChangeEvent createFrom(Intent intent, MerlinsBeard merlinsBeard) {
+        boolean isConnected = getConnectivity(intent, merlinsBeard);
         String info = intent.getStringExtra(ConnectivityManager.EXTRA_EXTRA_INFO);
         String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
         return ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(isConnected, info, reason);
     }
 
-    private boolean getConnectivity(Intent intent) {
+    private boolean getConnectivity(Intent intent, MerlinsBeard merlinsBeard) {
         if (intent.hasExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY)) {
             return !intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
         } else {

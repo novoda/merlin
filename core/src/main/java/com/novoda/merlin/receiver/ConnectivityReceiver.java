@@ -15,6 +15,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
     private final MerlinsBeardRetriever merlinsBeardRetriever;
     private final ServiceRetriever serviceRetriever;
+    private final ConnectivityChangeEventCreator creator;
 
     public ConnectivityReceiver() {
         this.merlinsBeardRetriever = new MerlinsBeardRetriever() {
@@ -39,11 +40,16 @@ public class ConnectivityReceiver extends BroadcastReceiver {
                 return object != null;
             }
         };
+
+        this.creator = new ConnectivityChangeEventCreator();
     }
 
-    ConnectivityReceiver(MerlinsBeardRetriever merlinsBeardRetriever, ServiceRetriever serviceRetriever) {
+    ConnectivityReceiver(MerlinsBeardRetriever merlinsBeardRetriever,
+                         ServiceRetriever serviceRetriever,
+                         ConnectivityChangeEventCreator creator) {
         this.merlinsBeardRetriever = merlinsBeardRetriever;
         this.serviceRetriever = serviceRetriever;
+        this.creator = creator;
     }
 
     // Lint thinks we're not calling getAction, but we actually do
@@ -52,8 +58,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent != null && connectivityAction(intent)) {
             MerlinsBeard merlinsBeard = merlinsBeardRetriever.getMerlinsBeard(context);
-            ConnectivityChangeEventCreator creator = new ConnectivityChangeEventCreator(merlinsBeard);
-            ConnectivityChangeEvent connectivityChangeEvent = creator.createFrom(intent);
+            ConnectivityChangeEvent connectivityChangeEvent = creator.createFrom(intent, merlinsBeard);
             notifyMerlinService(context, connectivityChangeEvent);
         }
     }
