@@ -10,15 +10,15 @@ import com.novoda.merlin.service.MerlinService;
 class ConnectivityChangeNotifier {
 
     private final ConnectivityReceiver.MerlinsBeardRetriever merlinsBeardRetriever;
-    private final ConnectivityReceiver.ServiceRetriever serviceRetriever;
+    private final ConnectivityReceiver.MerlinServiceRetriever merlinServiceRetriever;
     private final ConnectivityChangeEventCreator creator;
 
     ConnectivityChangeNotifier(ConnectivityReceiver.MerlinsBeardRetriever merlinsBeardRetriever,
-                               ConnectivityReceiver.ServiceRetriever serviceRetriever,
+                               ConnectivityReceiver.MerlinServiceRetriever merlinServiceRetriever,
                                ConnectivityChangeEventCreator creator) {
 
         this.merlinsBeardRetriever = merlinsBeardRetriever;
-        this.serviceRetriever = serviceRetriever;
+        this.merlinServiceRetriever = merlinServiceRetriever;
         this.creator = creator;
     }
 
@@ -31,7 +31,7 @@ class ConnectivityChangeNotifier {
     }
 
     private void notifyMerlinService(Context context, ConnectivityChangeEvent connectivityChangeEvent) {
-        MerlinService service = serviceRetriever.getService(context);
+        MerlinService service = merlinServiceRetriever.getService(context);
 
         if (service == null) {
             return;

@@ -21,7 +21,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
             }
         };
 
-        ServiceRetriever serviceRetriever = new ServiceRetriever() {
+        MerlinServiceRetriever merlinServiceRetriever = new MerlinServiceRetriever() {
             @Override
             public MerlinService getService(Context context) {
                 IBinder binder = peekService(context, new Intent(context, MerlinService.class));
@@ -38,7 +38,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         };
 
         ConnectivityChangeEventCreator creator = new ConnectivityChangeEventCreator();
-        connectivityChangeNotifier = new ConnectivityChangeNotifier(merlinsBeardRetriever, serviceRetriever, creator);
+        connectivityChangeNotifier = new ConnectivityChangeNotifier(merlinsBeardRetriever, merlinServiceRetriever, creator);
     }
 
     ConnectivityReceiver(ConnectivityChangeNotifier connectivityChangeNotifier) {
@@ -50,7 +50,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         connectivityChangeNotifier.notify(context, intent);
     }
 
-    interface ServiceRetriever {
+    interface MerlinServiceRetriever {
 
         @Nullable
         MerlinService getService(Context context);
