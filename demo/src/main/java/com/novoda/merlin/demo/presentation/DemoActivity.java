@@ -15,7 +15,6 @@ import com.novoda.merlin.demo.presentation.base.MerlinActivity;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
-import com.novoda.support.AndroidLogHandle;
 
 public class DemoActivity extends MerlinActivity implements Connectable, Disconnectable, Bindable {
 
@@ -98,7 +97,6 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
                 .withConnectableCallbacks()
                 .withDisconnectableCallbacks()
                 .withBindableCallbacks()
-                .withLogging(new AndroidLogHandle())
                 .build(this);
     }
 
