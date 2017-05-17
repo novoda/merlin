@@ -27,12 +27,12 @@ public class ConnectivityReceiverTest {
     private ConnectivityReceiver connectivityReceiver;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         connectivityReceiver = new ConnectivityReceiver(notifier);
     }
 
     @Test
-    public void whenReceivingAnIntent_thenForwardsToConnectivityReceiver() {
+    public void whenReceivingAnIntent_thenForwardsToConnectivityChangeNotifier() {
         connectivityReceiver.onReceive(context, intent);
 
         verify(notifier).notify(context, intent);
