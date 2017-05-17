@@ -6,7 +6,7 @@ public final class MerlinBackwardsCompatibleLog implements Logger.LogHandle {
 
     private static MerlinBackwardsCompatibleLog lazyInstance;
 
-    private final String TAG = "Merlin" + hashCode();
+    private final String TAG = "Merlin";
 
     private MerlinBackwardsCompatibleLog() {
         // Single instance.
