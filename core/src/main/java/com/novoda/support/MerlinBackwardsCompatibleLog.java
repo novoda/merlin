@@ -1,8 +1,21 @@
 package com.novoda.support;
 
-public class MerlinBackwardsCompatibleLog implements Logger.LogHandle {
+public final class MerlinBackwardsCompatibleLog implements Logger.LogHandle {
+
+    private static MerlinBackwardsCompatibleLog lazyInstance;
 
     private final String TAG = "Merlin" + hashCode();
+
+    private MerlinBackwardsCompatibleLog() {
+        // Single instance.
+    }
+
+    public static MerlinBackwardsCompatibleLog getInstance() {
+        if (lazyInstance == null) {
+            lazyInstance = new MerlinBackwardsCompatibleLog();
+        }
+        return lazyInstance;
+    }
 
     @Override
     public void v(Object... message) {

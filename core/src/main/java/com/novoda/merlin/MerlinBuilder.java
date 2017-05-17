@@ -32,7 +32,6 @@ public class MerlinBuilder {
 
     private String endPoint = Merlin.DEFAULT_ENDPOINT;
     private ResponseCodeValidator responseCodeValidator = new DefaultEndpointResponseCodeValidator();
-    private MerlinBackwardsCompatibleLog log = new MerlinBackwardsCompatibleLog();
 
     MerlinBuilder() {
     }
@@ -89,9 +88,9 @@ public class MerlinBuilder {
      */
     @Deprecated
     public MerlinBuilder withLogging(boolean withLogging) {
-        Logger.detach(log);
+        Logger.detach(MerlinBackwardsCompatibleLog.getInstance());
         if (withLogging) {
-            Logger.attach(log);
+            Logger.attach(MerlinBackwardsCompatibleLog.getInstance());
         }
 
         return this;
