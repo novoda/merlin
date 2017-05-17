@@ -1,8 +1,8 @@
 package com.novoda.merlin.service;
 
 import com.novoda.merlin.Merlin;
-import com.novoda.merlin.MerlinLog;
 import com.novoda.merlin.service.request.MerlinRequest;
+import com.novoda.support.Logger;
 
 import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
 
@@ -21,7 +21,7 @@ class HostPinger {
     }
 
     static HostPinger withDefaultEndpointValidation(PingerCallback pingerCallback) {
-        MerlinLog.d("Host address not set, using Merlin default: " + Merlin.DEFAULT_ENDPOINT);
+        Logger.d("Host address not set, using Merlin default: " + Merlin.DEFAULT_ENDPOINT);
         PingTaskFactory pingTaskFactory = new PingTaskFactory(pingerCallback, new ResponseCodeFetcher(), new DefaultEndpointResponseCodeValidator());
         return new HostPinger(pingerCallback, Merlin.DEFAULT_ENDPOINT, pingTaskFactory);
     }

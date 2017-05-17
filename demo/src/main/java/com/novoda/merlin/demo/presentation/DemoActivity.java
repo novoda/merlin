@@ -97,7 +97,6 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
                 .withConnectableCallbacks()
                 .withDisconnectableCallbacks()
                 .withBindableCallbacks()
-                .withLogging(true)
                 .build(this);
     }
 
