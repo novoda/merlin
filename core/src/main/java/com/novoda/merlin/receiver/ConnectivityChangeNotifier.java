@@ -3,6 +3,7 @@ package com.novoda.merlin.receiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.os.IBinder;
 
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.service.MerlinService;
@@ -10,15 +11,15 @@ import com.novoda.merlin.service.MerlinService;
 class ConnectivityChangeNotifier {
 
     private final ConnectivityReceiver.MerlinsBeardRetriever merlinsBeardRetriever;
-    private final ConnectivityReceiver.MerlinServiceRetriever merlinServiceRetriever;
+    private final ConnectivityReceiver.MerlinBinderRetriever merlinBinderRetriever;
     private final ConnectivityChangeEventCreator creator;
 
     ConnectivityChangeNotifier(ConnectivityReceiver.MerlinsBeardRetriever merlinsBeardRetriever,
-                               ConnectivityReceiver.MerlinServiceRetriever merlinServiceRetriever,
+                               ConnectivityReceiver.MerlinBinderRetriever merlinBinderRetriever,
                                ConnectivityChangeEventCreator creator) {
 
         this.merlinsBeardRetriever = merlinsBeardRetriever;
-        this.merlinServiceRetriever = merlinServiceRetriever;
+        this.merlinBinderRetriever = merlinBinderRetriever;
         this.creator = creator;
     }
 
@@ -31,13 +32,16 @@ class ConnectivityChangeNotifier {
     }
 
     private void notifyMerlinService(Context context, ConnectivityChangeEvent connectivityChangeEvent) {
-        MerlinService service = merlinServiceRetriever.getService(context);
+        IBinder binder = merlinBinderRetriever.getBinder(context);
 
-        if (service == null) {
-            return;
+        if (merlinServiceAvailableFrom(binder)) {
+            MerlinService merlinService = ((MerlinService.LocalBinder) binder).getService();
+            merlinService.onConnectivityChanged(connectivityChangeEvent);
         }
+    }
 
-        service.onConnectivityChanged(connectivityChangeEvent);
+    private boolean merlinServiceAvailableFrom(IBinder binder) {
+        return binder != null && binder instanceof MerlinService.LocalBinder && ((MerlinService.LocalBinder) binder).getService() != null;
     }
 
     private boolean connectivityAction(Intent intent) {

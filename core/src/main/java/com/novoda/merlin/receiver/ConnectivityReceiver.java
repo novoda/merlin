@@ -21,24 +21,15 @@ public class ConnectivityReceiver extends BroadcastReceiver {
             }
         };
 
-        MerlinServiceRetriever merlinServiceRetriever = new MerlinServiceRetriever() {
+        MerlinBinderRetriever merlinBinderRetriever = new MerlinBinderRetriever() {
             @Override
-            public MerlinService getService(Context context) {
-                IBinder binder = peekService(context, new Intent(context, MerlinService.class));
-
-                if (isAvailable(binder)) {
-                    return ((MerlinService.LocalBinder) binder).getService();
-                }
-                return null;
-            }
-
-            private boolean isAvailable(Object object) {
-                return object != null;
+            public IBinder getBinder(Context context) {
+                return peekService(context, new Intent(context, MerlinService.class));
             }
         };
 
         ConnectivityChangeEventCreator creator = new ConnectivityChangeEventCreator();
-        connectivityChangeNotifier = new ConnectivityChangeNotifier(merlinsBeardRetriever, merlinServiceRetriever, creator);
+        connectivityChangeNotifier = new ConnectivityChangeNotifier(merlinsBeardRetriever, merlinBinderRetriever, creator);
     }
 
     ConnectivityReceiver(ConnectivityChangeNotifier connectivityChangeNotifier) {
@@ -50,10 +41,10 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         connectivityChangeNotifier.notify(context, intent);
     }
 
-    interface MerlinServiceRetriever {
+    interface MerlinBinderRetriever {
 
         @Nullable
-        MerlinService getService(Context context);
+        IBinder getBinder(Context context);
     }
 
     interface MerlinsBeardRetriever {

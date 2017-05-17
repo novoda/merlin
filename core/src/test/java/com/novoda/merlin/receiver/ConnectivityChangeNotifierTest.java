@@ -3,6 +3,8 @@ package com.novoda.merlin.receiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.os.Binder;
+import android.os.IBinder;
 
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.service.MerlinService;
@@ -32,21 +34,26 @@ public class ConnectivityChangeNotifierTest {
     @Mock
     private ConnectivityChangeEventCreator eventCreator;
     @Mock
-    private ConnectivityReceiver.MerlinServiceRetriever merlinServiceRetriever;
+    private ConnectivityReceiver.MerlinBinderRetriever merlinBinderRetriever;
     @Mock
     private MerlinService merlinService;
     @Mock
     private MerlinsBeard merlinsBeard;
+    @Mock
+    private MerlinService.LocalBinder merlinBinder;
 
     private ConnectivityChangeNotifier notifier;
 
     @Before
     public void setUp() {
         ConnectivityReceiver.MerlinsBeardRetriever merlinsBeardRetriever = mock(ConnectivityReceiver.MerlinsBeardRetriever.class);
-        given(merlinServiceRetriever.getService(context)).willReturn(merlinService);
+
+        given(merlinBinder.getService()).willReturn(merlinService);
+
+        given(merlinBinderRetriever.getBinder(context)).willReturn(merlinBinder);
         given(merlinsBeardRetriever.getMerlinsBeard(context)).willReturn(merlinsBeard);
 
-        notifier = new ConnectivityChangeNotifier(merlinsBeardRetriever, merlinServiceRetriever, eventCreator);
+        notifier = new ConnectivityChangeNotifier(merlinsBeardRetriever, merlinBinderRetriever, eventCreator);
 
     }
 
@@ -78,9 +85,29 @@ public class ConnectivityChangeNotifierTest {
     }
 
     @Test
-    public void givenIntentWithConnectivityAction_butMerlinServiceIsNotPresent_whenNotifying_thenNeverCallsMerlinServiceOnConnectivityChanged() {
+    public void givenIntentWithConnectivityAction_butNullBinder_whenNotifying_thenNeverCallsMerlinServiceOnConnectivityChanged() {
         Intent intent = givenIntentWithConnectivityAction();
-        given(merlinServiceRetriever.getService(context)).willReturn(null);
+        given(merlinBinderRetriever.getBinder(context)).willReturn(null);
+
+        notifier.notify(context, intent);
+
+        verify(merlinService, never()).onConnectivityChanged(any(ConnectivityChangeEvent.class));
+    }
+
+    @Test
+    public void givenIntentWithConnectivityAction_butIncorrectBinder_whenNotifying_thenNeverCallsMerlinServiceOnConnectivityChanged() {
+        Intent intent = givenIntentWithConnectivityAction();
+        given(merlinBinderRetriever.getBinder(context)).willReturn(incorrectBinder());
+
+        notifier.notify(context, intent);
+
+        verify(merlinService, never()).onConnectivityChanged(any(ConnectivityChangeEvent.class));
+    }
+
+    @Test
+    public void givenIntentWithConnectivityAction_butBinderWithNullService_whenNotifying_thenNeverCallsMerlinServiceOnConnectivityChanged() {
+        Intent intent = givenIntentWithConnectivityAction();
+        given(merlinBinder.getService()).willReturn(null);
 
         notifier.notify(context, intent);
 
@@ -96,5 +123,9 @@ public class ConnectivityChangeNotifierTest {
         given(intent.getAction()).willReturn(ConnectivityManager.CONNECTIVITY_ACTION);
         given(eventCreator.createFrom(any(Intent.class), eq(merlinsBeard))).willReturn(ANY_CHANGE_EVENT);
         return intent;
+    }
+
+    private IBinder incorrectBinder() {
+        return new Binder();
     }
 }
