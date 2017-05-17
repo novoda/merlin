@@ -80,16 +80,23 @@ public class MerlinBuilder {
 
     /**
      * Deprecated, use directly {@link Logger} instead. To provide backwards compatibility
-     * this method will clear the {@link Logger} and attach a new {@link MerlinBackwardsCompatibleLog}
-     * which will absorb or log depending on the withLogging passed.
+     * this method will attach a new {@link MerlinBackwardsCompatibleLog}. If using multiple instances
+     * of {@link Merlin} the most recent call to `withLogging` will affect all other instances of {@link Merlin}.
+     *
+     * Example:
+     *  MerlinInstanceOne -> withLogging(true)
+     *  MerlinInstanceTwo -> withLogging(false)
+     *  == no logs written.
      *
      * @param withLogging by default logging is disabled. withLogging = true will attach the default {@link MerlinBackwardsCompatibleLog}
      * @return MerlinBuilder
      */
     @Deprecated
     public MerlinBuilder withLogging(boolean withLogging) {
-        Logger.detachAll();
-        Logger.attach(new MerlinBackwardsCompatibleLog(withLogging));
+        Logger.detach(MerlinBackwardsCompatibleLog.getInstance());
+        if (withLogging) {
+            Logger.attach(MerlinBackwardsCompatibleLog.getInstance());
+        }
 
         return this;
     }
