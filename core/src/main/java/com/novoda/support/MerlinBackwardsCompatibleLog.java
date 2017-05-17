@@ -51,7 +51,7 @@ public final class MerlinBackwardsCompatibleLog implements Logger.LogHandle {
 
     @Override
     public void e(Object... message) {
-        android.util.Log.e(TAG, message[0].toString());
+        Log.e(TAG, message[0].toString());
     }
 
     @Override
