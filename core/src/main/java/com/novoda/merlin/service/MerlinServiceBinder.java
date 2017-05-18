@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
@@ -17,7 +18,7 @@ public class MerlinServiceBinder {
     private final ListenerHolder listenerHolder;
 
     private ResponseCodeValidator validator;
-    private Connection connection;
+    private MerlinServiceConnection merlinServiceConnection;
     private String endpoint;
 
     public MerlinServiceBinder(Context context, ConnectListener connectListener, DisconnectListener disconnectListener,
@@ -34,25 +35,25 @@ public class MerlinServiceBinder {
     }
 
     public void bindService() {
-        if (connection == null) {
-            connection = new Connection(listenerHolder, endpoint, validator);
+        if (merlinServiceConnection == null) {
+            merlinServiceConnection = new MerlinServiceConnection(listenerHolder, endpoint, validator);
         }
         Intent intent = new Intent(context, MerlinService.class);
-        context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        context.bindService(intent, merlinServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     public void unbind() {
         if (connectionIsAvailable()) {
-            context.unbindService(connection);
-            connection = null;
+            context.unbindService(merlinServiceConnection);
+            merlinServiceConnection = null;
         }
     }
 
     private boolean connectionIsAvailable() {
-        return connection != null;
+        return merlinServiceConnection != null;
     }
 
-    private static class Connection implements ServiceConnection {
+    private static class MerlinServiceConnection implements ServiceConnection {
 
         private final ListenerHolder listenerHolder;
         private final String endpoint;
@@ -60,7 +61,7 @@ public class MerlinServiceBinder {
 
         private MerlinService merlinService;
 
-        Connection(ListenerHolder listenerHolder, String endpoint, ResponseCodeValidator validator) {
+        MerlinServiceConnection(ListenerHolder listenerHolder, String endpoint, ResponseCodeValidator validator) {
             this.listenerHolder = listenerHolder;
             this.endpoint = endpoint;
             this.validator = validator;
@@ -69,6 +70,7 @@ public class MerlinServiceBinder {
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
             Logger.d("onServiceConnected");
+            Log.d(getClass().getSimpleName(), "onServiceConnected: ");
             merlinService = ((MerlinService.LocalBinder) binder).getService();
             merlinService.setConnectListener(listenerHolder.connectListener);
             merlinService.setDisconnectListener(listenerHolder.disconnectListener);
