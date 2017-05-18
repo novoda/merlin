@@ -107,7 +107,7 @@ public class MerlinBuilder {
      * @param endPoint by default "http://connectivitycheck.android.com/generate_204".
      * @return MerlinBuilder.
      */
-    public MerlinBuilder setEndPoint(String endPoint) {
+    public MerlinBuilder withEndPoint(String endPoint) {
         this.endpoint = Endpoint.from(endPoint);
         return this;
     }
@@ -119,7 +119,7 @@ public class MerlinBuilder {
      *                              The default endpoint returns a 204 No Content response, so the default validator checks for that.
      * @return MerlinBuilder.
      */
-    public MerlinBuilder setResponseCodeValidator(ResponseCodeValidator responseCodeValidator) {
+    public MerlinBuilder withResponseCodeValidator(ResponseCodeValidator responseCodeValidator) {
         this.responseCodeValidator = responseCodeValidator;
         return this;
     }
