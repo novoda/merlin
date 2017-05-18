@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.registerable.bind.BindListener;
@@ -71,7 +70,6 @@ public class MerlinServiceBinder {
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
             Logger.d("onServiceConnected");
-            Log.d(getClass().getSimpleName(), "onServiceConnected: ");
             merlinService = ((MerlinService.LocalBinder) binder).getService();
             merlinService.setConnectListener(listenerHolder.connectListener);
             merlinService.setDisconnectListener(listenerHolder.disconnectListener);

@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.VisibleForTesting;
-import android.util.Log;
 
 import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.MerlinsBeard;
@@ -38,7 +37,6 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(getClass().getSimpleName(), "onCreate: ");
         hostPinger = buildDefaultHostPinger();
         networkStatusRetriever = buildNetworkStatusRetriever();
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
