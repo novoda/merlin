@@ -6,6 +6,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 
+import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
@@ -102,7 +103,7 @@ public class MerlinServiceTest {
         MerlinService merlinService = buildStubbedMerlinService(contextWrapper, networkStatusRetriever, defaultPinger, customPinger);
 
         merlinService.onCreate();
-        merlinService.setHostname("some new host name", mock(ResponseCodeValidator.class));
+        merlinService.setHostname(Endpoint.from("some new host name"), mock(ResponseCodeValidator.class));
         merlinService.onConnectivityChanged(createConnectivityChangeEvent(IS_CONNECTED));
         verify(networkStatusRetriever).fetchWithPing(customPinger);
     }

@@ -30,7 +30,7 @@ public class MerlinBuilder {
     private MerlinRegisterer<Disconnectable> disconnectableRegisterer;
     private MerlinRegisterer<Bindable> bindableRegisterer;
 
-    private String endPoint = Merlin.DEFAULT_ENDPOINT;
+    private Endpoint endpoint = Endpoint.defaultEndpoint();
     private ResponseCodeValidator responseCodeValidator = new DefaultEndpointResponseCodeValidator();
 
     MerlinBuilder() {
@@ -82,11 +82,11 @@ public class MerlinBuilder {
      * Deprecated, use directly {@link Logger} instead. To provide backwards compatibility
      * this method will attach a new {@link MerlinBackwardsCompatibleLog}. If using multiple instances
      * of {@link Merlin} the most recent call to `withLogging` will affect all other instances of {@link Merlin}.
-     *
+     * <p>
      * Example:
-     *  MerlinInstanceOne -> withLogging(true)
-     *  MerlinInstanceTwo -> withLogging(false)
-     *  == no logs written.
+     * MerlinInstanceOne -> withLogging(true)
+     * MerlinInstanceTwo -> withLogging(false)
+     * == no logs written.
      *
      * @param withLogging by default logging is disabled. withLogging = true will attach the default {@link MerlinBackwardsCompatibleLog}
      * @return MerlinBuilder
@@ -108,7 +108,7 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder setEndPoint(String endPoint) {
-        this.endPoint = endPoint;
+        this.endpoint = Endpoint.from(endPoint);
         return this;
     }
 
@@ -135,7 +135,7 @@ public class MerlinBuilder {
                 merlinConnector,
                 merlinDisconnector,
                 merlinOnBinder,
-                endPoint,
+                endpoint,
                 responseCodeValidator
         );
 

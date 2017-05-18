@@ -1,5 +1,7 @@
 package com.novoda.merlin.service;
 
+import com.novoda.merlin.Endpoint;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,7 +14,7 @@ import static org.mockito.Mockito.verify;
 
 public class HostPingerTest {
 
-    private static final String HOST_ADDRESS = "any host address";
+    private static final Endpoint ENDPOINT = Endpoint.from("any host address");
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -28,15 +30,15 @@ public class HostPingerTest {
 
     @Before
     public void setUp() {
-        given(pingTaskFactory.create(HOST_ADDRESS)).willReturn(pingTask);
-        hostPinger = new HostPinger(pingerCallback, HOST_ADDRESS, pingTaskFactory);
+        given(pingTaskFactory.create(ENDPOINT)).willReturn(pingTask);
+        hostPinger = new HostPinger(pingerCallback, ENDPOINT, pingTaskFactory);
     }
 
     @Test
     public void whenPinging_thenCreatesPingTask() {
         hostPinger.ping();
 
-        verify(pingTaskFactory).create(HOST_ADDRESS);
+        verify(pingTaskFactory).create(ENDPOINT);
     }
 
     @Test

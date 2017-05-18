@@ -19,7 +19,7 @@ public class Merlin {
         this.registerer = registerer;
     }
 
-    public void setEndpoint(String endpoint, ResponseCodeValidator validator) {
+    public void setEndpoint(Endpoint endpoint, ResponseCodeValidator validator) {
         merlinServiceBinder.setEndpoint(endpoint, validator);
     }
 

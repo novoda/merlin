@@ -1,5 +1,6 @@
 package com.novoda.merlin.service;
 
+import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.service.request.RequestException;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.verify;
 
 public class PingTest {
 
-    private static final String HOST_ADDRESS = "any host address";
+    private static final Endpoint ENDPOINT = Endpoint.from("any host address");
 
     private static final int RESPONSE_CODE = 201;
 
@@ -35,7 +36,7 @@ public class PingTest {
     @Before
     public void setUp() {
         ping = new Ping(
-                HOST_ADDRESS,
+                ENDPOINT,
                 responseCodeFetcher,
                 responseCodeValidator
         );
@@ -43,7 +44,7 @@ public class PingTest {
 
     @Test
     public void givenSuccessfulRequest_whenSynchronouslyPinging_thenChecksResponseCodeIsValid() {
-        given(responseCodeFetcher.from(HOST_ADDRESS)).willReturn(RESPONSE_CODE);
+        given(responseCodeFetcher.from(ENDPOINT)).willReturn(RESPONSE_CODE);
 
         ping.doSynchronousPing();
 
@@ -52,7 +53,7 @@ public class PingTest {
 
     @Test
     public void givenSuccessfulRequest_whenSynchronouslyPinging_thenReturnsTrue() {
-        given(responseCodeFetcher.from(HOST_ADDRESS)).willReturn(RESPONSE_CODE);
+        given(responseCodeFetcher.from(ENDPOINT)).willReturn(RESPONSE_CODE);
         given(responseCodeValidator.isResponseCodeValid(RESPONSE_CODE)).willReturn(true);
 
         boolean isSuccess = ping.doSynchronousPing();
@@ -62,7 +63,7 @@ public class PingTest {
 
     @Test
     public void givenRequestFailsWithIOException_whenSynchronouslyPinging_thenReturnsFalse() {
-        given(responseCodeFetcher.from(HOST_ADDRESS)).willThrow(new RequestException(new IOException()));
+        given(responseCodeFetcher.from(ENDPOINT)).willThrow(new RequestException(new IOException()));
 
         boolean isSuccess = ping.doSynchronousPing();
 
@@ -71,7 +72,7 @@ public class PingTest {
 
     @Test
     public void givenRequestFailsWithRuntimeException_whenSynchronouslyPinging_thenReturnsFalse() {
-        given(responseCodeFetcher.from(HOST_ADDRESS)).willThrow(new RequestException(new RuntimeException()));
+        given(responseCodeFetcher.from(ENDPOINT)).willThrow(new RequestException(new RuntimeException()));
 
         boolean isSuccess = ping.doSynchronousPing();
 

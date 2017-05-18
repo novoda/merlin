@@ -1,5 +1,7 @@
 package com.novoda.merlin.service;
 
+import com.novoda.merlin.Endpoint;
+
 import static com.novoda.merlin.service.HostPinger.PingerCallback;
 import static com.novoda.merlin.service.HostPinger.ResponseCodeFetcher;
 
@@ -15,8 +17,8 @@ class PingTaskFactory {
         this.responseCodeValidator = responseCodeValidator;
     }
 
-    public PingTask create(String hostAddress) {
-        Ping ping = new Ping(hostAddress, responseCodeFetcher, responseCodeValidator);
+    public PingTask create(Endpoint endpoint) {
+        Ping ping = new Ping(endpoint, responseCodeFetcher, responseCodeValidator);
         return new PingTask(ping, pingerCallback);
     }
 

@@ -2,6 +2,8 @@ package com.novoda.merlin.service;
 
 import android.content.ContextWrapper;
 
+import com.novoda.merlin.Endpoint;
+
 class TestDoubleMerlinServiceWithStubbedBuilders extends MerlinService {
 
     private final ContextWrapper context;
@@ -37,7 +39,7 @@ class TestDoubleMerlinServiceWithStubbedBuilders extends MerlinService {
     }
 
     @Override
-    protected HostPinger buildHostPinger(String hostName, ResponseCodeValidator validator) {
+    protected HostPinger buildHostPinger(Endpoint endpoint, ResponseCodeValidator validator) {
         return customHostPinger;
     }
 }

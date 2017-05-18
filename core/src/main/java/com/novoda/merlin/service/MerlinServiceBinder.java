@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
@@ -19,18 +20,18 @@ public class MerlinServiceBinder {
 
     private ResponseCodeValidator validator;
     private MerlinServiceConnection merlinServiceConnection;
-    private String endpoint;
+    private Endpoint endpoint;
 
     public MerlinServiceBinder(Context context, ConnectListener connectListener, DisconnectListener disconnectListener,
-                               BindListener bindListener, String endpoint, ResponseCodeValidator validator) {
+                               BindListener bindListener, Endpoint endpoint, ResponseCodeValidator validator) {
         this.validator = validator;
         listenerHolder = new ListenerHolder(connectListener, disconnectListener, bindListener);
         this.context = context;
         this.endpoint = endpoint;
     }
 
-    public void setEndpoint(String hostname, ResponseCodeValidator validator) {
-        this.endpoint = hostname;
+    public void setEndpoint(Endpoint endpoint, ResponseCodeValidator validator) {
+        this.endpoint = endpoint;
         this.validator = validator;
     }
 
@@ -56,12 +57,12 @@ public class MerlinServiceBinder {
     private static class MerlinServiceConnection implements ServiceConnection {
 
         private final ListenerHolder listenerHolder;
-        private final String endpoint;
+        private final Endpoint endpoint;
         private final ResponseCodeValidator validator;
 
         private MerlinService merlinService;
 
-        MerlinServiceConnection(ListenerHolder listenerHolder, String endpoint, ResponseCodeValidator validator) {
+        MerlinServiceConnection(ListenerHolder listenerHolder, Endpoint endpoint, ResponseCodeValidator validator) {
             this.listenerHolder = listenerHolder;
             this.endpoint = endpoint;
             this.validator = validator;
