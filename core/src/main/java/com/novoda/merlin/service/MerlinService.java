@@ -20,16 +20,15 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
     private static boolean isBound;
 
     private final IBinder binder;
-    private NetworkStatusRetriever networkStatusRetriever;
-    private HostPinger hostPinger;
-
-    private ConnectListener connectListener;
-    private DisconnectListener disconnectListener;
-    private BindListener bindListener;
-
-    private NetworkStatus networkStatus;
 
     private ConnectivityChangesRegister connectivityChangesRegister;
+    private NetworkStatusRetriever networkStatusRetriever;
+    private DisconnectListener disconnectListener;
+    private ConnectListener connectListener;
+    private BindListener bindListener;
+    private HostPinger hostPinger;
+
+    private NetworkStatus networkStatus;
 
     public MerlinService() {
         binder = new LocalBinder();
@@ -43,19 +42,6 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         return isBound;
     }
 
-    private void start() {
-        callbackInitialStatus();
-        connectivityChangesRegister.register();
-    }
-
-    private void callbackInitialStatus() {
-        if (networkStatus == null) {
-            bindListener.onMerlinBind(networkStatusRetriever.get());
-            return;
-        }
-        bindListener.onMerlinBind(networkStatus);
-    }
-
     @Override
     public IBinder onBind(Intent intent) {
         isBound = true;
@@ -67,6 +53,19 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         isBound = false;
         connectivityChangesRegister.unregister();
         return super.onUnbind(intent);
+    }
+
+    private void start() {
+        notifyOfInitialNetworkStatus();
+        connectivityChangesRegister.register();
+    }
+
+    private void notifyOfInitialNetworkStatus() {
+        if (networkStatus == null) {
+            bindListener.onMerlinBind(networkStatusRetriever.get());
+            return;
+        }
+        bindListener.onMerlinBind(networkStatus);
     }
 
     public void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent) {
@@ -98,28 +97,33 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
             return MerlinService.this;
         }
 
-        void setHostPinger(Endpoint endpoint, ResponseCodeValidator validator) {
-            hostPinger = HostPinger.withCustomEndpointAndValidation(MerlinService.this, endpoint, validator);
+        void setConnectivityChangesRegister(Context context, ConnectivityManager connectivityManager) {
+            MerlinService.this.connectivityChangesRegister = new ConnectivityChangesRegister(
+                    context,
+                    connectivityManager,
+                    new AndroidVersion(),
+                    MerlinService.this
+            );
         }
 
         void setNetworkStatusRetriever(NetworkStatusRetriever networkStatusRetriever) {
             MerlinService.this.networkStatusRetriever = networkStatusRetriever;
         }
 
-        void setConnectivityChangesRegister(Context context, ConnectivityManager connectivityManager) {
-            MerlinService.this.connectivityChangesRegister = new ConnectivityChangesRegister(context, connectivityManager, new AndroidVersion(), MerlinService.this);
+        void setDisconnectListener(DisconnectListener disconnectListener) {
+            MerlinService.this.disconnectListener = disconnectListener;
         }
 
         void setConnectListener(ConnectListener connectListener) {
             MerlinService.this.connectListener = connectListener;
         }
 
-        void setDisconnectListener(DisconnectListener disconnectListener) {
-            MerlinService.this.disconnectListener = disconnectListener;
-        }
-
         void setBindListener(BindListener bindListener) {
             MerlinService.this.bindListener = bindListener;
+        }
+
+        void setHostPinger(Endpoint endpoint, ResponseCodeValidator validator) {
+            hostPinger = HostPinger.withCustomEndpointAndValidation(MerlinService.this, endpoint, validator);
         }
 
         void onBindComplete() {
