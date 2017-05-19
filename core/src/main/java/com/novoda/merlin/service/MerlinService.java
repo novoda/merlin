@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Binder;
 import android.os.IBinder;
-import android.support.annotation.VisibleForTesting;
 
 import com.novoda.merlin.Endpoint;
-import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.receiver.ConnectivityChangesRegister;
@@ -19,12 +17,15 @@ import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
 public class MerlinService extends Service implements HostPinger.PingerCallback {
 
+    private static boolean isBound;
+
     private final IBinder binder;
     private NetworkStatusRetriever networkStatusRetriever;
     private HostPinger hostPinger;
 
     private ConnectListener connectListener;
     private DisconnectListener disconnectListener;
+    private BindListener bindListener;
 
     private NetworkStatus networkStatus;
 
@@ -34,83 +35,45 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         binder = new LocalBinder();
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        hostPinger = buildDefaultHostPinger();
-        networkStatusRetriever = buildNetworkStatusRetriever();
-        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        connectivityChangesRegister = new ConnectivityChangesRegister(getApplicationContext(), connectivityManager, new AndroidVersion(), this);
+    MerlinService(MerlinService.LocalBinder binder) {
+        this.binder = binder;
     }
 
-    @VisibleForTesting
-    protected NetworkStatusRetriever buildNetworkStatusRetriever() {
-        return new NetworkStatusRetriever(MerlinsBeard.from(this.getApplicationContext()));
+    public static boolean isBound() {
+        return isBound;
     }
 
-    @VisibleForTesting
-    protected HostPinger buildDefaultHostPinger() {
-        return HostPinger.withDefaultEndpointValidation(this);
+    private void start() {
+        callbackInitialStatus();
+        connectivityChangesRegister.register();
     }
 
-    public class LocalBinder extends Binder {
-        public MerlinService getService() {
-            return MerlinService.this;
+    private void callbackInitialStatus() {
+        if (networkStatus == null) {
+            bindListener.onMerlinBind(networkStatusRetriever.get());
+            return;
         }
+        bindListener.onMerlinBind(networkStatus);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        connectivityChangesRegister.register();
+        isBound = true;
         return binder;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
+        isBound = false;
         connectivityChangesRegister.unregister();
         return super.onUnbind(intent);
     }
 
-    public void setHostname(Endpoint endpoint, ResponseCodeValidator validator) {
-        hostPinger = buildHostPinger(endpoint, validator);
-    }
-
-    @VisibleForTesting
-    protected HostPinger buildHostPinger(Endpoint endpoint, ResponseCodeValidator validator) {
-        return HostPinger.withCustomEndpointAndValidation(this, endpoint, validator);
-    }
-
-    public void setBindStatusListener(BindListener bindListener) {
-        callbackCurrentStatus(bindListener);
-    }
-
-    private void callbackCurrentStatus(BindListener bindListener) {
-        if (bindListener != null) {
-            if (networkStatus == null) {
-                bindListener.onMerlinBind(networkStatusRetriever.get());
-                return;
-            }
-            bindListener.onMerlinBind(networkStatus);
-        }
-    }
-
-    public void setConnectListener(ConnectListener connectListener) {
-        this.connectListener = connectListener;
-    }
-
-    public void setDisconnectListener(DisconnectListener disconnectListener) {
-        this.disconnectListener = disconnectListener;
-    }
-
     public void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent) {
         if (!connectivityChangeEvent.asNetworkStatus().equals(networkStatus)) {
-            getCurrentNetworkStatus();
+            networkStatusRetriever.fetchWithPing(hostPinger);
         }
         networkStatus = connectivityChangeEvent.asNetworkStatus();
-    }
-
-    private void getCurrentNetworkStatus() {
-        networkStatusRetriever.fetchWithPing(hostPinger);
     }
 
     @Override
@@ -126,6 +89,41 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         networkStatus = NetworkStatus.newUnavailableInstance();
         if (disconnectListener != null) {
             disconnectListener.onDisconnect();
+        }
+    }
+
+    public class LocalBinder extends Binder {
+
+        public MerlinService getService() {
+            return MerlinService.this;
+        }
+
+        void setHostPinger(Endpoint endpoint, ResponseCodeValidator validator) {
+            hostPinger = HostPinger.withCustomEndpointAndValidation(MerlinService.this, endpoint, validator);
+        }
+
+        void setNetworkStatusRetriever(NetworkStatusRetriever networkStatusRetriever) {
+            MerlinService.this.networkStatusRetriever = networkStatusRetriever;
+        }
+
+        void setConnectivityChangesRegister(Context context, ConnectivityManager connectivityManager) {
+            MerlinService.this.connectivityChangesRegister = new ConnectivityChangesRegister(context, connectivityManager, new AndroidVersion(), MerlinService.this);
+        }
+
+        void setConnectListener(ConnectListener connectListener) {
+            MerlinService.this.connectListener = connectListener;
+        }
+
+        void setDisconnectListener(DisconnectListener disconnectListener) {
+            MerlinService.this.disconnectListener = disconnectListener;
+        }
+
+        void setBindListener(BindListener bindListener) {
+            MerlinService.this.bindListener = bindListener;
+        }
+
+        void onBindComplete() {
+            MerlinService.this.start();
         }
     }
 
