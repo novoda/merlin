@@ -35,7 +35,7 @@ class ConnectivityChangeNotifier {
         IBinder binder = merlinBinderRetriever.getBinder(context);
 
         if (connectivityChangedListenerAvailableFrom(binder)) {
-            MerlinService.ConnectivityChangedListener connectivityListener = ((MerlinService.LocalBinder) binder).getConnectivityChangedListener();
+            MerlinService.ConnectivityChangesListener connectivityListener = ((MerlinService.LocalBinder) binder).getConnectivityChangedListener();
             connectivityListener.onConnectivityChanged(connectivityChangeEvent);
         }
     }

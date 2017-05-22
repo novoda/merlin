@@ -36,7 +36,7 @@ public class ConnectivityChangeNotifierTest {
     @Mock
     private ConnectivityReceiver.MerlinBinderRetriever merlinBinderRetriever;
     @Mock
-    private MerlinService.ConnectivityChangedListener connectivityChangedListener;
+    private MerlinService.ConnectivityChangesListener connectivityChangesListener;
     @Mock
     private MerlinsBeard merlinsBeard;
     @Mock
@@ -48,7 +48,7 @@ public class ConnectivityChangeNotifierTest {
     public void setUp() {
         ConnectivityReceiver.MerlinsBeardRetriever merlinsBeardRetriever = mock(ConnectivityReceiver.MerlinsBeardRetriever.class);
 
-        given(merlinBinder.getConnectivityChangedListener()).willReturn(connectivityChangedListener);
+        given(merlinBinder.getConnectivityChangedListener()).willReturn(connectivityChangesListener);
 
         given(merlinBinderRetriever.getBinder(context)).willReturn(merlinBinder);
         given(merlinsBeardRetriever.getMerlinsBeard(context)).willReturn(merlinsBeard);
@@ -63,7 +63,7 @@ public class ConnectivityChangeNotifierTest {
 
         notifier.notify(context, intent);
 
-        verify(connectivityChangedListener, never()).onConnectivityChanged(any(ConnectivityChangeEvent.class));
+        verify(connectivityChangesListener, never()).onConnectivityChanged(any(ConnectivityChangeEvent.class));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class ConnectivityChangeNotifierTest {
 
         notifier.notify(context, intent);
 
-        verify(connectivityChangedListener, never()).onConnectivityChanged(any(ConnectivityChangeEvent.class));
+        verify(connectivityChangesListener, never()).onConnectivityChanged(any(ConnectivityChangeEvent.class));
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ConnectivityChangeNotifierTest {
 
         notifier.notify(context, intent);
 
-        verify(connectivityChangedListener).onConnectivityChanged(ANY_CHANGE_EVENT);
+        verify(connectivityChangesListener).onConnectivityChanged(ANY_CHANGE_EVENT);
     }
 
     @Test
@@ -91,7 +91,7 @@ public class ConnectivityChangeNotifierTest {
 
         notifier.notify(context, intent);
 
-        verify(connectivityChangedListener, never()).onConnectivityChanged(any(ConnectivityChangeEvent.class));
+        verify(connectivityChangesListener, never()).onConnectivityChanged(any(ConnectivityChangeEvent.class));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class ConnectivityChangeNotifierTest {
 
         notifier.notify(context, intent);
 
-        verify(connectivityChangedListener, never()).onConnectivityChanged(any(ConnectivityChangeEvent.class));
+        verify(connectivityChangesListener, never()).onConnectivityChanged(any(ConnectivityChangeEvent.class));
     }
 
     @Test
@@ -111,7 +111,7 @@ public class ConnectivityChangeNotifierTest {
 
         notifier.notify(context, intent);
 
-        verify(connectivityChangedListener, never()).onConnectivityChanged(any(ConnectivityChangeEvent.class));
+        verify(connectivityChangesListener, never()).onConnectivityChanged(any(ConnectivityChangeEvent.class));
     }
 
     private Intent givenIntentWithoutConnectivityAction() {

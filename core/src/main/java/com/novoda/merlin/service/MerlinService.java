@@ -55,7 +55,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     private void start() {
         notifyOfInitialNetworkStatus();
-        connectivityChangesRegister.register(connectivityChangedListener);
+        connectivityChangesRegister.register(connectivityChangesListener);
     }
 
     private void notifyOfInitialNetworkStatus() {
@@ -66,7 +66,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         bindListener.onMerlinBind(networkStatus);
     }
 
-    private final ConnectivityChangedListener connectivityChangedListener = new ConnectivityChangedListener() {
+    private final ConnectivityChangesListener connectivityChangesListener = new ConnectivityChangesListener() {
         @Override
         public void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent) {
             if (!connectivityChangeEvent.asNetworkStatus().equals(networkStatus)) {
@@ -92,14 +92,14 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         }
     }
 
-    public interface ConnectivityChangedListener {
+    public interface ConnectivityChangesListener {
         void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent);
     }
 
     public class LocalBinder extends Binder {
 
-        public ConnectivityChangedListener getConnectivityChangedListener() {
-            return MerlinService.this.connectivityChangedListener;
+        public ConnectivityChangesListener getConnectivityChangedListener() {
+            return MerlinService.this.connectivityChangesListener;
         }
 
         void setConnectivityChangesRegister(ConnectivityChangesRegister connectivityChangesRegister) {
