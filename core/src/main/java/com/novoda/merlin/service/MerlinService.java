@@ -1,9 +1,7 @@
 package com.novoda.merlin.service;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.Binder;
 import android.os.IBinder;
 
@@ -104,12 +102,8 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
             return MerlinService.this.connectivityChangedListener;
         }
 
-        void setConnectivityChangesRegister(Context context, ConnectivityManager connectivityManager) {
-            MerlinService.this.connectivityChangesRegister = new ConnectivityChangesRegister(
-                    context,
-                    connectivityManager,
-                    new AndroidVersion()
-            );
+        void setConnectivityChangesRegister(ConnectivityChangesRegister connectivityChangesRegister) {
+            MerlinService.this.connectivityChangesRegister = connectivityChangesRegister;
         }
 
         void setNetworkStatusRetriever(NetworkStatusRetriever networkStatusRetriever) {

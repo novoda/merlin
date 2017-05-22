@@ -9,6 +9,7 @@ import android.os.IBinder;
 
 import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.MerlinsBeard;
+import com.novoda.merlin.receiver.ConnectivityChangesRegister;
 import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
@@ -70,7 +71,13 @@ public class MerlinServiceBinder {
             Logger.d("onServiceConnected");
             MerlinService.LocalBinder merlinServiceBinder = ((MerlinService.LocalBinder) binder);
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            merlinServiceBinder.setConnectivityChangesRegister(context, connectivityManager);
+            ConnectivityChangesRegister connectivityChangesRegister = new ConnectivityChangesRegister(
+                    context,
+                    connectivityManager,
+                    new AndroidVersion()
+            );
+
+            merlinServiceBinder.setConnectivityChangesRegister(connectivityChangesRegister);
             merlinServiceBinder.setHostPinger(endpoint, validator);
             merlinServiceBinder.setNetworkStatusRetriever(new NetworkStatusRetriever(MerlinsBeard.from(context)));
             merlinServiceBinder.setConnectListener(listenerHolder.connectListener);
