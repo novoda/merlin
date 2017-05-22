@@ -10,22 +10,22 @@ import com.novoda.merlin.service.MerlinService;
 
 class ConnectivityChangeNotifier {
 
-    private final ConnectivityReceiver.MerlinsBeardRetriever merlinsBeardRetriever;
+    private final ConnectivityReceiver.MerlinsBeardCreator merlinsBeardCreator;
     private final ConnectivityReceiver.MerlinBinderRetriever merlinBinderRetriever;
     private final ConnectivityChangeEventCreator creator;
 
-    ConnectivityChangeNotifier(ConnectivityReceiver.MerlinsBeardRetriever merlinsBeardRetriever,
+    ConnectivityChangeNotifier(ConnectivityReceiver.MerlinsBeardCreator merlinsBeardCreator,
                                ConnectivityReceiver.MerlinBinderRetriever merlinBinderRetriever,
                                ConnectivityChangeEventCreator creator) {
 
-        this.merlinsBeardRetriever = merlinsBeardRetriever;
+        this.merlinsBeardCreator = merlinsBeardCreator;
         this.merlinBinderRetriever = merlinBinderRetriever;
         this.creator = creator;
     }
 
     void notify(Context context, Intent intent) {
         if (intent != null && connectivityActionMatchesActionFor(intent)) {
-            MerlinsBeard merlinsBeard = merlinsBeardRetriever.getMerlinsBeard(context);
+            MerlinsBeard merlinsBeard = merlinsBeardCreator.createMerlinsBeard(context);
             ConnectivityChangeEvent connectivityChangeEvent = creator.createFrom(intent, merlinsBeard);
             notifyMerlinService(context, connectivityChangeEvent);
         }

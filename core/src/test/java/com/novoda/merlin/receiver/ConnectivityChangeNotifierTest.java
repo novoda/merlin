@@ -46,14 +46,14 @@ public class ConnectivityChangeNotifierTest {
 
     @Before
     public void setUp() {
-        ConnectivityReceiver.MerlinsBeardRetriever merlinsBeardRetriever = mock(ConnectivityReceiver.MerlinsBeardRetriever.class);
+        ConnectivityReceiver.MerlinsBeardCreator merlinsBeardCreator = mock(ConnectivityReceiver.MerlinsBeardCreator.class);
 
         given(merlinBinder.getService()).willReturn(merlinService);
 
         given(merlinBinderRetriever.getBinder(context)).willReturn(merlinBinder);
-        given(merlinsBeardRetriever.getMerlinsBeard(context)).willReturn(merlinsBeard);
+        given(merlinsBeardCreator.createMerlinsBeard(context)).willReturn(merlinsBeard);
 
-        notifier = new ConnectivityChangeNotifier(merlinsBeardRetriever, merlinBinderRetriever, eventCreator);
+        notifier = new ConnectivityChangeNotifier(merlinsBeardCreator, merlinBinderRetriever, eventCreator);
 
     }
 

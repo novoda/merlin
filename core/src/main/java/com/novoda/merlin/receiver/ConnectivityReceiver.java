@@ -14,9 +14,9 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     private final ConnectivityChangeNotifier connectivityChangeNotifier;
 
     public ConnectivityReceiver() {
-        MerlinsBeardRetriever merlinsBeardRetriever = new MerlinsBeardRetriever() {
+        MerlinsBeardCreator merlinsBeardCreator = new MerlinsBeardCreator() {
             @Override
-            public MerlinsBeard getMerlinsBeard(Context context) {
+            public MerlinsBeard createMerlinsBeard(Context context) {
                 return MerlinsBeard.from(context);
             }
         };
@@ -29,7 +29,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         };
 
         ConnectivityChangeEventCreator creator = new ConnectivityChangeEventCreator();
-        connectivityChangeNotifier = new ConnectivityChangeNotifier(merlinsBeardRetriever, merlinBinderRetriever, creator);
+        connectivityChangeNotifier = new ConnectivityChangeNotifier(merlinsBeardCreator, merlinBinderRetriever, creator);
     }
 
     ConnectivityReceiver(ConnectivityChangeNotifier connectivityChangeNotifier) {
@@ -47,9 +47,9 @@ public class ConnectivityReceiver extends BroadcastReceiver {
         IBinder getBinder(Context context);
     }
 
-    interface MerlinsBeardRetriever {
+    interface MerlinsBeardCreator {
 
-        MerlinsBeard getMerlinsBeard(Context context);
+        MerlinsBeard createMerlinsBeard(Context context);
     }
 
 }
