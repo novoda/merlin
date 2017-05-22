@@ -34,14 +34,16 @@ class ConnectivityChangeNotifier {
     private void notifyMerlinService(Context context, ConnectivityChangeEvent connectivityChangeEvent) {
         IBinder binder = merlinBinderRetriever.getBinder(context);
 
-        if (merlinServiceAvailableFrom(binder)) {
-            MerlinService merlinService = ((MerlinService.LocalBinder) binder).getService();
-            merlinService.onConnectivityChanged(connectivityChangeEvent);
+        if (connectivityChangedListenerAvailableFrom(binder)) {
+            MerlinService.ConnectivityChangedListener connectivityListener = ((MerlinService.LocalBinder) binder).getConnectivityChangedListener();
+            connectivityListener.onConnectivityChanged(connectivityChangeEvent);
         }
     }
 
-    private boolean merlinServiceAvailableFrom(IBinder binder) {
-        return binder != null && binder instanceof MerlinService.LocalBinder && ((MerlinService.LocalBinder) binder).getService() != null;
+    private boolean connectivityChangedListenerAvailableFrom(IBinder binder) {
+        return binder != null
+                && binder instanceof MerlinService.LocalBinder
+                && ((MerlinService.LocalBinder) binder).getConnectivityChangedListener() != null;
     }
 
     private boolean connectivityAction(Intent intent) {

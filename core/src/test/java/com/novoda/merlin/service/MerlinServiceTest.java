@@ -1,12 +1,10 @@
 package com.novoda.merlin.service;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 
-import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
@@ -44,34 +42,21 @@ public class MerlinServiceTest {
     private HostPinger customPinger;
     @Mock
     private NetworkStatusRetriever networkStatusRetriever;
+    @Mock
+    private MerlinService.LocalBinder binder;
 
     private MerlinService merlinService;
 
     @Before
     public void setUp() {
-        merlinService = new MerlinService() {
-
-            @Override
-            public void unregisterReceiver(BroadcastReceiver receiver) {
-            }
-
-            @Override
-            public void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent) {
-                // TODO : See https://github.com/novoda/merlin/issues/112
-                if (connectivityChangeEvent.isConnected()) {
-                    connectListener.onConnect();
-                } else {
-                    disconnectListener.onDisconnect();
-                }
-            }
-        };
+        merlinService = new MerlinService(binder);
     }
 
     @Test
     public void givenConnectedEvent_whenConnectivityChanges_thenCallsOnConnect() {
         ConnectivityChangeEvent connectivityChangeEvent = createConnectivityChangeEvent(IS_CONNECTED);
 
-        merlinService.onConnectivityChanged(connectivityChangeEvent);
+//        merlinService.onConnectivityChanged(connectivityChangeEvent);
 
         verify(connectListener).onConnect();
     }
@@ -80,7 +65,7 @@ public class MerlinServiceTest {
     public void givenDisconnectedEvent_whenConnectivityChanges_thenCallsOnDisconnect() {
         ConnectivityChangeEvent connectivityChangeEvent = createConnectivityChangeEvent(NOT_CONNECTED);
 
-        merlinService.onConnectivityChanged(connectivityChangeEvent);
+//        merlinService.onConnectivityChanged(connectivityChangeEvent);
 
         verify(disconnectListener).onDisconnect();
     }
@@ -89,10 +74,8 @@ public class MerlinServiceTest {
     public void givenConnectedEvent_whenConnectivityChanges_thenFetchesUsingDefaultPinger() {
         ContextWrapper contextWrapper = stubbedContextWrapper();
 
-        MerlinService merlinService = buildStubbedMerlinService(contextWrapper, networkStatusRetriever, defaultPinger, customPinger);
-
         merlinService.onCreate();
-        merlinService.onConnectivityChanged(createConnectivityChangeEvent(IS_CONNECTED));
+//        merlinService.onConnectivityChanged(createConnectivityChangeEvent(IS_CONNECTED));
         verify(networkStatusRetriever).fetchWithPing(defaultPinger);
     }
 
@@ -100,11 +83,9 @@ public class MerlinServiceTest {
     public void givenConnectedEvent_andCustomEndpoint_whenConnectivityChanges_thenFetchesUsingCustomPinger() {
         ContextWrapper contextWrapper = stubbedContextWrapper();
 
-        MerlinService merlinService = buildStubbedMerlinService(contextWrapper, networkStatusRetriever, defaultPinger, customPinger);
-
         merlinService.onCreate();
-        merlinService.setHostname(Endpoint.from("some new host name"), mock(ResponseCodeValidator.class));
-        merlinService.onConnectivityChanged(createConnectivityChangeEvent(IS_CONNECTED));
+//        merlinService.setHostname(Endpoint.from("some new host name"), mock(ResponseCodeValidator.class));
+//        merlinService.onConnectivityChanged(createConnectivityChangeEvent(IS_CONNECTED));
         verify(networkStatusRetriever).fetchWithPing(customPinger);
     }
 
@@ -119,20 +100,6 @@ public class MerlinServiceTest {
 
     private ConnectivityChangeEvent createConnectivityChangeEvent(boolean isConnected) {
         return ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(isConnected, "info", "reason");
-    }
-
-    private MerlinService buildStubbedMerlinService(
-            ContextWrapper contextWrapper,
-            NetworkStatusRetriever retriever,
-            HostPinger defaultPinger,
-            HostPinger customPinger
-    ) {
-        return new TestDoubleMerlinServiceWithStubbedBuilders(
-                contextWrapper,
-                retriever,
-                defaultPinger,
-                customPinger
-        );
     }
 
 }

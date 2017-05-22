@@ -57,7 +57,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     private void start() {
         notifyOfInitialNetworkStatus();
-        connectivityChangesRegister.register();
+        connectivityChangesRegister.register(connectivityChangedListener);
     }
 
     private void notifyOfInitialNetworkStatus() {
@@ -68,12 +68,15 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         bindListener.onMerlinBind(networkStatus);
     }
 
-    public void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent) {
-        if (!connectivityChangeEvent.asNetworkStatus().equals(networkStatus)) {
-            networkStatusRetriever.fetchWithPing(hostPinger);
+    private final ConnectivityChangedListener connectivityChangedListener = new ConnectivityChangedListener() {
+        @Override
+        public void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent) {
+            if (!connectivityChangeEvent.asNetworkStatus().equals(networkStatus)) {
+                networkStatusRetriever.fetchWithPing(hostPinger);
+            }
+            networkStatus = connectivityChangeEvent.asNetworkStatus();
         }
-        networkStatus = connectivityChangeEvent.asNetworkStatus();
-    }
+    };
 
     @Override
     public void onSuccess() {
@@ -91,18 +94,21 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         }
     }
 
+    public interface ConnectivityChangedListener {
+        void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent);
+    }
+
     public class LocalBinder extends Binder {
 
-        public MerlinService getService() {
-            return MerlinService.this;
+        public ConnectivityChangedListener getConnectivityChangedListener() {
+            return MerlinService.this.connectivityChangedListener;
         }
 
         void setConnectivityChangesRegister(Context context, ConnectivityManager connectivityManager) {
             MerlinService.this.connectivityChangesRegister = new ConnectivityChangesRegister(
                     context,
                     connectivityManager,
-                    new AndroidVersion(),
-                    MerlinService.this
+                    new AndroidVersion()
             );
         }
 

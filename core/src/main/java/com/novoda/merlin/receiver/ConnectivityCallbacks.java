@@ -12,11 +12,11 @@ import com.novoda.merlin.service.MerlinService;
 class ConnectivityCallbacks extends ConnectivityManager.NetworkCallback {
 
     private final ConnectivityManager connectivityManager;
-    private final MerlinService merlinService;
+    private final MerlinService.ConnectivityChangedListener connectivityChangedListener;
 
-    ConnectivityCallbacks(ConnectivityManager connectivityManager, MerlinService merlinService) {
+    ConnectivityCallbacks(ConnectivityManager connectivityManager, MerlinService.ConnectivityChangedListener connectivityChangedListener) {
         this.connectivityManager = connectivityManager;
-        this.merlinService = merlinService;
+        this.connectivityChangedListener = connectivityChangedListener;
     }
 
     @Override
@@ -41,9 +41,9 @@ class ConnectivityCallbacks extends ConnectivityManager.NetworkCallback {
             String reason = networkInfo.getReason();
             String extraInfo = networkInfo.getExtraInfo();
 
-            merlinService.onConnectivityChanged(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(connected, extraInfo, reason));
+            connectivityChangedListener.onConnectivityChanged(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(connected, extraInfo, reason));
         } else {
-            merlinService.onConnectivityChanged(ConnectivityChangeEvent.createWithoutConnection());
+            connectivityChangedListener.onConnectivityChanged(ConnectivityChangeEvent.createWithoutConnection());
         }
     }
 
