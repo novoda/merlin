@@ -24,7 +24,7 @@ class ConnectivityChangeNotifier {
     }
 
     void notify(Context context, Intent intent) {
-        if (intent != null && connectivityAction(intent)) {
+        if (intent != null && connectivityActionMatchesActionFor(intent)) {
             MerlinsBeard merlinsBeard = merlinsBeardRetriever.getMerlinsBeard(context);
             ConnectivityChangeEvent connectivityChangeEvent = creator.createFrom(intent, merlinsBeard);
             notifyMerlinService(context, connectivityChangeEvent);
@@ -44,7 +44,7 @@ class ConnectivityChangeNotifier {
         return binder != null && binder instanceof MerlinService.LocalBinder && ((MerlinService.LocalBinder) binder).getService() != null;
     }
 
-    private boolean connectivityAction(Intent intent) {
+    private boolean connectivityActionMatchesActionFor(Intent intent) {
         return ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction());
     }
 
