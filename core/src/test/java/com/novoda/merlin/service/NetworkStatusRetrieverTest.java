@@ -26,6 +26,8 @@ public class NetworkStatusRetrieverTest {
     private MerlinsBeard merlinsBeards;
     @Mock
     private HostPinger hostPinger;
+    @Mock
+    private HostPinger.PingerCallback pingerCallback;
 
     private NetworkStatusRetriever networkStatusRetriever;
 
@@ -38,25 +40,25 @@ public class NetworkStatusRetrieverTest {
     public void givenMerlinsBeardIsConnected_whenFetchingWithPing_thenPingsUsingHostPinger() {
         given(merlinsBeards.isConnected()).willReturn(CONNECTED);
 
-        networkStatusRetriever.fetchWithPing(hostPinger);
+        networkStatusRetriever.fetchWithPing(hostPinger, pingerCallback);
 
-        verify(hostPinger).ping();
+        verify(hostPinger).ping(pingerCallback);
     }
 
     @Test
     public void givenMerlinsBeardIsDisconnected_whenFetchingWithPing_thenCallsNoNetworkToPing() {
         given(merlinsBeards.isConnected()).willReturn(DISCONNECTED);
 
-        networkStatusRetriever.fetchWithPing(hostPinger);
+        networkStatusRetriever.fetchWithPing(hostPinger, pingerCallback);
 
-        verify(hostPinger).noNetworkToPing();
+        verify(hostPinger).noNetworkToPing(pingerCallback);
     }
 
     @Test
     public void givenMerlinsBeardIsConnected_whenGettingNetworkStatus_thenReturnsNetworkStatusAvailable() {
         given(merlinsBeards.isConnected()).willReturn(CONNECTED);
 
-        NetworkStatus networkStatus = networkStatusRetriever.get();
+        NetworkStatus networkStatus = networkStatusRetriever.retrieveNetworkStatus();
 
         assertThat(networkStatus).isEqualTo(NetworkStatus.newAvailableInstance());
     }
@@ -65,7 +67,7 @@ public class NetworkStatusRetrieverTest {
     public void givenMerlinsBeardIsDisconnected_whenGettingNetworkStatus_thenReturnsNetworkStatusUnavailable() {
         given(merlinsBeards.isConnected()).willReturn(DISCONNECTED);
 
-        NetworkStatus networkStatus = networkStatusRetriever.get();
+        NetworkStatus networkStatus = networkStatusRetriever.retrieveNetworkStatus();
 
         assertThat(networkStatus).isEqualTo(NetworkStatus.newUnavailableInstance());
     }

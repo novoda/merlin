@@ -41,6 +41,8 @@ public class MerlinServiceTest {
     @Mock
     private HostPinger customPinger;
     @Mock
+    private HostPinger.PingerCallback pingerCallback;
+    @Mock
     private NetworkStatusRetriever networkStatusRetriever;
     @Mock
     private MerlinService.LocalBinder binder;
@@ -76,7 +78,7 @@ public class MerlinServiceTest {
 
         merlinService.onCreate();
 //        merlinService.onConnectivityChanged(createConnectivityChangeEvent(IS_CONNECTED));
-        verify(networkStatusRetriever).fetchWithPing(defaultPinger);
+        verify(networkStatusRetriever).fetchWithPing(defaultPinger, pingerCallback);
     }
 
     @Test
@@ -86,7 +88,7 @@ public class MerlinServiceTest {
         merlinService.onCreate();
 //        merlinService.setHostname(Endpoint.from("some new host name"), mock(ResponseCodeValidator.class));
 //        merlinService.onConnectivityChanged(createConnectivityChangeEvent(IS_CONNECTED));
-        verify(networkStatusRetriever).fetchWithPing(customPinger);
+        verify(networkStatusRetriever).fetchWithPing(customPinger, pingerCallback);
     }
 
     private ContextWrapper stubbedContextWrapper() {

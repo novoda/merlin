@@ -62,7 +62,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
 
     private void notifyOfInitialNetworkStatus() {
         if (networkStatus == null) {
-            bindListener.onMerlinBind(networkStatusRetriever.get());
+            bindListener.onMerlinBind(networkStatusRetriever.retrieveNetworkStatus());
             return;
         }
         bindListener.onMerlinBind(networkStatus);
@@ -72,7 +72,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         @Override
         public void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent) {
             if (!connectivityChangeEvent.asNetworkStatus().equals(networkStatus)) {
-                networkStatusRetriever.fetchWithPing(hostPinger);
+                networkStatusRetriever.fetchWithPing(hostPinger, MerlinService.this);
             }
             networkStatus = connectivityChangeEvent.asNetworkStatus();
         }
@@ -125,7 +125,7 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         }
 
         void setHostPinger(Endpoint endpoint, ResponseCodeValidator validator) {
-            hostPinger = HostPinger.withCustomEndpointAndValidation(MerlinService.this, endpoint, validator);
+            hostPinger = HostPinger.withCustomEndpointAndValidation(endpoint, validator);
         }
 
         void onBindComplete() {

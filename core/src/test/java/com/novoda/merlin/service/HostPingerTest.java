@@ -30,27 +30,27 @@ public class HostPingerTest {
 
     @Before
     public void setUp() {
-        given(pingTaskFactory.create(ENDPOINT)).willReturn(pingTask);
-        hostPinger = new HostPinger(pingerCallback, ENDPOINT, pingTaskFactory);
+        given(pingTaskFactory.create(ENDPOINT, pingerCallback)).willReturn(pingTask);
+        hostPinger = new HostPinger(ENDPOINT, pingTaskFactory);
     }
 
     @Test
     public void whenPinging_thenCreatesPingTask() {
-        hostPinger.ping();
+        hostPinger.ping(pingerCallback);
 
-        verify(pingTaskFactory).create(ENDPOINT);
+        verify(pingTaskFactory).create(ENDPOINT, pingerCallback);
     }
 
     @Test
     public void whenPinging_thenExecutesPingTask() {
-        hostPinger.ping();
+        hostPinger.ping(pingerCallback);
 
         verify(pingTask).execute();
     }
 
     @Test
     public void whenNoNetworkToPing_thenCallsOnFailure() {
-        hostPinger.noNetworkToPing();
+        hostPinger.noNetworkToPing(pingerCallback);
 
         verify(pingerCallback).onFailure();
     }
