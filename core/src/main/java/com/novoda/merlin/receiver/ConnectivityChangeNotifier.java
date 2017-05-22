@@ -32,7 +32,7 @@ class ConnectivityChangeNotifier {
     }
 
     private void notifyMerlinService(Context context, ConnectivityChangeEvent connectivityChangeEvent) {
-        IBinder binder = merlinBinderRetriever.getBinder(context);
+        IBinder binder = merlinBinderRetriever.retrieveMerlinLocalServiceBinderIfAvailable(context);
 
         if (merlinServiceAvailableFrom(binder)) {
             MerlinService merlinService = ((MerlinService.LocalBinder) binder).getService();

@@ -23,7 +23,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
         MerlinBinderRetriever merlinBinderRetriever = new MerlinBinderRetriever() {
             @Override
-            public IBinder getBinder(Context context) {
+            public IBinder retrieveMerlinLocalServiceBinderIfAvailable(Context context) {
                 return peekService(context, new Intent(context, MerlinService.class));
             }
         };
@@ -44,7 +44,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     interface MerlinBinderRetriever {
 
         @Nullable
-        IBinder getBinder(Context context);
+        IBinder retrieveMerlinLocalServiceBinderIfAvailable(Context context);
     }
 
     interface MerlinsBeardCreator {
