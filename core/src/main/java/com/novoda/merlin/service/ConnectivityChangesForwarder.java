@@ -37,10 +37,14 @@ class ConnectivityChangesForwarder {
     }
 
     void notifyOf(ConnectivityChangeEvent connectivityChangeEvent) {
-        if (!connectivityChangeEvent.asNetworkStatus().equals(networkStatus)) {
+        if (doesNotMatchNetworkStatus(connectivityChangeEvent)) {
             networkStatusRetriever.fetchWithPing(hostPinger, hostPingerCallback);
         }
         networkStatus = connectivityChangeEvent.asNetworkStatus();
+    }
+
+    private boolean doesNotMatchNetworkStatus(ConnectivityChangeEvent connectivityChangeEvent) {
+        return !connectivityChangeEvent.asNetworkStatus().equals(networkStatus);
     }
 
     private final HostPinger.PingerCallback hostPingerCallback = new HostPinger.PingerCallback() {
