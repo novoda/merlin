@@ -37,7 +37,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide connectable callbacks, without calling this, Merlin.registerConnectable will throw a MerlinException
+     * Enables Merlin to provide connectable callbacks, without calling this, Merlin.registerConnectable will throw a MerlinException.
      *
      * @return MerlinBuilder.
      */
@@ -48,7 +48,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide disconnectable callbacks, without calling this, Merlin.registerDisconnectable will throw a MerlinException
+     * Enables Merlin to provide disconnectable callbacks, without calling this, Merlin.registerDisconnectable will throw a MerlinException.
      *
      * @return MerlinBuilder.
      */
@@ -59,7 +59,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide bindable callbacks, without calling this, Merlin.registerBindable will throw a MerlinException
+     * Enables Merlin to provide bindable callbacks, without calling this, Merlin.registerBindable will throw a MerlinException.
      *
      * @return MerlinBuilder.
      */
@@ -70,7 +70,8 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide connectable, disconnectable & bindable callbacks, without calling this, Merlin.registerConconnectable, Merlin.registerDisconnectable, Merlin.registerBindable & Merlin.getConnectionStatusObservable will throw a MerlinException
+     * Enables Merlin to provide connectable, disconnectable & bindable callbacks, without calling this, Merlin.registerConconnectable,
+     * Merlin.registerDisconnectable, Merlin.registerBindable & Merlin.getConnectionStatusObservable will throw a MerlinException.
      *
      * @return MerlinBuilder.
      */
@@ -102,18 +103,18 @@ public class MerlinBuilder {
     }
 
     /**
-     * Sets custom endpoint
+     * Sets custom endpoint.
      *
-     * @param endPoint by default "http://connectivitycheck.android.com/generate_204".
+     * @param endpoint by default "http://connectivitycheck.android.com/generate_204".
      * @return MerlinBuilder.
      */
-    public MerlinBuilder withEndPoint(String endPoint) {
-        this.endpoint = Endpoint.from(endPoint);
+    public MerlinBuilder withEndpoint(String endpoint) {
+        this.endpoint = Endpoint.from(endpoint);
         return this;
     }
 
     /**
-     * Sets custom endpoint
+     * Sets custom endpoint.
      *
      * @param responseCodeValidator A validator implementation used for checking that the response code is what you expect.
      *                              The default endpoint returns a 204 No Content response, so the default validator checks for that.
@@ -125,7 +126,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Creates Merlin with the specified builder options
+     * Creates Merlin with the specified builder options.
      *
      * @return Merlin.
      */
