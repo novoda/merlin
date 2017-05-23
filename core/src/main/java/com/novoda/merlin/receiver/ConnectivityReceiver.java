@@ -1,65 +1,55 @@
 package com.novoda.merlin.receiver;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.IBinder;
-import android.support.annotation.VisibleForTesting;
+import android.support.annotation.Nullable;
 
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.service.MerlinService;
 
 public class ConnectivityReceiver extends BroadcastReceiver {
 
-    // Lint thinks we're not calling getAction, but we actually do
-    @SuppressLint("UnsafeProtectedBroadcastReceiver")
+    private final ConnectivityChangeNotifier connectivityChangeNotifier;
+
+    public ConnectivityReceiver() {
+        MerlinsBeardCreator merlinsBeardCreator = new MerlinsBeardCreator() {
+            @Override
+            public MerlinsBeard createMerlinsBeard(Context context) {
+                return MerlinsBeard.from(context);
+            }
+        };
+
+        MerlinBinderRetriever merlinBinderRetriever = new MerlinBinderRetriever() {
+            @Override
+            public IBinder retrieveMerlinLocalServiceBinderIfAvailable(Context context) {
+                return peekService(context, new Intent(context, MerlinService.class));
+            }
+        };
+
+        ConnectivityChangeEventCreator creator = new ConnectivityChangeEventCreator();
+        connectivityChangeNotifier = new ConnectivityChangeNotifier(merlinsBeardCreator, merlinBinderRetriever, creator);
+    }
+
+    ConnectivityReceiver(ConnectivityChangeNotifier connectivityChangeNotifier) {
+        this.connectivityChangeNotifier = connectivityChangeNotifier;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent != null && connectivityAction(intent)) {
-            boolean isConnected = getIsConnected(context, intent);
-            String info = intent.getStringExtra(ConnectivityManager.EXTRA_EXTRA_INFO);
-            String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
-            notifyMerlinService(context, ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(isConnected, info, reason));
-        }
+        connectivityChangeNotifier.notify(context, intent);
     }
 
-    private boolean connectivityAction(Intent intent) {
-        return ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction());
+    interface MerlinBinderRetriever {
+
+        @Nullable
+        IBinder retrieveMerlinLocalServiceBinderIfAvailable(Context context);
     }
 
-    private boolean getIsConnected(Context context, Intent intent) {
-        if (intent.hasExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY)) {
-            return !intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-        } else {
-            return getMerlinsBeard(context).isConnected();
-        }
-    }
+    interface MerlinsBeardCreator {
 
-    private void notifyMerlinService(Context context, ConnectivityChangeEvent connectivityChangedEvent) {
-        MerlinService merlinService = getMerlinService(context);
-        if (isAvailable(merlinService)) {
-            merlinService.onConnectivityChanged(connectivityChangedEvent);
-        }
-    }
-
-    private static boolean isAvailable(Object object) {
-        return object != null;
-    }
-
-    @VisibleForTesting
-    protected MerlinService getMerlinService(Context context) {
-        IBinder binder = peekService(context, new Intent(context, MerlinService.class));
-        if (isAvailable(binder)) {
-            return ((MerlinService.LocalBinder) binder).getService();
-        }
-        return null;
-    }
-
-    @VisibleForTesting
-    protected MerlinsBeard getMerlinsBeard(Context context) {
-        return MerlinsBeard.from(context);
+        MerlinsBeard createMerlinsBeard(Context context);
     }
 
 }
