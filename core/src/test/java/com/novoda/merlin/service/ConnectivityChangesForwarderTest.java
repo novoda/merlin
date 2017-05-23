@@ -17,6 +17,7 @@ import org.mockito.junit.MockitoRule;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 public class ConnectivityChangesForwarderTest {
@@ -81,22 +82,48 @@ public class ConnectivityChangesForwarderTest {
     }
 
     @Test
-    public void givenSuccessfulPing_whenFetchingWithPing_thenCallsOnConnect() {
-        HostPinger.PingerCallback pingerCallback = givenHostPingerCallback();
+    public void givenFetchingWithPing_whenSuccessful_thenCallsOnConnect() {
+        HostPinger.PingerCallback pingerCallback = givenFetchingWithPing();
+
         pingerCallback.onSuccess();
 
         verify(connectListener).onConnect();
     }
 
     @Test
-    public void givenUnsuccessfulPing_whenFetchingWithPing_thenCallsOnDisconnect() {
-        HostPinger.PingerCallback pingerCallback = givenHostPingerCallback();
+    public void givenFetchingWithPing_whenUnsuccessful_thenCallsOnDisconnect() {
+        HostPinger.PingerCallback pingerCallback = givenFetchingWithPing();
+
         pingerCallback.onFailure();
 
         verify(disconnectListener).onDisconnect();
     }
 
-    private HostPinger.PingerCallback givenHostPingerCallback() {
+    @Test
+    public void givenFetchingWithPing_butNullConnectListener_whenSuccessful_thenNeverCallsOnConnect() {
+        connectivityChangesForwarder = new ConnectivityChangesForwarder(
+                networkStatusRetriever, disconnectListener, null, bindListener, hostPinger
+        );
+        HostPinger.PingerCallback pingerCallback = givenFetchingWithPing();
+
+        pingerCallback.onSuccess();
+
+        verify(connectListener, never()).onConnect();
+    }
+
+    @Test
+    public void givenFetchingWithPing_butNullDisconnectListener_whenUnsuccessful_thenNeverCallsOnDisconnect() {
+        connectivityChangesForwarder = new ConnectivityChangesForwarder(
+                networkStatusRetriever, null, connectListener, bindListener, hostPinger
+        );
+        HostPinger.PingerCallback pingerCallback = givenFetchingWithPing();
+
+        pingerCallback.onFailure();
+
+        verify(disconnectListener, never()).onDisconnect();
+    }
+
+    private HostPinger.PingerCallback givenFetchingWithPing() {
         ConnectivityChangeEvent connectivityChangeEvent = ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(CONNECTED, ANY_INFO, ANY_REASON);
         connectivityChangesForwarder.notifyOf(connectivityChangeEvent);
         ArgumentCaptor<HostPinger.PingerCallback> argumentCaptor = ArgumentCaptor.forClass(HostPinger.PingerCallback.class);
