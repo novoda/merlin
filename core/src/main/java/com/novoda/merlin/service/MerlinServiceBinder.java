@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
+import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
@@ -17,50 +18,50 @@ public class MerlinServiceBinder {
     private final ListenerHolder listenerHolder;
 
     private ResponseCodeValidator validator;
-    private Connection connection;
-    private String endpoint;
+    private MerlinServiceConnection merlinServiceConnection;
+    private Endpoint endpoint;
 
     public MerlinServiceBinder(Context context, ConnectListener connectListener, DisconnectListener disconnectListener,
-                               BindListener bindListener, String endpoint, ResponseCodeValidator validator) {
+                               BindListener bindListener, Endpoint endpoint, ResponseCodeValidator validator) {
         this.validator = validator;
         listenerHolder = new ListenerHolder(connectListener, disconnectListener, bindListener);
         this.context = context;
         this.endpoint = endpoint;
     }
 
-    public void setEndpoint(String hostname, ResponseCodeValidator validator) {
-        this.endpoint = hostname;
+    public void setEndpoint(Endpoint endpoint, ResponseCodeValidator validator) {
+        this.endpoint = endpoint;
         this.validator = validator;
     }
 
     public void bindService() {
-        if (connection == null) {
-            connection = new Connection(listenerHolder, endpoint, validator);
+        if (merlinServiceConnection == null) {
+            merlinServiceConnection = new MerlinServiceConnection(listenerHolder, endpoint, validator);
         }
         Intent intent = new Intent(context, MerlinService.class);
-        context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        context.bindService(intent, merlinServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     public void unbind() {
         if (connectionIsAvailable()) {
-            context.unbindService(connection);
-            connection = null;
+            context.unbindService(merlinServiceConnection);
+            merlinServiceConnection = null;
         }
     }
 
     private boolean connectionIsAvailable() {
-        return connection != null;
+        return merlinServiceConnection != null;
     }
 
-    private static class Connection implements ServiceConnection {
+    private static class MerlinServiceConnection implements ServiceConnection {
 
         private final ListenerHolder listenerHolder;
-        private final String endpoint;
+        private final Endpoint endpoint;
         private final ResponseCodeValidator validator;
 
         private MerlinService merlinService;
 
-        Connection(ListenerHolder listenerHolder, String endpoint, ResponseCodeValidator validator) {
+        MerlinServiceConnection(ListenerHolder listenerHolder, Endpoint endpoint, ResponseCodeValidator validator) {
             this.listenerHolder = listenerHolder;
             this.endpoint = endpoint;
             this.validator = validator;

@@ -42,12 +42,12 @@ public class MerlinTest {
 
     @Test
     public void whenBindingWithACustomEndpoint_thenSetsEndPoint() {
-        String hostname = "startTheMerlinServiceWithAHostnameWhenProvided";
+        Endpoint endpoint = Endpoint.from("startTheMerlinServiceWithAHostnameWhenProvided");
 
-        merlin.setEndpoint(hostname, validator);
+        merlin.setEndpoint(endpoint, validator);
         merlin.bind();
 
-        verify(serviceBinder).setEndpoint(hostname, validator);
+        verify(serviceBinder).setEndpoint(endpoint, validator);
     }
 
     @Test

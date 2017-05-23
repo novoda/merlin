@@ -8,6 +8,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.VisibleForTesting;
 
+import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
@@ -70,13 +71,13 @@ public class MerlinService extends Service implements HostPinger.PingerCallback 
         return super.onUnbind(intent);
     }
 
-    public void setHostname(String hostname, ResponseCodeValidator validator) {
-        hostPinger = buildHostPinger(hostname, validator);
+    public void setHostname(Endpoint endpoint, ResponseCodeValidator validator) {
+        hostPinger = buildHostPinger(endpoint, validator);
     }
 
     @VisibleForTesting
-    protected HostPinger buildHostPinger(String hostName, ResponseCodeValidator validator) {
-        return HostPinger.withCustomEndpointAndValidation(this, hostName, validator);
+    protected HostPinger buildHostPinger(Endpoint endpoint, ResponseCodeValidator validator) {
+        return HostPinger.withCustomEndpointAndValidation(this, endpoint, validator);
     }
 
     public void setBindStatusListener(BindListener bindListener) {

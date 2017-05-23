@@ -1,8 +1,9 @@
 package com.novoda.merlin.service.request;
 
+import com.novoda.merlin.Endpoint;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
@@ -11,7 +12,7 @@ class HttpRequestMaker implements RequestMaker {
     private static final String METHOD_HEAD = "HEAD";
 
     @Override
-    public Request head(String endpoint) {
+    public Request head(Endpoint endpoint) {
         try {
             HttpURLConnection urlConnection = connectTo(endpoint);
             urlConnection.setRequestProperty("Accept-Encoding", "");
@@ -20,15 +21,13 @@ class HttpRequestMaker implements RequestMaker {
             disableRedirects(urlConnection);
 
             return new MerlinHttpRequest(urlConnection);
-        } catch (MalformedURLException e) {
-            throw new RequestException(e);
         } catch (IOException e) {
             throw new RequestException(e);
         }
     }
 
-    private HttpURLConnection connectTo(String endpoint) throws IOException {
-        URL url = new URL(endpoint);
+    private HttpURLConnection connectTo(Endpoint endpoint) throws IOException {
+        URL url = endpoint.asURL();
         return (HttpURLConnection) url.openConnection();
     }
 

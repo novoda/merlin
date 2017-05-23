@@ -30,14 +30,14 @@ public class MerlinBuilder {
     private MerlinRegisterer<Disconnectable> disconnectableRegisterer;
     private MerlinRegisterer<Bindable> bindableRegisterer;
 
-    private String endPoint = Merlin.DEFAULT_ENDPOINT;
+    private Endpoint endpoint = Endpoint.defaultEndpoint();
     private ResponseCodeValidator responseCodeValidator = new DefaultEndpointResponseCodeValidator();
 
     MerlinBuilder() {
     }
 
     /**
-     * Enables Merlin to provide connectable callbacks, without calling this, Merlin.registerConnectable will throw a MerlinException
+     * Enables Merlin to provide connectable callbacks, without calling this, Merlin.registerConnectable will throw a MerlinException.
      *
      * @return MerlinBuilder.
      */
@@ -48,7 +48,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide disconnectable callbacks, without calling this, Merlin.registerDisconnectable will throw a MerlinException
+     * Enables Merlin to provide disconnectable callbacks, without calling this, Merlin.registerDisconnectable will throw a MerlinException.
      *
      * @return MerlinBuilder.
      */
@@ -59,7 +59,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide bindable callbacks, without calling this, Merlin.registerBindable will throw a MerlinException
+     * Enables Merlin to provide bindable callbacks, without calling this, Merlin.registerBindable will throw a MerlinException.
      *
      * @return MerlinBuilder.
      */
@@ -70,7 +70,8 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide connectable, disconnectable & bindable callbacks, without calling this, Merlin.registerConconnectable, Merlin.registerDisconnectable, Merlin.registerBindable & Merlin.getConnectionStatusObservable will throw a MerlinException
+     * Enables Merlin to provide connectable, disconnectable & bindable callbacks, without calling this, Merlin.registerConconnectable,
+     * Merlin.registerDisconnectable, Merlin.registerBindable & Merlin.getConnectionStatusObservable will throw a MerlinException.
      *
      * @return MerlinBuilder.
      */
@@ -82,11 +83,11 @@ public class MerlinBuilder {
      * Deprecated, use directly {@link Logger} instead. To provide backwards compatibility
      * this method will attach a new {@link MerlinBackwardsCompatibleLog}. If using multiple instances
      * of {@link Merlin} the most recent call to `withLogging` will affect all other instances of {@link Merlin}.
-     *
+     * <p>
      * Example:
-     *  MerlinInstanceOne -> withLogging(true)
-     *  MerlinInstanceTwo -> withLogging(false)
-     *  == no logs written.
+     * MerlinInstanceOne -> withLogging(true)
+     * MerlinInstanceTwo -> withLogging(false)
+     * == no logs written.
      *
      * @param withLogging by default logging is disabled. withLogging = true will attach the default {@link MerlinBackwardsCompatibleLog}
      * @return MerlinBuilder
@@ -102,30 +103,30 @@ public class MerlinBuilder {
     }
 
     /**
-     * Sets custom endpoint
+     * Sets custom endpoint.
      *
-     * @param endPoint by default "http://connectivitycheck.android.com/generate_204".
+     * @param endpoint by default "http://connectivitycheck.android.com/generate_204".
      * @return MerlinBuilder.
      */
-    public MerlinBuilder setEndPoint(String endPoint) {
-        this.endPoint = endPoint;
+    public MerlinBuilder withEndpoint(String endpoint) {
+        this.endpoint = Endpoint.from(endpoint);
         return this;
     }
 
     /**
-     * Sets custom endpoint
+     * Sets custom endpoint.
      *
      * @param responseCodeValidator A validator implementation used for checking that the response code is what you expect.
      *                              The default endpoint returns a 204 No Content response, so the default validator checks for that.
      * @return MerlinBuilder.
      */
-    public MerlinBuilder setResponseCodeValidator(ResponseCodeValidator responseCodeValidator) {
+    public MerlinBuilder withResponseCodeValidator(ResponseCodeValidator responseCodeValidator) {
         this.responseCodeValidator = responseCodeValidator;
         return this;
     }
 
     /**
-     * Creates Merlin with the specified builder options
+     * Creates Merlin with the specified builder options.
      *
      * @return Merlin.
      */
@@ -135,7 +136,7 @@ public class MerlinBuilder {
                 merlinConnector,
                 merlinDisconnector,
                 merlinOnBinder,
-                endPoint,
+                endpoint,
                 responseCodeValidator
         );
 
