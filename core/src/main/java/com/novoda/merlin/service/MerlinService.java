@@ -12,8 +12,6 @@ import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
-//TODO: This class responds to connectivity changes, extract a single entry point that knows how
-// to register and handle these events. We should expose a listener here for ConnectivityReceiver.
 public class MerlinService extends Service implements HostPinger.PingerCallback {
 
     private static boolean isBound;
