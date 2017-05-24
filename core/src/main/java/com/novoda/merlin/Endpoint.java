@@ -1,5 +1,8 @@
 package com.novoda.merlin;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class Endpoint {
 
     private static final Endpoint DEFAULT_ENDPOINT = Endpoint.from("http://connectivitycheck.android.com/generate_204");
@@ -18,8 +21,8 @@ public class Endpoint {
         this.endpoint = endpoint;
     }
 
-    public String asString() {
-        return endpoint;
+    public URL asURL() throws MalformedURLException {
+        return new URL(endpoint);
     }
 
     @Override

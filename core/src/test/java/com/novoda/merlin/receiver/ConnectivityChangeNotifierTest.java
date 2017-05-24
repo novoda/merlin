@@ -46,14 +46,14 @@ public class ConnectivityChangeNotifierTest {
 
     @Before
     public void setUp() {
-        ConnectivityReceiver.MerlinsBeardRetriever merlinsBeardRetriever = mock(ConnectivityReceiver.MerlinsBeardRetriever.class);
+        ConnectivityReceiver.MerlinsBeardCreator merlinsBeardCreator = mock(ConnectivityReceiver.MerlinsBeardCreator.class);
 
         given(merlinBinder.getConnectivityChangedListener()).willReturn(connectivityChangesListener);
 
-        given(merlinBinderRetriever.getBinder(context)).willReturn(merlinBinder);
-        given(merlinsBeardRetriever.getMerlinsBeard(context)).willReturn(merlinsBeard);
+        given(merlinBinderRetriever.retrieveMerlinLocalServiceBinderIfAvailable(context)).willReturn(merlinBinder);
+        given(merlinsBeardCreator.createMerlinsBeard(context)).willReturn(merlinsBeard);
 
-        notifier = new ConnectivityChangeNotifier(merlinsBeardRetriever, merlinBinderRetriever, eventCreator);
+        notifier = new ConnectivityChangeNotifier(merlinsBeardCreator, merlinBinderRetriever, eventCreator);
 
     }
 
@@ -87,7 +87,7 @@ public class ConnectivityChangeNotifierTest {
     @Test
     public void givenIntentWithConnectivityAction_butNullBinder_whenNotifying_thenNeverCallsMerlinServiceOnConnectivityChanged() {
         Intent intent = givenIntentWithConnectivityAction();
-        given(merlinBinderRetriever.getBinder(context)).willReturn(null);
+        given(merlinBinderRetriever.retrieveMerlinLocalServiceBinderIfAvailable(context)).willReturn(null);
 
         notifier.notify(context, intent);
 
@@ -97,7 +97,7 @@ public class ConnectivityChangeNotifierTest {
     @Test
     public void givenIntentWithConnectivityAction_butIncorrectBinder_whenNotifying_thenNeverCallsMerlinServiceOnConnectivityChanged() {
         Intent intent = givenIntentWithConnectivityAction();
-        given(merlinBinderRetriever.getBinder(context)).willReturn(incorrectBinder());
+        given(merlinBinderRetriever.retrieveMerlinLocalServiceBinderIfAvailable(context)).willReturn(incorrectBinder());
 
         notifier.notify(context, intent);
 
