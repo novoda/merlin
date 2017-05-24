@@ -55,12 +55,21 @@ public class ConnectivityChangesForwarderTest {
     }
 
     @Test
-    public void givenPreviousNetworkStatus_whenNotifyingOfInitialState_thenCallsBindListenerWithNetworkStatus() {
+    public void givenPreviousConnectedNetworkStatus_whenNotifyingOfInitialState_thenCallsBindListenerWithNetworkStatus() {
         givenPreviousNetworkStatusIs(CONNECTED);
 
         connectivityChangesForwarder.notifyOfInitialNetworkStatus();
 
         verify(bindListener).onMerlinBind(NetworkStatus.newAvailableInstance());
+    }
+
+    @Test
+    public void givenPreviousDisconnectedNetworkStatus_whenNotifyingOfInitialState_thenCallsBindListenerWithNetworkStatus() {
+        givenPreviousNetworkStatusIs(DISCONNECTED);
+
+        connectivityChangesForwarder.notifyOfInitialNetworkStatus();
+
+        verify(bindListener).onMerlinBind(NetworkStatus.newUnavailableInstance());
     }
 
     @Test
