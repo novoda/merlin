@@ -1,29 +1,27 @@
 package com.novoda.merlin.service;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
-import com.novoda.merlin.registerable.connection.ConnectListener;
-import com.novoda.merlin.registerable.disconnection.DisconnectListener;
+import com.novoda.merlin.receiver.ConnectivityChangesRegister;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 public class MerlinServiceTest {
 
-    private static final boolean IS_CONNECTED = true;
-    private static final boolean NOT_CONNECTED = false;
+    private static final ConnectivityChangeEvent ANY_CONNECTIVITY_CHANGE_EVENT = ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(
+            true, "any_info", "any_reason"
+    );
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -31,77 +29,84 @@ public class MerlinServiceTest {
     @Mock
     private Intent intent;
     @Mock
-    private Context context;
+    private ConnectivityChangesRegister connectivityChangesRegister;
     @Mock
-    private ConnectListener connectListener;
-    @Mock
-    private DisconnectListener disconnectListener;
-    @Mock
-    private HostPinger defaultPinger;
-    @Mock
-    private HostPinger customPinger;
-    @Mock
-    private HostPinger.PingerCallback pingerCallback;
-    @Mock
-    private NetworkStatusRetriever networkStatusRetriever;
-    @Mock
-    private MerlinService.LocalBinder binder;
+    private ConnectivityChangesForwarder connectivityChangesForwarder;
 
     private MerlinService merlinService;
 
     @Before
     public void setUp() {
-        merlinService = new MerlinService(binder);
+        merlinService = new MerlinService();
     }
 
     @Test
-    public void givenConnectedEvent_whenConnectivityChanges_thenCallsOnConnect() {
-        ConnectivityChangeEvent connectivityChangeEvent = createConnectivityChangeEvent(IS_CONNECTED);
+    public void givenOnBindHasBeenCalled_whenCheckingIsBound_thenReturnsTrue() {
+        givenBoundMerlinService();
 
-//        merlinService.onConnectivityChanged(connectivityChangeEvent);
+        boolean bound = MerlinService.isBound();
 
-        verify(connectListener).onConnect();
+        assertThat(bound).isTrue();
     }
 
     @Test
-    public void givenDisconnectedEvent_whenConnectivityChanges_thenCallsOnDisconnect() {
-        ConnectivityChangeEvent connectivityChangeEvent = createConnectivityChangeEvent(NOT_CONNECTED);
+    public void givenBoundMerlinService_whenCallingOnUnbind_thenReturnsFalseForIsBound() {
+        givenBoundMerlinService();
 
-//        merlinService.onConnectivityChanged(connectivityChangeEvent);
+        merlinService.onUnbind(intent);
 
-        verify(disconnectListener).onDisconnect();
+        assertThat(MerlinService.isBound()).isFalse();
     }
 
     @Test
-    public void givenConnectedEvent_whenConnectivityChanges_thenFetchesUsingDefaultPinger() {
-        ContextWrapper contextWrapper = stubbedContextWrapper();
+    public void givenBoundMerlinService_whenCallingOnUnbind_thenUnregistersConnectivityChangesRegister() {
+        givenBoundMerlinService();
 
-        merlinService.onCreate();
-//        merlinService.onConnectivityChanged(createConnectivityChangeEvent(IS_CONNECTED));
-        verify(networkStatusRetriever).fetchWithPing(defaultPinger, pingerCallback);
+        merlinService.onUnbind(intent);
+
+        verify(connectivityChangesRegister).unregister();
     }
 
     @Test
-    public void givenConnectedEvent_andCustomEndpoint_whenConnectivityChanges_thenFetchesUsingCustomPinger() {
-        ContextWrapper contextWrapper = stubbedContextWrapper();
+    public void givenBoundMerlinService_whenBindCompletes_thenNotifiesOfInitialNetworkStatusUsingForwarder() {
+        MerlinService.LocalBinder localBinder = givenBoundMerlinService();
 
-        merlinService.onCreate();
-//        merlinService.setHostname(Endpoint.from("some new host name"), mock(ResponseCodeValidator.class));
-//        merlinService.onConnectivityChanged(createConnectivityChangeEvent(IS_CONNECTED));
-        verify(networkStatusRetriever).fetchWithPing(customPinger, pingerCallback);
+        localBinder.onBindComplete();
+
+        verify(connectivityChangesForwarder).notifyOfInitialNetworkStatus();
     }
 
-    private ContextWrapper stubbedContextWrapper() {
-        Context context = mock(Context.class);
-        ContextWrapper contextWrapper = mock(ContextWrapper.class);
-        ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
-        given(contextWrapper.getApplicationContext()).willReturn(context);
-        given(context.getSystemService(Context.CONNECTIVITY_SERVICE)).willReturn(connectivityManager);
-        return contextWrapper;
+    @Test
+    public void givenBoundMerlinService_whenBindCompletes_thenRegistersForConnectivityChanges() {
+        MerlinService.LocalBinder localBinder = givenBoundMerlinService();
+
+        localBinder.onBindComplete();
+
+        verify(connectivityChangesRegister).register(any(MerlinService.ConnectivityChangesListener.class));
     }
 
-    private ConnectivityChangeEvent createConnectivityChangeEvent(boolean isConnected) {
-        return ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(isConnected, "info", "reason");
+    @Test
+    public void givenRegisteredMerlinService_whenConnectivityChangeOccurs_thenNotifiesForwarder() {
+        MerlinService.ConnectivityChangesListener connectivityChangesListener = givenRegisteredMerlinService();
+
+        connectivityChangesListener.onConnectivityChanged(ANY_CONNECTIVITY_CHANGE_EVENT);
+
+        verify(connectivityChangesForwarder).notifyOf(ANY_CONNECTIVITY_CHANGE_EVENT);
+    }
+
+    private MerlinService.LocalBinder givenBoundMerlinService() {
+        MerlinService.LocalBinder binder = ((MerlinService.LocalBinder) merlinService.onBind(intent));
+        binder.setConnectivityChangesRegister(connectivityChangesRegister);
+        binder.setConnectivityChangesForwarder(connectivityChangesForwarder);
+        return binder;
+    }
+
+    private MerlinService.ConnectivityChangesListener givenRegisteredMerlinService() {
+        MerlinService.LocalBinder localBinder = givenBoundMerlinService();
+        localBinder.onBindComplete();
+        ArgumentCaptor<MerlinService.ConnectivityChangesListener> argumentCaptor = ArgumentCaptor.forClass(MerlinService.ConnectivityChangesListener.class);
+        verify(connectivityChangesRegister).register(argumentCaptor.capture());
+        return argumentCaptor.getValue();
     }
 
 }

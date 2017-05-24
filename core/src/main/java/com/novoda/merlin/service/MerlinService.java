@@ -12,18 +12,10 @@ public class MerlinService extends Service {
 
     private static boolean isBound;
 
-    private final IBinder binder;
+    private final IBinder binder = new LocalBinder();
 
     private ConnectivityChangesRegister connectivityChangesRegister;
     private ConnectivityChangesForwarder connectivityChangesForwarder;
-
-    public MerlinService() {
-        binder = new LocalBinder();
-    }
-
-    MerlinService(MerlinService.LocalBinder binder) {
-        this.binder = binder;
-    }
 
     public static boolean isBound() {
         return isBound;
