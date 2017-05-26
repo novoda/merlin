@@ -77,13 +77,13 @@ public class MerlinServiceBinder {
                     new AndroidVersion()
             );
             NetworkStatusRetriever networkStatusRetriever = new NetworkStatusRetriever(MerlinsBeard.from(context));
-            HostPinger hostPinger = HostPinger.withCustomEndpointAndValidation(endpoint, validator);
+            EndpointPinger endpointPinger = EndpointPinger.withCustomEndpointAndValidation(endpoint, validator);
             ConnectivityChangesForwarder connectivityChangesForwarder = new ConnectivityChangesForwarder(
                     networkStatusRetriever,
                     listenerHolder.disconnectListener,
                     listenerHolder.connectListener,
                     listenerHolder.bindListener,
-                    hostPinger
+                    endpointPinger
             );
 
             merlinServiceBinder.setConnectivityChangesRegister(connectivityChangesRegister);

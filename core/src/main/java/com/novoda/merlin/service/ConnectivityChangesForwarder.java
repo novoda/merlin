@@ -12,7 +12,7 @@ class ConnectivityChangesForwarder {
     private final DisconnectListener disconnectListener;
     private final ConnectListener connectListener;
     private final BindListener bindListener;
-    private final HostPinger hostPinger;
+    private final EndpointPinger endpointPinger;
 
     private NetworkStatus lastEndpointPingNetworkStatus;
 
@@ -20,12 +20,12 @@ class ConnectivityChangesForwarder {
                                  DisconnectListener disconnectListener,
                                  ConnectListener connectListener,
                                  BindListener bindListener,
-                                 HostPinger hostPinger) {
+                                 EndpointPinger endpointPinger) {
         this.networkStatusRetriever = networkStatusRetriever;
         this.disconnectListener = disconnectListener;
         this.connectListener = connectListener;
         this.bindListener = bindListener;
-        this.hostPinger = hostPinger;
+        this.endpointPinger = endpointPinger;
     }
 
     void forwardInitialNetworkStatus() {
@@ -46,7 +46,7 @@ class ConnectivityChangesForwarder {
             return;
         }
 
-        networkStatusRetriever.fetchWithPing(hostPinger, hostPingerCallback);
+        networkStatusRetriever.fetchWithPing(endpointPinger, endpointPingerCallback);
         lastEndpointPingNetworkStatus = connectivityChangeEvent.asNetworkStatus();
     }
 
@@ -54,7 +54,7 @@ class ConnectivityChangesForwarder {
         return connectivityChangeEvent.asNetworkStatus().equals(lastEndpointPingNetworkStatus);
     }
 
-    private final HostPinger.PingerCallback hostPingerCallback = new HostPinger.PingerCallback() {
+    private final EndpointPinger.PingerCallback endpointPingerCallback = new EndpointPinger.PingerCallback() {
         @Override
         public void onSuccess() {
             lastEndpointPingNetworkStatus = NetworkStatus.newAvailableInstance();

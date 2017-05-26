@@ -25,9 +25,9 @@ public class NetworkStatusRetrieverTest {
     @Mock
     private MerlinsBeard merlinsBeards;
     @Mock
-    private HostPinger hostPinger;
+    private EndpointPinger endpointPinger;
     @Mock
-    private HostPinger.PingerCallback pingerCallback;
+    private EndpointPinger.PingerCallback pingerCallback;
 
     private NetworkStatusRetriever networkStatusRetriever;
 
@@ -40,18 +40,18 @@ public class NetworkStatusRetrieverTest {
     public void givenMerlinsBeardIsConnected_whenFetchingWithPing_thenPingsUsingHostPinger() {
         given(merlinsBeards.isConnected()).willReturn(CONNECTED);
 
-        networkStatusRetriever.fetchWithPing(hostPinger, pingerCallback);
+        networkStatusRetriever.fetchWithPing(endpointPinger, pingerCallback);
 
-        verify(hostPinger).ping(pingerCallback);
+        verify(endpointPinger).ping(pingerCallback);
     }
 
     @Test
     public void givenMerlinsBeardIsDisconnected_whenFetchingWithPing_thenCallsNoNetworkToPing() {
         given(merlinsBeards.isConnected()).willReturn(DISCONNECTED);
 
-        networkStatusRetriever.fetchWithPing(hostPinger, pingerCallback);
+        networkStatusRetriever.fetchWithPing(endpointPinger, pingerCallback);
 
-        verify(hostPinger).noNetworkToPing(pingerCallback);
+        verify(endpointPinger).noNetworkToPing(pingerCallback);
     }
 
     @Test

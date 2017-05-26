@@ -108,8 +108,8 @@ public class MerlinBuilder {
      * @param endpoint by default "http://connectivitycheck.android.com/generate_204".
      * @return MerlinBuilder.
      */
-    public MerlinBuilder withEndpoint(String endpoint) {
-        this.endpoint = Endpoint.from(endpoint);
+    public MerlinBuilder withEndpoint(Endpoint endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 

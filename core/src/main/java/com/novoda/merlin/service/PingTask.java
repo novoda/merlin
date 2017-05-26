@@ -5,9 +5,9 @@ import android.os.AsyncTask;
 class PingTask extends AsyncTask<Void, Void, Boolean> {
 
     private final Ping ping;
-    private final HostPinger.PingerCallback pingerCallback;
+    private final EndpointPinger.PingerCallback pingerCallback;
 
-    PingTask(Ping ping, HostPinger.PingerCallback pingerCallback) {
+    PingTask(Ping ping, EndpointPinger.PingerCallback pingerCallback) {
         this.ping = ping;
         this.pingerCallback = pingerCallback;
     }

@@ -12,9 +12,9 @@ import org.mockito.junit.MockitoRule;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-public class HostPingerTest {
+public class EndpointPingerTest {
 
-    private static final Endpoint ENDPOINT = Endpoint.from("any host address");
+    private static final Endpoint ENDPOINT = Endpoint.from("any endpoint");
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -24,33 +24,33 @@ public class HostPingerTest {
     @Mock
     private PingTaskFactory pingTaskFactory;
     @Mock
-    private HostPinger.PingerCallback pingerCallback;
+    private EndpointPinger.PingerCallback pingerCallback;
 
-    private HostPinger hostPinger;
+    private EndpointPinger endpointPinger;
 
     @Before
     public void setUp() {
         given(pingTaskFactory.create(ENDPOINT, pingerCallback)).willReturn(pingTask);
-        hostPinger = new HostPinger(ENDPOINT, pingTaskFactory);
+        endpointPinger = new EndpointPinger(ENDPOINT, pingTaskFactory);
     }
 
     @Test
     public void whenPinging_thenCreatesPingTask() {
-        hostPinger.ping(pingerCallback);
+        endpointPinger.ping(pingerCallback);
 
         verify(pingTaskFactory).create(ENDPOINT, pingerCallback);
     }
 
     @Test
     public void whenPinging_thenExecutesPingTask() {
-        hostPinger.ping(pingerCallback);
+        endpointPinger.ping(pingerCallback);
 
         verify(pingTask).execute();
     }
 
     @Test
     public void whenNoNetworkToPing_thenCallsOnFailure() {
-        hostPinger.noNetworkToPing(pingerCallback);
+        endpointPinger.noNetworkToPing(pingerCallback);
 
         verify(pingerCallback).onFailure();
     }

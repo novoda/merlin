@@ -40,7 +40,7 @@ public class ConnectivityChangesForwarderTest {
     @Mock
     private BindListener bindListener;
     @Mock
-    private HostPinger hostPinger;
+    private EndpointPinger endpointPinger;
 
     private ConnectivityChangesForwarder connectivityChangesForwarder;
 
@@ -51,7 +51,7 @@ public class ConnectivityChangesForwarderTest {
                 disconnectListener,
                 connectListener,
                 bindListener,
-                hostPinger
+                endpointPinger
         );
     }
 
@@ -88,12 +88,12 @@ public class ConnectivityChangesForwarderTest {
 
         connectivityChangesForwarder.forward(connectivityChangeEvent);
 
-        verify(networkStatusRetriever).fetchWithPing(eq(hostPinger), any(HostPinger.PingerCallback.class));
+        verify(networkStatusRetriever).fetchWithPing(eq(endpointPinger), any(EndpointPinger.PingerCallback.class));
     }
 
     @Test
     public void givenFetchingWithPing_whenSuccessful_thenCallsOnConnect() {
-        HostPinger.PingerCallback pingerCallback = givenFetchingWithPing();
+        EndpointPinger.PingerCallback pingerCallback = givenFetchingWithPing();
 
         pingerCallback.onSuccess();
 
@@ -102,7 +102,7 @@ public class ConnectivityChangesForwarderTest {
 
     @Test
     public void givenFetchingWithPing_whenUnsuccessful_thenCallsOnDisconnect() {
-        HostPinger.PingerCallback pingerCallback = givenFetchingWithPing();
+        EndpointPinger.PingerCallback pingerCallback = givenFetchingWithPing();
 
         pingerCallback.onFailure();
 
@@ -112,9 +112,9 @@ public class ConnectivityChangesForwarderTest {
     @Test
     public void givenFetchingWithPing_butNullConnectListener_whenSuccessful_thenNeverCallsOnConnect() {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
-                networkStatusRetriever, disconnectListener, null, bindListener, hostPinger
+                networkStatusRetriever, disconnectListener, null, bindListener, endpointPinger
         );
-        HostPinger.PingerCallback pingerCallback = givenFetchingWithPing();
+        EndpointPinger.PingerCallback pingerCallback = givenFetchingWithPing();
 
         pingerCallback.onSuccess();
 
@@ -124,9 +124,9 @@ public class ConnectivityChangesForwarderTest {
     @Test
     public void givenFetchingWithPing_butNullDisconnectListener_whenUnsuccessful_thenNeverCallsOnDisconnect() {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
-                networkStatusRetriever, null, connectListener, bindListener, hostPinger
+                networkStatusRetriever, null, connectListener, bindListener, endpointPinger
         );
-        HostPinger.PingerCallback pingerCallback = givenFetchingWithPing();
+        EndpointPinger.PingerCallback pingerCallback = givenFetchingWithPing();
 
         pingerCallback.onFailure();
 
@@ -137,11 +137,11 @@ public class ConnectivityChangesForwarderTest {
         connectivityChangesForwarder.forward(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(connected, ANY_INFO, ANY_REASON));
     }
 
-    private HostPinger.PingerCallback givenFetchingWithPing() {
+    private EndpointPinger.PingerCallback givenFetchingWithPing() {
         ConnectivityChangeEvent connectivityChangeEvent = ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(CONNECTED, ANY_INFO, ANY_REASON);
         connectivityChangesForwarder.forward(connectivityChangeEvent);
-        ArgumentCaptor<HostPinger.PingerCallback> argumentCaptor = ArgumentCaptor.forClass(HostPinger.PingerCallback.class);
-        verify(networkStatusRetriever).fetchWithPing(eq(hostPinger), argumentCaptor.capture());
+        ArgumentCaptor<EndpointPinger.PingerCallback> argumentCaptor = ArgumentCaptor.forClass(EndpointPinger.PingerCallback.class);
+        verify(networkStatusRetriever).fetchWithPing(eq(endpointPinger), argumentCaptor.capture());
         return argumentCaptor.getValue();
     }
 }

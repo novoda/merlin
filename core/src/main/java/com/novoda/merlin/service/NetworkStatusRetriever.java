@@ -11,11 +11,11 @@ class NetworkStatusRetriever {
         this.merlinsBeard = merlinsBeard;
     }
 
-    void fetchWithPing(HostPinger hostPinger, HostPinger.PingerCallback pingerCallback) {
+    void fetchWithPing(EndpointPinger endpointPinger, EndpointPinger.PingerCallback pingerCallback) {
         if (merlinsBeard.isConnected()) {
-            hostPinger.ping(pingerCallback);
+            endpointPinger.ping(pingerCallback);
         } else {
-            hostPinger.noNetworkToPing(pingerCallback);
+            endpointPinger.noNetworkToPing(pingerCallback);
         }
     }
 

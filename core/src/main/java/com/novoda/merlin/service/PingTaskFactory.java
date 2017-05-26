@@ -2,8 +2,8 @@ package com.novoda.merlin.service;
 
 import com.novoda.merlin.Endpoint;
 
-import static com.novoda.merlin.service.HostPinger.PingerCallback;
-import static com.novoda.merlin.service.HostPinger.ResponseCodeFetcher;
+import static com.novoda.merlin.service.EndpointPinger.PingerCallback;
+import static com.novoda.merlin.service.EndpointPinger.ResponseCodeFetcher;
 
 class PingTaskFactory {
 

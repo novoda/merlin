@@ -3,7 +3,7 @@ package com.novoda.merlin.service;
 import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.service.request.MerlinRequest;
 
-class HostPinger {
+class EndpointPinger {
 
     private final Endpoint endpoint;
     private final PingTaskFactory pingTaskFactory;
@@ -16,12 +16,12 @@ class HostPinger {
 
     }
 
-    static HostPinger withCustomEndpointAndValidation(Endpoint hostAddress, ResponseCodeValidator validator) {
+    static EndpointPinger withCustomEndpointAndValidation(Endpoint endpoint, ResponseCodeValidator validator) {
         PingTaskFactory pingTaskFactory = new PingTaskFactory(new ResponseCodeFetcher(), validator);
-        return new HostPinger(hostAddress, pingTaskFactory);
+        return new EndpointPinger(endpoint, pingTaskFactory);
     }
 
-    HostPinger(Endpoint endpoint, PingTaskFactory pingTaskFactory) {
+    EndpointPinger(Endpoint endpoint, PingTaskFactory pingTaskFactory) {
         this.endpoint = endpoint;
         this.pingTaskFactory = pingTaskFactory;
     }
