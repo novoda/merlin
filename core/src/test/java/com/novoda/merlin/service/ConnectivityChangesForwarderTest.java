@@ -58,7 +58,7 @@ public class ConnectivityChangesForwarderTest {
     public void givenPreviousConnectedNetworkStatus_whenNotifyingOfInitialState_thenCallsBindListenerWithNetworkStatus() {
         givenPreviousNetworkStatusIs(CONNECTED);
 
-        connectivityChangesForwarder.notifyOfInitialNetworkStatus();
+        connectivityChangesForwarder.forwardInitialNetworkStatus();
 
         verify(bindListener).onMerlinBind(NetworkStatus.newAvailableInstance());
     }
@@ -67,7 +67,7 @@ public class ConnectivityChangesForwarderTest {
     public void givenPreviousDisconnectedNetworkStatus_whenNotifyingOfInitialState_thenCallsBindListenerWithNetworkStatus() {
         givenPreviousNetworkStatusIs(DISCONNECTED);
 
-        connectivityChangesForwarder.notifyOfInitialNetworkStatus();
+        connectivityChangesForwarder.forwardInitialNetworkStatus();
 
         verify(bindListener).onMerlinBind(NetworkStatus.newUnavailableInstance());
     }
@@ -76,7 +76,7 @@ public class ConnectivityChangesForwarderTest {
     public void givenNoPreviousNetworkStatus_whenNotifyingOfInitialState_thenCallsBindListenerWithNetworkStatusFromRetriever() {
         given(networkStatusRetriever.retrieveNetworkStatus()).willReturn(NetworkStatus.newAvailableInstance());
 
-        connectivityChangesForwarder.notifyOfInitialNetworkStatus();
+        connectivityChangesForwarder.forwardInitialNetworkStatus();
 
         verify(bindListener).onMerlinBind(NetworkStatus.newAvailableInstance());
     }
@@ -85,7 +85,7 @@ public class ConnectivityChangesForwarderTest {
     public void givenConnectivityChangeEvent_whenNotifyingOfConnectivityChangeEvent_thenFetchesWithPing() {
         ConnectivityChangeEvent connectivityChangeEvent = ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(CONNECTED, ANY_INFO, ANY_REASON);
 
-        connectivityChangesForwarder.notifyOf(connectivityChangeEvent);
+        connectivityChangesForwarder.forward(connectivityChangeEvent);
 
         verify(networkStatusRetriever).fetchWithPing(eq(hostPinger), any(HostPinger.PingerCallback.class));
     }
@@ -134,13 +134,13 @@ public class ConnectivityChangesForwarderTest {
 
     private HostPinger.PingerCallback givenFetchingWithPing() {
         ConnectivityChangeEvent connectivityChangeEvent = ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(CONNECTED, ANY_INFO, ANY_REASON);
-        connectivityChangesForwarder.notifyOf(connectivityChangeEvent);
+        connectivityChangesForwarder.forward(connectivityChangeEvent);
         ArgumentCaptor<HostPinger.PingerCallback> argumentCaptor = ArgumentCaptor.forClass(HostPinger.PingerCallback.class);
         verify(networkStatusRetriever).fetchWithPing(eq(hostPinger), argumentCaptor.capture());
         return argumentCaptor.getValue();
     }
 
     private void givenPreviousNetworkStatusIs(boolean connected) {
-        connectivityChangesForwarder.notifyOf(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(connected, ANY_INFO, ANY_REASON));
+        connectivityChangesForwarder.forward(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(connected, ANY_INFO, ANY_REASON));
     }
 }

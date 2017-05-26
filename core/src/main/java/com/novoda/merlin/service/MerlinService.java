@@ -35,14 +35,14 @@ public class MerlinService extends Service {
     }
 
     private void start() {
-        connectivityChangesForwarder.notifyOfInitialNetworkStatus();
+        connectivityChangesForwarder.forwardInitialNetworkStatus();
         connectivityChangesRegister.register(connectivityChangesListener);
     }
 
     private final ConnectivityChangesListener connectivityChangesListener = new ConnectivityChangesListener() {
         @Override
         public void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent) {
-            connectivityChangesForwarder.notifyOf(connectivityChangeEvent);
+            connectivityChangesForwarder.forward(connectivityChangeEvent);
         }
     };
 

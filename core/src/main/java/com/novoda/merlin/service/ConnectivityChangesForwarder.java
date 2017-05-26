@@ -28,7 +28,7 @@ class ConnectivityChangesForwarder {
         this.hostPinger = hostPinger;
     }
 
-    void notifyOfInitialNetworkStatus() {
+    void forwardInitialNetworkStatus() {
         if (networkStatus == null) {
             bindListener.onMerlinBind(networkStatusRetriever.retrieveNetworkStatus());
             return;
@@ -36,7 +36,7 @@ class ConnectivityChangesForwarder {
         bindListener.onMerlinBind(networkStatus);
     }
 
-    void notifyOf(ConnectivityChangeEvent connectivityChangeEvent) {
+    void forward(ConnectivityChangeEvent connectivityChangeEvent) {
         if (doesNotMatchNetworkStatus(connectivityChangeEvent)) {
             networkStatusRetriever.fetchWithPing(hostPinger, hostPingerCallback);
         }

@@ -73,7 +73,7 @@ public class MerlinServiceTest {
 
         localBinder.onBindComplete();
 
-        verify(connectivityChangesForwarder).notifyOfInitialNetworkStatus();
+        verify(connectivityChangesForwarder).forwardInitialNetworkStatus();
     }
 
     @Test
@@ -91,7 +91,7 @@ public class MerlinServiceTest {
 
         connectivityChangesListener.onConnectivityChanged(ANY_CONNECTIVITY_CHANGE_EVENT);
 
-        verify(connectivityChangesForwarder).notifyOf(ANY_CONNECTIVITY_CHANGE_EVENT);
+        verify(connectivityChangesForwarder).forward(ANY_CONNECTIVITY_CHANGE_EVENT);
     }
 
     private MerlinService.LocalBinder givenBoundMerlinService() {
