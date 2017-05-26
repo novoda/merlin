@@ -26,6 +26,7 @@ public class ConnectivityChangesForwarderTest {
     private static final boolean DISCONNECTED = false;
     private static final String ANY_INFO = "any_info";
     private static final String ANY_REASON = "any_reason";
+    private static final NetworkStatus AVAILABLE_NETWORK = NetworkStatus.newAvailableInstance();
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -55,17 +56,17 @@ public class ConnectivityChangesForwarderTest {
     }
 
     @Test
-    public void givenPreviousConnectedNetworkStatus_whenNotifyingOfInitialState_thenCallsBindListenerWithNetworkStatus() {
-        givenPreviousNetworkStatusIs(CONNECTED);
+    public void givenNetworkWasConnected_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
+        givenNetworkWas(CONNECTED);
 
         connectivityChangesForwarder.forwardInitialNetworkStatus();
 
-        verify(bindListener).onMerlinBind(NetworkStatus.newAvailableInstance());
+        verify(bindListener).onMerlinBind(AVAILABLE_NETWORK);
     }
 
     @Test
-    public void givenPreviousDisconnectedNetworkStatus_whenNotifyingOfInitialState_thenCallsBindListenerWithNetworkStatus() {
-        givenPreviousNetworkStatusIs(DISCONNECTED);
+    public void givenNetworkWasDisconnected_whenNotifyingOfInitialState_thenForwardsNetworkUnavailableToListener() {
+        givenNetworkWas(DISCONNECTED);
 
         connectivityChangesForwarder.forwardInitialNetworkStatus();
 
@@ -73,16 +74,16 @@ public class ConnectivityChangesForwarderTest {
     }
 
     @Test
-    public void givenNoPreviousNetworkStatus_whenNotifyingOfInitialState_thenCallsBindListenerWithNetworkStatusFromRetriever() {
-        given(networkStatusRetriever.retrieveNetworkStatus()).willReturn(NetworkStatus.newAvailableInstance());
+    public void givenNetworkWasNotAvailable_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
+        given(networkStatusRetriever.retrieveNetworkStatus()).willReturn(AVAILABLE_NETWORK);
 
         connectivityChangesForwarder.forwardInitialNetworkStatus();
 
-        verify(bindListener).onMerlinBind(NetworkStatus.newAvailableInstance());
+        verify(bindListener).onMerlinBind(AVAILABLE_NETWORK);
     }
 
     @Test
-    public void givenConnectivityChangeEvent_whenNotifyingOfConnectivityChangeEvent_thenFetchesWithPing() {
+    public void givenConnectivityChangeEvent_whenNotifyingOfConnectivityChangeEvent_thenDelegatesRefreshingToRetriever() {
         ConnectivityChangeEvent connectivityChangeEvent = ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(CONNECTED, ANY_INFO, ANY_REASON);
 
         connectivityChangesForwarder.forward(connectivityChangeEvent);
@@ -132,15 +133,15 @@ public class ConnectivityChangesForwarderTest {
         verify(disconnectListener, never()).onDisconnect();
     }
 
+    private void givenNetworkWas(boolean connected) {
+        connectivityChangesForwarder.forward(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(connected, ANY_INFO, ANY_REASON));
+    }
+
     private HostPinger.PingerCallback givenFetchingWithPing() {
         ConnectivityChangeEvent connectivityChangeEvent = ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(CONNECTED, ANY_INFO, ANY_REASON);
         connectivityChangesForwarder.forward(connectivityChangeEvent);
         ArgumentCaptor<HostPinger.PingerCallback> argumentCaptor = ArgumentCaptor.forClass(HostPinger.PingerCallback.class);
         verify(networkStatusRetriever).fetchWithPing(eq(hostPinger), argumentCaptor.capture());
         return argumentCaptor.getValue();
-    }
-
-    private void givenPreviousNetworkStatusIs(boolean connected) {
-        connectivityChangesForwarder.forward(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(connected, ANY_INFO, ANY_REASON));
     }
 }
