@@ -14,7 +14,7 @@ class ConnectivityChangesForwarder {
     private final BindListener bindListener;
     private final HostPinger hostPinger;
 
-    private NetworkStatus networkStatus;
+    private NetworkStatus lastEndpointPingNetworkStatus;
 
     ConnectivityChangesForwarder(NetworkStatusRetriever networkStatusRetriever,
                                  DisconnectListener disconnectListener,
@@ -29,28 +29,35 @@ class ConnectivityChangesForwarder {
     }
 
     void forwardInitialNetworkStatus() {
-        if (networkStatus == null) {
-            bindListener.onMerlinBind(networkStatusRetriever.retrieveNetworkStatus());
+        if (hasPerformedEndpointPing()) {
+            bindListener.onMerlinBind(lastEndpointPingNetworkStatus);
             return;
         }
-        bindListener.onMerlinBind(networkStatus);
+
+        bindListener.onMerlinBind(networkStatusRetriever.retrieveNetworkStatus());
+    }
+
+    private boolean hasPerformedEndpointPing() {
+        return lastEndpointPingNetworkStatus != null;
     }
 
     void forward(ConnectivityChangeEvent connectivityChangeEvent) {
-        if (doesNotMatchNetworkStatus(connectivityChangeEvent)) {
-            networkStatusRetriever.fetchWithPing(hostPinger, hostPingerCallback);
+        if (matchesPreviousEndpointPingNetworkStatus(connectivityChangeEvent)) {
+            return;
         }
-        networkStatus = connectivityChangeEvent.asNetworkStatus();
+
+        networkStatusRetriever.fetchWithPing(hostPinger, hostPingerCallback);
+        lastEndpointPingNetworkStatus = connectivityChangeEvent.asNetworkStatus();
     }
 
-    private boolean doesNotMatchNetworkStatus(ConnectivityChangeEvent connectivityChangeEvent) {
-        return !connectivityChangeEvent.asNetworkStatus().equals(networkStatus);
+    private boolean matchesPreviousEndpointPingNetworkStatus(ConnectivityChangeEvent connectivityChangeEvent) {
+        return connectivityChangeEvent.asNetworkStatus().equals(lastEndpointPingNetworkStatus);
     }
 
     private final HostPinger.PingerCallback hostPingerCallback = new HostPinger.PingerCallback() {
         @Override
         public void onSuccess() {
-            networkStatus = NetworkStatus.newAvailableInstance();
+            lastEndpointPingNetworkStatus = NetworkStatus.newAvailableInstance();
             if (connectListener != null) {
                 connectListener.onConnect();
             }
@@ -58,7 +65,7 @@ class ConnectivityChangesForwarder {
 
         @Override
         public void onFailure() {
-            networkStatus = NetworkStatus.newUnavailableInstance();
+            lastEndpointPingNetworkStatus = NetworkStatus.newUnavailableInstance();
             if (disconnectListener != null) {
                 disconnectListener.onDisconnect();
             }
