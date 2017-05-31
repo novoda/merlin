@@ -2,16 +2,14 @@
 
 An ok name for a library.
 
-
 ## Description
 
 Merlin aims to simplify network monitoring. Providing 3 registerable callbacks for network connectivity changes.
 `onConnect()` , `onDisconnect()` and `onBind(NetworkStatus networkStatus)`.
 
-
 ## Adding to your project
 
-To start using this library, add these lines to the `build.gradle` of your project:
+To start using Merlin, add these lines to your module's `build.gradle`:
 
 ```groovy
 repositories {
@@ -19,27 +17,28 @@ repositories {
 }
 
 dependencies {
-    compile 'com.novoda:merlin:0.10.0'
+    compile 'com.novoda:merlin:1.0.0'
 }
 ```
 
-You'll need to add a few things to your manifest :
+You'll need to add a few things to your `AndroidManifest.xml`:
 
-These permissions (if you don't already have them)
+ 1. These permissions (if you don't already have them)
 
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-```
+    ```xml
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    ```
 
-this service
+ 2. This service
 
-```xml
-<service android:exported="false" android:name="com.novoda.merlin.service.MerlinService" />
-```
+    ```xml
+    <service
+      android:exported="false"
+      android:name="com.novoda.merlin.service.MerlinService" />
+    ```
 
-
-## Simple usage
+## Sample usage
 
 Create Merlin:
 
@@ -74,7 +73,23 @@ merlin.registerConnectable(new Connectable() {
 });
 ```
 
-Also check the [wiki](https://github.com/novoda/merlin/wiki/Usecases-and-API-usage#retrieve-current-network-state) to see how you can use `MerlinsBeard` to check the network state.
+For further details you can check [the wiki](https://github.com/novoda/merlin/wiki/Simple-Api-Usage).
+
+## Migrating from pre-v1 versions
+
+Version 1 of Merlin introduced [several breaking changes](https://github.com/novoda/merlin/wiki/Migration-guide#notable-changes-for-migration) in the implementation and the APIs, to account for the latest changes in Android N+. Please follow the instructions [in the wiki](https://github.com/novoda/merlin/wiki/Migration-guide) to make the upgrade as painless as possible.
+
+### RxJava support in v1.0+
+
+Starting in version 1.0.0, the RxJava support is no longer built into the library but it has been split out into a separate artifact. You'll need to add one of these two dependencies, depending on the version of RxJava you use:
+
+```groovy
+// For RxJava 1.x
+compile 'com.novoda:merlin-rxjava:[version_number]'
+
+// For RxJava 2.x
+compile 'com.novoda:merlin-rxjava2:[version_number]'
+```
 
 
 ## Links
@@ -85,8 +100,3 @@ Here are a list of useful links:
  * If you have a problem check the [Issues Page](https://github.com/novoda/merlin/issues) first to see if we are working on it
  * For further usage or to delve more deeply checkout the [Project Wiki](https://github.com/novoda/merlin/wiki)
  * Looking for community help, browse the already asked [Stack Overflow Questions](http://stackoverflow.com/questions/tagged/support-merlin) or use the tag: `support-merlin` when posting a new question
-
-
-
-
-
