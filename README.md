@@ -21,16 +21,20 @@ dependencies {
 }
 ```
 
-You'll need to add a few things to your `AndroidManifest.xml`:
+### Optional steps
 
- 1. These permissions (if you don't already have them)
+**Note:** these steps should _not_ be necessary as the Manifest Merger should be taking care of this for you!
+
+If for some reason your app's manifest doesn't end up containing the required entries, and you encounter issues, you might need to manually add a few things to your `AndroidManifest.xml`:
+
+ 1. These permissions:
 
     ```xml
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     ```
 
- 2. This service
+ 2. This service:
 
     ```xml
     <service
