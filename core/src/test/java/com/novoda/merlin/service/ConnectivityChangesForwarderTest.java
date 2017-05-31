@@ -74,7 +74,7 @@ public class ConnectivityChangesForwarderTest {
     }
 
     @Test
-    public void givenNetworkWasNotAvailable_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
+    public void givenEndpointIsUnavailable_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
         given(networkStatusRetriever.retrieveNetworkStatus()).willReturn(AVAILABLE_NETWORK);
 
         connectivityChangesForwarder.forwardInitialNetworkStatus();
