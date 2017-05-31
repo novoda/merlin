@@ -53,9 +53,11 @@ public class MerlinsBeard {
 
     /**
      * Provides a boolean representing whether a mobile network connection has been established and is active.
+     * <p>
      * NOTE: Therefore available does not necessarily mean that an internet connection
      * is available. Also, there can be only one network connection at a time, so this would return false if
      * the active connection is the Wi-Fi one, even if there is a (inactive) mobile network connection established.
+     * </p>
      *
      * @return boolean true if a mobile network connection is available.
      */
@@ -65,9 +67,10 @@ public class MerlinsBeard {
 
     /**
      * Provides a boolean representing whether a Wi-Fi network connection has been established.
-     * <p/>
+     * <p>
      * NOTE: Therefore available does not necessarily mean that an internet connection
      * is available.
+     * </p>
      *
      * @return boolean true if a Wi-Fi network connection is available.
      */
