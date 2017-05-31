@@ -15,38 +15,35 @@ public class ConnectivityChangesRegister {
     private final Context context;
     private final ConnectivityManager connectivityManager;
     private final AndroidVersion androidVersion;
-    private final MerlinService merlinService;
 
     private ConnectivityReceiver connectivityReceiver;
     private ConnectivityCallbacks connectivityCallbacks;
 
     public ConnectivityChangesRegister(Context context,
                                        ConnectivityManager connectivityManager,
-                                       AndroidVersion androidVersion,
-                                       MerlinService merlinService) {
+                                       AndroidVersion androidVersion) {
         this.context = context;
         this.connectivityManager = connectivityManager;
         this.androidVersion = androidVersion;
-        this.merlinService = merlinService;
     }
 
-    public void register() {
+    public void register(MerlinService.ConnectivityChangesListener connectivityChangesListener) {
         if (androidVersion.isLollipopOrHigher()) {
-            registerNetworkCallbacks();
+            registerNetworkCallbacks(connectivityChangesListener);
         } else {
             registerBroadcastReceiver();
         }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void registerNetworkCallbacks() {
+    private void registerNetworkCallbacks(MerlinService.ConnectivityChangesListener connectivityChangesListener) {
         NetworkRequest.Builder builder = new NetworkRequest.Builder();
-        connectivityManager.registerNetworkCallback(builder.build(), getConnectivityCallbacks());
+        connectivityManager.registerNetworkCallback(builder.build(), getConnectivityCallbacks(connectivityChangesListener));
     }
 
-    private ConnectivityCallbacks getConnectivityCallbacks() {
+    private ConnectivityCallbacks getConnectivityCallbacks(MerlinService.ConnectivityChangesListener connectivityChangesListener) {
         if (connectivityCallbacks == null) {
-            connectivityCallbacks = new ConnectivityCallbacks(connectivityManager, merlinService);
+            connectivityCallbacks = new ConnectivityCallbacks(connectivityManager, connectivityChangesListener);
         }
         return connectivityCallbacks;
     }
@@ -76,11 +73,11 @@ public class ConnectivityChangesRegister {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void unregisterNetworkCallbacks() {
-        connectivityManager.unregisterNetworkCallback(getConnectivityCallbacks());
+        connectivityManager.unregisterNetworkCallback(connectivityCallbacks);
     }
 
     private void unregisterBroadcastReceiver() {
-        context.unregisterReceiver(getConnectivityReceiver());
+        context.unregisterReceiver(connectivityReceiver);
     }
 
 }

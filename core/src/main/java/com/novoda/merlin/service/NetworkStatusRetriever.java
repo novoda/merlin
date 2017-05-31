@@ -7,19 +7,19 @@ class NetworkStatusRetriever {
 
     private final MerlinsBeard merlinsBeard;
 
-    public NetworkStatusRetriever(MerlinsBeard merlinsBeard) {
+    NetworkStatusRetriever(MerlinsBeard merlinsBeard) {
         this.merlinsBeard = merlinsBeard;
     }
 
-    public void fetchWithPing(HostPinger hostPinger) {
+    void fetchWithPing(EndpointPinger endpointPinger, EndpointPinger.PingerCallback pingerCallback) {
         if (merlinsBeard.isConnected()) {
-            hostPinger.ping();
+            endpointPinger.ping(pingerCallback);
         } else {
-            hostPinger.noNetworkToPing();
+            endpointPinger.noNetworkToPing(pingerCallback);
         }
     }
 
-    public NetworkStatus get() {
+    NetworkStatus retrieveNetworkStatus() {
         if (merlinsBeard.isConnected()) {
             return NetworkStatus.newAvailableInstance();
         } else {

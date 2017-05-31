@@ -12,14 +12,14 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static com.novoda.merlin.service.HostPinger.ResponseCodeFetcher;
+import static com.novoda.merlin.service.EndpointPinger.ResponseCodeFetcher;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 public class PingTest {
 
-    private static final Endpoint ENDPOINT = Endpoint.from("any host address");
+    private static final Endpoint ENDPOINT = Endpoint.from("any endpoint");
 
     private static final int RESPONSE_CODE = 201;
 

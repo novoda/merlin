@@ -9,8 +9,6 @@ import com.novoda.merlin.service.ResponseCodeValidator;
 
 public class Merlin {
 
-    public static final String DEFAULT_ENDPOINT = "http://connectivitycheck.android.com/generate_204";
-
     private final MerlinServiceBinder merlinServiceBinder;
     private final Registerer registerer;
 

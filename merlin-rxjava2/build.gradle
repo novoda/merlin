@@ -24,7 +24,7 @@ android {
 publish {
     userOrg = 'novoda'
     groupId = 'com.novoda'
-    artifactId = 'merlin_rxjava2'
+    artifactId = 'merlin-rxjava2'
     version = project.version
 
     uploadName = 'merlin-rxjava2'

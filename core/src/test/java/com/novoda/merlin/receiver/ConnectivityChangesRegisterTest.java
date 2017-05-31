@@ -36,20 +36,20 @@ public class ConnectivityChangesRegisterTest {
     @Mock
     private AndroidVersion androidVersion;
     @Mock
-    private MerlinService merlinService;
+    private MerlinService.ConnectivityChangesListener connectivityChangesListener;
 
     private ConnectivityChangesRegister connectivityChangesRegister;
 
     @Before
     public void setUp() {
-        connectivityChangesRegister = new ConnectivityChangesRegister(context, connectivityManager, androidVersion, merlinService);
+        connectivityChangesRegister = new ConnectivityChangesRegister(context, connectivityManager, androidVersion);
     }
 
     @Test
     public void givenRegisteredBroadcastReceiver_whenBindingForASecondTime_thenOriginalBroadcastReceiverIsRegisteredAgain() {
         ArgumentCaptor<ConnectivityReceiver> broadcastReceiver = givenRegisteredBroadcastReceiver();
 
-        connectivityChangesRegister.register();
+        connectivityChangesRegister.register(connectivityChangesListener);
 
         verify(context, times(2)).registerReceiver(eq(broadcastReceiver.getValue()), refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
     }
@@ -68,7 +68,7 @@ public class ConnectivityChangesRegisterTest {
     public void givenRegisteredMerlinNetworkCallbacks_whenBindingForASecondTime_thenOriginalNetworkCallbacksIsRegisteredAgain() {
         ArgumentCaptor<ConnectivityCallbacks> merlinNetworkCallback = givenRegisteredMerlinNetworkCallbacks();
 
-        connectivityChangesRegister.register();
+        connectivityChangesRegister.register(connectivityChangesListener);
 
         verify(connectivityManager, times(2)).registerNetworkCallback(refEq((new NetworkRequest.Builder()).build()), eq(merlinNetworkCallback.getValue()));
     }
@@ -85,7 +85,7 @@ public class ConnectivityChangesRegisterTest {
 
     private ArgumentCaptor<ConnectivityReceiver> givenRegisteredBroadcastReceiver() {
         given(androidVersion.isLollipopOrHigher()).willReturn(false);
-        connectivityChangesRegister.register();
+        connectivityChangesRegister.register(connectivityChangesListener);
         ArgumentCaptor<ConnectivityReceiver> argumentCaptor = ArgumentCaptor.forClass(ConnectivityReceiver.class);
         verify(context).registerReceiver(argumentCaptor.capture(), refEq(new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)));
         return argumentCaptor;
@@ -94,7 +94,7 @@ public class ConnectivityChangesRegisterTest {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private ArgumentCaptor<ConnectivityCallbacks> givenRegisteredMerlinNetworkCallbacks() {
         given(androidVersion.isLollipopOrHigher()).willReturn(true);
-        connectivityChangesRegister.register();
+        connectivityChangesRegister.register(connectivityChangesListener);
         ArgumentCaptor<ConnectivityCallbacks> argumentCaptor = ArgumentCaptor.forClass(ConnectivityCallbacks.class);
         verify(connectivityManager).registerNetworkCallback(refEq((new NetworkRequest.Builder()).build()), argumentCaptor.capture());
         return argumentCaptor;

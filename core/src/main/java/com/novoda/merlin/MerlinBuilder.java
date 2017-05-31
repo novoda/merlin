@@ -70,8 +70,8 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide connectable, disconnectable & bindable callbacks, without calling this, Merlin.registerConconnectable,
-     * Merlin.registerDisconnectable, Merlin.registerBindable & Merlin.getConnectionStatusObservable will throw a MerlinException.
+     * Enables Merlin to provide connectable, disconnectable and bindable callbacks, without calling this, Merlin.registerConconnectable,
+     * Merlin.registerDisconnectable, Merlin.registerBindable and Merlin.getConnectionStatusObservable will throw a MerlinException.
      *
      * @return MerlinBuilder.
      */
@@ -85,8 +85,8 @@ public class MerlinBuilder {
      * of {@link Merlin} the most recent call to `withLogging` will affect all other instances of {@link Merlin}.
      * <p>
      * Example:
-     * MerlinInstanceOne -> withLogging(true)
-     * MerlinInstanceTwo -> withLogging(false)
+     * MerlinInstanceOne.withLogging(true)
+     * MerlinInstanceTwo.withLogging(false)
      * == no logs written.
      *
      * @param withLogging by default logging is disabled. withLogging = true will attach the default {@link MerlinBackwardsCompatibleLog}
@@ -108,8 +108,8 @@ public class MerlinBuilder {
      * @param endpoint by default "http://connectivitycheck.android.com/generate_204".
      * @return MerlinBuilder.
      */
-    public MerlinBuilder withEndpoint(String endpoint) {
-        this.endpoint = Endpoint.from(endpoint);
+    public MerlinBuilder withEndpoint(Endpoint endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -128,7 +128,8 @@ public class MerlinBuilder {
     /**
      * Creates Merlin with the specified builder options.
      *
-     * @return Merlin.
+     * @param context Used to create the MerlinServiceBinder and start a Service.
+     * @return Merlin instance.
      */
     public Merlin build(Context context) {
         MerlinServiceBinder merlinServiceBinder = new MerlinServiceBinder(

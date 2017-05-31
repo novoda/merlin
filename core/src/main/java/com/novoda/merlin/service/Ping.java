@@ -7,10 +7,10 @@ import com.novoda.support.Logger;
 class Ping {
 
     private final Endpoint endpoint;
-    private final HostPinger.ResponseCodeFetcher responseCodeFetcher;
+    private final EndpointPinger.ResponseCodeFetcher responseCodeFetcher;
     private final ResponseCodeValidator validator;
 
-    Ping(Endpoint endpoint, HostPinger.ResponseCodeFetcher responseCodeFetcher, ResponseCodeValidator validator) {
+    Ping(Endpoint endpoint, EndpointPinger.ResponseCodeFetcher responseCodeFetcher, ResponseCodeValidator validator) {
         this.endpoint = endpoint;
         this.responseCodeFetcher = responseCodeFetcher;
         this.validator = validator;
