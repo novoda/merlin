@@ -23,6 +23,21 @@ dependencies {
 }
 ```
 
+You'll need to add a few things to your manifest :
+
+These permissions (if you don't already have them)
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+```
+
+this service
+
+```xml
+<service android:exported="false" android:name="com.novoda.merlin.service.MerlinService" />
+```
+
 
 ## Simple usage
 
