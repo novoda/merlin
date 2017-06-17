@@ -2,7 +2,6 @@ package com.novoda.merlin.registerable.bind;
 
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.registerable.Register;
-import com.novoda.merlin.registerable.MerlinRegisterer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class BinderTest {
 
     @Before
     public void setUp() {
-        merlinBinder = new MerlinRegisterer<>();
+        merlinBinder = new Register<>();
         binder = new Binder(merlinBinder);
     }
 

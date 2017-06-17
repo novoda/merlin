@@ -1,7 +1,6 @@
 package com.novoda.merlin.registerable.connection;
 
 import com.novoda.merlin.registerable.Register;
-import com.novoda.merlin.registerable.MerlinRegisterer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class ConnectorTest {
 
     @Before
     public void setUp() {
-        register = new MerlinRegisterer<>();
+        register = new Register<>();
         connector = new Connector(register);
     }
 

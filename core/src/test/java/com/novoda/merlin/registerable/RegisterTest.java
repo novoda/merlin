@@ -8,22 +8,22 @@ import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class MerlinRegistererTest {
+public class RegisterTest {
 
-    private MerlinRegisterer merlinRegisterer;
+    private Register register;
 
     @Before
     public void setUp() {
-        merlinRegisterer = new MerlinRegisterer();
+        register = new Register();
     }
 
     @Test
     public void givenRegisterable_whenRegistering_thenAddsRegisterableToList() {
         Registerable registerable = mock(Registerable.class);
 
-        merlinRegisterer.register(registerable);
+        register.register(registerable);
 
-        assertThat(merlinRegisterer.get()).hasSize(1);
+        assertThat(register.get()).hasSize(1);
     }
 
     @Test
@@ -33,23 +33,23 @@ public class MerlinRegistererTest {
         registerable = null;
         System.gc();
 
-        assertThat(merlinRegisterer.get()).isEmpty();
+        assertThat(register.get()).isEmpty();
     }
 
     @Test
     public void givenConnectableRegisterable_whenRegisteringMultipleTimes_thenDoesNotRegisterTheSameObjectMoreThanOnce() {
         Connectable connectable = mock(Connectable.class);
 
-        merlinRegisterer.register(connectable);
-        merlinRegisterer.register(connectable);
-        merlinRegisterer.register(connectable);
+        register.register(connectable);
+        register.register(connectable);
+        register.register(connectable);
 
-        assertThat(merlinRegisterer.get()).hasSize(1);
+        assertThat(register.get()).hasSize(1);
     }
 
     private Registerable givenRegisteredRegisterable() {
         Registerable registerable = mock(Registerable.class);
-        merlinRegisterer.register(registerable);
+        register.register(registerable);
         return registerable;
     }
 

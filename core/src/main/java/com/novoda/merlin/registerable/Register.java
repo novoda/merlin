@@ -1,9 +1,24 @@
 package com.novoda.merlin.registerable;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface Register<T extends Registerable> {
-    void register(T what);
+public class Register<T extends Registerable> {
 
-    List<T> get();
+    private final List<T> registerables;
+
+    public Register() {
+        registerables = new ArrayList<>();
+    }
+
+    public void register(T registerable) {
+        if (!registerables.contains(registerable)) {
+            registerables.add(registerable);
+        }
+    }
+
+    public List<T> get() {
+        return registerables;
+    }
+
 }

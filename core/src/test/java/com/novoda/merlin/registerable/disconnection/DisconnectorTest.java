@@ -1,7 +1,6 @@
 package com.novoda.merlin.registerable.disconnection;
 
 import com.novoda.merlin.registerable.Register;
-import com.novoda.merlin.registerable.MerlinRegisterer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class DisconnectorTest {
     @Before
     public void setUp() {
         initMocks(this);
-        merlinDisconnector = new MerlinRegisterer<>();
+        merlinDisconnector = new Register<>();
         disconnector = new Disconnector(merlinDisconnector);
     }
 

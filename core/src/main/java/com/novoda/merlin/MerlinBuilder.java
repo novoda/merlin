@@ -2,7 +2,7 @@ package com.novoda.merlin;
 
 import android.content.Context;
 
-import com.novoda.merlin.registerable.MerlinRegisterer;
+import com.novoda.merlin.registerable.Register;
 import com.novoda.merlin.registerable.Registerer;
 import com.novoda.merlin.registerable.bind.BindListener;
 import com.novoda.merlin.registerable.bind.Bindable;
@@ -26,9 +26,9 @@ public class MerlinBuilder {
     private ConnectListener merlinConnector;
     private DisconnectListener merlinDisconnector;
 
-    private MerlinRegisterer<Connectable> connectableRegisterer;
-    private MerlinRegisterer<Disconnectable> disconnectableRegisterer;
-    private MerlinRegisterer<Bindable> bindableRegisterer;
+    private Register<Connectable> connectableRegisterer;
+    private Register<Disconnectable> disconnectableRegisterer;
+    private Register<Bindable> bindableRegisterer;
 
     private Endpoint endpoint = Endpoint.defaultEndpoint();
     private ResponseCodeValidator responseCodeValidator = new DefaultEndpointResponseCodeValidator();
@@ -42,7 +42,7 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withConnectableCallbacks() {
-        connectableRegisterer = new MerlinRegisterer<>();
+        connectableRegisterer = new Register<>();
         this.merlinConnector = new Connector(connectableRegisterer);
         return this;
     }
@@ -53,7 +53,7 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withDisconnectableCallbacks() {
-        disconnectableRegisterer = new MerlinRegisterer<>();
+        disconnectableRegisterer = new Register<>();
         this.merlinDisconnector = new Disconnector(disconnectableRegisterer);
         return this;
     }
@@ -64,7 +64,7 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withBindableCallbacks() {
-        bindableRegisterer = new MerlinRegisterer<>();
+        bindableRegisterer = new Register<>();
         this.merlinOnBinder = new Binder(bindableRegisterer);
         return this;
     }
