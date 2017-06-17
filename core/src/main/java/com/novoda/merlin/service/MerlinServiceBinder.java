@@ -11,7 +11,7 @@ import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.receiver.ConnectivityChangesRegister;
 import com.novoda.merlin.registerable.bind.BindCallbackManager;
-import com.novoda.merlin.registerable.connection.ConnectListener;
+import com.novoda.merlin.registerable.connection.ConnectCallbackManager;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 import com.novoda.support.Logger;
 
@@ -24,10 +24,10 @@ public class MerlinServiceBinder {
     private MerlinServiceConnection merlinServiceConnection;
     private Endpoint endpoint;
 
-    public MerlinServiceBinder(Context context, ConnectListener connectListener, DisconnectListener disconnectListener,
+    public MerlinServiceBinder(Context context, ConnectCallbackManager connectCallbackManager, DisconnectListener disconnectListener,
                                BindCallbackManager bindCallbackManager, Endpoint endpoint, ResponseCodeValidator validator) {
         this.validator = validator;
-        listenerHolder = new ListenerHolder(connectListener, disconnectListener, bindCallbackManager);
+        listenerHolder = new ListenerHolder(connectCallbackManager, disconnectListener, bindCallbackManager);
         this.context = context;
         this.endpoint = endpoint;
     }
@@ -81,7 +81,7 @@ public class MerlinServiceBinder {
             ConnectivityChangesForwarder connectivityChangesForwarder = new ConnectivityChangesForwarder(
                     networkStatusRetriever,
                     listenerHolder.disconnectListener,
-                    listenerHolder.connectListener,
+                    listenerHolder.connectCallbackManager,
                     listenerHolder.bindCallbackManager,
                     endpointPinger
             );
@@ -101,11 +101,11 @@ public class MerlinServiceBinder {
     private static class ListenerHolder {
 
         private final DisconnectListener disconnectListener;
-        private final ConnectListener connectListener;
+        private final ConnectCallbackManager connectCallbackManager;
         private final BindCallbackManager bindCallbackManager;
 
-        ListenerHolder(ConnectListener connectListener, DisconnectListener disconnectListener, BindCallbackManager bindCallbackManager) {
-            this.connectListener = connectListener;
+        ListenerHolder(ConnectCallbackManager connectCallbackManager, DisconnectListener disconnectListener, BindCallbackManager bindCallbackManager) {
+            this.connectCallbackManager = connectCallbackManager;
             this.disconnectListener = disconnectListener;
             this.bindCallbackManager = bindCallbackManager;
         }

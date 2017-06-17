@@ -3,7 +3,7 @@ package com.novoda.merlin.service;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.bind.BindCallbackManager;
-import com.novoda.merlin.registerable.connection.ConnectListener;
+import com.novoda.merlin.registerable.connection.ConnectCallbackManager;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
 import org.junit.Before;
@@ -36,7 +36,7 @@ public class ConnectivityChangesForwarderTest {
     @Mock
     private DisconnectListener disconnectListener;
     @Mock
-    private ConnectListener connectListener;
+    private ConnectCallbackManager connectCallbackManager;
     @Mock
     private BindCallbackManager bindCallbackManager;
     @Mock
@@ -49,7 +49,7 @@ public class ConnectivityChangesForwarderTest {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
                 networkStatusRetriever,
                 disconnectListener,
-                connectListener,
+                connectCallbackManager,
                 bindCallbackManager,
                 endpointPinger
         );
@@ -97,7 +97,7 @@ public class ConnectivityChangesForwarderTest {
 
         pingerCallback.onSuccess();
 
-        verify(connectListener).onConnect();
+        verify(connectCallbackManager).onConnect();
     }
 
     @Test
@@ -118,13 +118,13 @@ public class ConnectivityChangesForwarderTest {
 
         pingerCallback.onSuccess();
 
-        verify(connectListener, never()).onConnect();
+        verify(connectCallbackManager, never()).onConnect();
     }
 
     @Test
     public void givenFetchingWithPing_butNullDisconnectListener_whenUnsuccessful_thenNeverCallsOnDisconnect() {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
-                networkStatusRetriever, null, connectListener, bindCallbackManager, endpointPinger
+                networkStatusRetriever, null, connectCallbackManager, bindCallbackManager, endpointPinger
         );
         EndpointPinger.PingerCallback pingerCallback = givenFetchingWithPing();
 

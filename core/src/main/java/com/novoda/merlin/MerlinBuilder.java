@@ -6,9 +6,8 @@ import com.novoda.merlin.registerable.Register;
 import com.novoda.merlin.registerable.Registerer;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.bind.BindCallbackManager;
-import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.connection.Connectable;
-import com.novoda.merlin.registerable.connection.Connector;
+import com.novoda.merlin.registerable.connection.ConnectCallbackManager;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.disconnection.Disconnector;
@@ -22,7 +21,7 @@ import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointRes
 public class MerlinBuilder {
 
     private BindCallbackManager merlinOnBinder;
-    private ConnectListener merlinConnector;
+    private ConnectCallbackManager merlinConnector;
     private DisconnectListener merlinDisconnector;
 
     private Register<Connectable> connectables;
@@ -42,7 +41,7 @@ public class MerlinBuilder {
      */
     public MerlinBuilder withConnectableCallbacks() {
         connectables = new Register<>();
-        this.merlinConnector = new Connector(connectables);
+        this.merlinConnector = new ConnectCallbackManager(connectables);
         return this;
     }
 

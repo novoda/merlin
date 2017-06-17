@@ -11,23 +11,23 @@ import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ConnectorTest {
+public class ConnectCallbackManagerTest {
 
     private Register<Connectable> connectables;
 
-    private Connector connector;
+    private ConnectCallbackManager connectCallbackManager;
 
     @Before
     public void setUp() {
         connectables = new Register<>();
-        connector = new Connector(connectables);
+        connectCallbackManager = new ConnectCallbackManager(connectables);
     }
 
     @Test
     public void givenRegisteredConnectable_whenCallingOnConnect_thenCallsConnectForConnectable() {
         Connectable connectable = givenRegisteredConnectable();
 
-        connector.onConnect();
+        connectCallbackManager.onConnect();
 
         verify(connectable).onConnect();
     }
@@ -36,7 +36,7 @@ public class ConnectorTest {
     public void givenMultipleRegisteredConnectables_whenCallingOnConnect_thenCallsConnectForAllConnectables() {
         List<Connectable> connectables = givenMultipleRegisteredConnectables();
 
-        connector.onConnect();
+        connectCallbackManager.onConnect();
 
         for (Connectable connectable : connectables) {
             verify(connectable).onConnect();
