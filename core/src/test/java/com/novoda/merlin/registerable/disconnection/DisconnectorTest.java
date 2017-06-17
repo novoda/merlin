@@ -1,6 +1,6 @@
 package com.novoda.merlin.registerable.disconnection;
 
-import com.novoda.merlin.registerable.CallbacksRegister;
+import com.novoda.merlin.registerable.Register;
 import com.novoda.merlin.registerable.MerlinRegisterer;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DisconnectorTest {
 
-    private CallbacksRegister<Disconnectable> merlinDisconnector;
+    private Register<Disconnectable> merlinDisconnector;
 
     private Disconnector disconnector;
 

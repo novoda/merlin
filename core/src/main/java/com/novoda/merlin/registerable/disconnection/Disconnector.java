@@ -1,13 +1,13 @@
 package com.novoda.merlin.registerable.disconnection;
 
 import com.novoda.merlin.registerable.MerlinCallbackManager;
-import com.novoda.merlin.registerable.CallbacksRegister;
+import com.novoda.merlin.registerable.Register;
 import com.novoda.support.Logger;
 
 public class Disconnector extends MerlinCallbackManager<Disconnectable> implements DisconnectListener {
 
-    public Disconnector(CallbacksRegister<Disconnectable> callbacksRegister) {
-        super(callbacksRegister);
+    public Disconnector(Register<Disconnectable> register) {
+        super(register);
     }
 
     @Override

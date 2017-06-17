@@ -1,6 +1,6 @@
 package com.novoda.merlin.registerable.connection;
 
-import com.novoda.merlin.registerable.CallbacksRegister;
+import com.novoda.merlin.registerable.Register;
 import com.novoda.merlin.registerable.MerlinRegisterer;
 
 import java.util.ArrayList;
@@ -14,14 +14,14 @@ import static org.mockito.Mockito.verify;
 
 public class ConnectorTest {
 
-    private CallbacksRegister<Connectable> callbacksRegister;
+    private Register<Connectable> register;
 
     private Connector connector;
 
     @Before
     public void setUp() {
-        callbacksRegister = new MerlinRegisterer<>();
-        connector = new Connector(callbacksRegister);
+        register = new MerlinRegisterer<>();
+        connector = new Connector(register);
     }
 
     @Test
@@ -50,14 +50,14 @@ public class ConnectorTest {
         for (int i = 0; i < 3; i++) {
             Connectable connectable = mock(Connectable.class);
             connectables.add(connectable);
-            callbacksRegister.register(connectable);
+            register.register(connectable);
         }
         return connectables;
     }
 
     private Connectable givenRegisteredConnectable() {
         Connectable connectable = mock(Connectable.class);
-        callbacksRegister.register(connectable);
+        register.register(connectable);
         return connectable;
     }
 
