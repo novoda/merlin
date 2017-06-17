@@ -13,7 +13,7 @@ public class Disconnector extends MerlinCallbackManager<Disconnectable> implemen
     @Override
     public void onDisconnect() {
         Logger.d("onDisconnect");
-        for (Disconnectable disconnectable : getRegisterables()) {
+        for (Disconnectable disconnectable : registerables()) {
             disconnectable.onDisconnect();
         }
     }

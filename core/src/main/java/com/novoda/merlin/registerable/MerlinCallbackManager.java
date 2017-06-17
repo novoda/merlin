@@ -10,7 +10,7 @@ public class MerlinCallbackManager<T extends Registerable> {
         this.register = register;
     }
 
-    protected List<T> getRegisterables() {
+    protected List<T> registerables() {
         return register.get();
     }
 

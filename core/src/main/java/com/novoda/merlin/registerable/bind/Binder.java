@@ -14,7 +14,7 @@ public class Binder extends MerlinCallbackManager<Bindable> implements BindListe
     @Override
     public void onMerlinBind(NetworkStatus networkStatus) {
         Logger.d("onBind");
-        for (Bindable bindable : getRegisterables()) {
+        for (Bindable bindable : registerables()) {
             bindable.onBind(networkStatus);
         }
     }
