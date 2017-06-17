@@ -9,56 +9,56 @@ import com.novoda.support.Logger;
 
 public class Registerer {
 
-    private final Register<Connectable> register;
-    private final Register<Disconnectable> merlinDisconnector;
-    private final Register<Bindable> merlinOnBinder;
+    private final Register<Connectable> connectables;
+    private final Register<Disconnectable> disconnectables;
+    private final Register<Bindable> bindables;
 
-    public Registerer(Register<Connectable> register, Register<Disconnectable> merlinDisconnector, Register<Bindable> merlinOnBinder) {
-        this.register = register;
-        this.merlinDisconnector = merlinDisconnector;
-        this.merlinOnBinder = merlinOnBinder;
+    public Registerer(Register<Connectable> connectables, Register<Disconnectable> disconnectables, Register<Bindable> bindables) {
+        this.connectables = connectables;
+        this.disconnectables = disconnectables;
+        this.bindables = bindables;
     }
 
     public void registerConnectable(Connectable connectable) {
-        getReconnector().register(connectable);
+        connectables().register(connectable);
     }
 
-    private Register<Connectable> getReconnector() {
-        if (register == null) {
+    private Register<Connectable> connectables() {
+        if (connectables == null) {
             throw new MerlinException(
                     "You must call " + Merlin.Builder.class.getSimpleName() + ".withConnectableCallbacks()" +
                             "before registering a " + Connectable.class.getSimpleName()
             );
         }
-        return register;
+        return connectables;
     }
 
     public void registerDisconnectable(Disconnectable disconnectable) {
-        getDisconnector().register(disconnectable);
+        disconnectables().register(disconnectable);
     }
 
-    private Register<Disconnectable> getDisconnector() {
-        if (merlinDisconnector == null) {
+    private Register<Disconnectable> disconnectables() {
+        if (disconnectables == null) {
             throw new MerlinException(
                     "You must call " + Merlin.Builder.class.getSimpleName() + ".withDisconnectableCallbacks()" +
                             "before registering a " + Disconnectable.class.getSimpleName()
             );
         }
-        return merlinDisconnector;
+        return disconnectables;
     }
 
     public void registerBindable(Bindable bindable) {
-        getOnBinder().register(bindable);
+        bindables().register(bindable);
     }
 
-    private Register<Bindable> getOnBinder() {
-        if (merlinOnBinder == null) {
+    private Register<Bindable> bindables() {
+        if (bindables == null) {
             throw new MerlinException(
                     "You must call " + Merlin.Builder.class.getSimpleName() + ".withBindableCallbacks()" +
                             "before registering a " + Bindable.class.getSimpleName()
             );
         }
-        return merlinOnBinder;
+        return bindables;
     }
 
     public void register(Object object) {
