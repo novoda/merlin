@@ -26,9 +26,9 @@ public class MerlinBuilder {
     private ConnectListener merlinConnector;
     private DisconnectListener merlinDisconnector;
 
-    private Register<Connectable> connectableRegisterer;
-    private Register<Disconnectable> disconnectableRegisterer;
-    private Register<Bindable> bindableRegisterer;
+    private Register<Connectable> connectables;
+    private Register<Disconnectable> disconnectables;
+    private Register<Bindable> bindables;
 
     private Endpoint endpoint = Endpoint.defaultEndpoint();
     private ResponseCodeValidator responseCodeValidator = new DefaultEndpointResponseCodeValidator();
@@ -42,8 +42,8 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withConnectableCallbacks() {
-        connectableRegisterer = new Register<>();
-        this.merlinConnector = new Connector(connectableRegisterer);
+        connectables = new Register<>();
+        this.merlinConnector = new Connector(connectables);
         return this;
     }
 
@@ -53,8 +53,8 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withDisconnectableCallbacks() {
-        disconnectableRegisterer = new Register<>();
-        this.merlinDisconnector = new Disconnector(disconnectableRegisterer);
+        disconnectables = new Register<>();
+        this.merlinDisconnector = new Disconnector(disconnectables);
         return this;
     }
 
@@ -64,8 +64,8 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withBindableCallbacks() {
-        bindableRegisterer = new Register<>();
-        this.merlinOnBinder = new Binder(bindableRegisterer);
+        bindables = new Register<>();
+        this.merlinOnBinder = new Binder(bindables);
         return this;
     }
 
@@ -141,7 +141,7 @@ public class MerlinBuilder {
                 responseCodeValidator
         );
 
-        Registerer merlinRegisterer = new Registerer(connectableRegisterer, disconnectableRegisterer, bindableRegisterer);
+        Registerer merlinRegisterer = new Registerer(connectables, disconnectables, bindables);
         return new Merlin(merlinServiceBinder, merlinRegisterer);
     }
 
