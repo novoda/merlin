@@ -5,9 +5,9 @@ import com.novoda.merlin.registerable.MerlinCallbackManager;
 import com.novoda.merlin.registerable.Register;
 import com.novoda.support.Logger;
 
-public class BindListener extends MerlinCallbackManager<Bindable> {
+public class BindCallbackManager extends MerlinCallbackManager<Bindable> {
 
-    public BindListener(Register<Bindable> register) {
+    public BindCallbackManager(Register<Bindable> register) {
         super(register);
     }
 

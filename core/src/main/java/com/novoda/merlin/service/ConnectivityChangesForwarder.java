@@ -2,7 +2,7 @@ package com.novoda.merlin.service;
 
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
-import com.novoda.merlin.registerable.bind.BindListener;
+import com.novoda.merlin.registerable.bind.BindCallbackManager;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
@@ -11,7 +11,7 @@ class ConnectivityChangesForwarder {
     private final NetworkStatusRetriever networkStatusRetriever;
     private final DisconnectListener disconnectListener;
     private final ConnectListener connectListener;
-    private final BindListener bindListener;
+    private final BindCallbackManager bindCallbackManager;
     private final EndpointPinger endpointPinger;
 
     private NetworkStatus lastEndpointPingNetworkStatus;
@@ -19,22 +19,22 @@ class ConnectivityChangesForwarder {
     ConnectivityChangesForwarder(NetworkStatusRetriever networkStatusRetriever,
                                  DisconnectListener disconnectListener,
                                  ConnectListener connectListener,
-                                 BindListener bindListener,
+                                 BindCallbackManager bindCallbackManager,
                                  EndpointPinger endpointPinger) {
         this.networkStatusRetriever = networkStatusRetriever;
         this.disconnectListener = disconnectListener;
         this.connectListener = connectListener;
-        this.bindListener = bindListener;
+        this.bindCallbackManager = bindCallbackManager;
         this.endpointPinger = endpointPinger;
     }
 
     void forwardInitialNetworkStatus() {
         if (hasPerformedEndpointPing()) {
-            bindListener.onMerlinBind(lastEndpointPingNetworkStatus);
+            bindCallbackManager.onMerlinBind(lastEndpointPingNetworkStatus);
             return;
         }
 
-        bindListener.onMerlinBind(networkStatusRetriever.retrieveNetworkStatus());
+        bindCallbackManager.onMerlinBind(networkStatusRetriever.retrieveNetworkStatus());
     }
 
     private boolean hasPerformedEndpointPing() {

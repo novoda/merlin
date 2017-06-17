@@ -2,7 +2,7 @@ package com.novoda.merlin.service;
 
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
-import com.novoda.merlin.registerable.bind.BindListener;
+import com.novoda.merlin.registerable.bind.BindCallbackManager;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 
@@ -38,7 +38,7 @@ public class ConnectivityChangesForwarderTest {
     @Mock
     private ConnectListener connectListener;
     @Mock
-    private BindListener bindListener;
+    private BindCallbackManager bindCallbackManager;
     @Mock
     private EndpointPinger endpointPinger;
 
@@ -50,7 +50,7 @@ public class ConnectivityChangesForwarderTest {
                 networkStatusRetriever,
                 disconnectListener,
                 connectListener,
-                bindListener,
+                bindCallbackManager,
                 endpointPinger
         );
     }
@@ -61,7 +61,7 @@ public class ConnectivityChangesForwarderTest {
 
         connectivityChangesForwarder.forwardInitialNetworkStatus();
 
-        verify(bindListener).onMerlinBind(AVAILABLE_NETWORK);
+        verify(bindCallbackManager).onMerlinBind(AVAILABLE_NETWORK);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ConnectivityChangesForwarderTest {
 
         connectivityChangesForwarder.forwardInitialNetworkStatus();
 
-        verify(bindListener).onMerlinBind(NetworkStatus.newUnavailableInstance());
+        verify(bindCallbackManager).onMerlinBind(NetworkStatus.newUnavailableInstance());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class ConnectivityChangesForwarderTest {
 
         connectivityChangesForwarder.forwardInitialNetworkStatus();
 
-        verify(bindListener).onMerlinBind(AVAILABLE_NETWORK);
+        verify(bindCallbackManager).onMerlinBind(AVAILABLE_NETWORK);
     }
 
     @Test
@@ -112,7 +112,7 @@ public class ConnectivityChangesForwarderTest {
     @Test
     public void givenFetchingWithPing_butNullConnectListener_whenSuccessful_thenNeverCallsOnConnect() {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
-                networkStatusRetriever, disconnectListener, null, bindListener, endpointPinger
+                networkStatusRetriever, disconnectListener, null, bindCallbackManager, endpointPinger
         );
         EndpointPinger.PingerCallback pingerCallback = givenFetchingWithPing();
 
@@ -124,7 +124,7 @@ public class ConnectivityChangesForwarderTest {
     @Test
     public void givenFetchingWithPing_butNullDisconnectListener_whenUnsuccessful_thenNeverCallsOnDisconnect() {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
-                networkStatusRetriever, null, connectListener, bindListener, endpointPinger
+                networkStatusRetriever, null, connectListener, bindCallbackManager, endpointPinger
         );
         EndpointPinger.PingerCallback pingerCallback = givenFetchingWithPing();
 

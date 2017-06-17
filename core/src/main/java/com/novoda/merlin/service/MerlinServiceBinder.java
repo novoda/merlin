@@ -10,7 +10,7 @@ import android.os.IBinder;
 import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.receiver.ConnectivityChangesRegister;
-import com.novoda.merlin.registerable.bind.BindListener;
+import com.novoda.merlin.registerable.bind.BindCallbackManager;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 import com.novoda.support.Logger;
@@ -25,9 +25,9 @@ public class MerlinServiceBinder {
     private Endpoint endpoint;
 
     public MerlinServiceBinder(Context context, ConnectListener connectListener, DisconnectListener disconnectListener,
-                               BindListener bindListener, Endpoint endpoint, ResponseCodeValidator validator) {
+                               BindCallbackManager bindCallbackManager, Endpoint endpoint, ResponseCodeValidator validator) {
         this.validator = validator;
-        listenerHolder = new ListenerHolder(connectListener, disconnectListener, bindListener);
+        listenerHolder = new ListenerHolder(connectListener, disconnectListener, bindCallbackManager);
         this.context = context;
         this.endpoint = endpoint;
     }
@@ -82,7 +82,7 @@ public class MerlinServiceBinder {
                     networkStatusRetriever,
                     listenerHolder.disconnectListener,
                     listenerHolder.connectListener,
-                    listenerHolder.bindListener,
+                    listenerHolder.bindCallbackManager,
                     endpointPinger
             );
 
@@ -102,12 +102,12 @@ public class MerlinServiceBinder {
 
         private final DisconnectListener disconnectListener;
         private final ConnectListener connectListener;
-        private final BindListener bindListener;
+        private final BindCallbackManager bindCallbackManager;
 
-        ListenerHolder(ConnectListener connectListener, DisconnectListener disconnectListener, BindListener bindListener) {
+        ListenerHolder(ConnectListener connectListener, DisconnectListener disconnectListener, BindCallbackManager bindCallbackManager) {
             this.connectListener = connectListener;
             this.disconnectListener = disconnectListener;
-            this.bindListener = bindListener;
+            this.bindCallbackManager = bindCallbackManager;
         }
 
     }

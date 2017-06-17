@@ -5,7 +5,7 @@ import android.content.Context;
 import com.novoda.merlin.registerable.Register;
 import com.novoda.merlin.registerable.Registerer;
 import com.novoda.merlin.registerable.bind.Bindable;
-import com.novoda.merlin.registerable.bind.BindListener;
+import com.novoda.merlin.registerable.bind.BindCallbackManager;
 import com.novoda.merlin.registerable.connection.ConnectListener;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.connection.Connector;
@@ -21,7 +21,7 @@ import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointRes
 
 public class MerlinBuilder {
 
-    private BindListener merlinOnBinder;
+    private BindCallbackManager merlinOnBinder;
     private ConnectListener merlinConnector;
     private DisconnectListener merlinDisconnector;
 
@@ -64,7 +64,7 @@ public class MerlinBuilder {
      */
     public MerlinBuilder withBindableCallbacks() {
         bindables = new Register<>();
-        this.merlinOnBinder = new BindListener(bindables);
+        this.merlinOnBinder = new BindCallbackManager(bindables);
         return this;
     }
 
