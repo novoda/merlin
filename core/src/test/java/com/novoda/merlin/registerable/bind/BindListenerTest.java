@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-public class BinderTest {
+public class BindListenerTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -24,19 +24,19 @@ public class BinderTest {
 
     private Register<Bindable> bindables;
 
-    private Binder binder;
+    private BindListener bindListener;
 
     @Before
     public void setUp() {
         bindables = new Register<>();
-        binder = new Binder(bindables);
+        bindListener = new BindListener(bindables);
     }
 
     @Test
     public void givenRegisteredConnectable_whenCallingOnConnect_thenCallsConnectForConnectable() {
         Bindable bindable = givenRegisteredBindable();
 
-        binder.onMerlinBind(networkStatus);
+        bindListener.onMerlinBind(networkStatus);
 
         Mockito.verify(bindable).onBind(networkStatus);
     }
@@ -45,7 +45,7 @@ public class BinderTest {
     public void givenMultipleRegisteredConnectables_whenCallingOnConnect_thenCallsConnectForAllConnectables() {
         List<Bindable> bindables = givenMultipleRegisteredBindables();
 
-        binder.onMerlinBind(networkStatus);
+        bindListener.onMerlinBind(networkStatus);
 
         for (Bindable bindable : bindables) {
             Mockito.verify(bindable).onBind(networkStatus);
