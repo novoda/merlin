@@ -14,15 +14,15 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DisconnectorTest {
 
-    private Register<Disconnectable> merlinDisconnector;
+    private Register<Disconnectable> disconnectables;
 
     private Disconnector disconnector;
 
     @Before
     public void setUp() {
         initMocks(this);
-        merlinDisconnector = new Register<>();
-        disconnector = new Disconnector(merlinDisconnector);
+        disconnectables = new Register<>();
+        disconnector = new Disconnector(disconnectables);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class DisconnectorTest {
         for (int disconnectableIndex = 0; disconnectableIndex < disconnectables.size(); disconnectableIndex++) {
             Disconnectable disconnectable = mock(Disconnectable.class);
             disconnectables.add(disconnectable);
-            merlinDisconnector.register(disconnectable);
+            this.disconnectables.register(disconnectable);
         }
 
         return disconnectables;
@@ -59,7 +59,7 @@ public class DisconnectorTest {
 
     private Disconnectable givenRegisteredDisconnectable() {
         Disconnectable disconnectable = mock(Disconnectable.class);
-        merlinDisconnector.register(disconnectable);
+        disconnectables.register(disconnectable);
         return disconnectable;
     }
 

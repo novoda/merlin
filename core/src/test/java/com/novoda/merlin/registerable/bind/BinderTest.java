@@ -22,14 +22,14 @@ public class BinderTest {
     @Mock
     private NetworkStatus networkStatus;
 
-    private Register<Bindable> merlinBinder;
+    private Register<Bindable> bindables;
 
     private Binder binder;
 
     @Before
     public void setUp() {
-        merlinBinder = new Register<>();
-        binder = new Binder(merlinBinder);
+        bindables = new Register<>();
+        binder = new Binder(bindables);
     }
 
     @Test
@@ -58,14 +58,14 @@ public class BinderTest {
         for (int i = 0; i < 3; i++) {
             Bindable connectable = Mockito.mock(Bindable.class);
             bindables.add(connectable);
-            merlinBinder.register(connectable);
+            this.bindables.register(connectable);
         }
         return bindables;
     }
 
     private Bindable givenRegisteredBindable() {
         Bindable bindable = Mockito.mock(Bindable.class);
-        merlinBinder.register(bindable);
+        bindables.register(bindable);
         return bindable;
     }
 

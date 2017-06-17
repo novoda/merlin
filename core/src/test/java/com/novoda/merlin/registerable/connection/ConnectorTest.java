@@ -13,14 +13,14 @@ import static org.mockito.Mockito.verify;
 
 public class ConnectorTest {
 
-    private Register<Connectable> register;
+    private Register<Connectable> connectables;
 
     private Connector connector;
 
     @Before
     public void setUp() {
-        register = new Register<>();
-        connector = new Connector(register);
+        connectables = new Register<>();
+        connector = new Connector(connectables);
     }
 
     @Test
@@ -49,14 +49,14 @@ public class ConnectorTest {
         for (int i = 0; i < 3; i++) {
             Connectable connectable = mock(Connectable.class);
             connectables.add(connectable);
-            register.register(connectable);
+            this.connectables.register(connectable);
         }
         return connectables;
     }
 
     private Connectable givenRegisteredConnectable() {
         Connectable connectable = mock(Connectable.class);
-        register.register(connectable);
+        connectables.register(connectable);
         return connectable;
     }
 
