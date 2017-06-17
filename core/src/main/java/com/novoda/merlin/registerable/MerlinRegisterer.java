@@ -5,30 +5,22 @@ import java.util.List;
 
 public class MerlinRegisterer<T extends Registerable> implements CallbacksRegister<T> {
 
-    private final List<WeakRegisterableReference<T>> registerableList;
+    private final List<T> registerables;
 
     public MerlinRegisterer() {
-        registerableList = new ArrayList<>();
+        registerables = new ArrayList<>();
     }
 
     @Override
-    public void register(T what) {
-        WeakRegisterableReference<T> registerableReference = new WeakRegisterableReference<T>(what);
-        if (!registerableList.contains(registerableReference)) {
-            registerableList.add(registerableReference);
+    public void register(T registerable) {
+        if (!registerables.contains(registerable)) {
+            registerables.add(registerable);
         }
     }
 
     @Override
     public List<T> get() {
-        List<T> listOfWhat = new ArrayList<T>(registerableList.size());
-        for (WeakRegisterableReference<T> referenceReference : registerableList) {
-            T what = referenceReference.get();
-            if (what != null) {
-                listOfWhat.add(what);
-            }
-        }
-        return listOfWhat;
+        return registerables;
     }
 
 }
