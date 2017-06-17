@@ -4,9 +4,9 @@ import com.novoda.merlin.registerable.MerlinCallbackManager;
 import com.novoda.merlin.registerable.Register;
 import com.novoda.support.Logger;
 
-public class Disconnector extends MerlinCallbackManager<Disconnectable> implements DisconnectListener {
+public class DisconnectCallbackManager extends MerlinCallbackManager<Disconnectable> implements Disconnectable {
 
-    public Disconnector(Register<Disconnectable> register) {
+    public DisconnectCallbackManager(Register<Disconnectable> register) {
         super(register);
     }
 

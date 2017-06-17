@@ -4,12 +4,12 @@ import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
 import com.novoda.merlin.registerable.bind.BindCallbackManager;
 import com.novoda.merlin.registerable.connection.ConnectCallbackManager;
-import com.novoda.merlin.registerable.disconnection.DisconnectListener;
+import com.novoda.merlin.registerable.disconnection.DisconnectCallbackManager;
 
 class ConnectivityChangesForwarder {
 
     private final NetworkStatusRetriever networkStatusRetriever;
-    private final DisconnectListener disconnectListener;
+    private final DisconnectCallbackManager disconnectCallbackManager;
     private final ConnectCallbackManager connectCallbackManager;
     private final BindCallbackManager bindCallbackManager;
     private final EndpointPinger endpointPinger;
@@ -17,12 +17,12 @@ class ConnectivityChangesForwarder {
     private NetworkStatus lastEndpointPingNetworkStatus;
 
     ConnectivityChangesForwarder(NetworkStatusRetriever networkStatusRetriever,
-                                 DisconnectListener disconnectListener,
+                                 DisconnectCallbackManager disconnectCallbackManager,
                                  ConnectCallbackManager connectCallbackManager,
                                  BindCallbackManager bindCallbackManager,
                                  EndpointPinger endpointPinger) {
         this.networkStatusRetriever = networkStatusRetriever;
-        this.disconnectListener = disconnectListener;
+        this.disconnectCallbackManager = disconnectCallbackManager;
         this.connectCallbackManager = connectCallbackManager;
         this.bindCallbackManager = bindCallbackManager;
         this.endpointPinger = endpointPinger;
@@ -66,8 +66,8 @@ class ConnectivityChangesForwarder {
         @Override
         public void onFailure() {
             lastEndpointPingNetworkStatus = NetworkStatus.newUnavailableInstance();
-            if (disconnectListener != null) {
-                disconnectListener.onDisconnect();
+            if (disconnectCallbackManager != null) {
+                disconnectCallbackManager.onDisconnect();
             }
         }
     };

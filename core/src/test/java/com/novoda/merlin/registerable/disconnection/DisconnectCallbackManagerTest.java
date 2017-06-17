@@ -12,24 +12,24 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class DisconnectorTest {
+public class DisconnectCallbackManagerTest {
 
     private Register<Disconnectable> disconnectables;
 
-    private Disconnector disconnector;
+    private DisconnectCallbackManager disconnectCallbackManager;
 
     @Before
     public void setUp() {
         initMocks(this);
         disconnectables = new Register<>();
-        disconnector = new Disconnector(disconnectables);
+        disconnectCallbackManager = new DisconnectCallbackManager(disconnectables);
     }
 
     @Test
     public void givenRegisteredDisconnectable_whenCallingOnDisconect_thenCallsDisconnectForDisconnectable() {
         Disconnectable disconnectable = givenRegisteredDisconnectable();
 
-        disconnector.onDisconnect();
+        disconnectCallbackManager.onDisconnect();
 
         verify(disconnectable).onDisconnect();
     }
@@ -38,7 +38,7 @@ public class DisconnectorTest {
     public void givenMultipleRegisteredDisconnectables_whenCallingOnConnect_thenCallsConnectForAllDisconnectables() {
         List<Disconnectable> disconnectables = givenMultipleRegisteredDisconnectables();
 
-        disconnector.onDisconnect();
+        disconnectCallbackManager.onDisconnect();
 
         for (Disconnectable disconnectable : disconnectables) {
             verify(disconnectable).onDisconnect();

@@ -8,9 +8,8 @@ import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.bind.BindCallbackManager;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.connection.ConnectCallbackManager;
-import com.novoda.merlin.registerable.disconnection.DisconnectListener;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
-import com.novoda.merlin.registerable.disconnection.Disconnector;
+import com.novoda.merlin.registerable.disconnection.DisconnectCallbackManager;
 import com.novoda.merlin.service.MerlinServiceBinder;
 import com.novoda.merlin.service.ResponseCodeValidator;
 import com.novoda.support.Logger;
@@ -22,7 +21,7 @@ public class MerlinBuilder {
 
     private BindCallbackManager merlinOnBinder;
     private ConnectCallbackManager merlinConnector;
-    private DisconnectListener merlinDisconnector;
+    private DisconnectCallbackManager merlinDisconnector;
 
     private Register<Connectable> connectables;
     private Register<Disconnectable> disconnectables;
@@ -52,7 +51,7 @@ public class MerlinBuilder {
      */
     public MerlinBuilder withDisconnectableCallbacks() {
         disconnectables = new Register<>();
-        this.merlinDisconnector = new Disconnector(disconnectables);
+        this.merlinDisconnector = new DisconnectCallbackManager(disconnectables);
         return this;
     }
 
