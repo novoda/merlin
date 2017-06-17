@@ -27,16 +27,6 @@ public class MerlinRegistererTest {
     }
 
     @Test
-    public void givenRegisteredRegisterable_whenSystemPerformsGc_thenDoesNotHoldRegisterableReference() {
-        Registerable registerable = givenRegisteredRegisterable();
-
-        registerable = null;
-        System.gc();
-
-        assertThat(merlinRegisterer.get()).isEmpty();
-    }
-
-    @Test
     public void givenConnectableRegisterable_whenRegisteringMultipleTimes_thenDoesNotRegisterTheSameObjectMoreThanOnce() {
         Connectable connectable = mock(Connectable.class);
 
@@ -45,12 +35,6 @@ public class MerlinRegistererTest {
         merlinRegisterer.register(connectable);
 
         assertThat(merlinRegisterer.get()).hasSize(1);
-    }
-
-    private Registerable givenRegisteredRegisterable() {
-        Registerable registerable = mock(Registerable.class);
-        merlinRegisterer.register(registerable);
-        return registerable;
     }
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class MerlinRegisterer<T extends Registerable> implements MerlinConnector<T> {
 
-    private final List<WeakRegisterableReference<T>> registerableList;
+    private final List<T> registerableList;
 
     public MerlinRegisterer() {
         registerableList = new ArrayList<>();
@@ -13,22 +13,14 @@ public class MerlinRegisterer<T extends Registerable> implements MerlinConnector
 
     @Override
     public void register(T what) {
-        WeakRegisterableReference<T> registerableReference = new WeakRegisterableReference<T>(what);
-        if (!registerableList.contains(registerableReference)) {
-            registerableList.add(registerableReference);
+        if (!registerableList.contains(what)) {
+            registerableList.add(what);
         }
     }
 
     @Override
     public List<T> get() {
-        List<T> listOfWhat = new ArrayList<T>(registerableList.size());
-        for (WeakRegisterableReference<T> referenceReference : registerableList) {
-            T what = referenceReference.get();
-            if (what != null) {
-                listOfWhat.add(what);
-            }
-        }
-        return listOfWhat;
+        return new ArrayList<>(registerableList);
     }
 
 }
