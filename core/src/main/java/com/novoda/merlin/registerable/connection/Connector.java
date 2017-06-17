@@ -1,13 +1,13 @@
 package com.novoda.merlin.registerable.connection;
 
 import com.novoda.merlin.registerable.MerlinCallbackManager;
-import com.novoda.merlin.registerable.MerlinConnector;
+import com.novoda.merlin.registerable.CallbacksRegister;
 import com.novoda.support.Logger;
 
 public class Connector extends MerlinCallbackManager<Connectable> implements ConnectListener {
 
-    public Connector(MerlinConnector<Connectable> merlinConnector) {
-        super(merlinConnector);
+    public Connector(CallbacksRegister<Connectable> callbacksRegister) {
+        super(callbacksRegister);
     }
 
     @Override

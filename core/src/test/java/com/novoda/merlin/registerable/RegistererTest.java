@@ -20,11 +20,11 @@ public class RegistererTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    private MerlinConnector<Connectable> connector;
+    private CallbacksRegister<Connectable> connector;
     @Mock
-    private MerlinConnector<Disconnectable> disconnector;
+    private CallbacksRegister<Disconnectable> disconnector;
     @Mock
-    private MerlinConnector<Bindable> binder;
+    private CallbacksRegister<Bindable> binder;
 
     private Registerer registerer;
 

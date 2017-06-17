@@ -1,7 +1,7 @@
 package com.novoda.merlin.registerable.bind;
 
 import com.novoda.merlin.NetworkStatus;
-import com.novoda.merlin.registerable.MerlinConnector;
+import com.novoda.merlin.registerable.CallbacksRegister;
 import com.novoda.merlin.registerable.MerlinRegisterer;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class BinderTest {
     @Mock
     private NetworkStatus networkStatus;
 
-    private MerlinConnector<Bindable> merlinBinder;
+    private CallbacksRegister<Bindable> merlinBinder;
 
     private Binder binder;
 

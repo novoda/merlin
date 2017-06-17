@@ -4,14 +4,14 @@ import java.util.List;
 
 public class MerlinCallbackManager<T extends Registerable> {
 
-    private final MerlinConnector<T> merlinConnector;
+    private final CallbacksRegister<T> callbacksRegister;
 
-    public MerlinCallbackManager(MerlinConnector<T> merlinConnector) {
-        this.merlinConnector = merlinConnector;
+    public MerlinCallbackManager(CallbacksRegister<T> callbacksRegister) {
+        this.callbacksRegister = callbacksRegister;
     }
 
     protected List<T> getRegisterables() {
-        return merlinConnector.get();
+        return callbacksRegister.get();
     }
 
 }

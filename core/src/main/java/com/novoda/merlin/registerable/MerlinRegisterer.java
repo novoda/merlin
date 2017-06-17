@@ -3,7 +3,7 @@ package com.novoda.merlin.registerable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MerlinRegisterer<T extends Registerable> implements MerlinConnector<T> {
+public class MerlinRegisterer<T extends Registerable> implements CallbacksRegister<T> {
 
     private final List<WeakRegisterableReference<T>> registerableList;
 
