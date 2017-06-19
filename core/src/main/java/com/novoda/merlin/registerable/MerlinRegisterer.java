@@ -3,6 +3,8 @@ package com.novoda.merlin.registerable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.unmodifiableList;
+
 public class MerlinRegisterer<T extends Registerable> implements MerlinConnector<T> {
 
     private final List<T> registerableList;
@@ -20,7 +22,7 @@ public class MerlinRegisterer<T extends Registerable> implements MerlinConnector
 
     @Override
     public List<T> get() {
-        return new ArrayList<>(registerableList);
+        return unmodifiableList(registerableList);
     }
 
 }
