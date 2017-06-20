@@ -16,7 +16,7 @@ class Ping {
         this.validator = validator;
     }
 
-    public boolean doSynchronousPing() {
+    boolean doSynchronousPing() {
         Logger.d("Pinging: " + endpoint);
         try {
             return validator.isResponseCodeValid(responseCodeFetcher.from(endpoint));

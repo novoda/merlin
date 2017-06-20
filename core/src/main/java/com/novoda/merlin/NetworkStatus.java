@@ -2,7 +2,7 @@ package com.novoda.merlin;
 
 public class NetworkStatus {
 
-    public enum State {
+    private enum State {
         AVAILABLE,
         UNAVAILABLE
     }
