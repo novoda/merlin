@@ -17,7 +17,7 @@ public class Register<T extends Registerable> {
         }
     }
 
-    public List<T> get() {
+    public List<T> registerables() {
         return registerables;
     }
 

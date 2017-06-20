@@ -30,11 +30,11 @@ public class ConnectivityChangeEvent {
         return isConnected;
     }
 
-    public String getInfo() {
+    public String info() {
         return info;
     }
 
-    public String getReason() {
+    public String reason() {
         return reason;
     }
 

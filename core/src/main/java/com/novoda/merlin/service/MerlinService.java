@@ -52,7 +52,7 @@ public class MerlinService extends Service {
 
     public class LocalBinder extends Binder {
 
-        public ConnectivityChangesListener getConnectivityChangedListener() {
+        public ConnectivityChangesListener connectivityChangedListener() {
             return MerlinService.this.connectivityChangesListener;
         }
 

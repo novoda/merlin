@@ -38,10 +38,10 @@ public class ConnectivityChangesRegister {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void registerNetworkCallbacks(MerlinService.ConnectivityChangesListener connectivityChangesListener) {
         NetworkRequest.Builder builder = new NetworkRequest.Builder();
-        connectivityManager.registerNetworkCallback(builder.build(), getConnectivityCallbacks(connectivityChangesListener));
+        connectivityManager.registerNetworkCallback(builder.build(), connectivityCallbacks(connectivityChangesListener));
     }
 
-    private ConnectivityCallbacks getConnectivityCallbacks(MerlinService.ConnectivityChangesListener connectivityChangesListener) {
+    private ConnectivityCallbacks connectivityCallbacks(MerlinService.ConnectivityChangesListener connectivityChangesListener) {
         if (connectivityCallbacks == null) {
             connectivityCallbacks = new ConnectivityCallbacks(connectivityManager, connectivityChangesListener);
         }
@@ -49,17 +49,17 @@ public class ConnectivityChangesRegister {
     }
 
     private void registerBroadcastReceiver() {
-        context.registerReceiver(getConnectivityReceiver(), getConnectivityActionIntentFilter());
+        context.registerReceiver(connectivityReceiver(), connectivityActionIntentFilter());
     }
 
-    private ConnectivityReceiver getConnectivityReceiver() {
+    private ConnectivityReceiver connectivityReceiver() {
         if (connectivityReceiver == null) {
             connectivityReceiver = new ConnectivityReceiver();
         }
         return connectivityReceiver;
     }
 
-    private IntentFilter getConnectivityActionIntentFilter() {
+    private IntentFilter connectivityActionIntentFilter() {
         return new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
     }
 

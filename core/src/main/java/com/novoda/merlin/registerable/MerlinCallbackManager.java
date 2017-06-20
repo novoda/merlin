@@ -11,7 +11,7 @@ public class MerlinCallbackManager<T extends Registerable> {
     }
 
     protected List<T> registerables() {
-        return register.get();
+        return register.registerables();
     }
 
 }
