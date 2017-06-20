@@ -5,7 +5,6 @@ import com.novoda.merlin.MerlinException;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
-import com.novoda.support.Logger;
 
 public class Registerer {
 
@@ -59,25 +58,6 @@ public class Registerer {
             );
         }
         return bindables;
-    }
-
-    public void register(Object object) {
-        if (object instanceof Registerable) {
-            Registerable registerable = (Registerable) object;
-            if (registerable instanceof Connectable) {
-                registerConnectable((Connectable) registerable);
-                return;
-            }
-            if (registerable instanceof Disconnectable) {
-                registerDisconnectable((Disconnectable) registerable);
-                return;
-            }
-            if (registerable instanceof Bindable) {
-                registerBindable((Bindable) registerable);
-                return;
-            }
-        }
-        Logger.d(object.getClass().getSimpleName() + "does not implement " + Connectable.class + " / " + Disconnectable.class + " / " + Bindable.class);
     }
 
 }

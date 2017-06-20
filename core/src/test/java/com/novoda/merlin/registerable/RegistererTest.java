@@ -12,7 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class RegistererTest {
 
@@ -82,17 +83,6 @@ public class RegistererTest {
         registerer.registerBindable(bindable);
 
         verify(binder).register(bindable);
-    }
-
-    @Test
-    public void givenRegisterer_whenRegisteringNonRegisterable_thenDoesNotRegister() {
-        Object nonRegisterableObject = new Object();
-
-        registerer.register(nonRegisterableObject);
-
-        verifyZeroInteractions(connector);
-        verifyZeroInteractions(disconnector);
-        verifyZeroInteractions(binder);
     }
 
 }
