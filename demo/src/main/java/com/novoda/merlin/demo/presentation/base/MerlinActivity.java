@@ -1,7 +1,7 @@
 package com.novoda.merlin.demo.presentation.base;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.novoda.merlin.Merlin;
@@ -10,7 +10,7 @@ import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.support.Logger;
 
-public abstract class MerlinActivity extends Activity {
+public abstract class MerlinActivity extends AppCompatActivity {
 
     private DemoLogHandle logHandle;
     protected Merlin merlin;

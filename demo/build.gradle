@@ -6,9 +6,7 @@ dependencies {
     compile project(':merlin-rxjava')
     compile project(':merlin-rxjava2')
 
-    compile(libraries.app.crouton) {
-        exclude module: 'support-v4'
-    }
+    compile(libraries.app.supportDesign)
 
 }
 

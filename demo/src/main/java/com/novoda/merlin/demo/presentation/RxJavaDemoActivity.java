@@ -6,12 +6,12 @@ import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.Toast;
 
-import com.novoda.merlin.rxjava.MerlinObservable;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
-import com.novoda.merlin.demo.connectivity.display.NetworkStatusCroutonDisplayer;
+import com.novoda.merlin.demo.connectivity.display.NetworkStatusSnackbarDisplayer;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
+import com.novoda.merlin.rxjava.MerlinObservable;
 
 import rx.Subscription;
 import rx.functions.Action1;
@@ -28,7 +28,8 @@ public class RxJavaDemoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        networkStatusDisplayer = new NetworkStatusCroutonDisplayer(this);
+        View rootView = findViewById(R.id.root);
+        networkStatusDisplayer = new NetworkStatusSnackbarDisplayer(getResources(), rootView);
         merlinsBeard = MerlinsBeard.from(this);
         subscriptions = new CompositeSubscription();
 
@@ -98,8 +99,8 @@ public class RxJavaDemoActivity extends Activity {
     protected void onResume() {
         super.onResume();
         Subscription merlinSubscription = MerlinObservable.from(this)
-                                                          .distinctUntilChanged()
-                                                          .subscribe(new NetworkAction(networkStatusDisplayer));
+                .distinctUntilChanged()
+                .subscribe(new NetworkAction(networkStatusDisplayer));
         subscriptions.add(merlinSubscription);
     }
 
