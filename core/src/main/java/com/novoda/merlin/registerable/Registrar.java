@@ -6,13 +6,13 @@ import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
-public class Registerer {
+public class Registrar {
 
     private final Register<Connectable> connectables;
     private final Register<Disconnectable> disconnectables;
     private final Register<Bindable> bindables;
 
-    public Registerer(Register<Connectable> connectables, Register<Disconnectable> disconnectables, Register<Bindable> bindables) {
+    public Registrar(Register<Connectable> connectables, Register<Disconnectable> disconnectables, Register<Bindable> bindables) {
         this.connectables = connectables;
         this.disconnectables = disconnectables;
         this.bindables = bindables;

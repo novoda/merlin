@@ -2,7 +2,7 @@ package com.novoda.merlin;
 
 import android.content.Context;
 
-import com.novoda.merlin.registerable.Registerer;
+import com.novoda.merlin.registerable.Registrar;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
@@ -31,13 +31,13 @@ public class MerlinTest {
     @Mock
     private ResponseCodeValidator validator;
     @Mock
-    private Registerer registerer;
+    private Registrar registrar;
 
     private Merlin merlin;
 
     @Before
     public void setUp() {
-        merlin = new Merlin(serviceBinder, registerer);
+        merlin = new Merlin(serviceBinder, registrar);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class MerlinTest {
 
         merlin.registerConnectable(connectable);
 
-        verify(registerer).registerConnectable(connectable);
+        verify(registrar).registerConnectable(connectable);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class MerlinTest {
 
         merlin.registerDisconnectable(disconnectable);
 
-        verify(registerer).registerDisconnectable(disconnectable);
+        verify(registrar).registerDisconnectable(disconnectable);
     }
 
     @Test
@@ -88,7 +88,7 @@ public class MerlinTest {
 
         merlin.registerBindable(bindable);
 
-        verify(registerer).registerBindable(bindable);
+        verify(registrar).registerBindable(bindable);
     }
 
 }

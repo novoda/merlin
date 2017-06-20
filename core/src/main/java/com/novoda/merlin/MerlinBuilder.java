@@ -3,7 +3,7 @@ package com.novoda.merlin;
 import android.content.Context;
 
 import com.novoda.merlin.registerable.Register;
-import com.novoda.merlin.registerable.Registerer;
+import com.novoda.merlin.registerable.Registrar;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.bind.BindCallbackManager;
 import com.novoda.merlin.registerable.connection.Connectable;
@@ -138,8 +138,8 @@ public class MerlinBuilder {
                 responseCodeValidator
         );
 
-        Registerer merlinRegisterer = new Registerer(connectables, disconnectables, bindables);
-        return new Merlin(merlinServiceBinder, merlinRegisterer);
+        Registrar merlinRegistrar = new Registrar(connectables, disconnectables, bindables);
+        return new Merlin(merlinServiceBinder, merlinRegistrar);
     }
 
 }

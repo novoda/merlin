@@ -1,6 +1,6 @@
 package com.novoda.merlin;
 
-import com.novoda.merlin.registerable.Registerer;
+import com.novoda.merlin.registerable.Registrar;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
@@ -10,11 +10,11 @@ import com.novoda.merlin.service.ResponseCodeValidator;
 public class Merlin {
 
     private final MerlinServiceBinder merlinServiceBinder;
-    private final Registerer registerer;
+    private final Registrar registrar;
 
-    Merlin(MerlinServiceBinder merlinServiceBinder, Registerer registerer) {
+    Merlin(MerlinServiceBinder merlinServiceBinder, Registrar registrar) {
         this.merlinServiceBinder = merlinServiceBinder;
-        this.registerer = registerer;
+        this.registrar = registrar;
     }
 
     public void setEndpoint(Endpoint endpoint, ResponseCodeValidator validator) {
@@ -30,15 +30,15 @@ public class Merlin {
     }
 
     public void registerConnectable(Connectable connectable) {
-        registerer.registerConnectable(connectable);
+        registrar.registerConnectable(connectable);
     }
 
     public void registerDisconnectable(Disconnectable disconnectable) {
-        registerer.registerDisconnectable(disconnectable);
+        registrar.registerDisconnectable(disconnectable);
     }
 
     public void registerBindable(Bindable bindable) {
-        registerer.registerBindable(bindable);
+        registrar.registerBindable(bindable);
     }
 
     public static class Builder extends MerlinBuilder {
