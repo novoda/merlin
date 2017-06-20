@@ -50,12 +50,6 @@ public abstract class MerlinActivity extends AppCompatActivity {
         Logger.detach(logHandle);
     }
 
-    @Override
-    protected void onDestroy() {
-        merlin = null;
-        super.onDestroy();
-    }
-
     private static class DemoLogHandle implements Logger.LogHandle {
 
         private static final String TAG = "DemoLogHandle";
