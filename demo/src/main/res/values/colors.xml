@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="snackbar_message">#FEFEFE</color>
+  <color name="snackbar_background_positive">#26A3DB</color>
+  <color name="snackbar_background_negative">#FCB033</color>
+</resources>

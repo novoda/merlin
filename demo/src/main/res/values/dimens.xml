@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="content_padding_top">20dp</dimen>
+  <dimen name="snackbar_minimum_height">48dp</dimen>
+  <dimen name="snackbar_text_size">18sp</dimen>
+</resources>

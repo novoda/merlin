@@ -8,7 +8,6 @@ import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
-import com.novoda.merlin.demo.connectivity.display.NetworkStatusSnackbarDisplayer;
 import com.novoda.merlin.rxjava2.MerlinFlowable;
 
 import io.reactivex.annotations.NonNull;
@@ -27,7 +26,7 @@ public class RxJava2DemoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         View rootView = findViewById(R.id.root);
-        networkStatusDisplayer = new NetworkStatusSnackbarDisplayer(getResources(), rootView);
+        networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), rootView);
         merlinsBeard = MerlinsBeard.from(this);
         disposables = new CompositeDisposable();
 

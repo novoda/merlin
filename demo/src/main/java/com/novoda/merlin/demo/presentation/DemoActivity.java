@@ -8,7 +8,6 @@ import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
-import com.novoda.merlin.demo.connectivity.display.NetworkStatusSnackbarDisplayer;
 import com.novoda.merlin.demo.presentation.base.MerlinActivity;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
@@ -25,7 +24,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         setContentView(R.layout.main);
 
         View rootView = findViewById(R.id.root);
-        networkStatusDisplayer = new NetworkStatusSnackbarDisplayer(getResources(), rootView);
+        networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), rootView);
         merlinsBeard = MerlinsBeard.from(this);
 
         findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
