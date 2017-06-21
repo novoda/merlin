@@ -48,7 +48,7 @@ public class ConnectivityChangeNotifierTest {
     public void setUp() {
         ConnectivityReceiver.MerlinsBeardCreator merlinsBeardCreator = mock(ConnectivityReceiver.MerlinsBeardCreator.class);
 
-        given(merlinBinder.connectivityChangedListener()).willReturn(connectivityChangesListener);
+        given(merlinBinder.connectivityChangesListener()).willReturn(connectivityChangesListener);
 
         given(merlinBinderRetriever.retrieveMerlinLocalServiceBinderIfAvailable(context)).willReturn(merlinBinder);
         given(merlinsBeardCreator.createMerlinsBeard(context)).willReturn(merlinsBeard);
@@ -107,7 +107,7 @@ public class ConnectivityChangeNotifierTest {
     @Test
     public void givenIntentWithConnectivityAction_butBinderWithNullService_whenNotifying_thenNeverCallsMerlinServiceOnConnectivityChanged() {
         Intent intent = givenIntentWithConnectivityAction();
-        given(merlinBinder.connectivityChangedListener()).willReturn(null);
+        given(merlinBinder.connectivityChangesListener()).willReturn(null);
 
         notifier.notify(context, intent);
 
