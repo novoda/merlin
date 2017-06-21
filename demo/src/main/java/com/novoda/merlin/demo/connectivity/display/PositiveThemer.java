@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.novoda.merlin.demo.R;
 
-public class PositiveThemer implements Themer {
+class PositiveThemer implements Themer {
 
     @Override
     public void theme(Resources resources, Snackbar snackbar) {
