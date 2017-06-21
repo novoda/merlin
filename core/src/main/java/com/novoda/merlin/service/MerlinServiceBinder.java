@@ -10,9 +10,9 @@ import android.os.IBinder;
 import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.receiver.ConnectivityChangesRegister;
-import com.novoda.merlin.registerable.bind.BindListener;
-import com.novoda.merlin.registerable.connection.ConnectListener;
-import com.novoda.merlin.registerable.disconnection.DisconnectListener;
+import com.novoda.merlin.registerable.bind.BindCallbackManager;
+import com.novoda.merlin.registerable.connection.ConnectCallbackManager;
+import com.novoda.merlin.registerable.disconnection.DisconnectCallbackManager;
 import com.novoda.support.Logger;
 
 public class MerlinServiceBinder {
@@ -24,10 +24,10 @@ public class MerlinServiceBinder {
     private MerlinServiceConnection merlinServiceConnection;
     private Endpoint endpoint;
 
-    public MerlinServiceBinder(Context context, ConnectListener connectListener, DisconnectListener disconnectListener,
-                               BindListener bindListener, Endpoint endpoint, ResponseCodeValidator validator) {
+    public MerlinServiceBinder(Context context, ConnectCallbackManager connectCallbackManager, DisconnectCallbackManager disconnectCallbackManager,
+                               BindCallbackManager bindCallbackManager, Endpoint endpoint, ResponseCodeValidator validator) {
         this.validator = validator;
-        listenerHolder = new ListenerHolder(connectListener, disconnectListener, bindListener);
+        listenerHolder = new ListenerHolder(connectCallbackManager, disconnectCallbackManager, bindCallbackManager);
         this.context = context;
         this.endpoint = endpoint;
     }
@@ -80,9 +80,9 @@ public class MerlinServiceBinder {
             EndpointPinger endpointPinger = EndpointPinger.withCustomEndpointAndValidation(endpoint, validator);
             ConnectivityChangesForwarder connectivityChangesForwarder = new ConnectivityChangesForwarder(
                     networkStatusRetriever,
-                    listenerHolder.disconnectListener,
-                    listenerHolder.connectListener,
-                    listenerHolder.bindListener,
+                    listenerHolder.disconnectCallbackManager,
+                    listenerHolder.connectCallbackManager,
+                    listenerHolder.bindCallbackManager,
                     endpointPinger
             );
 
@@ -100,14 +100,14 @@ public class MerlinServiceBinder {
 
     private static class ListenerHolder {
 
-        private final DisconnectListener disconnectListener;
-        private final ConnectListener connectListener;
-        private final BindListener bindListener;
+        private final DisconnectCallbackManager disconnectCallbackManager;
+        private final ConnectCallbackManager connectCallbackManager;
+        private final BindCallbackManager bindCallbackManager;
 
-        ListenerHolder(ConnectListener connectListener, DisconnectListener disconnectListener, BindListener bindListener) {
-            this.connectListener = connectListener;
-            this.disconnectListener = disconnectListener;
-            this.bindListener = bindListener;
+        ListenerHolder(ConnectCallbackManager connectCallbackManager, DisconnectCallbackManager disconnectCallbackManager, BindCallbackManager bindCallbackManager) {
+            this.connectCallbackManager = connectCallbackManager;
+            this.disconnectCallbackManager = disconnectCallbackManager;
+            this.bindCallbackManager = bindCallbackManager;
         }
 
     }

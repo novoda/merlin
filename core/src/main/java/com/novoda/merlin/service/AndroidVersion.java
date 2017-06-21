@@ -14,14 +14,6 @@ public class AndroidVersion {
         this.deviceVersion = deviceVersion;
     }
 
-    public boolean isMarshmallowOrHigher() {
-        return deviceVersion >= Build.VERSION_CODES.M;
-    }
-
-    public boolean isNougatOrHigher() {
-        return deviceVersion >= Build.VERSION_CODES.N;
-    }
-
     public boolean isLollipopOrHigher() {
         return deviceVersion >= Build.VERSION_CODES.LOLLIPOP;
     }

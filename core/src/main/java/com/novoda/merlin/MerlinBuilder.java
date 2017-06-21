@@ -2,17 +2,14 @@ package com.novoda.merlin;
 
 import android.content.Context;
 
-import com.novoda.merlin.registerable.MerlinRegisterer;
-import com.novoda.merlin.registerable.Registerer;
-import com.novoda.merlin.registerable.bind.BindListener;
+import com.novoda.merlin.registerable.Register;
+import com.novoda.merlin.registerable.Registrar;
 import com.novoda.merlin.registerable.bind.Bindable;
-import com.novoda.merlin.registerable.bind.Binder;
-import com.novoda.merlin.registerable.connection.ConnectListener;
+import com.novoda.merlin.registerable.bind.BindCallbackManager;
 import com.novoda.merlin.registerable.connection.Connectable;
-import com.novoda.merlin.registerable.connection.Connector;
-import com.novoda.merlin.registerable.disconnection.DisconnectListener;
+import com.novoda.merlin.registerable.connection.ConnectCallbackManager;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
-import com.novoda.merlin.registerable.disconnection.Disconnector;
+import com.novoda.merlin.registerable.disconnection.DisconnectCallbackManager;
 import com.novoda.merlin.service.MerlinServiceBinder;
 import com.novoda.merlin.service.ResponseCodeValidator;
 import com.novoda.support.Logger;
@@ -22,13 +19,13 @@ import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointRes
 
 public class MerlinBuilder {
 
-    private BindListener merlinOnBinder;
-    private ConnectListener merlinConnector;
-    private DisconnectListener merlinDisconnector;
+    private BindCallbackManager merlinOnBinder;
+    private ConnectCallbackManager merlinConnector;
+    private DisconnectCallbackManager merlinDisconnector;
 
-    private MerlinRegisterer<Connectable> connectableRegisterer;
-    private MerlinRegisterer<Disconnectable> disconnectableRegisterer;
-    private MerlinRegisterer<Bindable> bindableRegisterer;
+    private Register<Connectable> connectables;
+    private Register<Disconnectable> disconnectables;
+    private Register<Bindable> bindables;
 
     private Endpoint endpoint = Endpoint.defaultEndpoint();
     private ResponseCodeValidator responseCodeValidator = new DefaultEndpointResponseCodeValidator();
@@ -42,8 +39,8 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withConnectableCallbacks() {
-        connectableRegisterer = new MerlinRegisterer<>();
-        this.merlinConnector = new Connector(connectableRegisterer);
+        connectables = new Register<>();
+        this.merlinConnector = new ConnectCallbackManager(connectables);
         return this;
     }
 
@@ -53,8 +50,8 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withDisconnectableCallbacks() {
-        disconnectableRegisterer = new MerlinRegisterer<>();
-        this.merlinDisconnector = new Disconnector(disconnectableRegisterer);
+        disconnectables = new Register<>();
+        this.merlinDisconnector = new DisconnectCallbackManager(disconnectables);
         return this;
     }
 
@@ -64,8 +61,8 @@ public class MerlinBuilder {
      * @return MerlinBuilder.
      */
     public MerlinBuilder withBindableCallbacks() {
-        bindableRegisterer = new MerlinRegisterer<>();
-        this.merlinOnBinder = new Binder(bindableRegisterer);
+        bindables = new Register<>();
+        this.merlinOnBinder = new BindCallbackManager(bindables);
         return this;
     }
 
@@ -141,8 +138,8 @@ public class MerlinBuilder {
                 responseCodeValidator
         );
 
-        Registerer merlinRegisterer = new Registerer(connectableRegisterer, disconnectableRegisterer, bindableRegisterer);
-        return new Merlin(merlinServiceBinder, merlinRegisterer);
+        Registrar merlinRegistrar = new Registrar(connectables, disconnectables, bindables);
+        return new Merlin(merlinServiceBinder, merlinRegistrar);
     }
 
 }

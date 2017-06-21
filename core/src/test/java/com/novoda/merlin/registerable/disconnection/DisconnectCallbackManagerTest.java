@@ -1,7 +1,6 @@
 package com.novoda.merlin.registerable.disconnection;
 
-import com.novoda.merlin.registerable.MerlinConnector;
-import com.novoda.merlin.registerable.MerlinRegisterer;
+import com.novoda.merlin.registerable.Register;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,24 +12,24 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class DisconnectorTest {
+public class DisconnectCallbackManagerTest {
 
-    private MerlinConnector<Disconnectable> merlinDisconnector;
+    private Register<Disconnectable> disconnectables;
 
-    private Disconnector disconnector;
+    private DisconnectCallbackManager disconnectCallbackManager;
 
     @Before
     public void setUp() {
         initMocks(this);
-        merlinDisconnector = new MerlinRegisterer<>();
-        disconnector = new Disconnector(merlinDisconnector);
+        disconnectables = new Register<>();
+        disconnectCallbackManager = new DisconnectCallbackManager(disconnectables);
     }
 
     @Test
     public void givenRegisteredDisconnectable_whenCallingOnDisconect_thenCallsDisconnectForDisconnectable() {
         Disconnectable disconnectable = givenRegisteredDisconnectable();
 
-        disconnector.onDisconnect();
+        disconnectCallbackManager.onDisconnect();
 
         verify(disconnectable).onDisconnect();
     }
@@ -39,7 +38,7 @@ public class DisconnectorTest {
     public void givenMultipleRegisteredDisconnectables_whenCallingOnConnect_thenCallsConnectForAllDisconnectables() {
         List<Disconnectable> disconnectables = givenMultipleRegisteredDisconnectables();
 
-        disconnector.onDisconnect();
+        disconnectCallbackManager.onDisconnect();
 
         for (Disconnectable disconnectable : disconnectables) {
             verify(disconnectable).onDisconnect();
@@ -52,7 +51,7 @@ public class DisconnectorTest {
         for (int disconnectableIndex = 0; disconnectableIndex < disconnectables.size(); disconnectableIndex++) {
             Disconnectable disconnectable = mock(Disconnectable.class);
             disconnectables.add(disconnectable);
-            merlinDisconnector.register(disconnectable);
+            this.disconnectables.register(disconnectable);
         }
 
         return disconnectables;
@@ -60,7 +59,7 @@ public class DisconnectorTest {
 
     private Disconnectable givenRegisteredDisconnectable() {
         Disconnectable disconnectable = mock(Disconnectable.class);
-        merlinDisconnector.register(disconnectable);
+        disconnectables.register(disconnectable);
         return disconnectable;
     }
 

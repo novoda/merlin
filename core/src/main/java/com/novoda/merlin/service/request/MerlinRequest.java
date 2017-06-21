@@ -10,11 +10,11 @@ public class MerlinRequest implements Request {
         return head(new HttpRequestMaker(), endpoint);
     }
 
-    public static MerlinRequest head(RequestMaker requestMaker, Endpoint endpoint) {
+    private static MerlinRequest head(RequestMaker requestMaker, Endpoint endpoint) {
         return new MerlinRequest(requestMaker.head(endpoint));
     }
 
-    MerlinRequest(Request request) {
+    private MerlinRequest(Request request) {
         this.request = request;
     }
 

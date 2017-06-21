@@ -2,9 +2,9 @@ package com.novoda.merlin.service;
 
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.receiver.ConnectivityChangeEvent;
-import com.novoda.merlin.registerable.bind.BindListener;
-import com.novoda.merlin.registerable.connection.ConnectListener;
-import com.novoda.merlin.registerable.disconnection.DisconnectListener;
+import com.novoda.merlin.registerable.bind.BindCallbackManager;
+import com.novoda.merlin.registerable.connection.ConnectCallbackManager;
+import com.novoda.merlin.registerable.disconnection.DisconnectCallbackManager;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,11 +34,11 @@ public class ConnectivityChangesForwarderTest {
     @Mock
     private NetworkStatusRetriever networkStatusRetriever;
     @Mock
-    private DisconnectListener disconnectListener;
+    private DisconnectCallbackManager disconnectCallbackManager;
     @Mock
-    private ConnectListener connectListener;
+    private ConnectCallbackManager connectCallbackManager;
     @Mock
-    private BindListener bindListener;
+    private BindCallbackManager bindCallbackManager;
     @Mock
     private EndpointPinger endpointPinger;
 
@@ -48,9 +48,9 @@ public class ConnectivityChangesForwarderTest {
     public void setUp() {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
                 networkStatusRetriever,
-                disconnectListener,
-                connectListener,
-                bindListener,
+                disconnectCallbackManager,
+                connectCallbackManager,
+                bindCallbackManager,
                 endpointPinger
         );
     }
@@ -61,7 +61,7 @@ public class ConnectivityChangesForwarderTest {
 
         connectivityChangesForwarder.forwardInitialNetworkStatus();
 
-        verify(bindListener).onMerlinBind(AVAILABLE_NETWORK);
+        verify(bindCallbackManager).onMerlinBind(AVAILABLE_NETWORK);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ConnectivityChangesForwarderTest {
 
         connectivityChangesForwarder.forwardInitialNetworkStatus();
 
-        verify(bindListener).onMerlinBind(NetworkStatus.newUnavailableInstance());
+        verify(bindCallbackManager).onMerlinBind(NetworkStatus.newUnavailableInstance());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class ConnectivityChangesForwarderTest {
 
         connectivityChangesForwarder.forwardInitialNetworkStatus();
 
-        verify(bindListener).onMerlinBind(AVAILABLE_NETWORK);
+        verify(bindCallbackManager).onMerlinBind(AVAILABLE_NETWORK);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class ConnectivityChangesForwarderTest {
 
         pingerCallback.onSuccess();
 
-        verify(connectListener).onConnect();
+        verify(connectCallbackManager).onConnect();
     }
 
     @Test
@@ -106,31 +106,31 @@ public class ConnectivityChangesForwarderTest {
 
         pingerCallback.onFailure();
 
-        verify(disconnectListener).onDisconnect();
+        verify(disconnectCallbackManager).onDisconnect();
     }
 
     @Test
     public void givenFetchingWithPing_butNullConnectListener_whenSuccessful_thenNeverCallsOnConnect() {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
-                networkStatusRetriever, disconnectListener, null, bindListener, endpointPinger
+                networkStatusRetriever, disconnectCallbackManager, null, bindCallbackManager, endpointPinger
         );
         EndpointPinger.PingerCallback pingerCallback = givenFetchingWithPing();
 
         pingerCallback.onSuccess();
 
-        verify(connectListener, never()).onConnect();
+        verify(connectCallbackManager, never()).onConnect();
     }
 
     @Test
     public void givenFetchingWithPing_butNullDisconnectListener_whenUnsuccessful_thenNeverCallsOnDisconnect() {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
-                networkStatusRetriever, null, connectListener, bindListener, endpointPinger
+                networkStatusRetriever, null, connectCallbackManager, bindCallbackManager, endpointPinger
         );
         EndpointPinger.PingerCallback pingerCallback = givenFetchingWithPing();
 
         pingerCallback.onFailure();
 
-        verify(disconnectListener, never()).onDisconnect();
+        verify(disconnectCallbackManager, never()).onDisconnect();
     }
 
     private void givenNetworkWas(boolean connected) {

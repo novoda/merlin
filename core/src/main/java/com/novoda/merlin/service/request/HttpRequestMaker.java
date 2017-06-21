@@ -43,7 +43,7 @@ class HttpRequestMaker implements RequestMaker {
 
         private HttpURLConnection request;
 
-        public MerlinHttpRequest(HttpURLConnection request) {
+        MerlinHttpRequest(HttpURLConnection request) {
             this.request = request;
         }
 

@@ -43,11 +43,11 @@ public class MerlinsBeard {
      * @return boolean true if a network connection is available.
      */
     public boolean isConnected() {
-        NetworkInfo activeNetworkInfo = getNetworkInfo();
+        NetworkInfo activeNetworkInfo = networkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    private NetworkInfo getNetworkInfo() {
+    private NetworkInfo networkInfo() {
         return connectivityManager.getActiveNetworkInfo();
     }
 
@@ -109,7 +109,7 @@ public class MerlinsBeard {
      * @return network subtype name, or empty string if not connected to a mobile network.
      */
     public String getMobileNetworkSubtypeName() {
-        NetworkInfo networkInfo = getNetworkInfo();
+        NetworkInfo networkInfo = networkInfo();
         if (networkInfo == null || !networkInfo.isConnected()) {
             return "";
         }

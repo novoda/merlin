@@ -35,7 +35,7 @@ class ConnectivityChangeNotifier {
         IBinder binder = merlinBinderRetriever.retrieveMerlinLocalServiceBinderIfAvailable(context);
 
         if (connectivityChangedListenerAvailableFrom(binder)) {
-            MerlinService.ConnectivityChangesListener connectivityListener = ((MerlinService.LocalBinder) binder).getConnectivityChangedListener();
+            MerlinService.ConnectivityChangesListener connectivityListener = ((MerlinService.LocalBinder) binder).connectivityChangesListener();
             connectivityListener.onConnectivityChanged(connectivityChangeEvent);
         }
     }
@@ -43,7 +43,7 @@ class ConnectivityChangeNotifier {
     private boolean connectivityChangedListenerAvailableFrom(IBinder binder) {
         return binder != null
                 && binder instanceof MerlinService.LocalBinder
-                && ((MerlinService.LocalBinder) binder).getConnectivityChangedListener() != null;
+                && ((MerlinService.LocalBinder) binder).connectivityChangesListener() != null;
     }
 
     private boolean connectivityActionMatchesActionFor(Intent intent) {

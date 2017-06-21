@@ -1,7 +1,6 @@
 package com.novoda.merlin.registerable.connection;
 
-import com.novoda.merlin.registerable.MerlinConnector;
-import com.novoda.merlin.registerable.MerlinRegisterer;
+import com.novoda.merlin.registerable.Register;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,23 +11,23 @@ import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class ConnectorTest {
+public class ConnectCallbackManagerTest {
 
-    private MerlinConnector<Connectable> merlinConnector;
+    private Register<Connectable> connectables;
 
-    private Connector connector;
+    private ConnectCallbackManager connectCallbackManager;
 
     @Before
     public void setUp() {
-        merlinConnector = new MerlinRegisterer<>();
-        connector = new Connector(merlinConnector);
+        connectables = new Register<>();
+        connectCallbackManager = new ConnectCallbackManager(connectables);
     }
 
     @Test
     public void givenRegisteredConnectable_whenCallingOnConnect_thenCallsConnectForConnectable() {
         Connectable connectable = givenRegisteredConnectable();
 
-        connector.onConnect();
+        connectCallbackManager.onConnect();
 
         verify(connectable).onConnect();
     }
@@ -37,7 +36,7 @@ public class ConnectorTest {
     public void givenMultipleRegisteredConnectables_whenCallingOnConnect_thenCallsConnectForAllConnectables() {
         List<Connectable> connectables = givenMultipleRegisteredConnectables();
 
-        connector.onConnect();
+        connectCallbackManager.onConnect();
 
         for (Connectable connectable : connectables) {
             verify(connectable).onConnect();
@@ -50,14 +49,14 @@ public class ConnectorTest {
         for (int i = 0; i < 3; i++) {
             Connectable connectable = mock(Connectable.class);
             connectables.add(connectable);
-            merlinConnector.register(connectable);
+            this.connectables.register(connectable);
         }
         return connectables;
     }
 
     private Connectable givenRegisteredConnectable() {
         Connectable connectable = mock(Connectable.class);
-        merlinConnector.register(connectable);
+        connectables.register(connectable);
         return connectable;
     }
 
