@@ -11,6 +11,7 @@
     android:icon="@mipmap/ic_launcher"
     android:label="Merlin demo"
     tools:ignore="GoogleAppIndexingWarning">
+
     <activity
       android:name=".presentation.HomeActivity"
       android:label="Merlin Demo">
@@ -20,15 +21,19 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+
     <activity
       android:name=".presentation.DemoActivity"
       android:label="Demo Activity" />
+
     <activity
       android:name=".presentation.RxJavaDemoActivity"
       android:label="RxJava Demo Activity" />
+
     <activity
       android:name=".presentation.RxJava2DemoActivity"
       android:label="RxJava2 Demo Activity" />
+
   </application>
 
 </manifest>

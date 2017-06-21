@@ -1,16 +1,14 @@
 package com.novoda.merlin.demo.presentation;
 
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.view.View;
-import android.widget.Toast;
 
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
-import com.novoda.merlin.demo.connectivity.display.NetworkStatusSnackbarDisplayer;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
+import com.novoda.merlin.demo.connectivity.display.NetworkStatusSnackbarDisplayer;
 import com.novoda.merlin.demo.presentation.base.MerlinActivity;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
@@ -20,7 +18,6 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
 
     private NetworkStatusDisplayer networkStatusDisplayer;
     private MerlinsBeard merlinsBeard;
-    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +38,9 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         @Override
         public void onClick(View v) {
             if (merlinsBeard.isConnected()) {
-                showToast(R.string.toast_connected);
+                networkStatusDisplayer.displayConnected();
             } else {
-                showToast(R.string.toast_disconnected);
+                networkStatusDisplayer.displayDisconnected();
             }
         }
     };
@@ -53,9 +50,9 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         @Override
         public void onClick(View view) {
             if (merlinsBeard.isConnectedToWifi()) {
-                showToast(R.string.toast_connected);
+                networkStatusDisplayer.displayConnected();
             } else {
-                showToast(R.string.toast_disconnected);
+                networkStatusDisplayer.displayDisconnected();
             }
         }
     };
@@ -65,9 +62,9 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         @Override
         public void onClick(View view) {
             if (merlinsBeard.isConnectedToMobileNetwork()) {
-                showToast(R.string.toast_connected);
+                networkStatusDisplayer.displayConnected();
             } else {
-                showToast(R.string.toast_disconnected);
+                networkStatusDisplayer.displayDisconnected();
             }
         }
     };
@@ -76,22 +73,9 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
 
         @Override
         public void onClick(View view) {
-            showToast(merlinsBeard.getMobileNetworkSubtypeName());
+            networkStatusDisplayer.displayNetworkSubtype(merlinsBeard.getMobileNetworkSubtypeName());
         }
     };
-
-    private void showToast(@StringRes int toastText) {
-        String message = getString(toastText);
-        showToast(message);
-    }
-
-    private void showToast(String toastText) {
-        if (toast != null) {
-            toast.cancel();
-        }
-        toast = Toast.makeText(this, toastText, Toast.LENGTH_SHORT);
-        toast.show();
-    }
 
     @Override
     protected Merlin createMerlin() {
@@ -133,4 +117,9 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         networkStatusDisplayer.reset();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        networkStatusDisplayer = null;
+    }
 }

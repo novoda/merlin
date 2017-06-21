@@ -30,6 +30,11 @@ public class NetworkStatusSnackbarDisplayer implements NetworkStatusDisplayer {
     }
 
     @Override
+    public void displayNetworkSubtype(String networkSubtype) {
+        snackbar = MerlinSnackbar.withDuration(resources, attachTo, networkSubtype);
+    }
+
+    @Override
     public void reset() {
         snackbar.dismiss();
     }

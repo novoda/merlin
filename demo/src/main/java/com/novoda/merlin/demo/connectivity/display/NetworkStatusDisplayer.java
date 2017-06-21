@@ -6,5 +6,7 @@ public interface NetworkStatusDisplayer {
     void displayDisconnected();
 
     void reset();
+
+    void displayNetworkSubtype(String mobileNetworkSubtypeName);
 }
 
