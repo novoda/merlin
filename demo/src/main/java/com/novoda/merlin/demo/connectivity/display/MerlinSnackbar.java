@@ -9,17 +9,12 @@ import com.novoda.merlin.demo.R;
 
 class MerlinSnackbar {
 
+    private static final String EMPTY_MESSAGE = "";
     private final Snackbar snackbar;
 
-    static MerlinSnackbar withDuration(Resources resources, View attachTo, @StringRes int message) {
+    static MerlinSnackbar withDuration(Resources resources, View attachTo) {
         int duration = resources.getInteger(R.integer.snackbar_duration);
-        Snackbar snackbar = Snackbar.make(attachTo, message, duration);
-        return new MerlinSnackbar(snackbar);
-    }
-
-    static MerlinSnackbar withDuration(Resources resources, View attachTo, String message) {
-        int duration = resources.getInteger(R.integer.snackbar_duration);
-        Snackbar snackbar = Snackbar.make(attachTo, message, duration);
+        Snackbar snackbar = Snackbar.make(attachTo, EMPTY_MESSAGE, duration);
         return new MerlinSnackbar(snackbar);
     }
 
@@ -29,6 +24,16 @@ class MerlinSnackbar {
 
     MerlinSnackbar withTheme(Themer themer) {
         themer.theme(snackbar.getContext().getResources(), snackbar);
+        return this;
+    }
+
+    MerlinSnackbar withText(String message) {
+        snackbar.setText(message);
+        return this;
+    }
+
+    MerlinSnackbar withText(@StringRes int messageResource) {
+        snackbar.setText(messageResource);
         return this;
     }
 

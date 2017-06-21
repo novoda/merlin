@@ -40,9 +40,9 @@ public class RxJava2DemoActivity extends Activity {
         @Override
         public void onClick(View v) {
             if (merlinsBeard.isConnected()) {
-                networkStatusDisplayer.displayConnected();
+                networkStatusDisplayer.displayPositiveMessage(R.string.current_status_network_connected);
             } else {
-                networkStatusDisplayer.displayDisconnected();
+                networkStatusDisplayer.displayNegativeMessage(R.string.current_status_network_disconnected);
             }
         }
     };
@@ -52,9 +52,9 @@ public class RxJava2DemoActivity extends Activity {
         @Override
         public void onClick(View view) {
             if (merlinsBeard.isConnectedToWifi()) {
-                networkStatusDisplayer.displayConnected();
+                networkStatusDisplayer.displayPositiveMessage(R.string.wifi_connected);
             } else {
-                networkStatusDisplayer.displayDisconnected();
+                networkStatusDisplayer.displayNegativeMessage(R.string.wifi_disconnected);
             }
         }
     };
@@ -64,9 +64,9 @@ public class RxJava2DemoActivity extends Activity {
         @Override
         public void onClick(View view) {
             if (merlinsBeard.isConnectedToMobileNetwork()) {
-                networkStatusDisplayer.displayConnected();
+                networkStatusDisplayer.displayPositiveMessage(R.string.mobile_connected);
             } else {
-                networkStatusDisplayer.displayDisconnected();
+                networkStatusDisplayer.displayNegativeMessage(R.string.mobile_disconnected);
             }
         }
     };
@@ -106,9 +106,9 @@ public class RxJava2DemoActivity extends Activity {
         @Override
         public void accept(@NonNull NetworkStatus networkStatus) throws Exception {
             if (networkStatus.isAvailable()) {
-                networkStatusDisplayer.displayConnected();
+                networkStatusDisplayer.displayPositiveMessage(R.string.connected);
             } else {
-                networkStatusDisplayer.displayDisconnected();
+                networkStatusDisplayer.displayNegativeMessage(R.string.disconnected);
             }
         }
     }

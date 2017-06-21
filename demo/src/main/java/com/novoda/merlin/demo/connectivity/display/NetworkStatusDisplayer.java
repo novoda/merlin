@@ -1,6 +1,7 @@
 package com.novoda.merlin.demo.connectivity.display;
 
 import android.content.res.Resources;
+import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.novoda.merlin.demo.R;
@@ -17,20 +18,36 @@ public class NetworkStatusDisplayer {
         this.attachTo = attachTo;
     }
 
-    public void displayConnected() {
-        snackbar = MerlinSnackbar.withDuration(resources, attachTo, R.string.network_connected);
-        snackbar.withTheme(new PositiveThemer())
+    public void displayPositiveMessage(@StringRes int messageResource) {
+        snackbar = MerlinSnackbar.withDuration(resources, attachTo);
+        snackbar.withText(messageResource)
+                .withTheme(new PositiveThemer())
                 .show();
     }
 
-    public void displayDisconnected() {
-        snackbar = MerlinSnackbar.withDuration(resources, attachTo, R.string.network_disconnected);
-        snackbar.withTheme(new NegativeThemer())
+    public void displayNegativeMessage(@StringRes int messageResource) {
+        snackbar = MerlinSnackbar.withDuration(resources, attachTo);
+        snackbar.withText(messageResource)
+                .withTheme(new NegativeThemer())
                 .show();
     }
 
-    public void displayNetworkSubtype(String networkSubtype) {
-        snackbar = MerlinSnackbar.withDuration(resources, attachTo, networkSubtype);
+    public void displayNetworkSubtype(String subtype) {
+        snackbar = MerlinSnackbar.withDuration(resources, attachTo);
+
+        if (subtypeAbsent(subtype)) {
+            snackbar.withText(R.string.subtype_not_available)
+                    .withTheme(new NegativeThemer())
+                    .show();
+        } else {
+            snackbar.withText(resources.getString(R.string.subtype_value, subtype))
+                    .withTheme(new PositiveThemer())
+                    .show();
+        }
+    }
+
+    private boolean subtypeAbsent(String subtype) {
+        return subtype == null || subtype.isEmpty();
     }
 
     public void reset() {
