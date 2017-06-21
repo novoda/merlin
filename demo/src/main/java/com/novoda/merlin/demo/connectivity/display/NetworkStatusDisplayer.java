@@ -9,30 +9,28 @@ import com.novoda.merlin.demo.R;
 public class NetworkStatusDisplayer {
 
     private final Resources resources;
-    private final View attachTo;
 
     private MerlinSnackbar snackbar;
 
-    public NetworkStatusDisplayer(Resources resources, View attachTo) {
+    public NetworkStatusDisplayer(Resources resources) {
         this.resources = resources;
-        this.attachTo = attachTo;
     }
 
-    public void displayPositiveMessage(@StringRes int messageResource) {
+    public void displayPositiveMessage(@StringRes int messageResource, View attachTo) {
         snackbar = MerlinSnackbar.withDuration(resources, attachTo);
         snackbar.withText(messageResource)
                 .withTheme(new PositiveThemer())
                 .show();
     }
 
-    public void displayNegativeMessage(@StringRes int messageResource) {
+    public void displayNegativeMessage(@StringRes int messageResource, View attachTo) {
         snackbar = MerlinSnackbar.withDuration(resources, attachTo);
         snackbar.withText(messageResource)
                 .withTheme(new NegativeThemer())
                 .show();
     }
 
-    public void displayNetworkSubtype(String subtype) {
+    public void displayNetworkSubtype(String subtype, View attachTo) {
         snackbar = MerlinSnackbar.withDuration(resources, attachTo);
 
         if (subtypeAbsent(subtype)) {
@@ -51,7 +49,10 @@ public class NetworkStatusDisplayer {
     }
 
     public void reset() {
-        snackbar.dismiss();
+        if (snackbar != null) {
+            snackbar.dismiss();
+            snackbar = null;
+        }
     }
 
 }

@@ -17,14 +17,15 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
 
     private NetworkStatusDisplayer networkStatusDisplayer;
     private MerlinsBeard merlinsBeard;
+    private View viewToAttachDisplayerTo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        View rootView = findViewById(R.id.root);
-        networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), rootView);
+        viewToAttachDisplayerTo = findViewById(R.id.displayerAttachableView);
+        networkStatusDisplayer = new NetworkStatusDisplayer(getResources());
         merlinsBeard = MerlinsBeard.from(this);
 
         findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
@@ -37,9 +38,9 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         @Override
         public void onClick(View v) {
             if (merlinsBeard.isConnected()) {
-                networkStatusDisplayer.displayPositiveMessage(R.string.current_status_network_connected);
+                networkStatusDisplayer.displayPositiveMessage(R.string.current_status_network_connected, viewToAttachDisplayerTo);
             } else {
-                networkStatusDisplayer.displayNegativeMessage(R.string.current_status_network_disconnected);
+                networkStatusDisplayer.displayNegativeMessage(R.string.current_status_network_disconnected, viewToAttachDisplayerTo);
             }
         }
     };
@@ -49,9 +50,9 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         @Override
         public void onClick(View view) {
             if (merlinsBeard.isConnectedToWifi()) {
-                networkStatusDisplayer.displayPositiveMessage(R.string.wifi_connected);
+                networkStatusDisplayer.displayPositiveMessage(R.string.wifi_connected, viewToAttachDisplayerTo);
             } else {
-                networkStatusDisplayer.displayNegativeMessage(R.string.wifi_disconnected);
+                networkStatusDisplayer.displayNegativeMessage(R.string.wifi_disconnected, viewToAttachDisplayerTo);
             }
         }
     };
@@ -61,9 +62,9 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         @Override
         public void onClick(View view) {
             if (merlinsBeard.isConnectedToMobileNetwork()) {
-                networkStatusDisplayer.displayPositiveMessage(R.string.mobile_connected);
+                networkStatusDisplayer.displayPositiveMessage(R.string.mobile_connected, viewToAttachDisplayerTo);
             } else {
-                networkStatusDisplayer.displayNegativeMessage(R.string.mobile_disconnected);
+                networkStatusDisplayer.displayNegativeMessage(R.string.mobile_disconnected, viewToAttachDisplayerTo);
             }
         }
     };
@@ -72,7 +73,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
 
         @Override
         public void onClick(View view) {
-            networkStatusDisplayer.displayNetworkSubtype(merlinsBeard.getMobileNetworkSubtypeName());
+            networkStatusDisplayer.displayNetworkSubtype(merlinsBeard.getMobileNetworkSubtypeName(), viewToAttachDisplayerTo);
         }
     };
 
@@ -102,12 +103,12 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
 
     @Override
     public void onConnect() {
-        networkStatusDisplayer.displayPositiveMessage(R.string.connected);
+        networkStatusDisplayer.displayPositiveMessage(R.string.connected, viewToAttachDisplayerTo);
     }
 
     @Override
     public void onDisconnect() {
-        networkStatusDisplayer.displayNegativeMessage(R.string.disconnected);
+        networkStatusDisplayer.displayNegativeMessage(R.string.disconnected, viewToAttachDisplayerTo);
     }
 
     @Override

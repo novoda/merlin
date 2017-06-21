@@ -20,13 +20,14 @@ public class RxJava2DemoActivity extends Activity {
     private NetworkStatusDisplayer networkStatusDisplayer;
     private MerlinsBeard merlinsBeard;
     private CompositeDisposable disposables;
+    private View viewToAttachDisplayerTo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        View rootView = findViewById(R.id.root);
-        networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), rootView);
+        viewToAttachDisplayerTo = findViewById(R.id.displayerAttachableView);
+        networkStatusDisplayer = new NetworkStatusDisplayer(getResources());
         merlinsBeard = MerlinsBeard.from(this);
         disposables = new CompositeDisposable();
 
@@ -40,9 +41,9 @@ public class RxJava2DemoActivity extends Activity {
         @Override
         public void onClick(View v) {
             if (merlinsBeard.isConnected()) {
-                networkStatusDisplayer.displayPositiveMessage(R.string.current_status_network_connected);
+                networkStatusDisplayer.displayPositiveMessage(R.string.current_status_network_connected, viewToAttachDisplayerTo);
             } else {
-                networkStatusDisplayer.displayNegativeMessage(R.string.current_status_network_disconnected);
+                networkStatusDisplayer.displayNegativeMessage(R.string.current_status_network_disconnected, viewToAttachDisplayerTo);
             }
         }
     };
@@ -52,9 +53,9 @@ public class RxJava2DemoActivity extends Activity {
         @Override
         public void onClick(View view) {
             if (merlinsBeard.isConnectedToWifi()) {
-                networkStatusDisplayer.displayPositiveMessage(R.string.wifi_connected);
+                networkStatusDisplayer.displayPositiveMessage(R.string.wifi_connected, viewToAttachDisplayerTo);
             } else {
-                networkStatusDisplayer.displayNegativeMessage(R.string.wifi_disconnected);
+                networkStatusDisplayer.displayNegativeMessage(R.string.wifi_disconnected, viewToAttachDisplayerTo);
             }
         }
     };
@@ -64,9 +65,9 @@ public class RxJava2DemoActivity extends Activity {
         @Override
         public void onClick(View view) {
             if (merlinsBeard.isConnectedToMobileNetwork()) {
-                networkStatusDisplayer.displayPositiveMessage(R.string.mobile_connected);
+                networkStatusDisplayer.displayPositiveMessage(R.string.mobile_connected, viewToAttachDisplayerTo);
             } else {
-                networkStatusDisplayer.displayNegativeMessage(R.string.mobile_disconnected);
+                networkStatusDisplayer.displayNegativeMessage(R.string.mobile_disconnected, viewToAttachDisplayerTo);
             }
         }
     };
@@ -75,7 +76,7 @@ public class RxJava2DemoActivity extends Activity {
 
         @Override
         public void onClick(View view) {
-            networkStatusDisplayer.displayNetworkSubtype(merlinsBeard.getMobileNetworkSubtypeName());
+            networkStatusDisplayer.displayNetworkSubtype(merlinsBeard.getMobileNetworkSubtypeName(), viewToAttachDisplayerTo);
         }
     };
 
@@ -84,7 +85,7 @@ public class RxJava2DemoActivity extends Activity {
         super.onResume();
         Disposable merlinDisposable = MerlinFlowable.from(this)
                 .distinctUntilChanged()
-                .subscribe(new NetworkConsumer(networkStatusDisplayer));
+                .subscribe(new NetworkConsumer(networkStatusDisplayer, viewToAttachDisplayerTo));
         disposables.add(merlinDisposable);
     }
 
@@ -98,17 +99,19 @@ public class RxJava2DemoActivity extends Activity {
     private static class NetworkConsumer implements Consumer<NetworkStatus> {
 
         private final NetworkStatusDisplayer networkStatusDisplayer;
+        private final View viewToAttachDisplayerTo;
 
-        NetworkConsumer(NetworkStatusDisplayer networkStatusDisplayer) {
+        NetworkConsumer(NetworkStatusDisplayer networkStatusDisplayer, View viewToAttachDisplayerTo) {
             this.networkStatusDisplayer = networkStatusDisplayer;
+            this.viewToAttachDisplayerTo = viewToAttachDisplayerTo;
         }
 
         @Override
         public void accept(@NonNull NetworkStatus networkStatus) throws Exception {
             if (networkStatus.isAvailable()) {
-                networkStatusDisplayer.displayPositiveMessage(R.string.connected);
+                networkStatusDisplayer.displayPositiveMessage(R.string.connected, viewToAttachDisplayerTo);
             } else {
-                networkStatusDisplayer.displayNegativeMessage(R.string.disconnected);
+                networkStatusDisplayer.displayNegativeMessage(R.string.disconnected, viewToAttachDisplayerTo);
             }
         }
     }
