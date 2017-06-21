@@ -12,7 +12,7 @@ public class MerlinService extends Service {
 
     private static boolean isBound;
 
-    private final IBinder binder = new LocalBinder();
+    private IBinder binder = new LocalBinder();
 
     private ConnectivityChangesRegister connectivityChangesRegister;
     private ConnectivityChangesForwarder connectivityChangesForwarder;
@@ -31,6 +31,9 @@ public class MerlinService extends Service {
     public boolean onUnbind(Intent intent) {
         isBound = false;
         connectivityChangesRegister.unregister();
+        connectivityChangesForwarder = null;
+        connectivityChangesRegister = null;
+        binder = null;
         return super.onUnbind(intent);
     }
 
