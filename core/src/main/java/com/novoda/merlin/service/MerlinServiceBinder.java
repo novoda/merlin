@@ -48,6 +48,7 @@ public class MerlinServiceBinder {
     public void unbind() {
         if (MerlinService.isBound()) {
             context.unbindService(merlinServiceConnection);
+            context.stopService(new Intent(context, MerlinService.class));
             merlinServiceConnection = null;
         }
     }
