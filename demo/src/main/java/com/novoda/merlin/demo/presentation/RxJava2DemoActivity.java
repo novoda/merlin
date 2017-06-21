@@ -83,7 +83,7 @@ public class RxJava2DemoActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        Disposable merlinDisposable = MerlinFlowable.from(getApplicationContext())
+        Disposable merlinDisposable = MerlinFlowable.from(this)
                 .distinctUntilChanged()
                 .subscribe(new NetworkConsumer(networkStatusDisplayer, viewToAttachDisplayerTo));
         disposables.add(merlinDisposable);

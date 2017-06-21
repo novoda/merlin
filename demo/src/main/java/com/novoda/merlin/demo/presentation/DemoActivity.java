@@ -83,7 +83,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
                 .withConnectableCallbacks()
                 .withDisconnectableCallbacks()
                 .withBindableCallbacks()
-                .build(getApplicationContext());
+                .build(this);
     }
 
     @Override
