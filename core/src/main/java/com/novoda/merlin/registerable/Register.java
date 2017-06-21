@@ -21,4 +21,7 @@ public class Register<T extends Registerable> {
         return registerables;
     }
 
+    public void clear() {
+        registerables.clear();
+    }
 }
