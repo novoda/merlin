@@ -49,10 +49,11 @@ public class NetworkStatusDisplayer {
     }
 
     public void reset() {
-        if (snackbar != null) {
-            snackbar.dismiss();
-            snackbar = null;
+        if (snackbar == null) {
+            return;
         }
+        snackbar.dismiss();
+        snackbar = null;
     }
 
 }
