@@ -23,7 +23,7 @@ class MerlinSnackbar {
     }
 
     MerlinSnackbar withTheme(Themer themer) {
-        themer.theme(snackbar.getContext().getResources(), snackbar);
+        themer.applyTheme(snackbar.getContext().getResources(), snackbar);
         return this;
     }
 
