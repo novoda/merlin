@@ -1,7 +1,7 @@
 ext {
     versions = [
-            support            : '25.3.1',
-            androidSdk         : [
+            support   : '25.3.1',
+            androidSdk: [
                     compile   : 25,
                     min       : 14,
                     buildTools: '25.0.2'
@@ -15,14 +15,14 @@ ext {
             ],
             app  : [
                     supportAnnotations: "com.android.support:support-annotations:${versions.support}",
-                    crouton: 'de.keyboardsurfer.android.widget:crouton:1.7',
-                    rxJava: 'io.reactivex:rxjava:1.2.10',
-                    rxJava2: 'io.reactivex.rxjava2:rxjava:2.0.9'
+                    supportDesign     : "com.android.support:design:${versions.support}",
+                    rxJava            : 'io.reactivex:rxjava:1.2.10',
+                    rxJava2           : 'io.reactivex.rxjava2:rxjava:2.0.9'
             ],
             test : [
-                    jUnit: 'junit:junit:4.12',
+                    jUnit  : 'junit:junit:4.12',
                     mockito: 'org.mockito:mockito-core:2.7.22',
-                    fest: 'org.easytesting:fest-assert-core:2.0M8'
+                    fest   : 'org.easytesting:fest-assert-core:2.0M8'
             ]
     ]
 }

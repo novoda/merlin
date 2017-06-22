@@ -2,14 +2,11 @@ package com.novoda.merlin.demo.presentation;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.view.View;
-import android.widget.Toast;
 
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
-import com.novoda.merlin.demo.connectivity.display.NetworkStatusCroutonDisplayer;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
 import com.novoda.merlin.rxjava2.MerlinFlowable;
 
@@ -22,14 +19,15 @@ public class RxJava2DemoActivity extends Activity {
 
     private NetworkStatusDisplayer networkStatusDisplayer;
     private MerlinsBeard merlinsBeard;
-    private Toast toast;
     private CompositeDisposable disposables;
+    private View viewToAttachDisplayerTo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        networkStatusDisplayer = new NetworkStatusCroutonDisplayer(this);
+        viewToAttachDisplayerTo = findViewById(R.id.displayerAttachableView);
+        networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), merlinsBeard);
         merlinsBeard = MerlinsBeard.from(this);
         disposables = new CompositeDisposable();
 
@@ -43,9 +41,9 @@ public class RxJava2DemoActivity extends Activity {
         @Override
         public void onClick(View v) {
             if (merlinsBeard.isConnected()) {
-                showToast(R.string.toast_connected);
+                networkStatusDisplayer.displayPositiveMessage(R.string.current_status_network_connected, viewToAttachDisplayerTo);
             } else {
-                showToast(R.string.toast_disconnected);
+                networkStatusDisplayer.displayNegativeMessage(R.string.current_status_network_disconnected, viewToAttachDisplayerTo);
             }
         }
     };
@@ -55,9 +53,9 @@ public class RxJava2DemoActivity extends Activity {
         @Override
         public void onClick(View view) {
             if (merlinsBeard.isConnectedToWifi()) {
-                showToast(R.string.toast_connected);
+                networkStatusDisplayer.displayPositiveMessage(R.string.wifi_connected, viewToAttachDisplayerTo);
             } else {
-                showToast(R.string.toast_disconnected);
+                networkStatusDisplayer.displayNegativeMessage(R.string.wifi_disconnected, viewToAttachDisplayerTo);
             }
         }
     };
@@ -67,9 +65,9 @@ public class RxJava2DemoActivity extends Activity {
         @Override
         public void onClick(View view) {
             if (merlinsBeard.isConnectedToMobileNetwork()) {
-                showToast(R.string.toast_connected);
+                networkStatusDisplayer.displayPositiveMessage(R.string.mobile_connected, viewToAttachDisplayerTo);
             } else {
-                showToast(R.string.toast_disconnected);
+                networkStatusDisplayer.displayNegativeMessage(R.string.mobile_disconnected, viewToAttachDisplayerTo);
             }
         }
     };
@@ -78,29 +76,16 @@ public class RxJava2DemoActivity extends Activity {
 
         @Override
         public void onClick(View view) {
-            showToast(merlinsBeard.getMobileNetworkSubtypeName());
+            networkStatusDisplayer.displayNetworkSubtype(viewToAttachDisplayerTo);
         }
     };
-
-    private void showToast(@StringRes int toastText) {
-        String message = getString(toastText);
-        showToast(message);
-    }
-
-    private void showToast(String toastText) {
-        if (toast != null) {
-            toast.cancel();
-        }
-        toast = Toast.makeText(this, toastText, Toast.LENGTH_SHORT);
-        toast.show();
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
-         Disposable merlinDisposable = MerlinFlowable.from(this)
-                                                     .distinctUntilChanged()
-                                                     .subscribe(new NetworkConsumer(networkStatusDisplayer));
+        Disposable merlinDisposable = MerlinFlowable.from(this)
+                .distinctUntilChanged()
+                .subscribe(new NetworkConsumer(networkStatusDisplayer, viewToAttachDisplayerTo));
         disposables.add(merlinDisposable);
     }
 
@@ -114,17 +99,19 @@ public class RxJava2DemoActivity extends Activity {
     private static class NetworkConsumer implements Consumer<NetworkStatus> {
 
         private final NetworkStatusDisplayer networkStatusDisplayer;
+        private final View viewToAttachDisplayerTo;
 
-        NetworkConsumer(NetworkStatusDisplayer networkStatusDisplayer) {
+        NetworkConsumer(NetworkStatusDisplayer networkStatusDisplayer, View viewToAttachDisplayerTo) {
             this.networkStatusDisplayer = networkStatusDisplayer;
+            this.viewToAttachDisplayerTo = viewToAttachDisplayerTo;
         }
 
         @Override
         public void accept(@NonNull NetworkStatus networkStatus) throws Exception {
             if (networkStatus.isAvailable()) {
-                networkStatusDisplayer.displayConnected();
+                networkStatusDisplayer.displayPositiveMessage(R.string.connected, viewToAttachDisplayerTo);
             } else {
-                networkStatusDisplayer.displayDisconnected();
+                networkStatusDisplayer.displayNegativeMessage(R.string.disconnected, viewToAttachDisplayerTo);
             }
         }
     }

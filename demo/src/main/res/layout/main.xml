@@ -1,42 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/displayerAttachableView"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:paddingTop="@dimen/content_padding_top">
 
   <Button
     android:id="@+id/current_status"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
+    android:layout_gravity="center_horizontal"
     android:text="@string/current_status" />
 
   <Button
     android:id="@+id/wifi_connected"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
-    android:layout_below="@+id/current_status"
+    android:layout_gravity="center_horizontal"
     android:text="@string/is_wifi_connected" />
 
   <Button
     android:id="@+id/mobile_connected"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
-    android:layout_below="@+id/wifi_connected"
+    android:layout_gravity="center_horizontal"
     android:text="@string/is_mobile_connected" />
 
   <Button
     android:id="@+id/network_subtype"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
-    android:layout_below="@+id/mobile_connected"
+    android:layout_gravity="center_horizontal"
     android:text="@string/get_network_subtype" />
 
-</RelativeLayout>
+</LinearLayout>
