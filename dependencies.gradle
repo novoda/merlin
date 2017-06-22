@@ -1,28 +1,28 @@
 ext {
     versions = [
-            support   : "25.3.1",
+            support   : '25.3.1',
             androidSdk: [
                     compile   : 25,
                     min       : 14,
-                    buildTools: "25.0.2"
+                    buildTools: '25.0.2'
             ]
     ]
 
     libraries = [
             build: [
-                    androidGradle : "com.android.tools.build:gradle:2.3.1",
-                    bintrayRelease: "com.novoda:bintray-release:0.4.0"
+                    androidGradle : 'com.android.tools.build:gradle:2.3.1',
+                    bintrayRelease: 'com.novoda:bintray-release:0.4.0'
             ],
             app  : [
                     supportAnnotations: "com.android.support:support-annotations:${versions.support}",
                     supportDesign     : "com.android.support:design:${versions.support}",
-                    rxJava            : "io.reactivex:rxjava:1.2.10",
-                    rxJava2           : "io.reactivex.rxjava2:rxjava:2.0.9"
+                    rxJava            : 'io.reactivex:rxjava:1.2.10',
+                    rxJava2           : 'io.reactivex.rxjava2:rxjava:2.0.9'
             ],
             test : [
-                    jUnit  : "junit:junit:4.12",
-                    mockito: "org.mockito:mockito-core:2.7.22",
-                    fest   : "org.easytesting:fest-assert-core:2.0M8"
+                    jUnit  : 'junit:junit:4.12',
+                    mockito: 'org.mockito:mockito-core:2.7.22',
+                    fest   : 'org.easytesting:fest-assert-core:2.0M8'
             ]
     ]
 }
