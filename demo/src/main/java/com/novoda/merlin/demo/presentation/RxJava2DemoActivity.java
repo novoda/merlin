@@ -27,7 +27,7 @@ public class RxJava2DemoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         viewToAttachDisplayerTo = findViewById(R.id.displayerAttachableView);
-        networkStatusDisplayer = new NetworkStatusDisplayer(getResources());
+        networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), merlinsBeard);
         merlinsBeard = MerlinsBeard.from(this);
         disposables = new CompositeDisposable();
 
@@ -76,7 +76,7 @@ public class RxJava2DemoActivity extends Activity {
 
         @Override
         public void onClick(View view) {
-            networkStatusDisplayer.displayNetworkSubtype(merlinsBeard.getMobileNetworkSubtypeName(), viewToAttachDisplayerTo);
+            networkStatusDisplayer.displayNetworkSubtype(viewToAttachDisplayerTo);
         }
     };
 

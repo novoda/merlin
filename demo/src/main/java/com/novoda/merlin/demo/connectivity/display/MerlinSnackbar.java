@@ -1,19 +1,18 @@
 package com.novoda.merlin.demo.connectivity.display;
 
 import android.content.res.Resources;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.view.View;
-
-import com.novoda.merlin.demo.R;
 
 class MerlinSnackbar {
 
     private static final String EMPTY_MESSAGE = "";
     private final Snackbar snackbar;
 
-    static MerlinSnackbar withDuration(Resources resources, View attachTo) {
-        int duration = resources.getInteger(R.integer.snackbar_duration);
+    static MerlinSnackbar withDuration(Resources resources, View attachTo, @IntegerRes int durationResource) {
+        int duration = resources.getInteger(durationResource);
         Snackbar snackbar = Snackbar.make(attachTo, EMPTY_MESSAGE, duration);
         return new MerlinSnackbar(snackbar);
     }
@@ -23,7 +22,7 @@ class MerlinSnackbar {
     }
 
     MerlinSnackbar withTheme(Themer themer) {
-        themer.theme(snackbar.getContext().getResources(), snackbar);
+        themer.applyTheme(snackbar.getContext().getResources(), snackbar);
         return this;
     }
 

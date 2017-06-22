@@ -10,7 +10,7 @@ import com.novoda.merlin.demo.R;
 class NegativeThemer implements Themer {
 
     @Override
-    public void theme(Resources resources, Snackbar snackbar) {
+    public void applyTheme(Resources resources, Snackbar snackbar) {
         Snackbar.SnackbarLayout snackbarView = (Snackbar.SnackbarLayout) snackbar.getView();
 
         TextView messageView = (TextView) snackbarView.findViewById(R.id.snackbar_text);
