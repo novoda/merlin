@@ -25,8 +25,8 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         setContentView(R.layout.main);
 
         viewToAttachDisplayerTo = findViewById(R.id.displayerAttachableView);
-        networkStatusDisplayer = new NetworkStatusDisplayer(getResources());
         merlinsBeard = MerlinsBeard.from(this);
+        networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), merlinsBeard);
 
         findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
         findViewById(R.id.wifi_connected).setOnClickListener(wifiConnectedOnClick);
@@ -73,7 +73,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
 
         @Override
         public void onClick(View view) {
-            networkStatusDisplayer.displayNetworkSubtype(merlinsBeard.getMobileNetworkSubtypeName(), viewToAttachDisplayerTo);
+            networkStatusDisplayer.displayNetworkSubtype(viewToAttachDisplayerTo);
         }
     };
 
