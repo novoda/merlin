@@ -17,21 +17,21 @@ public class NetworkStatusDisplayer {
     }
 
     public void displayPositiveMessage(@StringRes int messageResource, View attachTo) {
-        snackbar = MerlinSnackbar.withDuration(resources, attachTo);
+        snackbar = MerlinSnackbar.withDuration(resources, attachTo, R.integer.snackbar_duration);
         snackbar.withText(messageResource)
                 .withTheme(new PositiveThemer())
                 .show();
     }
 
     public void displayNegativeMessage(@StringRes int messageResource, View attachTo) {
-        snackbar = MerlinSnackbar.withDuration(resources, attachTo);
+        snackbar = MerlinSnackbar.withDuration(resources, attachTo, R.integer.snackbar_duration);
         snackbar.withText(messageResource)
                 .withTheme(new NegativeThemer())
                 .show();
     }
 
     public void displayNetworkSubtype(String subtype, View attachTo) {
-        snackbar = MerlinSnackbar.withDuration(resources, attachTo);
+        snackbar = MerlinSnackbar.withDuration(resources, attachTo, R.integer.snackbar_duration);
 
         if (subtypeAbsent(subtype)) {
             snackbar.withText(R.string.subtype_not_available)
