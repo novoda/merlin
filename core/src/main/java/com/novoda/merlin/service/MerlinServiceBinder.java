@@ -87,9 +87,9 @@ public class MerlinServiceBinder {
                     endpointPinger
             );
 
-            merlinServiceBinder.setConnectivityChangesRegister(connectivityChangesRegister);
-            merlinServiceBinder.setConnectivityChangesForwarder(connectivityChangesForwarder);
-            merlinServiceBinder.onBindComplete();
+            merlinServiceBinder.setConnectivityChangesRegister(connectivityChangesRegister)
+                    .setConnectivityChangesForwarder(connectivityChangesForwarder)
+                    .onBindComplete();
         }
 
         @Override

@@ -59,15 +59,25 @@ public class MerlinService extends Service {
             return MerlinService.this.connectivityChangesListener;
         }
 
-        void setConnectivityChangesRegister(ConnectivityChangesRegister connectivityChangesRegister) {
+        LocalBinder setConnectivityChangesRegister(ConnectivityChangesRegister connectivityChangesRegister) {
             MerlinService.this.connectivityChangesRegister = connectivityChangesRegister;
+            return this;
         }
 
-        void setConnectivityChangesForwarder(ConnectivityChangesForwarder connectivityChangesForwarder) {
+        LocalBinder setConnectivityChangesForwarder(ConnectivityChangesForwarder connectivityChangesForwarder) {
             MerlinService.this.connectivityChangesForwarder = connectivityChangesForwarder;
+            return this;
         }
 
         void onBindComplete() {
+            if (MerlinService.this.connectivityChangesRegister == null) {
+                throw new IllegalStateException("setConnectivityChangesRegister must be called.");
+            }
+
+            if (MerlinService.this.connectivityChangesForwarder == null) {
+                throw new IllegalStateException("setConnectivityChangesForwarder must be called.");
+            }
+
             MerlinService.this.start();
         }
     }
