@@ -45,8 +45,19 @@ public class MerlinService extends Service {
     }
 
     private void start() {
+        assertDependenciesBound();
         connectivityChangesForwarder.forwardInitialNetworkStatus();
         connectivityChangesRegister.register(connectivityChangesListener);
+    }
+
+    private void assertDependenciesBound() {
+        if (MerlinService.this.connectivityChangesRegister == null) {
+            throw MerlinServiceDependencyMissingException.missing(ConnectivityChangesRegister.class);
+        }
+
+        if (MerlinService.this.connectivityChangesForwarder == null) {
+            throw MerlinServiceDependencyMissingException.missing(ConnectivityChangesForwarder.class);
+        }
     }
 
     private final ConnectivityChangesListener connectivityChangesListener = new ConnectivityChangesListener() {
@@ -75,18 +86,7 @@ public class MerlinService extends Service {
         }
 
         void onBindComplete() {
-            assertDependenciesBound();
             MerlinService.this.start();
-        }
-
-        private void assertDependenciesBound() {
-            if (MerlinService.this.connectivityChangesRegister == null) {
-                throw LocalBinderDependencyMissingException.missing(ConnectivityChangesRegister.class);
-            }
-
-            if (MerlinService.this.connectivityChangesForwarder == null) {
-                throw LocalBinderDependencyMissingException.missing(ConnectivityChangesForwarder.class);
-            }
         }
     }
 

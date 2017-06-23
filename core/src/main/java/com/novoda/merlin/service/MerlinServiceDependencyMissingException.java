@@ -2,21 +2,21 @@ package com.novoda.merlin.service;
 
 import java.util.Locale;
 
-class LocalBinderDependencyMissingException extends IllegalStateException {
+class MerlinServiceDependencyMissingException extends IllegalStateException {
 
     private static final String DEPENDENCY_ASSERT_FORMAT = "%s must be bound to %s.";
 
-    static LocalBinderDependencyMissingException missing(Class dependency) {
+    static MerlinServiceDependencyMissingException missing(Class dependency) {
         String message = String.format(
                 Locale.ENGLISH,
                 DEPENDENCY_ASSERT_FORMAT,
                 dependency,
                 MerlinService.class
         );
-        return new LocalBinderDependencyMissingException(message);
+        return new MerlinServiceDependencyMissingException(message);
     }
 
-    private LocalBinderDependencyMissingException(String message) {
+    private MerlinServiceDependencyMissingException(String message) {
         super(message);
     }
 }

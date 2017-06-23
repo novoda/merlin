@@ -17,6 +17,7 @@ import org.mockito.junit.MockitoRule;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class MerlinServiceTest {
 
@@ -98,23 +99,29 @@ public class MerlinServiceTest {
     }
 
     @Test
-    public void givenConnectivityChangesRegisterIsNotBound_whenBindCompletes_thenThrowsException() {
-        thrown.expect(LocalBinderDependencyMissingExceptionMatcher.from(ConnectivityChangesRegister.class));
+    public void givenConnectivityChangesRegisterIsNotBound_whenBindCompletes_thenThrowsException_andStopsWorkOnService() {
+        thrown.expect(MerlinServiceDependencyMissingExceptionMatcher.from(ConnectivityChangesRegister.class));
 
         MerlinService.LocalBinder binder = (MerlinService.LocalBinder) merlinService.onBind(intent);
         binder.setConnectivityChangesForwarder(connectivityChangesForwarder);
 
         binder.onBindComplete();
+
+        verifyZeroInteractions(connectivityChangesRegister);
+        verifyZeroInteractions(connectivityChangesForwarder);
     }
 
     @Test
-    public void givenConnectivityChangesForwarderIsNotBound_whenBindCompletes_thenThrowsException() {
-        thrown.expect(LocalBinderDependencyMissingExceptionMatcher.from(ConnectivityChangesForwarder.class));
+    public void givenConnectivityChangesForwarderIsNotBound_whenBindCompletes_thenThrowsException_andStopsWorkOnService() {
+        thrown.expect(MerlinServiceDependencyMissingExceptionMatcher.from(ConnectivityChangesForwarder.class));
 
         MerlinService.LocalBinder binder = (MerlinService.LocalBinder) merlinService.onBind(intent);
         binder.setConnectivityChangesRegister(connectivityChangesRegister);
 
         binder.onBindComplete();
+
+        verifyZeroInteractions(connectivityChangesRegister);
+        verifyZeroInteractions(connectivityChangesForwarder);
     }
 
     private MerlinService.LocalBinder givenBoundMerlinService() {

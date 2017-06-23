@@ -3,32 +3,32 @@ package com.novoda.merlin.service;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
-class LocalBinderDependencyMissingExceptionMatcher extends BaseMatcher<LocalBinderDependencyMissingException> {
+class MerlinServiceDependencyMissingExceptionMatcher extends BaseMatcher<MerlinServiceDependencyMissingException> {
 
     private String expectedMessage;
     private Throwable expectedCause;
 
-    public static LocalBinderDependencyMissingExceptionMatcher from(Class expectedDependency) {
-        LocalBinderDependencyMissingException expectedException = LocalBinderDependencyMissingException.missing(expectedDependency);
-        return new LocalBinderDependencyMissingExceptionMatcher(expectedException);
+    public static MerlinServiceDependencyMissingExceptionMatcher from(Class expectedDependency) {
+        MerlinServiceDependencyMissingException expectedException = MerlinServiceDependencyMissingException.missing(expectedDependency);
+        return new MerlinServiceDependencyMissingExceptionMatcher(expectedException);
     }
 
-    private LocalBinderDependencyMissingExceptionMatcher(LocalBinderDependencyMissingException exception) {
+    private MerlinServiceDependencyMissingExceptionMatcher(MerlinServiceDependencyMissingException exception) {
         this.expectedMessage = exception.getMessage();
         this.expectedCause = exception.getCause();
     }
 
     @Override
     public boolean matches(Object o) {
-        LocalBinderDependencyMissingException exception = (LocalBinderDependencyMissingException) o;
+        MerlinServiceDependencyMissingException exception = (MerlinServiceDependencyMissingException) o;
         return messageMatches(exception) && causeMatches(exception);
     }
 
-    private boolean messageMatches(LocalBinderDependencyMissingException exception) {
+    private boolean messageMatches(MerlinServiceDependencyMissingException exception) {
         return expectedMessage.equals(exception.getMessage());
     }
 
-    private boolean causeMatches(LocalBinderDependencyMissingException exception) {
+    private boolean causeMatches(MerlinServiceDependencyMissingException exception) {
         if (expectedCause == null) {
             return exception.getCause() == null;
         } else {
@@ -40,7 +40,7 @@ class LocalBinderDependencyMissingExceptionMatcher extends BaseMatcher<LocalBind
     public void describeTo(Description description) {
         String message = String.format(
                 "%s: %s, cause: %s",
-                LocalBinderDependencyMissingException.class.getSimpleName(),
+                MerlinServiceDependencyMissingException.class.getSimpleName(),
                 expectedMessage,
                 expectedCause
         );
@@ -54,7 +54,7 @@ class LocalBinderDependencyMissingExceptionMatcher extends BaseMatcher<LocalBind
             Throwable throwable = (Throwable) item;
             String message = String.format(
                     "was: %s: %s, cause: %s",
-                    LocalBinderDependencyMissingException.class.getSimpleName(),
+                    MerlinServiceDependencyMissingException.class.getSimpleName(),
                     throwable.getMessage(),
                     throwable.getCause()
             );
