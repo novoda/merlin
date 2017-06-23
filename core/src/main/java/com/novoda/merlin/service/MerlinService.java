@@ -30,9 +30,16 @@ public class MerlinService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         isBound = false;
-        connectivityChangesRegister.unregister();
-        connectivityChangesForwarder = null;
-        connectivityChangesRegister = null;
+        if (connectivityChangesRegister != null) {
+            connectivityChangesRegister.unregister();
+            connectivityChangesRegister = null;
+
+        }
+
+        if (connectivityChangesForwarder != null) {
+            connectivityChangesForwarder = null;
+        }
+
         binder = null;
         return super.onUnbind(intent);
     }
@@ -68,15 +75,18 @@ public class MerlinService extends Service {
         }
 
         void onBindComplete() {
+            assertDependenciesBound();
+            MerlinService.this.start();
+        }
+
+        private void assertDependenciesBound() {
             if (MerlinService.this.connectivityChangesRegister == null) {
-                throw new IllegalStateException("setConnectivityChangesRegister must be called.");
+                throw LocalBinderDependencyMissingException.missing(ConnectivityChangesRegister.class);
             }
 
             if (MerlinService.this.connectivityChangesForwarder == null) {
-                throw new IllegalStateException("setConnectivityChangesForwarder must be called.");
+                throw LocalBinderDependencyMissingException.missing(ConnectivityChangesForwarder.class);
             }
-
-            MerlinService.this.start();
         }
     }
 
