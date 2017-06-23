@@ -8,6 +8,7 @@ import com.novoda.merlin.receiver.ConnectivityChangesRegister;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
@@ -25,6 +26,8 @@ public class MerlinServiceTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Mock
     private Intent intent;
@@ -92,6 +95,26 @@ public class MerlinServiceTest {
         connectivityChangesListener.onConnectivityChanged(ANY_CONNECTIVITY_CHANGE_EVENT);
 
         verify(connectivityChangesForwarder).forward(ANY_CONNECTIVITY_CHANGE_EVENT);
+    }
+
+    @Test
+    public void givenConnectivityChangesRegisterIsNotBound_whenBindCompletes_thenThrowsException() {
+        thrown.expect(LocalBinderDependencyMissingExceptionMatcher.from(ConnectivityChangesRegister.class));
+
+        MerlinService.LocalBinder binder = (MerlinService.LocalBinder) merlinService.onBind(intent);
+        binder.setConnectivityChangesForwarder(connectivityChangesForwarder);
+
+        binder.onBindComplete();
+    }
+
+    @Test
+    public void givenConnectivityChangesForwarderIsNotBound_whenBindCompletes_thenThrowsException() {
+        thrown.expect(LocalBinderDependencyMissingExceptionMatcher.from(ConnectivityChangesForwarder.class));
+
+        MerlinService.LocalBinder binder = (MerlinService.LocalBinder) merlinService.onBind(intent);
+        binder.setConnectivityChangesRegister(connectivityChangesRegister);
+
+        binder.onBindComplete();
     }
 
     private MerlinService.LocalBinder givenBoundMerlinService() {
