@@ -12,7 +12,7 @@ public class MerlinService extends Service {
 
     private static boolean isBound;
 
-    private final IBinder binder = new LocalBinder();
+    private IBinder binder = new LocalBinder();
 
     private ConnectivityChangesRegister connectivityChangesRegister;
     private ConnectivityChangesForwarder connectivityChangesForwarder;
@@ -30,13 +30,34 @@ public class MerlinService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         isBound = false;
-        connectivityChangesRegister.unregister();
+        if (connectivityChangesRegister != null) {
+            connectivityChangesRegister.unregister();
+            connectivityChangesRegister = null;
+
+        }
+
+        if (connectivityChangesForwarder != null) {
+            connectivityChangesForwarder = null;
+        }
+
+        binder = null;
         return super.onUnbind(intent);
     }
 
     private void start() {
+        assertDependenciesBound();
         connectivityChangesForwarder.forwardInitialNetworkStatus();
         connectivityChangesRegister.register(connectivityChangesListener);
+    }
+
+    private void assertDependenciesBound() {
+        if (MerlinService.this.connectivityChangesRegister == null) {
+            throw MerlinServiceDependencyMissingException.missing(ConnectivityChangesRegister.class);
+        }
+
+        if (MerlinService.this.connectivityChangesForwarder == null) {
+            throw MerlinServiceDependencyMissingException.missing(ConnectivityChangesForwarder.class);
+        }
     }
 
     private final ConnectivityChangesListener connectivityChangesListener = new ConnectivityChangesListener() {

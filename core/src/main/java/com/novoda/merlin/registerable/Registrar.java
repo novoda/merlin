@@ -60,4 +60,9 @@ public class Registrar {
         return bindables;
     }
 
+    public void clearRegistrations() {
+        connectables.clear();
+        disconnectables.clear();
+        bindables.clear();
+    }
 }

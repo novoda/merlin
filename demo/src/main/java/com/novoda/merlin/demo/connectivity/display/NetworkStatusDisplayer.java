@@ -1,6 +1,7 @@
 package com.novoda.merlin.demo.connectivity.display;
 
 import android.content.res.Resources;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.View;
 
@@ -12,6 +13,7 @@ public class NetworkStatusDisplayer {
     private final Resources resources;
     private final MerlinsBeard merlinsBeard;
 
+    @Nullable
     private MerlinSnackbar snackbar;
 
     public NetworkStatusDisplayer(Resources resources, MerlinsBeard merlinsBeard) {
@@ -20,31 +22,42 @@ public class NetworkStatusDisplayer {
     }
 
     public void displayPositiveMessage(@StringRes int messageResource, View attachTo) {
-        snackbar = MerlinSnackbar.withDuration(resources, attachTo, R.integer.snackbar_duration);
-        snackbar.withText(messageResource)
+        snackbar = MerlinSnackbar.withDuration(resources, attachTo, R.integer.snackbar_duration)
+                .withText(messageResource)
                 .withTheme(new PositiveThemer())
                 .show();
     }
 
     public void displayNegativeMessage(@StringRes int messageResource, View attachTo) {
-        snackbar = MerlinSnackbar.withDuration(resources, attachTo, R.integer.snackbar_duration);
-        snackbar.withText(messageResource)
+        snackbar = MerlinSnackbar.withDuration(resources, attachTo, R.integer.snackbar_duration)
+                .withText(messageResource)
                 .withTheme(new NegativeThemer())
                 .show();
     }
 
     public void displayNetworkSubtype(View attachTo) {
         String subtype = merlinsBeard.getMobileNetworkSubtypeName();
-        snackbar = MerlinSnackbar.withDuration(resources, attachTo, R.integer.snackbar_duration);
+        snackbar = MerlinSnackbar.withDuration(resources, attachTo, R.integer.snackbar_duration)
+                .withText(subtypeMessageFrom(subtype))
+                .withTheme(subtypeThemerFrom(subtype))
+                .show();
 
+    }
+
+    @StringRes
+    private int subtypeMessageFrom(String subtype) {
         if (subtypeAbsent(subtype)) {
-            snackbar.withText(R.string.subtype_not_available)
-                    .withTheme(new NegativeThemer())
-                    .show();
+            return R.string.subtype_not_available;
         } else {
-            snackbar.withText(resources.getString(R.string.subtype_value, subtype))
-                    .withTheme(new PositiveThemer())
-                    .show();
+            return R.string.subtype_value;
+        }
+    }
+
+    private Themer subtypeThemerFrom(String subtype) {
+        if (subtypeAbsent(subtype)) {
+            return new NegativeThemer();
+        } else {
+            return new PositiveThemer();
         }
     }
 

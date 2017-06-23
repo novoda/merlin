@@ -8,6 +8,7 @@ import com.novoda.merlin.receiver.ConnectivityChangesRegister;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
@@ -16,6 +17,7 @@ import org.mockito.junit.MockitoRule;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class MerlinServiceTest {
 
@@ -25,6 +27,8 @@ public class MerlinServiceTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Mock
     private Intent intent;
@@ -92,6 +96,32 @@ public class MerlinServiceTest {
         connectivityChangesListener.onConnectivityChanged(ANY_CONNECTIVITY_CHANGE_EVENT);
 
         verify(connectivityChangesForwarder).forward(ANY_CONNECTIVITY_CHANGE_EVENT);
+    }
+
+    @Test
+    public void givenConnectivityChangesRegisterIsNotBound_whenBindCompletes_thenThrowsException_andStopsWorkOnService() {
+        thrown.expect(MerlinServiceDependencyMissingExceptionMatcher.from(ConnectivityChangesRegister.class));
+
+        MerlinService.LocalBinder binder = (MerlinService.LocalBinder) merlinService.onBind(intent);
+        binder.setConnectivityChangesForwarder(connectivityChangesForwarder);
+
+        binder.onBindComplete();
+
+        verifyZeroInteractions(connectivityChangesRegister);
+        verifyZeroInteractions(connectivityChangesForwarder);
+    }
+
+    @Test
+    public void givenConnectivityChangesForwarderIsNotBound_whenBindCompletes_thenThrowsException_andStopsWorkOnService() {
+        thrown.expect(MerlinServiceDependencyMissingExceptionMatcher.from(ConnectivityChangesForwarder.class));
+
+        MerlinService.LocalBinder binder = (MerlinService.LocalBinder) merlinService.onBind(intent);
+        binder.setConnectivityChangesRegister(connectivityChangesRegister);
+
+        binder.onBindComplete();
+
+        verifyZeroInteractions(connectivityChangesRegister);
+        verifyZeroInteractions(connectivityChangesForwarder);
     }
 
     private MerlinService.LocalBinder givenBoundMerlinService() {

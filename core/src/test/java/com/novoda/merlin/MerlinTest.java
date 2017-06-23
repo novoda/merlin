@@ -65,6 +65,13 @@ public class MerlinTest {
     }
 
     @Test
+    public void whenUnbinding_thenClearsRegistrations() {
+        merlin.unbind();
+
+        verify(registrar).clearRegistrations();
+    }
+
+    @Test
     public void whenRegisteringConnectable_thenRegistersConnectable() {
         Connectable connectable = mock(Connectable.class);
 

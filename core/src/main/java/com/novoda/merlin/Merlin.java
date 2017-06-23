@@ -27,6 +27,7 @@ public class Merlin {
 
     public void unbind() {
         merlinServiceBinder.unbind();
+        registrar.clearRegistrations();
     }
 
     public void registerConnectable(Connectable connectable) {

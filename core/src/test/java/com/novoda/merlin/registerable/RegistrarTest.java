@@ -21,21 +21,21 @@ public class RegistrarTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    private Register<Connectable> connector;
+    private Register<Connectable> connectables;
     @Mock
-    private Register<Disconnectable> disconnector;
+    private Register<Disconnectable> disconnectables;
     @Mock
-    private Register<Bindable> binder;
+    private Register<Bindable> bindables;
 
     private Registrar registrar;
 
     @Before
     public void setUp() {
-        registrar = new Registrar(connector, disconnector, binder);
+        registrar = new Registrar(connectables, disconnectables, bindables);
     }
 
     @Test(expected = MerlinException.class)
-    public void givenMissingConnector_whenRegisteringConnectable_thenThrowsDeveloperException() {
+    public void givenMissingRegister_whenRegisteringConnectable_thenThrowsDeveloperException() {
         registrar = new Registrar(null, null, null);
 
         Connectable connectable = mock(Connectable.class);
@@ -43,7 +43,7 @@ public class RegistrarTest {
     }
 
     @Test(expected = MerlinException.class)
-    public void givenMissingDisconnector_thenRegisteringDisconnectable_thenThrowsDeveloperException() {
+    public void givenMissingRegister_thenRegisteringDisconnectable_thenThrowsDeveloperException() {
         registrar = new Registrar(null, null, null);
 
         Disconnectable disconnectable = mock(Disconnectable.class);
@@ -51,7 +51,7 @@ public class RegistrarTest {
     }
 
     @Test(expected = MerlinException.class)
-    public void givenMissingBinder_whenRegisteringBindable_thenThrowsDeveloperException() {
+    public void givenMissingRegister_whenRegisteringBindable_thenThrowsDeveloperException() {
         registrar = new Registrar(null, null, null);
 
         Bindable bindable = mock(Bindable.class);
@@ -59,30 +59,39 @@ public class RegistrarTest {
     }
 
     @Test
-    public void givenConnector_whenRegisteringConnectable_thenRegistersConnectableWithConnector() {
+    public void givenRegister_whenRegisteringConnectable_thenRegistersConnectableWithConnector() {
         Connectable connectable = mock(Connectable.class);
 
         registrar.registerConnectable(connectable);
 
-        verify(connector).register(connectable);
+        verify(connectables).register(connectable);
     }
 
     @Test
-    public void givenDisconnector_whenRegisteringDisconnectable_thenRegistersDisconnectableWithDisconnector() {
+    public void givenRegister_whenRegisteringDisconnectable_thenRegistersDisconnectableWithDisconnector() {
         Disconnectable disconnectable = mock(Disconnectable.class);
 
         registrar.registerDisconnectable(disconnectable);
 
-        verify(disconnector).register(disconnectable);
+        verify(this.disconnectables).register(disconnectable);
     }
 
     @Test
-    public void givenBinder_whenRegisteringBindable_thenRegistersBindableWithBinder() {
+    public void givenRegister_whenRegisteringBindable_thenRegistersBindableWithBinder() {
         Bindable bindable = mock(Bindable.class);
 
         registrar.registerBindable(bindable);
 
-        verify(binder).register(bindable);
+        verify(bindables).register(bindable);
+    }
+
+    @Test
+    public void whenClearingRegistrations_thenDelegatesClearingToRegisters() {
+        registrar.clearRegistrations();
+
+        verify(connectables).clear();
+        verify(disconnectables).clear();
+        verify(bindables).clear();
     }
 
 }
