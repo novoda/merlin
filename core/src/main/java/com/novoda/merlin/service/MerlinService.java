@@ -59,14 +59,12 @@ public class MerlinService extends Service {
             return MerlinService.this.connectivityChangesListener;
         }
 
-        LocalBinder setConnectivityChangesRegister(ConnectivityChangesRegister connectivityChangesRegister) {
+        void setConnectivityChangesRegister(ConnectivityChangesRegister connectivityChangesRegister) {
             MerlinService.this.connectivityChangesRegister = connectivityChangesRegister;
-            return this;
         }
 
-        LocalBinder setConnectivityChangesForwarder(ConnectivityChangesForwarder connectivityChangesForwarder) {
+        void setConnectivityChangesForwarder(ConnectivityChangesForwarder connectivityChangesForwarder) {
             MerlinService.this.connectivityChangesForwarder = connectivityChangesForwarder;
-            return this;
         }
 
         void onBindComplete() {
