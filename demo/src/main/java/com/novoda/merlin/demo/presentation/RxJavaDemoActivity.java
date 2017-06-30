@@ -26,8 +26,8 @@ public class RxJavaDemoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         viewToAttachDisplayerTo = findViewById(R.id.displayerAttachableView);
-        networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), merlinsBeard);
         merlinsBeard = MerlinsBeard.from(this);
+        networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), merlinsBeard);
         subscriptions = new CompositeSubscription();
 
         findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
