@@ -44,12 +44,11 @@ public class NetworkStatusDisplayer {
 
     }
 
-    @StringRes
-    private int subtypeMessageFrom(String subtype) {
+    private String subtypeMessageFrom(String subtype) {
         if (subtypeAbsent(subtype)) {
-            return R.string.subtype_not_available;
+            return resources.getString(R.string.subtype_not_available);
         } else {
-            return R.string.subtype_value;
+            return resources.getString(R.string.subtype_value, subtype);
         }
     }
 
