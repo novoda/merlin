@@ -1,6 +1,6 @@
 ![Merlin header image](https://github.com/novoda/merlin/blob/master/readme-sources/header.png)
 
-# Merlin [![](https://ci.novoda.com/buildStatus/icon?job=merlin)](https://ci.novoda.com/job/merlin/lastBuild/console) [![Download](https://api.bintray.com/packages/novoda/maven/merlin/images/download.svg)](https://bintray.com/novoda/maven/merlin/_latestVersion)
+# Merlin [![Build status](https://ci.novoda.com/buildStatus/icon?job=merlin)](https://ci.novoda.com/job/merlin/lastBuild/console) [![Download](https://api.bintray.com/packages/novoda/maven/merlin/images/download.svg)](https://bintray.com/novoda/maven/merlin/_latestVersion)
 
 Merlin aims to simplify network monitoring. Providing 3 registerable callbacks for network connectivity changes.
 `onConnect()` , `onDisconnect()` and `onBind(NetworkStatus networkStatus)`.
