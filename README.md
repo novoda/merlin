@@ -1,6 +1,4 @@
-<p align=left>
-<img src="https://github.com/novoda/merlin/blob/readme/readme-sources/header.png"/>
-</p>
+![Merlin header image](https://github.com/novoda/merlin/blob/readme/readme-sources/header.png)
 
 # Merlin [![](https://ci.novoda.com/buildStatus/icon?job=merlin)](https://ci.novoda.com/job/merlin/lastBuild/console) [![Download](https://api.bintray.com/packages/novoda/maven/merlin/images/download.svg) ](https://bintray.com/novoda/maven/merlin/_latestVersion) [![](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
 
