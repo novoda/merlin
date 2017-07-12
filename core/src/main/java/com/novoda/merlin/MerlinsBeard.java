@@ -15,6 +15,8 @@ import com.novoda.merlin.service.AndroidVersion;
  */
 public class MerlinsBeard {
 
+    private static final boolean IS_NOT_CONNECTED_TO_NETWORK_TYPE = false;
+
     private final ConnectivityManager connectivityManager;
     private final AndroidVersion androidVersion;
 
@@ -100,7 +102,7 @@ public class MerlinsBeard {
 
         }
 
-        return false;
+        return IS_NOT_CONNECTED_TO_NETWORK_TYPE;
     }
 
     /**
