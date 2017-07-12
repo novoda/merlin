@@ -192,12 +192,29 @@ public class MerlinsBeardTest {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Test
+    public void givenNetworkWithoutNetworkInfo_andAndroidVersionIsLollipopOrAbove_whenCheckingIfConnectedToMobile_thenReturnsFalse() {
+        givenNetworkStateWithoutNetworkInfoForLollipopOrAbove();
+
+        boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
+
+        assertThat(connectedToMobileNetwork).isFalse();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void givenNetworkStateForLollipopOrAbove(boolean isConnected, int networkType) {
         Network network = Mockito.mock(Network.class);
         NetworkInfo networkInfo = Mockito.mock(NetworkInfo.class);
         given(networkInfo.getType()).willReturn(networkType);
         given(networkInfo.isConnected()).willReturn(isConnected);
         given(connectivityManager.getNetworkInfo(network)).willReturn(networkInfo);
+        given(androidVersion.isLollipopOrHigher()).willReturn(LOLLIPOP_OR_ABOVE);
+        given(connectivityManager.getAllNetworks()).willReturn(new Network[]{network});
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void givenNetworkStateWithoutNetworkInfoForLollipopOrAbove() {
+        Network network = Mockito.mock(Network.class);
         given(androidVersion.isLollipopOrHigher()).willReturn(LOLLIPOP_OR_ABOVE);
         given(connectivityManager.getAllNetworks()).willReturn(new Network[]{network});
     }
