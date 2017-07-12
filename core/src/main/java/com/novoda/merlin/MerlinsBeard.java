@@ -94,7 +94,7 @@ public class MerlinsBeard {
         for (Network network : networks) {
             NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
 
-            if (networkInfo.getType() == networkType) {
+            if (networkInfo != null && networkInfo.getType() == networkType) {
                 return networkInfo.isConnected();
             }
 
