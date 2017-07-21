@@ -8,7 +8,7 @@ import com.novoda.merlin.Merlin;
 import com.novoda.merlin.registerable.bind.Bindable;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
-import com.novoda.support.Logger;
+import com.novoda.merlin.logger.Logger;
 
 public abstract class MerlinActivity extends AppCompatActivity {
 

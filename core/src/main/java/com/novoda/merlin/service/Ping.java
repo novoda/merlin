@@ -2,7 +2,7 @@ package com.novoda.merlin.service;
 
 import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.service.request.RequestException;
-import com.novoda.support.Logger;
+import com.novoda.merlin.logger.Logger;
 
 class Ping {
 
