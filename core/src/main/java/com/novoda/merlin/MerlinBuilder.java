@@ -12,8 +12,8 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 import com.novoda.merlin.registerable.disconnection.DisconnectCallbackManager;
 import com.novoda.merlin.service.MerlinServiceBinder;
 import com.novoda.merlin.service.ResponseCodeValidator;
-import com.novoda.support.Logger;
-import com.novoda.support.MerlinBackwardsCompatibleLog;
+import com.novoda.merlin.logger.Logger;
+import com.novoda.merlin.logger.MerlinBackwardsCompatibleLog;
 
 import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
 

@@ -1,4 +1,4 @@
-package com.novoda.support;
+package com.novoda.merlin.logger;
 
 import android.util.Log;
 

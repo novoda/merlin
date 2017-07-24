@@ -2,7 +2,7 @@ package com.novoda.merlin.registerable.disconnection;
 
 import com.novoda.merlin.registerable.MerlinCallbackManager;
 import com.novoda.merlin.registerable.Register;
-import com.novoda.support.Logger;
+import com.novoda.merlin.logger.Logger;
 
 public class DisconnectCallbackManager extends MerlinCallbackManager<Disconnectable> implements Disconnectable {
 

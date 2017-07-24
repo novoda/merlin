@@ -13,7 +13,7 @@ import com.novoda.merlin.receiver.ConnectivityChangesRegister;
 import com.novoda.merlin.registerable.bind.BindCallbackManager;
 import com.novoda.merlin.registerable.connection.ConnectCallbackManager;
 import com.novoda.merlin.registerable.disconnection.DisconnectCallbackManager;
-import com.novoda.support.Logger;
+import com.novoda.merlin.logger.Logger;
 
 public class MerlinServiceBinder {
 
