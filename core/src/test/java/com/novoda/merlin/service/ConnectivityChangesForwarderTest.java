@@ -56,6 +56,15 @@ public class ConnectivityChangesForwarderTest {
     }
 
     @Test
+    public void givenNetworkWasConnected_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
+        givenNetworkWas(CONNECTED);
+
+        connectivityChangesForwarder.forwardInitialNetworkStatus();
+
+        verify(bindCallbackManager).onMerlinBind(AVAILABLE_NETWORK);
+    }
+
+    @Test
     public void givenNetworkWasDisconnected_whenNotifyingOfInitialState_thenForwardsNetworkUnavailableToListener() {
         givenNetworkWas(DISCONNECTED);
 
