@@ -56,15 +56,6 @@ public class ConnectivityChangesForwarderTest {
     }
 
     @Test
-    public void givenNetworkWasConnected_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
-        givenNetworkWas(CONNECTED);
-
-        connectivityChangesForwarder.forwardInitialNetworkStatus();
-
-        verify(bindCallbackManager).onMerlinBind(AVAILABLE_NETWORK);
-    }
-
-    @Test
     public void givenNetworkWasDisconnected_whenNotifyingOfInitialState_thenForwardsNetworkUnavailableToListener() {
         givenNetworkWas(DISCONNECTED);
 
@@ -107,6 +98,30 @@ public class ConnectivityChangesForwarderTest {
         pingerCallback.onFailure();
 
         verify(disconnectCallbackManager).onDisconnect();
+    }
+
+    @Test
+    public void givenNetworkWasConnected_butNullBindListener_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
+        connectivityChangesForwarder = new ConnectivityChangesForwarder(
+                networkStatusRetriever, disconnectCallbackManager, connectCallbackManager, null, endpointPinger
+        );
+        givenNetworkWas(CONNECTED);
+
+        connectivityChangesForwarder.forwardInitialNetworkStatus();
+
+        verify(bindCallbackManager, never()).onMerlinBind(any(NetworkStatus.class));
+    }
+
+    @Test
+    public void givenEndpointIsUnavailable_andNullBindListener_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
+        connectivityChangesForwarder = new ConnectivityChangesForwarder(
+                networkStatusRetriever, disconnectCallbackManager, connectCallbackManager, null, endpointPinger
+        );
+        given(networkStatusRetriever.retrieveNetworkStatus()).willReturn(AVAILABLE_NETWORK);
+
+        connectivityChangesForwarder.forwardInitialNetworkStatus();
+
+        verify(bindCallbackManager, never()).onMerlinBind(any(NetworkStatus.class));
     }
 
     @Test
