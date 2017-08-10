@@ -74,7 +74,7 @@ public class ConnectivityChangesForwarderTest {
     }
 
     @Test
-    public void givenEndpointIsUnavailable_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
+    public void givenEndpointPingHasNotOccurred_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
         given(networkStatusRetriever.retrieveNetworkStatus()).willReturn(AVAILABLE_NETWORK);
 
         connectivityChangesForwarder.forwardInitialNetworkStatus();
@@ -122,7 +122,7 @@ public class ConnectivityChangesForwarderTest {
     }
 
     @Test
-    public void givenEndpointIsUnavailable_andNullBindListener_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
+    public void givenEndpointPingHasNotOccurred_andNullBindListener_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
                 networkStatusRetriever, disconnectCallbackManager, connectCallbackManager, null, endpointPinger
         );
