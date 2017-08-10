@@ -29,6 +29,10 @@ class ConnectivityChangesForwarder {
     }
 
     void forwardInitialNetworkStatus() {
+        if (bindCallbackManager == null) {
+            return;
+        }
+
         if (hasPerformedEndpointPing()) {
             bindCallbackManager.onMerlinBind(lastEndpointPingNetworkStatus);
             return;
