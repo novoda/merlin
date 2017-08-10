@@ -110,7 +110,7 @@ public class ConnectivityChangesForwarderTest {
     }
 
     @Test
-    public void givenNetworkWasConnected_butNullBindListener_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
+    public void givenNetworkWasConnected_andNullBindListener_whenNotifyingOfInitialState_thenForwardsNetworkAvailableToListener() {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
                 networkStatusRetriever, disconnectCallbackManager, connectCallbackManager, null, endpointPinger
         );
@@ -134,7 +134,7 @@ public class ConnectivityChangesForwarderTest {
     }
 
     @Test
-    public void givenFetchingWithPing_butNullConnectListener_whenSuccessful_thenNeverCallsOnConnect() {
+    public void givenFetchingWithPing_andNullConnectListener_whenSuccessful_thenNeverCallsOnConnect() {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
                 networkStatusRetriever, disconnectCallbackManager, null, bindCallbackManager, endpointPinger
         );
@@ -146,7 +146,7 @@ public class ConnectivityChangesForwarderTest {
     }
 
     @Test
-    public void givenFetchingWithPing_butNullDisconnectListener_whenUnsuccessful_thenNeverCallsOnDisconnect() {
+    public void givenFetchingWithPing_andNullDisconnectListener_whenUnsuccessful_thenNeverCallsOnDisconnect() {
         connectivityChangesForwarder = new ConnectivityChangesForwarder(
                 networkStatusRetriever, null, connectCallbackManager, bindCallbackManager, endpointPinger
         );
