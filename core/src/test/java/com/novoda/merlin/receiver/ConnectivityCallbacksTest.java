@@ -12,14 +12,14 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class ConnectivityCallbacksTest {
 
@@ -32,6 +32,8 @@ public class ConnectivityCallbacksTest {
     private static final int MAX_MS_TO_LIVE = 0;
 
     private static final Network MISSING_NETWORK = null;
+    private static final boolean CAN_NOTIFY = true;
+    private static final boolean CANNOT_NOTIFY = false;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -47,6 +49,8 @@ public class ConnectivityCallbacksTest {
 
     @Before
     public void setUp() {
+        given(connectivityChangesNotifier.canNotify()).willReturn(CAN_NOTIFY);
+
         networkCallbacks = new ConnectivityCallbacks(connectivityManager, connectivityChangesNotifier);
     }
 
@@ -96,6 +100,39 @@ public class ConnectivityCallbacksTest {
         networkCallbacks.onLost(MISSING_NETWORK);
 
         thenNotifiesMerlinServiceOfMissingNetwork();
+    }
+
+    @Test
+    public void givenCannotNotify_whenNetworkIsAvailable_thenNeverNotifiesConnectivityChangeEvent() {
+        given(connectivityChangesNotifier.canNotify()).willReturn(CANNOT_NOTIFY);
+
+        networkCallbacks.onAvailable(MISSING_NETWORK);
+
+        InOrder inOrder = inOrder(connectivityChangesNotifier);
+        inOrder.verify(connectivityChangesNotifier).canNotify();
+        inOrder.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void givenCannotNotify_whenLosingNetwork_thenNeverNotifiesConnectivityChangeEvent() {
+        given(connectivityChangesNotifier.canNotify()).willReturn(CANNOT_NOTIFY);
+
+        networkCallbacks.onLosing(MISSING_NETWORK, MAX_MS_TO_LIVE);
+
+        InOrder inOrder = inOrder(connectivityChangesNotifier);
+        inOrder.verify(connectivityChangesNotifier).canNotify();
+        inOrder.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void givenCannotNotify_whenNetworkIsLost_thenNeverNotifiesConnectivityChangeEvent() {
+        given(connectivityChangesNotifier.canNotify()).willReturn(CANNOT_NOTIFY);
+
+        networkCallbacks.onLost(MISSING_NETWORK);
+
+        InOrder inOrder = inOrder(connectivityChangesNotifier);
+        inOrder.verify(connectivityChangesNotifier).canNotify();
+        inOrder.verifyNoMoreInteractions();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

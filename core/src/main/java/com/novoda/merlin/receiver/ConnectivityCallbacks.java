@@ -35,12 +35,10 @@ class ConnectivityCallbacks extends ConnectivityManager.NetworkCallback {
     }
 
     private void notifyMerlinService(Network network) {
-        ConnectivityChangeEvent connectivityChangeEvent = extractConnectivityChangeEventFrom(network);
-
         if (connectivityChangesNotifier.canNotify()) {
+            ConnectivityChangeEvent connectivityChangeEvent = extractConnectivityChangeEventFrom(network);
             connectivityChangesNotifier.notify(connectivityChangeEvent);
         }
-
     }
 
     private ConnectivityChangeEvent extractConnectivityChangeEventFrom(Network network) {
