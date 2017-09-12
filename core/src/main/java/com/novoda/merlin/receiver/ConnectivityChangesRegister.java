@@ -27,23 +27,23 @@ public class ConnectivityChangesRegister {
         this.androidVersion = androidVersion;
     }
 
-    public void register(MerlinService.ConnectivityChangesListener connectivityChangesListener) {
+    public void register(MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier) {
         if (androidVersion.isLollipopOrHigher()) {
-            registerNetworkCallbacks(connectivityChangesListener);
+            registerNetworkCallbacks(connectivityChangesNotifier);
         } else {
             registerBroadcastReceiver();
         }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void registerNetworkCallbacks(MerlinService.ConnectivityChangesListener connectivityChangesListener) {
+    private void registerNetworkCallbacks(MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier) {
         NetworkRequest.Builder builder = new NetworkRequest.Builder();
-        connectivityManager.registerNetworkCallback(builder.build(), connectivityCallbacks(connectivityChangesListener));
+        connectivityManager.registerNetworkCallback(builder.build(), connectivityCallbacks(connectivityChangesNotifier));
     }
 
-    private ConnectivityCallbacks connectivityCallbacks(MerlinService.ConnectivityChangesListener connectivityChangesListener) {
+    private ConnectivityCallbacks connectivityCallbacks(MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier) {
         if (connectivityCallbacks == null) {
-            connectivityCallbacks = new ConnectivityCallbacks(connectivityManager, connectivityChangesListener);
+            connectivityCallbacks = new ConnectivityCallbacks(connectivityManager, connectivityChangesNotifier);
         }
         return connectivityCallbacks;
     }

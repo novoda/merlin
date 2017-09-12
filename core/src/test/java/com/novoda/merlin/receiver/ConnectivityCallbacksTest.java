@@ -39,7 +39,7 @@ public class ConnectivityCallbacksTest {
     @Mock
     private ConnectivityManager connectivityManager;
     @Mock
-    private MerlinService.ConnectivityChangesListener connectivityChangesListener;
+    private MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier;
     @Mock
     private Network network;
 
@@ -47,7 +47,7 @@ public class ConnectivityCallbacksTest {
 
     @Before
     public void setUp() {
-        networkCallbacks = new ConnectivityCallbacks(connectivityManager, connectivityChangesListener);
+        networkCallbacks = new ConnectivityCallbacks(connectivityManager, connectivityChangesNotifier);
     }
 
     @Test
@@ -112,7 +112,7 @@ public class ConnectivityCallbacksTest {
 
     private void thenNotifiesMerlinServiceOf(NetworkInfo networkInfo) {
         ArgumentCaptor<ConnectivityChangeEvent> argumentCaptor = ArgumentCaptor.forClass(ConnectivityChangeEvent.class);
-        verify(connectivityChangesListener).onConnectivityChanged(argumentCaptor.capture());
+        verify(connectivityChangesNotifier).notify(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(
                 networkInfo.isConnected(),
                 networkInfo.getExtraInfo(),
@@ -122,7 +122,7 @@ public class ConnectivityCallbacksTest {
 
     private void thenNotifiesMerlinServiceOfMissingNetwork() {
         ArgumentCaptor<ConnectivityChangeEvent> argumentCaptor = ArgumentCaptor.forClass(ConnectivityChangeEvent.class);
-        verify(connectivityChangesListener).onConnectivityChanged(argumentCaptor.capture());
+        verify(connectivityChangesNotifier).notify(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(ConnectivityChangeEvent.createWithoutConnection());
     }
 

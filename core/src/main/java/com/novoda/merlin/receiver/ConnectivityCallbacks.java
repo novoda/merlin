@@ -12,11 +12,11 @@ import com.novoda.merlin.service.MerlinService;
 class ConnectivityCallbacks extends ConnectivityManager.NetworkCallback {
 
     private final ConnectivityManager connectivityManager;
-    private final MerlinService.ConnectivityChangesListener connectivityChangesListener;
+    private final MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier;
 
-    ConnectivityCallbacks(ConnectivityManager connectivityManager, MerlinService.ConnectivityChangesListener connectivityChangesListener) {
+    ConnectivityCallbacks(ConnectivityManager connectivityManager, MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier) {
         this.connectivityManager = connectivityManager;
-        this.connectivityChangesListener = connectivityChangesListener;
+        this.connectivityChangesNotifier = connectivityChangesNotifier;
     }
 
     @Override
@@ -35,15 +35,25 @@ class ConnectivityCallbacks extends ConnectivityManager.NetworkCallback {
     }
 
     private void notifyMerlinService(Network network) {
+        ConnectivityChangeEvent connectivityChangeEvent = extractConnectivityChangeEventFrom(network);
+
+        if (connectivityChangesNotifier.canNotify()) {
+            connectivityChangesNotifier.notify(connectivityChangeEvent);
+        }
+
+    }
+
+    private ConnectivityChangeEvent extractConnectivityChangeEventFrom(Network network) {
         NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
+
         if (null != networkInfo) {
             boolean connected = networkInfo.isConnected();
             String reason = networkInfo.getReason();
             String extraInfo = networkInfo.getExtraInfo();
 
-            connectivityChangesListener.onConnectivityChanged(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(connected, extraInfo, reason));
+            return ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(connected, extraInfo, reason);
         } else {
-            connectivityChangesListener.onConnectivityChanged(ConnectivityChangeEvent.createWithoutConnection());
+            return ConnectivityChangeEvent.createWithoutConnection();
         }
     }
 
