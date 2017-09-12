@@ -3,20 +3,20 @@ package com.novoda.merlin.receiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.os.IBinder;
 
 import com.novoda.merlin.MerlinsBeard;
+import com.novoda.merlin.logger.Logger;
 import com.novoda.merlin.service.MerlinService;
 
-class ConnectivityChangeNotifier {
+class ConnectivityReceiverConnectivityChangeNotifier {
 
     private final ConnectivityReceiver.MerlinsBeardCreator merlinsBeardCreator;
     private final ConnectivityReceiver.MerlinBinderRetriever merlinBinderRetriever;
     private final ConnectivityChangeEventCreator creator;
 
-    ConnectivityChangeNotifier(ConnectivityReceiver.MerlinsBeardCreator merlinsBeardCreator,
-                               ConnectivityReceiver.MerlinBinderRetriever merlinBinderRetriever,
-                               ConnectivityChangeEventCreator creator) {
+    ConnectivityReceiverConnectivityChangeNotifier(ConnectivityReceiver.MerlinsBeardCreator merlinsBeardCreator,
+                                                   ConnectivityReceiver.MerlinBinderRetriever merlinBinderRetriever,
+                                                   ConnectivityChangeEventCreator creator) {
 
         this.merlinsBeardCreator = merlinsBeardCreator;
         this.merlinBinderRetriever = merlinBinderRetriever;
@@ -32,18 +32,18 @@ class ConnectivityChangeNotifier {
     }
 
     private void notifyMerlinService(Context context, ConnectivityChangeEvent connectivityChangeEvent) {
-        IBinder binder = merlinBinderRetriever.retrieveMerlinLocalServiceBinderIfAvailable(context);
+        MerlinService.ConnectivityChangesNotifier notifier = merlinBinderRetriever.retrieveConnectivityChangesNotifierIfAvailable(context);
 
-        if (connectivityChangedListenerAvailableFrom(binder)) {
-            MerlinService.ConnectivityChangesListener connectivityListener = ((MerlinService.LocalBinder) binder).connectivityChangesListener();
-            connectivityListener.onConnectivityChanged(connectivityChangeEvent);
+        if (cannotNotify(notifier)) {
+            Logger.d(MerlinService.ConnectivityChangesNotifier.class.getSimpleName() + " is null");
+            return;
         }
+        notifier.notify(connectivityChangeEvent);
+
     }
 
-    private boolean connectivityChangedListenerAvailableFrom(IBinder binder) {
-        return binder != null
-                && binder instanceof MerlinService.LocalBinder
-                && ((MerlinService.LocalBinder) binder).connectivityChangesListener() != null;
+    private boolean cannotNotify(MerlinService.ConnectivityChangesNotifier notifier) {
+        return notifier == null || !notifier.canNotify();
     }
 
     private boolean connectivityActionMatchesActionFor(Intent intent) {

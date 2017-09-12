@@ -67,14 +67,34 @@ public class MerlinService extends Service {
         }
     };
 
+    private void notify(ConnectivityChangeEvent connectivityChangeEvent) {
+        assertDependenciesBound();
+
+        connectivityChangesForwarder.forward(connectivityChangeEvent);
+    }
+
     public interface ConnectivityChangesListener {
         void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent);
     }
 
-    public class LocalBinder extends Binder {
+    public interface ConnectivityChangesNotifier {
 
-        public ConnectivityChangesListener connectivityChangesListener() {
-            return MerlinService.this.connectivityChangesListener;
+        boolean canNotify();
+
+        void notify(ConnectivityChangeEvent connectivityChangeEvent);
+
+    }
+
+    class LocalBinder extends Binder implements ConnectivityChangesNotifier {
+
+        @Override
+        public boolean canNotify() {
+            return MerlinService.isBound();
+        }
+
+        @Override
+        public void notify(ConnectivityChangeEvent connectivityChangeEvent) {
+            MerlinService.this.notify(connectivityChangeEvent);
         }
 
         void setConnectivityChangesRegister(ConnectivityChangesRegister connectivityChangesRegister) {
