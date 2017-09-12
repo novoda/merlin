@@ -8,6 +8,7 @@ import android.net.NetworkRequest;
 import android.os.Build;
 
 import com.novoda.merlin.service.AndroidVersion;
+import com.novoda.merlin.service.ConnectivityChangeEventExtractor;
 import com.novoda.merlin.service.MerlinService;
 
 import org.junit.Before;
@@ -37,12 +38,14 @@ public class ConnectivityChangesRegisterTest {
     private AndroidVersion androidVersion;
     @Mock
     private MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier;
+    @Mock
+    private ConnectivityChangeEventExtractor extractor;
 
     private ConnectivityChangesRegister connectivityChangesRegister;
 
     @Before
     public void setUp() {
-        connectivityChangesRegister = new ConnectivityChangesRegister(context, connectivityManager, androidVersion);
+        connectivityChangesRegister = new ConnectivityChangesRegister(context, connectivityManager, androidVersion, extractor);
     }
 
     @Test

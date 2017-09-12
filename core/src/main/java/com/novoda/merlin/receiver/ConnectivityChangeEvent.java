@@ -12,7 +12,7 @@ public class ConnectivityChangeEvent {
     private final String info;
     private final String reason;
 
-    static ConnectivityChangeEvent createWithoutConnection() {
+    public static ConnectivityChangeEvent createWithoutConnection() {
         return new ConnectivityChangeEvent(WITHOUT_CONNECTION, WITHOUT_INFO, WITHOUT_REASON);
     }
 

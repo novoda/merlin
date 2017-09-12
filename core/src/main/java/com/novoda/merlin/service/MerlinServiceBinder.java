@@ -72,10 +72,12 @@ public class MerlinServiceBinder {
             Logger.d("onServiceConnected");
             MerlinService.LocalBinder merlinServiceBinder = ((MerlinService.LocalBinder) binder);
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityChangeEventExtractor connectivityChangeEventExtractor = new ConnectivityChangeEventExtractor(connectivityManager);
             ConnectivityChangesRegister connectivityChangesRegister = new ConnectivityChangesRegister(
                     context,
                     connectivityManager,
-                    new AndroidVersion()
+                    new AndroidVersion(),
+                    connectivityChangeEventExtractor
             );
             NetworkStatusRetriever networkStatusRetriever = new NetworkStatusRetriever(MerlinsBeard.from(context));
             EndpointPinger endpointPinger = EndpointPinger.withCustomEndpointAndValidation(endpoint, validator);

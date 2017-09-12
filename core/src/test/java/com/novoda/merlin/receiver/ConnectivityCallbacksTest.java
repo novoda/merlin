@@ -5,7 +5,9 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 
+import com.novoda.merlin.service.ConnectivityChangeEventExtractor;
 import com.novoda.merlin.service.MerlinService;
 
 import org.junit.Before;
@@ -21,7 +23,10 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class ConnectivityCallbacksTest {
+
+    private static final ConnectivityChangeEvent ANY_CONNECTIVITY_CHANGE_EVENT = ConnectivityChangeEvent.createWithoutConnection();
 
     private static final boolean CONNECTED = true;
     private static final boolean DISCONNECTED = false;
@@ -44,14 +49,17 @@ public class ConnectivityCallbacksTest {
     private MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier;
     @Mock
     private Network network;
+    @Mock
+    private ConnectivityChangeEventExtractor extractor;
 
     private ConnectivityCallbacks networkCallbacks;
 
     @Before
     public void setUp() {
         given(connectivityChangesNotifier.canNotify()).willReturn(CAN_NOTIFY);
+        given(extractor.extractFrom(any(Network.class))).willReturn(ANY_CONNECTIVITY_CHANGE_EVENT);
 
-        networkCallbacks = new ConnectivityCallbacks(connectivityManager, connectivityChangesNotifier);
+        networkCallbacks = new ConnectivityCallbacks(connectivityChangesNotifier, extractor);
     }
 
     @Test
@@ -79,27 +87,6 @@ public class ConnectivityCallbacksTest {
         networkCallbacks.onLost(network);
 
         thenNotifiesMerlinServiceOf(disconnectedNetworkInfo);
-    }
-
-    @Test
-    public void givenMissingNetwork_whenNetworkIsAvailable_thenNotifiesMerlinServiceOfMissingNetwork() {
-        networkCallbacks.onAvailable(MISSING_NETWORK);
-
-        thenNotifiesMerlinServiceOfMissingNetwork();
-    }
-
-    @Test
-    public void givenMissingNetwork_whenLosingNetwork_thenNotifiesMerlinServiceOfMissingNetwork() {
-        networkCallbacks.onLosing(MISSING_NETWORK, MAX_MS_TO_LIVE);
-
-        thenNotifiesMerlinServiceOfMissingNetwork();
-    }
-
-    @Test
-    public void givenMissingNetwork_whenNetworkIsLost_thenNotifiesMerlinServiceOfMissingNetwork() {
-        networkCallbacks.onLost(MISSING_NETWORK);
-
-        thenNotifiesMerlinServiceOfMissingNetwork();
     }
 
     @Test
@@ -150,17 +137,7 @@ public class ConnectivityCallbacksTest {
     private void thenNotifiesMerlinServiceOf(NetworkInfo networkInfo) {
         ArgumentCaptor<ConnectivityChangeEvent> argumentCaptor = ArgumentCaptor.forClass(ConnectivityChangeEvent.class);
         verify(connectivityChangesNotifier).notify(argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue()).isEqualTo(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(
-                networkInfo.isConnected(),
-                networkInfo.getExtraInfo(),
-                networkInfo.getReason()
-        ));
-    }
-
-    private void thenNotifiesMerlinServiceOfMissingNetwork() {
-        ArgumentCaptor<ConnectivityChangeEvent> argumentCaptor = ArgumentCaptor.forClass(ConnectivityChangeEvent.class);
-        verify(connectivityChangesNotifier).notify(argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue()).isEqualTo(ConnectivityChangeEvent.createWithoutConnection());
+        assertThat(argumentCaptor.getValue()).isEqualTo(ANY_CONNECTIVITY_CHANGE_EVENT);
     }
 
 }
