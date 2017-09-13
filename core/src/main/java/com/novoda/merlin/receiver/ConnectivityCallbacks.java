@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Build;
 
+import com.novoda.merlin.logger.Logger;
 import com.novoda.merlin.service.ConnectivityChangeEventExtractor;
 import com.novoda.merlin.service.MerlinService;
 
@@ -36,10 +37,12 @@ class ConnectivityCallbacks extends ConnectivityManager.NetworkCallback {
     }
 
     private void notifyMerlinService(Network network) {
-        if (connectivityChangesNotifier.canNotify()) {
-            ConnectivityChangeEvent connectivityChangeEvent = connectivityChangeEventExtractor.extractFrom(network);
-            connectivityChangesNotifier.notify(connectivityChangeEvent);
+        if (!connectivityChangesNotifier.canNotify()) {
+            Logger.d("Cannot notify " + MerlinService.ConnectivityChangesNotifier.class.getSimpleName());
+            return;
         }
+        ConnectivityChangeEvent connectivityChangeEvent = connectivityChangeEventExtractor.extractFrom(network);
+        connectivityChangesNotifier.notify(connectivityChangeEvent);
     }
 
 }

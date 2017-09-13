@@ -35,7 +35,7 @@ class ConnectivityReceiverConnectivityChangeNotifier {
         MerlinService.ConnectivityChangesNotifier notifier = merlinBinderRetriever.retrieveConnectivityChangesNotifierIfAvailable(context);
 
         if (cannotNotify(notifier)) {
-            Logger.d(MerlinService.ConnectivityChangesNotifier.class.getSimpleName() + " is null");
+            Logger.d("Cannot notify " + MerlinService.ConnectivityChangesNotifier.class.getSimpleName());
             return;
         }
         notifier.notify(connectivityChangeEvent);
