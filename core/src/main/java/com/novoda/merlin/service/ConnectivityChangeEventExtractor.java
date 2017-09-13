@@ -13,7 +13,7 @@ public class ConnectivityChangeEventExtractor {
 
     private final ConnectivityManager connectivityManager;
 
-    public ConnectivityChangeEventExtractor(ConnectivityManager connectivityManager) {
+    ConnectivityChangeEventExtractor(ConnectivityManager connectivityManager) {
         this.connectivityManager = connectivityManager;
     }
 

@@ -63,30 +63,30 @@ public class ConnectivityCallbacksTest {
     }
 
     @Test
-    public void givenConnectedNetworkInfo_whenNetworkIsAvailable_thenNotifiesMerlinServiceOfConnectedNetwork() {
+    public void givenConnectedNetworkInfo_whenNetworkIsAvailable_thenNotifiesOfConnectedNetwork() {
         NetworkInfo connectedNetworkInfo = givenNetworkInfoWith(CONNECTED, ANY_REASON, ANY_EXTRA_INFO);
 
         networkCallbacks.onAvailable(network);
 
-        thenNotifiesMerlinServiceOf(connectedNetworkInfo);
+        thenNotifies();
     }
 
     @Test
-    public void givenDisconnectedNetworkInfo_whenLosingNetwork_thenNotifiesMerlinServiceOfDisconnectedNetwork() {
+    public void givenDisconnectedNetworkInfo_whenLosingNetwork_thenNotifiesOfDisconnectedNetwork() {
         NetworkInfo disconnectedNetworkInfo = givenNetworkInfoWith(DISCONNECTED, ANY_REASON, ANY_EXTRA_INFO);
 
         networkCallbacks.onLosing(network, MAX_MS_TO_LIVE);
 
-        thenNotifiesMerlinServiceOf(disconnectedNetworkInfo);
+        thenNotifies();
     }
 
     @Test
-    public void givenDisconnectedNetworkInfo_whenNetworkIsLost_thenNotifiesMerlinServiceOfLostNetwork() {
+    public void givenDisconnectedNetworkInfo_whenNetworkIsLost_thenNotifiesOfLostNetwork() {
         NetworkInfo disconnectedNetworkInfo = givenNetworkInfoWith(DISCONNECTED, ANY_REASON, ANY_EXTRA_INFO);
 
         networkCallbacks.onLost(network);
 
-        thenNotifiesMerlinServiceOf(disconnectedNetworkInfo);
+        thenNotifies();
     }
 
     @Test
@@ -134,7 +134,7 @@ public class ConnectivityCallbacksTest {
         return networkInfo;
     }
 
-    private void thenNotifiesMerlinServiceOf(NetworkInfo networkInfo) {
+    private void thenNotifies() {
         ArgumentCaptor<ConnectivityChangeEvent> argumentCaptor = ArgumentCaptor.forClass(ConnectivityChangeEvent.class);
         verify(connectivityChangesNotifier).notify(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue()).isEqualTo(ANY_CONNECTIVITY_CHANGE_EVENT);
