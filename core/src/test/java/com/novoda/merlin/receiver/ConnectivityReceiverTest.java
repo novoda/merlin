@@ -22,7 +22,7 @@ public class ConnectivityReceiverTest {
     @Mock
     private Intent intent;
     @Mock
-    private ConnectivityChangeNotifier notifier;
+    private ConnectivityReceiverConnectivityChangeNotifier notifier;
 
     private ConnectivityReceiver connectivityReceiver;
 

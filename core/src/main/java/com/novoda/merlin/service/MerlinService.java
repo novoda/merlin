@@ -47,7 +47,7 @@ public class MerlinService extends Service {
     private void start() {
         assertDependenciesBound();
         connectivityChangesForwarder.forwardInitialNetworkStatus();
-        connectivityChangesRegister.register(connectivityChangesListener);
+        connectivityChangesRegister.register(((ConnectivityChangesNotifier) binder));
     }
 
     private void assertDependenciesBound() {
@@ -60,21 +60,27 @@ public class MerlinService extends Service {
         }
     }
 
-    private final ConnectivityChangesListener connectivityChangesListener = new ConnectivityChangesListener() {
-        @Override
-        public void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent) {
-            connectivityChangesForwarder.forward(connectivityChangeEvent);
-        }
-    };
+    public interface ConnectivityChangesNotifier {
 
-    public interface ConnectivityChangesListener {
-        void onConnectivityChanged(ConnectivityChangeEvent connectivityChangeEvent);
+        boolean canNotify();
+
+        void notify(ConnectivityChangeEvent connectivityChangeEvent);
+
     }
 
-    public class LocalBinder extends Binder {
+    class LocalBinder extends Binder implements ConnectivityChangesNotifier {
 
-        public ConnectivityChangesListener connectivityChangesListener() {
-            return MerlinService.this.connectivityChangesListener;
+        @Override
+        public boolean canNotify() {
+            return MerlinService.isBound();
+        }
+
+        @Override
+        public void notify(ConnectivityChangeEvent connectivityChangeEvent) {
+            if (!canNotify()) {
+                throw new IllegalStateException("You must call canNotify() before calling notify(ConnectivityChangeEvent)");
+            }
+            MerlinService.this.connectivityChangesForwarder.forward(connectivityChangeEvent);
         }
 
         void setConnectivityChangesRegister(ConnectivityChangesRegister connectivityChangesRegister) {

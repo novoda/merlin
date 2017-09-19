@@ -8,6 +8,7 @@ import android.net.NetworkRequest;
 import android.os.Build;
 
 import com.novoda.merlin.service.AndroidVersion;
+import com.novoda.merlin.service.ConnectivityChangeEventExtractor;
 import com.novoda.merlin.service.MerlinService;
 
 public class ConnectivityChangesRegister {
@@ -15,35 +16,38 @@ public class ConnectivityChangesRegister {
     private final Context context;
     private final ConnectivityManager connectivityManager;
     private final AndroidVersion androidVersion;
+    private final ConnectivityChangeEventExtractor connectivityChangeEventExtractor;
 
     private ConnectivityReceiver connectivityReceiver;
     private ConnectivityCallbacks connectivityCallbacks;
 
     public ConnectivityChangesRegister(Context context,
                                        ConnectivityManager connectivityManager,
-                                       AndroidVersion androidVersion) {
+                                       AndroidVersion androidVersion,
+                                       ConnectivityChangeEventExtractor connectivityChangeEventExtractor) {
         this.context = context;
         this.connectivityManager = connectivityManager;
         this.androidVersion = androidVersion;
+        this.connectivityChangeEventExtractor = connectivityChangeEventExtractor;
     }
 
-    public void register(MerlinService.ConnectivityChangesListener connectivityChangesListener) {
+    public void register(MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier) {
         if (androidVersion.isLollipopOrHigher()) {
-            registerNetworkCallbacks(connectivityChangesListener);
+            registerNetworkCallbacks(connectivityChangesNotifier);
         } else {
             registerBroadcastReceiver();
         }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void registerNetworkCallbacks(MerlinService.ConnectivityChangesListener connectivityChangesListener) {
+    private void registerNetworkCallbacks(MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier) {
         NetworkRequest.Builder builder = new NetworkRequest.Builder();
-        connectivityManager.registerNetworkCallback(builder.build(), connectivityCallbacks(connectivityChangesListener));
+        connectivityManager.registerNetworkCallback(builder.build(), connectivityCallbacks(connectivityChangesNotifier));
     }
 
-    private ConnectivityCallbacks connectivityCallbacks(MerlinService.ConnectivityChangesListener connectivityChangesListener) {
+    private ConnectivityCallbacks connectivityCallbacks(MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier) {
         if (connectivityCallbacks == null) {
-            connectivityCallbacks = new ConnectivityCallbacks(connectivityManager, connectivityChangesListener);
+            connectivityCallbacks = new ConnectivityCallbacks(connectivityChangesNotifier, connectivityChangeEventExtractor);
         }
         return connectivityCallbacks;
     }

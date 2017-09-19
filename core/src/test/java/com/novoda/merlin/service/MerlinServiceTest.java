@@ -86,14 +86,14 @@ public class MerlinServiceTest {
 
         localBinder.onBindComplete();
 
-        verify(connectivityChangesRegister).register(any(MerlinService.ConnectivityChangesListener.class));
+        verify(connectivityChangesRegister).register(any(MerlinService.ConnectivityChangesNotifier.class));
     }
 
     @Test
     public void givenRegisteredMerlinService_whenConnectivityChangeOccurs_thenNotifiesForwarder() {
-        MerlinService.ConnectivityChangesListener connectivityChangesListener = givenRegisteredMerlinService();
+        MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier = givenRegisteredMerlinService();
 
-        connectivityChangesListener.onConnectivityChanged(ANY_CONNECTIVITY_CHANGE_EVENT);
+        connectivityChangesNotifier.notify(ANY_CONNECTIVITY_CHANGE_EVENT);
 
         verify(connectivityChangesForwarder).forward(ANY_CONNECTIVITY_CHANGE_EVENT);
     }
@@ -131,10 +131,10 @@ public class MerlinServiceTest {
         return binder;
     }
 
-    private MerlinService.ConnectivityChangesListener givenRegisteredMerlinService() {
+    private MerlinService.ConnectivityChangesNotifier givenRegisteredMerlinService() {
         MerlinService.LocalBinder localBinder = givenBoundMerlinService();
         localBinder.onBindComplete();
-        ArgumentCaptor<MerlinService.ConnectivityChangesListener> argumentCaptor = ArgumentCaptor.forClass(MerlinService.ConnectivityChangesListener.class);
+        ArgumentCaptor<MerlinService.ConnectivityChangesNotifier> argumentCaptor = ArgumentCaptor.forClass(MerlinService.ConnectivityChangesNotifier.class);
         verify(connectivityChangesRegister).register(argumentCaptor.capture());
         return argumentCaptor.getValue();
     }

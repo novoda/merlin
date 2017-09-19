@@ -3,20 +3,22 @@ package com.novoda.merlin.receiver;
 import android.annotation.TargetApi;
 import android.net.ConnectivityManager;
 import android.net.Network;
-import android.net.NetworkInfo;
 import android.os.Build;
 
+import com.novoda.merlin.logger.Logger;
+import com.novoda.merlin.service.ConnectivityChangeEventExtractor;
 import com.novoda.merlin.service.MerlinService;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 class ConnectivityCallbacks extends ConnectivityManager.NetworkCallback {
 
-    private final ConnectivityManager connectivityManager;
-    private final MerlinService.ConnectivityChangesListener connectivityChangesListener;
+    private final MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier;
+    private final ConnectivityChangeEventExtractor connectivityChangeEventExtractor;
 
-    ConnectivityCallbacks(ConnectivityManager connectivityManager, MerlinService.ConnectivityChangesListener connectivityChangesListener) {
-        this.connectivityManager = connectivityManager;
-        this.connectivityChangesListener = connectivityChangesListener;
+    ConnectivityCallbacks(MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier,
+                          ConnectivityChangeEventExtractor connectivityChangeEventExtractor) {
+        this.connectivityChangesNotifier = connectivityChangesNotifier;
+        this.connectivityChangeEventExtractor = connectivityChangeEventExtractor;
     }
 
     @Override
@@ -35,16 +37,12 @@ class ConnectivityCallbacks extends ConnectivityManager.NetworkCallback {
     }
 
     private void notifyMerlinService(Network network) {
-        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
-        if (null != networkInfo) {
-            boolean connected = networkInfo.isConnected();
-            String reason = networkInfo.getReason();
-            String extraInfo = networkInfo.getExtraInfo();
-
-            connectivityChangesListener.onConnectivityChanged(ConnectivityChangeEvent.createWithNetworkInfoChangeEvent(connected, extraInfo, reason));
-        } else {
-            connectivityChangesListener.onConnectivityChanged(ConnectivityChangeEvent.createWithoutConnection());
+        if (!connectivityChangesNotifier.canNotify()) {
+            Logger.d("Cannot notify " + MerlinService.ConnectivityChangesNotifier.class.getSimpleName());
+            return;
         }
+        ConnectivityChangeEvent connectivityChangeEvent = connectivityChangeEventExtractor.extractFrom(network);
+        connectivityChangesNotifier.notify(connectivityChangeEvent);
     }
 
 }

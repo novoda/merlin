@@ -2,18 +2,18 @@ package com.novoda.merlin;
 
 import android.content.Context;
 
-import com.novoda.merlin.registerable.Register;
-import com.novoda.merlin.registerable.Registrar;
-import com.novoda.merlin.registerable.bind.Bindable;
-import com.novoda.merlin.registerable.bind.BindCallbackManager;
-import com.novoda.merlin.registerable.connection.Connectable;
-import com.novoda.merlin.registerable.connection.ConnectCallbackManager;
-import com.novoda.merlin.registerable.disconnection.Disconnectable;
-import com.novoda.merlin.registerable.disconnection.DisconnectCallbackManager;
-import com.novoda.merlin.service.MerlinServiceBinder;
-import com.novoda.merlin.service.ResponseCodeValidator;
 import com.novoda.merlin.logger.Logger;
 import com.novoda.merlin.logger.MerlinBackwardsCompatibleLog;
+import com.novoda.merlin.registerable.Register;
+import com.novoda.merlin.registerable.Registrar;
+import com.novoda.merlin.registerable.bind.BindCallbackManager;
+import com.novoda.merlin.registerable.bind.Bindable;
+import com.novoda.merlin.registerable.connection.ConnectCallbackManager;
+import com.novoda.merlin.registerable.connection.Connectable;
+import com.novoda.merlin.registerable.disconnection.DisconnectCallbackManager;
+import com.novoda.merlin.registerable.disconnection.Disconnectable;
+import com.novoda.merlin.service.MerlinServiceBinder;
+import com.novoda.merlin.service.ResponseCodeValidator;
 
 import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
 

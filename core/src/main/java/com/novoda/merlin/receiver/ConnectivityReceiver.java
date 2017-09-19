@@ -11,7 +11,7 @@ import com.novoda.merlin.service.MerlinService;
 
 public class ConnectivityReceiver extends BroadcastReceiver {
 
-    private final ConnectivityChangeNotifier connectivityChangeNotifier;
+    private final ConnectivityReceiverConnectivityChangeNotifier connectivityReceiverConnectivityChangeNotifier;
 
     public ConnectivityReceiver() {
         MerlinsBeardCreator merlinsBeardCreator = new MerlinsBeardCreator() {
@@ -23,28 +23,32 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
         MerlinBinderRetriever merlinBinderRetriever = new MerlinBinderRetriever() {
             @Override
-            public IBinder retrieveMerlinLocalServiceBinderIfAvailable(Context context) {
-                return peekService(context, new Intent(context, MerlinService.class));
+            public MerlinService.ConnectivityChangesNotifier retrieveConnectivityChangesNotifier(Context context) {
+                IBinder iBinder = peekService(context, new Intent(context, MerlinService.class));
+                if (iBinder instanceof MerlinService.ConnectivityChangesNotifier) {
+                    return (MerlinService.ConnectivityChangesNotifier) iBinder;
+                }
+                return null;
             }
         };
 
         ConnectivityChangeEventCreator creator = new ConnectivityChangeEventCreator();
-        connectivityChangeNotifier = new ConnectivityChangeNotifier(merlinsBeardCreator, merlinBinderRetriever, creator);
+        connectivityReceiverConnectivityChangeNotifier = new ConnectivityReceiverConnectivityChangeNotifier(merlinsBeardCreator, merlinBinderRetriever, creator);
     }
 
-    ConnectivityReceiver(ConnectivityChangeNotifier connectivityChangeNotifier) {
-        this.connectivityChangeNotifier = connectivityChangeNotifier;
+    ConnectivityReceiver(ConnectivityReceiverConnectivityChangeNotifier connectivityReceiverConnectivityChangeNotifier) {
+        this.connectivityReceiverConnectivityChangeNotifier = connectivityReceiverConnectivityChangeNotifier;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        connectivityChangeNotifier.notify(context, intent);
+        connectivityReceiverConnectivityChangeNotifier.notify(context, intent);
     }
 
     interface MerlinBinderRetriever {
 
         @Nullable
-        IBinder retrieveMerlinLocalServiceBinderIfAvailable(Context context);
+        MerlinService.ConnectivityChangesNotifier retrieveConnectivityChangesNotifier(Context context);
     }
 
     interface MerlinsBeardCreator {
