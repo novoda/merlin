@@ -23,10 +23,9 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
         MerlinBinderRetriever merlinBinderRetriever = new MerlinBinderRetriever() {
             @Override
-            public MerlinService.ConnectivityChangesNotifier retrieveConnectivityChangesNotifierIfAvailable(Context context) {
+            public MerlinService.ConnectivityChangesNotifier retrieveConnectivityChangesNotifier(Context context) {
                 IBinder iBinder = peekService(context, new Intent(context, MerlinService.class));
-                if (iBinder != null
-                        && iBinder instanceof MerlinService.ConnectivityChangesNotifier) {
+                if (iBinder instanceof MerlinService.ConnectivityChangesNotifier) {
                     return (MerlinService.ConnectivityChangesNotifier) iBinder;
                 }
                 return null;
@@ -49,7 +48,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     interface MerlinBinderRetriever {
 
         @Nullable
-        MerlinService.ConnectivityChangesNotifier retrieveConnectivityChangesNotifierIfAvailable(Context context);
+        MerlinService.ConnectivityChangesNotifier retrieveConnectivityChangesNotifier(Context context);
     }
 
     interface MerlinsBeardCreator {

@@ -48,7 +48,7 @@ public class ConnectivityReceiverConnectivityChangeNotifierTest {
 
         given(connectivityChangesNotifier.canNotify()).willReturn(CAN_NOTIFY);
 
-        given(merlinBinderRetriever.retrieveConnectivityChangesNotifierIfAvailable(context)).willReturn(connectivityChangesNotifier);
+        given(merlinBinderRetriever.retrieveConnectivityChangesNotifier(context)).willReturn(connectivityChangesNotifier);
         given(merlinsBeardCreator.createMerlinsBeard(context)).willReturn(merlinsBeard);
 
         notifier = new ConnectivityReceiverConnectivityChangeNotifier(merlinsBeardCreator, merlinBinderRetriever, eventCreator);
@@ -85,7 +85,7 @@ public class ConnectivityReceiverConnectivityChangeNotifierTest {
     @Test
     public void givenIntentWithConnectivityAction_butNullBinder_whenNotifying_thenNeverNotifiesOfConnectivityChangeEvent() {
         Intent intent = givenIntentWithConnectivityAction();
-        given(merlinBinderRetriever.retrieveConnectivityChangesNotifierIfAvailable(context)).willReturn(null);
+        given(merlinBinderRetriever.retrieveConnectivityChangesNotifier(context)).willReturn(null);
 
         notifier.notify(context, intent);
 
@@ -95,7 +95,7 @@ public class ConnectivityReceiverConnectivityChangeNotifierTest {
     @Test
     public void givenIntentWithConnectivityAction_butIncorrectBinder_whenNotifying_thenNeverNotifiesOfConnectivityChangeEvent() {
         Intent intent = givenIntentWithConnectivityAction();
-        given(merlinBinderRetriever.retrieveConnectivityChangesNotifierIfAvailable(context)).willReturn(incorrectBinder());
+        given(merlinBinderRetriever.retrieveConnectivityChangesNotifier(context)).willReturn(incorrectBinder());
 
         notifier.notify(context, intent);
 
