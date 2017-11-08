@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 dependencies {
 
@@ -7,6 +8,7 @@ dependencies {
     compile project(':merlin-rxjava2')
 
     compile(libraries.app.supportDesign)
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
 }
 
@@ -21,4 +23,7 @@ android {
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
+}
+repositories {
+    mavenCentral()
 }

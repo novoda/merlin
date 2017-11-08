@@ -4,11 +4,13 @@ allprojects {
 }
 
 buildscript {
+    ext.kotlin_version = '1.1.51'
     apply from: 'dependencies.gradle'
 
     repositories { jcenter() }
     dependencies {
         classpath libraries.build.androidGradle
         classpath libraries.build.bintrayRelease
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
