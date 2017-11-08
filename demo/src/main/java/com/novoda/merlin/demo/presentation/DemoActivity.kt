@@ -14,27 +14,31 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable
 
 class DemoActivity : MerlinActivity(), Connectable, Disconnectable, Bindable {
 
-    private lateinit var merlinsBeard: MerlinsBeard
-    private lateinit var networkStatusDisplayer: NetworkStatusDisplayer;
-
     private val viewToAttachDisplayerTo by bind<View>(R.id.current_status)
     private val currentStatus by bind<View>(R.id.current_status)
     private val wifiConnected by bind<View>(R.id.wifi_connected)
     private val mobileConnected by bind<View>(R.id.mobile_connected)
     private val networkSubtype by bind<View>(R.id.network_subtype)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.main)
-
-        merlinsBeard = MerlinsBeard.from(this)
-        networkStatusDisplayer = NetworkStatusDisplayer(resources, merlinsBeard)
-
-        merlin = Merlin.Builder()
+    override val merlin by lazy {
+        Merlin.Builder()
                 .withConnectableCallbacks()
                 .withDisconnectableCallbacks()
                 .withBindableCallbacks()
                 .build(this)
+    }
+
+    private val merlinsBeard by lazy {
+        MerlinsBeard.from(this)
+    }
+
+    private val networkStatusDisplayer by lazy {
+        NetworkStatusDisplayer(resources, merlinsBeard)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.main)
 
         currentStatus.setOnClickListener(networkStatusOnClick)
         wifiConnected.setOnClickListener(wifiConnectedOnClick)

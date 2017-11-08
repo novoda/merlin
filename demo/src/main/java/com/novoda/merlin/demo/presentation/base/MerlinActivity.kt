@@ -11,7 +11,7 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable
 abstract class MerlinActivity() : AppCompatActivity() {
 
     private val logHandle = DemoLogHandle()
-    protected lateinit var merlin: Merlin
+    protected abstract val merlin: Merlin
 
     protected fun registerConnectable(connectable: Connectable) {
         merlin.registerConnectable(connectable)
