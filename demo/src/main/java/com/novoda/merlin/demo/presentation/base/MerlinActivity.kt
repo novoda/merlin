@@ -37,7 +37,7 @@ abstract class MerlinActivity : AppCompatActivity() {
         Logger.detach(logHandle)
     }
 
-    class DemoLogHandle : Logger.LogHandle {
+    private class DemoLogHandle : Logger.LogHandle {
 
         companion object {
             const val TAG = "DemoLogHandle"
