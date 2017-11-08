@@ -8,7 +8,7 @@ import com.novoda.merlin.registerable.bind.Bindable
 import com.novoda.merlin.registerable.connection.Connectable
 import com.novoda.merlin.registerable.disconnection.Disconnectable
 
-abstract class MerlinActivity() : AppCompatActivity() {
+abstract class MerlinActivity : AppCompatActivity() {
 
     private val logHandle = DemoLogHandle()
     protected abstract val merlin: Merlin

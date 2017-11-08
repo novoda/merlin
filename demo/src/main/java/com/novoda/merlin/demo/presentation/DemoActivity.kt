@@ -1,7 +1,6 @@
 package com.novoda.merlin.demo.presentation
 
 import android.os.Bundle
-import android.view.View
 import com.novoda.merlin.Merlin
 import com.novoda.merlin.MerlinsBeard
 import com.novoda.merlin.NetworkStatus
@@ -11,14 +10,13 @@ import com.novoda.merlin.demo.presentation.base.MerlinActivity
 import com.novoda.merlin.registerable.bind.Bindable
 import com.novoda.merlin.registerable.connection.Connectable
 import com.novoda.merlin.registerable.disconnection.Disconnectable
+import kotlinx.android.synthetic.main.main.displayerAttachableView
+import kotlinx.android.synthetic.main.main.current_status as currentStatus
+import kotlinx.android.synthetic.main.main.mobile_connected as mobileConnected
+import kotlinx.android.synthetic.main.main.network_subtype as networkSubtype
+import kotlinx.android.synthetic.main.main.wifi_connected as wifiConnected
 
 class DemoActivity : MerlinActivity(), Connectable, Disconnectable, Bindable {
-
-    private val viewToAttachDisplayerTo by bind<View>(R.id.current_status)
-    private val currentStatus by bind<View>(R.id.current_status)
-    private val wifiConnected by bind<View>(R.id.wifi_connected)
-    private val mobileConnected by bind<View>(R.id.mobile_connected)
-    private val networkSubtype by bind<View>(R.id.network_subtype)
 
     override val merlin by lazy {
         Merlin.Builder()
@@ -40,38 +38,29 @@ class DemoActivity : MerlinActivity(), Connectable, Disconnectable, Bindable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
 
-        currentStatus.setOnClickListener(networkStatusOnClick)
-        wifiConnected.setOnClickListener(wifiConnectedOnClick)
-        mobileConnected.setOnClickListener(mobileConnectedOnClick)
-        networkSubtype.setOnClickListener(networkSubtypeOnClick)
-    }
+        currentStatus.onClick {
+            displayMessageFor(merlinsBeard.isConnected, R.string.current_status_network_connected, R.string.current_status_network_disconnected)
+        }
 
-    private val networkStatusOnClick = View.OnClickListener {
-        if (merlinsBeard.isConnected()) {
-            networkStatusDisplayer.displayPositiveMessage(R.string.current_status_network_connected, viewToAttachDisplayerTo)
-        } else {
-            networkStatusDisplayer.displayNegativeMessage(R.string.current_status_network_disconnected, viewToAttachDisplayerTo)
+        wifiConnected.onClick {
+            displayMessageFor(merlinsBeard.isConnectedToWifi, R.string.wifi_connected, R.string.wifi_disconnected)
+        }
+
+        mobileConnected.onClick {
+            displayMessageFor(merlinsBeard.isConnectedToMobileNetwork, R.string.mobile_connected, R.string.mobile_disconnected)
+        }
+
+        networkSubtype.onClick {
+            networkStatusDisplayer.displayNetworkSubtype(displayerAttachableView)
         }
     }
 
-    private val wifiConnectedOnClick = View.OnClickListener {
-        if (merlinsBeard.isConnectedToWifi()) {
-            networkStatusDisplayer.displayPositiveMessage(R.string.wifi_connected, viewToAttachDisplayerTo)
+    private fun displayMessageFor(condition: Boolean, positiveMessage: Int, negativeMessage: Int) {
+        if (condition) {
+            networkStatusDisplayer.displayPositiveMessage(positiveMessage, displayerAttachableView)
         } else {
-            networkStatusDisplayer.displayNegativeMessage(R.string.wifi_disconnected, viewToAttachDisplayerTo)
+            networkStatusDisplayer.displayNegativeMessage(negativeMessage, displayerAttachableView)
         }
-    }
-
-    private val mobileConnectedOnClick = View.OnClickListener {
-        if (merlinsBeard.isConnectedToMobileNetwork()) {
-            networkStatusDisplayer.displayPositiveMessage(R.string.mobile_connected, viewToAttachDisplayerTo)
-        } else {
-            networkStatusDisplayer.displayNegativeMessage(R.string.mobile_disconnected, viewToAttachDisplayerTo)
-        }
-    }
-
-    private val networkSubtypeOnClick = View.OnClickListener {
-        networkStatusDisplayer.displayNetworkSubtype(viewToAttachDisplayerTo)
     }
 
     override fun onResume() {
@@ -82,11 +71,11 @@ class DemoActivity : MerlinActivity(), Connectable, Disconnectable, Bindable {
     }
 
     override fun onConnect() {
-        networkStatusDisplayer.displayPositiveMessage(R.string.connected, viewToAttachDisplayerTo)
+        networkStatusDisplayer.displayPositiveMessage(R.string.connected, displayerAttachableView)
     }
 
     override fun onDisconnect() {
-        networkStatusDisplayer.displayNegativeMessage(R.string.disconnected, viewToAttachDisplayerTo)
+        networkStatusDisplayer.displayNegativeMessage(R.string.disconnected, displayerAttachableView)
     }
 
     override fun onBind(networkStatus: NetworkStatus) {
