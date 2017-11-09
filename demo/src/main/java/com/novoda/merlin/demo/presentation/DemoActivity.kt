@@ -7,7 +7,6 @@ import com.novoda.merlin.MerlinsBeard
 import com.novoda.merlin.NetworkStatus
 import com.novoda.merlin.demo.R
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer
-import com.novoda.merlin.demo.presentation.DemoActivity.DisplayStrategy.*
 import com.novoda.merlin.demo.presentation.base.MerlinActivity
 import com.novoda.merlin.registerable.bind.Bindable
 import com.novoda.merlin.registerable.connection.Connectable
@@ -40,54 +39,35 @@ class DemoActivity : MerlinActivity(), Connectable, Disconnectable, Bindable {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
 
-        currentStatus.onClickDisplay(IfConnected)
-        wifiConnected.onClickDisplay(IfWifiConnected)
-        mobileConnected.onClickDisplay(IfMobileConnected)
-        networkSubtype.onclickDisplaySubtype()
-    }
-
-    private fun View.onclickDisplaySubtype() {
-        setOnClickListener {
-            networkStatusDisplayer.displayNetworkSubtype(this)
-        }
-    }
-
-    private fun View.onClickDisplay(displayStrategy: DisplayStrategy) {
-        setOnClickListener {
-            networkStatusDisplayer.displayNegativeMessage(
-                displayStrategy.message,
-                displayerAttachableView
-            )
-        }
-    }
-
-    private val DisplayStrategy.message get() =
-        if (merlinsBeard.isPositive()) positiveMessage else negativeMessage
-
-    private sealed class DisplayStrategy(
-        val positiveMessage: Int,
-        val negativeMessage: Int,
-        val isPositive: MerlinsBeard.() -> Boolean
-    ) {
-
-        object IfConnected : DisplayStrategy(
+        currentStatus.onClick(
+            MerlinsBeard::isConnected,
             R.string.current_status_network_connected,
-            R.string.current_status_network_disconnected,
-            MerlinsBeard::isConnected
+            R.string.current_status_network_disconnected
         )
-
-        object IfWifiConnected : DisplayStrategy(
+        wifiConnected.onClick(
+            MerlinsBeard::isConnectedToWifi,
             R.string.wifi_connected,
-            R.string.wifi_disconnected,
-            MerlinsBeard::isConnectedToWifi
+            R.string.wifi_disconnected
         )
-
-        object IfMobileConnected : DisplayStrategy(
+        mobileConnected.onClick(
+            MerlinsBeard::isConnectedToMobileNetwork,
             R.string.mobile_connected,
-            R.string.mobile_disconnected,
-            MerlinsBeard::isConnectedToMobileNetwork
+            R.string.mobile_disconnected
         )
+        networkSubtype.setOnClickListener {
+            networkStatusDisplayer.displayNetworkSubtype(it)
+        }
+    }
 
+    private fun View.onClick(
+        isPositive: MerlinsBeard.() -> Boolean,
+        positiveMessage: Int,
+        negativeMessage: Int
+    ) {
+        setOnClickListener {
+            val message = if (merlinsBeard.isPositive()) positiveMessage else negativeMessage
+            networkStatusDisplayer.displayNegativeMessage(message, displayerAttachableView)
+        }
     }
 
     override fun onResume() {
