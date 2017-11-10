@@ -47,11 +47,3 @@ tmp/
 *.DS_Store
 
 *.orig
-
-=======
-
-# Robolectric helper to find the manifest
-/AndroidManifest.xml
-.idea/compiler.xml
-.idea/copyright/
-.idea/vcs.xml
