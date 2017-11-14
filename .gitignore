@@ -26,22 +26,24 @@ classes/
 gen-external-apklibs/
 tmp/
 
-# IDEA Ignores
+# IDEA/Android Studio ignores
 *.iml
 *.ipr
 *.iws
-.idea/
+/.idea/*
 .gradle/
 
-# Android
-local.properties
+# IDEA/Android Studio Ignore exceptions
+!/.idea/vcs.xml
+!/.idea/fileTemplates/
+!/.idea/inspectionProfiles/
+!/.idea/scopes/
+!/.idea/codeStyleSettings.xml
+!/.idea/encodings.xml
+!/.idea/copyright/
+!/.idea/compiler.xml
 
 # MAC
 *.DS_Store
 
 *.orig
-
-=======
-
-# Robolectric helper to find the manifest
-/AndroidManifest.xml
