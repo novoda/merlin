@@ -2,11 +2,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'bintray-release'
 
 dependencies {
-    compile libraries.app.supportAnnotations
+    implementation libraries.app.supportAnnotations
 
-    testCompile libraries.test.jUnit
-    testCompile libraries.test.mockito
-    testCompile libraries.test.fest
+    testImplementation libraries.test.jUnit
+    testImplementation libraries.test.mockito
+    testImplementation libraries.test.fest
 }
 
 android {
@@ -15,7 +15,6 @@ android {
     }
 
     compileSdkVersion versions.androidSdk.compile
-    buildToolsVersion versions.androidSdk.buildTools
 
     testOptions {
         unitTests.returnDefaultValues = true
@@ -26,9 +25,9 @@ publish {
     userOrg = 'novoda'
     groupId = 'com.novoda'
     artifactId = 'merlin'
-    version = project.version
+    publishVersion = project.version
 
     uploadName = 'merlin'
-    description = 'Observes network connection status & gives callbacks'
+    desc = 'Observes network connection status & gives callbacks'
     website = 'https://github.com/novoda/merlin'
 }

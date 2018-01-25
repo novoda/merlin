@@ -6,7 +6,10 @@ allprojects {
 buildscript {
     apply from: 'dependencies.gradle'
 
-    repositories { jcenter() }
+    repositories {
+        google()
+        jcenter()
+    }
     dependencies {
         classpath libraries.build.androidGradle
         classpath libraries.build.bintrayRelease
