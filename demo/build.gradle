@@ -2,11 +2,13 @@ apply plugin: 'com.android.application'
 
 dependencies {
 
-    compile project(':core')
-    compile project(':merlin-rxjava')
-    compile project(':merlin-rxjava2')
+    implementation project(':core')
+    implementation project(':merlin-rxjava')
+    implementation project(':merlin-rxjava2')
+    implementation libraries.app.rxJava
+    implementation libraries.app.rxJava2
 
-    compile(libraries.app.supportDesign)
+    implementation libraries.app.supportDesign
 
 }
 
@@ -16,7 +18,6 @@ android {
     }
 
     compileSdkVersion versions.androidSdk.compile
-    buildToolsVersion versions.androidSdk.buildTools
 
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
