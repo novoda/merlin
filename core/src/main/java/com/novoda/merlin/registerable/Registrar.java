@@ -1,5 +1,7 @@
 package com.novoda.merlin.registerable;
 
+import android.support.annotation.Nullable;
+
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinException;
 import com.novoda.merlin.registerable.bind.Bindable;
@@ -8,8 +10,11 @@ import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
 public class Registrar {
 
+    @Nullable
     private final Register<Connectable> connectables;
+    @Nullable
     private final Register<Disconnectable> disconnectables;
+    @Nullable
     private final Register<Bindable> bindables;
 
     public Registrar(Register<Connectable> connectables, Register<Disconnectable> disconnectables, Register<Bindable> bindables) {
@@ -61,8 +66,16 @@ public class Registrar {
     }
 
     public void clearRegistrations() {
-        connectables.clear();
-        disconnectables.clear();
-        bindables.clear();
+        if (connectables != null) {
+            connectables.clear();
+        }
+
+        if (disconnectables != null) {
+            disconnectables.clear();
+        }
+
+        if (bindables != null) {
+            bindables.clear();
+        }
     }
 }

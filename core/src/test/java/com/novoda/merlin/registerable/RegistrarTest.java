@@ -12,8 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class RegistrarTest {
 
@@ -92,6 +91,33 @@ public class RegistrarTest {
         verify(connectables).clear();
         verify(disconnectables).clear();
         verify(bindables).clear();
+    }
+
+    @Test
+    public void givenMissingConnectables_whenClearingRegistrations_thenDoesNothing() {
+        registrar = new Registrar(null, disconnectables, bindables);
+
+        registrar.clearRegistrations();
+
+        verifyZeroInteractions(connectables);
+    }
+
+    @Test
+    public void givenMissingDisconnectables_whenClearingRegistrations_thenDoesNothing() {
+        registrar = new Registrar(connectables, null, bindables);
+
+        registrar.clearRegistrations();
+
+        verifyZeroInteractions(disconnectables);
+    }
+
+    @Test
+    public void givenMissingBindables_whenClearingRegistrations_thenDoesNothing() {
+        registrar = new Registrar(connectables, disconnectables, null);
+
+        registrar.clearRegistrations();
+
+        verifyZeroInteractions(bindables);
     }
 
 }
