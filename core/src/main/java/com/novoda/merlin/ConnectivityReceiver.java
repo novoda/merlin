@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-public class ConnectivityReceiver extends BroadcastReceiver {
+class ConnectivityReceiver extends BroadcastReceiver {
 
     private final ConnectivityReceiverConnectivityChangeNotifier connectivityReceiverConnectivityChangeNotifier;
 
-    public ConnectivityReceiver() {
+    ConnectivityReceiver() {
         MerlinsBeardCreator merlinsBeardCreator = new MerlinsBeardCreator() {
             @Override
             public MerlinsBeard createMerlinsBeard(Context context) {
