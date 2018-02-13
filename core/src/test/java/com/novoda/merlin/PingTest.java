@@ -1,10 +1,5 @@
 package com.novoda.merlin;
 
-import com.novoda.merlin.Endpoint;
-import com.novoda.merlin.Ping;
-import com.novoda.merlin.RequestException;
-import com.novoda.merlin.ResponseCodeValidator;
-
 import java.io.IOException;
 
 import org.junit.Before;

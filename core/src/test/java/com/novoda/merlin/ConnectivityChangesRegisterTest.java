@@ -7,13 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkRequest;
 import android.os.Build;
 
-import com.novoda.merlin.AndroidVersion;
-import com.novoda.merlin.ConnectivityCallbacks;
-import com.novoda.merlin.ConnectivityChangeEventExtractor;
-import com.novoda.merlin.ConnectivityChangesRegister;
-import com.novoda.merlin.ConnectivityReceiver;
-import com.novoda.merlin.MerlinService;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

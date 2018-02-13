@@ -1,10 +1,5 @@
 package com.novoda.merlin;
 
-import com.novoda.merlin.EndpointPinger;
-import com.novoda.merlin.MerlinsBeard;
-import com.novoda.merlin.NetworkStatus;
-import com.novoda.merlin.NetworkStatusRetriever;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

@@ -6,9 +6,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import com.novoda.merlin.ConnectivityChangeEventExtractor;
-import com.novoda.merlin.ConnectivityChangeEvent;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

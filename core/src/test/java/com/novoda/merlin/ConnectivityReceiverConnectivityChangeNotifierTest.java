@@ -4,13 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 
-import com.novoda.merlin.ConnectivityChangeEvent;
-import com.novoda.merlin.ConnectivityChangeEventCreator;
-import com.novoda.merlin.ConnectivityReceiver;
-import com.novoda.merlin.ConnectivityReceiverConnectivityChangeNotifier;
-import com.novoda.merlin.MerlinsBeard;
-import com.novoda.merlin.MerlinService;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

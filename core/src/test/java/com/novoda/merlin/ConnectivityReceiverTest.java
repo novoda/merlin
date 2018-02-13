@@ -3,9 +3,6 @@ package com.novoda.merlin;
 import android.content.Context;
 import android.content.Intent;
 
-import com.novoda.merlin.ConnectivityReceiver;
-import com.novoda.merlin.ConnectivityReceiverConnectivityChangeNotifier;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

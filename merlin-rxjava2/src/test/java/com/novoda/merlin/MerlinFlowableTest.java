@@ -2,16 +2,8 @@ package com.novoda.merlin;
 
 import android.content.Context;
 
-import com.novoda.merlin.Merlin;
-import com.novoda.merlin.MerlinFlowable;
-import com.novoda.merlin.NetworkStatus;
-import com.novoda.merlin.Bindable;
-import com.novoda.merlin.Connectable;
-import com.novoda.merlin.Disconnectable;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 
@@ -34,13 +26,13 @@ public class MerlinFlowableTest {
         initMocks(this);
 
         testSubscriber = MerlinFlowable.from(merlin)
-                                       .test();
+                .test();
     }
 
     @Test
     public void unbindWhenDisposed() {
         Disposable disposable = MerlinFlowable.from(merlin)
-                                              .subscribe();
+                .subscribe();
         disposable.dispose();
 
         verify(merlin).unbind();
@@ -52,7 +44,7 @@ public class MerlinFlowableTest {
 
         verify(merlin).registerConnectable(argumentCaptor.capture());
         argumentCaptor.getValue()
-                      .onConnect();
+                .onConnect();
 
         testSubscriber.assertValue(NetworkStatus.newAvailableInstance());
     }
@@ -63,7 +55,7 @@ public class MerlinFlowableTest {
 
         verify(merlin).registerDisconnectable(argumentCaptor.capture());
         argumentCaptor.getValue()
-                      .onDisconnect();
+                .onDisconnect();
 
         testSubscriber.assertValue(NetworkStatus.newUnavailableInstance());
     }
@@ -74,7 +66,7 @@ public class MerlinFlowableTest {
 
         verify(merlin).registerBindable(argumentCaptor.capture());
         argumentCaptor.getValue()
-                      .onBind(NetworkStatus.newAvailableInstance());
+                .onBind(NetworkStatus.newAvailableInstance());
 
         testSubscriber.assertValue(NetworkStatus.newAvailableInstance());
     }
@@ -85,7 +77,7 @@ public class MerlinFlowableTest {
 
         verify(merlin).registerBindable(argumentCaptor.capture());
         argumentCaptor.getValue()
-                      .onBind(NetworkStatus.newUnavailableInstance());
+                .onBind(NetworkStatus.newUnavailableInstance());
 
         testSubscriber.assertValue(NetworkStatus.newUnavailableInstance());
     }

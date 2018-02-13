@@ -2,13 +2,6 @@ package com.novoda.merlin;
 
 import android.content.Context;
 
-import com.novoda.merlin.Merlin;
-import com.novoda.merlin.MerlinObservable;
-import com.novoda.merlin.NetworkStatus;
-import com.novoda.merlin.Bindable;
-import com.novoda.merlin.Connectable;
-import com.novoda.merlin.Disconnectable;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

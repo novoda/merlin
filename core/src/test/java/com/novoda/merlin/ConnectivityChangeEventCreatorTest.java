@@ -3,10 +3,6 @@ package com.novoda.merlin;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 
-import com.novoda.merlin.ConnectivityChangeEvent;
-import com.novoda.merlin.ConnectivityChangeEventCreator;
-import com.novoda.merlin.MerlinsBeard;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

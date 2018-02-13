@@ -13,7 +13,7 @@ public class MerlinObservable {
 
     public static Observable<NetworkStatus> from(Context context, MerlinBuilder merlinBuilder) {
         return from(merlinBuilder.withAllCallbacks()
-                                 .build(context));
+                            .build(context));
     }
 
     public static Observable<NetworkStatus> from(Merlin merlin) {

@@ -1,10 +1,5 @@
 package com.novoda.merlin;
 
-import com.novoda.merlin.BindCallbackManager;
-import com.novoda.merlin.Bindable;
-import com.novoda.merlin.NetworkStatus;
-import com.novoda.merlin.Register;
-
 import java.util.ArrayList;
 import java.util.List;
 

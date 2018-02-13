@@ -1,9 +1,5 @@
 package com.novoda.merlin;
 
-import com.novoda.merlin.ConnectCallbackManager;
-import com.novoda.merlin.Connectable;
-import com.novoda.merlin.Register;
-
 import java.util.ArrayList;
 import java.util.List;
 

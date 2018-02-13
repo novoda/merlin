@@ -1,11 +1,5 @@
 package com.novoda.merlin;
 
-import com.novoda.merlin.Merlin;
-import com.novoda.merlin.NetworkStatus;
-import com.novoda.merlin.Bindable;
-import com.novoda.merlin.Connectable;
-import com.novoda.merlin.Disconnectable;
-
 import rx.Emitter;
 import rx.functions.Action1;
 import rx.functions.Cancellable;

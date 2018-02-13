@@ -1,14 +1,5 @@
 package com.novoda.merlin;
 
-import com.novoda.merlin.ConnectivityChangesForwarder;
-import com.novoda.merlin.EndpointPinger;
-import com.novoda.merlin.NetworkStatus;
-import com.novoda.merlin.NetworkStatusRetriever;
-import com.novoda.merlin.ConnectivityChangeEvent;
-import com.novoda.merlin.BindCallbackManager;
-import com.novoda.merlin.ConnectCallbackManager;
-import com.novoda.merlin.DisconnectCallbackManager;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

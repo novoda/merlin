@@ -13,7 +13,7 @@ public class MerlinFlowable {
 
     public static Flowable<NetworkStatus> from(Context context, MerlinBuilder merlinBuilder) {
         return from(merlinBuilder.withAllCallbacks()
-                                 .build(context));
+                            .build(context));
     }
 
     public static Flowable<NetworkStatus> from(Merlin merlin) {

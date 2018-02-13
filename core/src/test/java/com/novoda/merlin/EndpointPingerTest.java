@@ -1,10 +1,5 @@
 package com.novoda.merlin;
 
-import com.novoda.merlin.Endpoint;
-import com.novoda.merlin.EndpointPinger;
-import com.novoda.merlin.PingTask;
-import com.novoda.merlin.PingTaskFactory;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
