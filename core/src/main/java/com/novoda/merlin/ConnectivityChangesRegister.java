@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkRequest;
 import android.os.Build;
 
-public class ConnectivityChangesRegister {
+class ConnectivityChangesRegister {
 
     private final Context context;
     private final ConnectivityManager connectivityManager;
@@ -17,17 +17,17 @@ public class ConnectivityChangesRegister {
     private ConnectivityReceiver connectivityReceiver;
     private ConnectivityCallbacks connectivityCallbacks;
 
-    public ConnectivityChangesRegister(Context context,
-                                       ConnectivityManager connectivityManager,
-                                       AndroidVersion androidVersion,
-                                       ConnectivityChangeEventExtractor connectivityChangeEventExtractor) {
+    ConnectivityChangesRegister(Context context,
+                                ConnectivityManager connectivityManager,
+                                AndroidVersion androidVersion,
+                                ConnectivityChangeEventExtractor connectivityChangeEventExtractor) {
         this.context = context;
         this.connectivityManager = connectivityManager;
         this.androidVersion = androidVersion;
         this.connectivityChangeEventExtractor = connectivityChangeEventExtractor;
     }
 
-    public void register(MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier) {
+    void register(MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier) {
         if (androidVersion.isLollipopOrHigher()) {
             registerNetworkCallbacks(connectivityChangesNotifier);
         } else {
@@ -63,7 +63,7 @@ public class ConnectivityChangesRegister {
         return new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
     }
 
-    public void unregister() {
+    void unregister() {
         if (androidVersion.isLollipopOrHigher()) {
             unregisterNetworkCallbacks();
         } else {
