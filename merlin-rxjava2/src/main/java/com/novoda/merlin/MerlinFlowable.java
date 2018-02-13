@@ -1,10 +1,6 @@
-package com.novoda.merlin.rxjava2;
+package com.novoda.merlin;
 
 import android.content.Context;
-
-import com.novoda.merlin.Merlin;
-import com.novoda.merlin.MerlinBuilder;
-import com.novoda.merlin.NetworkStatus;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;

@@ -1,10 +1,6 @@
-package com.novoda.merlin.rxjava;
+package com.novoda.merlin;
 
 import android.content.Context;
-
-import com.novoda.merlin.Merlin;
-import com.novoda.merlin.MerlinBuilder;
-import com.novoda.merlin.NetworkStatus;
 
 import rx.Emitter;
 import rx.Observable;

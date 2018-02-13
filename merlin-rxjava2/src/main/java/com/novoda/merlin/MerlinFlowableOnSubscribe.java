@@ -1,4 +1,4 @@
-package com.novoda.merlin.rxjava2;
+package com.novoda.merlin;
 
 import android.support.annotation.NonNull;
 

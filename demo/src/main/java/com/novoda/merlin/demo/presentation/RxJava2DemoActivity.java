@@ -8,7 +8,7 @@ import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
-import com.novoda.merlin.rxjava2.MerlinFlowable;
+import com.novoda.merlin.MerlinFlowable;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
