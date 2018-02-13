@@ -21,7 +21,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide connectable callbacks, without calling this, Merlin.registerConnectable will throw a IllegalStateException.
+     * Enables Merlin to provide connectable callbacks, without calling this, Merlin.registerConnectable will throw an IllegalStateException.
      *
      * @return MerlinBuilder.
      */
@@ -32,7 +32,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide disconnectable callbacks, without calling this, Merlin.registerDisconnectable will throw a IllegalStateException.
+     * Enables Merlin to provide disconnectable callbacks, without calling this, Merlin.registerDisconnectable will throw an IllegalStateException.
      *
      * @return MerlinBuilder.
      */
@@ -43,7 +43,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide bindable callbacks, without calling this, Merlin.registerBindable will throw a IllegalStateException.
+     * Enables Merlin to provide bindable callbacks, without calling this, Merlin.registerBindable will throw an IllegalStateException.
      *
      * @return MerlinBuilder.
      */

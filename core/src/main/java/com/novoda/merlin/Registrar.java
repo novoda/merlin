@@ -23,10 +23,7 @@ class Registrar {
 
     private Register<Connectable> connectables() {
         if (connectables == null) {
-            throw new IllegalStateException(
-                    "You must call " + Merlin.Builder.class.getSimpleName() + ".withConnectableCallbacks()" +
-                            "before registering a " + Connectable.class.getSimpleName()
-            );
+            throw MerlinMissingRegisterablesException.missing(Connectable.class);
         }
         return connectables;
     }
@@ -37,10 +34,7 @@ class Registrar {
 
     private Register<Disconnectable> disconnectables() {
         if (disconnectables == null) {
-            throw new IllegalStateException(
-                    "You must call " + Merlin.Builder.class.getSimpleName() + ".withDisconnectableCallbacks()" +
-                            "before registering a " + Disconnectable.class.getSimpleName()
-            );
+            throw MerlinMissingRegisterablesException.missing(Disconnectable.class);
         }
         return disconnectables;
     }
@@ -51,10 +45,7 @@ class Registrar {
 
     private Register<Bindable> bindables() {
         if (bindables == null) {
-            throw new IllegalStateException(
-                    "You must call " + Merlin.Builder.class.getSimpleName() + ".withBindableCallbacks()" +
-                            "before registering a " + Bindable.class.getSimpleName()
-            );
+            throw MerlinMissingRegisterablesException.missing(Bindable.class);
         }
         return bindables;
     }
