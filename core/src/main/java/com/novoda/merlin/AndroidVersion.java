@@ -2,11 +2,11 @@ package com.novoda.merlin;
 
 import android.os.Build;
 
-public class AndroidVersion {
+class AndroidVersion {
 
     private final int deviceVersion;
 
-    public AndroidVersion() {
+    AndroidVersion() {
         this(Build.VERSION.SDK_INT);
     }
 
@@ -14,7 +14,7 @@ public class AndroidVersion {
         this.deviceVersion = deviceVersion;
     }
 
-    public boolean isLollipopOrHigher() {
+    boolean isLollipopOrHigher() {
         return deviceVersion >= Build.VERSION_CODES.LOLLIPOP;
     }
 }
