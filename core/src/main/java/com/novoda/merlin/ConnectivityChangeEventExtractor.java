@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class ConnectivityChangeEventExtractor {
+class ConnectivityChangeEventExtractor {
 
     private final ConnectivityManager connectivityManager;
 
@@ -15,7 +15,7 @@ public class ConnectivityChangeEventExtractor {
         this.connectivityManager = connectivityManager;
     }
 
-    public ConnectivityChangeEvent extractFrom(Network network) {
+    ConnectivityChangeEvent extractFrom(Network network) {
         NetworkInfo networkInfo = connectivityManager.getNetworkInfo(network);
 
         if (null != networkInfo) {
