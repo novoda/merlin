@@ -1,12 +1,5 @@
 package com.novoda.merlin;
 
-import com.novoda.merlin.MerlinException;
-import com.novoda.merlin.Register;
-import com.novoda.merlin.Registrar;
-import com.novoda.merlin.Bindable;
-import com.novoda.merlin.Connectable;
-import com.novoda.merlin.Disconnectable;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,24 +28,24 @@ public class RegistrarTest {
         registrar = new Registrar(connectables, disconnectables, bindables);
     }
 
-    @Test(expected = MerlinException.class)
-    public void givenMissingRegister_whenRegisteringConnectable_thenThrowsDeveloperException() {
+    @Test(expected = IllegalStateException.class)
+    public void givenMissingRegister_whenRegisteringConnectable_thenThrowsIllegalStateException() {
         registrar = new Registrar(null, null, null);
 
         Connectable connectable = mock(Connectable.class);
         registrar.registerConnectable(connectable);
     }
 
-    @Test(expected = MerlinException.class)
-    public void givenMissingRegister_thenRegisteringDisconnectable_thenThrowsDeveloperException() {
+    @Test(expected = IllegalStateException.class)
+    public void givenMissingRegister_thenRegisteringDisconnectable_thenThrowsIllegalStateException() {
         registrar = new Registrar(null, null, null);
 
         Disconnectable disconnectable = mock(Disconnectable.class);
         registrar.registerDisconnectable(disconnectable);
     }
 
-    @Test(expected = MerlinException.class)
-    public void givenMissingRegister_whenRegisteringBindable_thenThrowsDeveloperException() {
+    @Test(expected = IllegalStateException.class)
+    public void givenMissingRegister_whenRegisteringBindable_thenThrowsIllegalStateException() {
         registrar = new Registrar(null, null, null);
 
         Bindable bindable = mock(Bindable.class);
