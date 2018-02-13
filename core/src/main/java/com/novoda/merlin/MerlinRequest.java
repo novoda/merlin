@@ -1,10 +1,10 @@
 package com.novoda.merlin;
 
-public class MerlinRequest implements Request {
+class MerlinRequest implements Request {
 
     private final Request request;
 
-    public static MerlinRequest head(Endpoint endpoint) {
+    static MerlinRequest head(Endpoint endpoint) {
         return head(new HttpRequestMaker(), endpoint);
     }
 
