@@ -1,6 +1,9 @@
 package com.novoda.merlin;
 
-public class ConnectivityChangeEvent {
+/**
+ * TODO: Seems like this class is only used internally and some fields ignored.
+ */
+class ConnectivityChangeEvent {
 
     private static final boolean WITHOUT_CONNECTION = false;
     private static final String WITHOUT_REASON = "";
@@ -10,11 +13,11 @@ public class ConnectivityChangeEvent {
     private final String info;
     private final String reason;
 
-    public static ConnectivityChangeEvent createWithoutConnection() {
+    static ConnectivityChangeEvent createWithoutConnection() {
         return new ConnectivityChangeEvent(WITHOUT_CONNECTION, WITHOUT_INFO, WITHOUT_REASON);
     }
 
-    public static ConnectivityChangeEvent createWithNetworkInfoChangeEvent(boolean isConnected, String info, String reason) {
+    static ConnectivityChangeEvent createWithNetworkInfoChangeEvent(boolean isConnected, String info, String reason) {
         return new ConnectivityChangeEvent(isConnected, info, reason);
     }
 
@@ -24,19 +27,19 @@ public class ConnectivityChangeEvent {
         this.reason = reason;
     }
 
-    public boolean isConnected() {
+    boolean isConnected() {
         return isConnected;
     }
 
-    public String info() {
+    String info() {
         return info;
     }
 
-    public String reason() {
+    String reason() {
         return reason;
     }
 
-    public NetworkStatus asNetworkStatus() {
+    NetworkStatus asNetworkStatus() {
         return isConnected() ? NetworkStatus.newAvailableInstance() : NetworkStatus.newUnavailableInstance();
     }
 
