@@ -7,7 +7,7 @@ import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 
-public class MerlinServiceBinder {
+class MerlinServiceBinder {
 
     private final Context context;
     private final ListenerHolder listenerHolder;
@@ -16,20 +16,20 @@ public class MerlinServiceBinder {
     private MerlinServiceConnection merlinServiceConnection;
     private Endpoint endpoint;
 
-    public MerlinServiceBinder(Context context, ConnectCallbackManager connectCallbackManager, DisconnectCallbackManager disconnectCallbackManager,
-                               BindCallbackManager bindCallbackManager, Endpoint endpoint, ResponseCodeValidator validator) {
+    MerlinServiceBinder(Context context, ConnectCallbackManager connectCallbackManager, DisconnectCallbackManager disconnectCallbackManager,
+                        BindCallbackManager bindCallbackManager, Endpoint endpoint, ResponseCodeValidator validator) {
         this.validator = validator;
         listenerHolder = new ListenerHolder(connectCallbackManager, disconnectCallbackManager, bindCallbackManager);
         this.context = context;
         this.endpoint = endpoint;
     }
 
-    public void setEndpoint(Endpoint endpoint, ResponseCodeValidator validator) {
+    void setEndpoint(Endpoint endpoint, ResponseCodeValidator validator) {
         this.endpoint = endpoint;
         this.validator = validator;
     }
 
-    public void bindService() {
+    void bindService() {
         if (merlinServiceConnection == null) {
             merlinServiceConnection = new MerlinServiceConnection(context, listenerHolder, endpoint, validator);
         }
@@ -37,7 +37,7 @@ public class MerlinServiceBinder {
         context.bindService(intent, merlinServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
-    public void unbind() {
+    void unbind() {
         if (MerlinService.isBound() && merlinServiceConnection != null) {
             context.unbindService(merlinServiceConnection);
             context.stopService(new Intent(context, MerlinService.class));
