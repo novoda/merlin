@@ -2,7 +2,7 @@ package com.novoda.merlin;
 
 import android.support.annotation.Nullable;
 
-public class Registrar {
+class Registrar {
 
     @Nullable
     private final Register<Connectable> connectables;
@@ -11,13 +11,13 @@ public class Registrar {
     @Nullable
     private final Register<Bindable> bindables;
 
-    public Registrar(Register<Connectable> connectables, Register<Disconnectable> disconnectables, Register<Bindable> bindables) {
+    Registrar(Register<Connectable> connectables, Register<Disconnectable> disconnectables, Register<Bindable> bindables) {
         this.connectables = connectables;
         this.disconnectables = disconnectables;
         this.bindables = bindables;
     }
 
-    public void registerConnectable(Connectable connectable) {
+    void registerConnectable(Connectable connectable) {
         connectables().register(connectable);
     }
 
@@ -31,7 +31,7 @@ public class Registrar {
         return connectables;
     }
 
-    public void registerDisconnectable(Disconnectable disconnectable) {
+    void registerDisconnectable(Disconnectable disconnectable) {
         disconnectables().register(disconnectable);
     }
 
@@ -45,7 +45,7 @@ public class Registrar {
         return disconnectables;
     }
 
-    public void registerBindable(Bindable bindable) {
+    void registerBindable(Bindable bindable) {
         bindables().register(bindable);
     }
 
@@ -59,7 +59,7 @@ public class Registrar {
         return bindables;
     }
 
-    public void clearRegistrations() {
+    void clearRegistrations() {
         if (connectables != null) {
             connectables.clear();
         }
