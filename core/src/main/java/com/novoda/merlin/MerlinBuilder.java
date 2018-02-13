@@ -2,8 +2,6 @@ package com.novoda.merlin;
 
 import android.content.Context;
 
-import com.novoda.merlin.logger.Logger;
-import com.novoda.merlin.logger.MerlinBackwardsCompatibleLog;
 import com.novoda.merlin.registerable.Register;
 import com.novoda.merlin.registerable.Registrar;
 import com.novoda.merlin.registerable.bind.BindCallbackManager;

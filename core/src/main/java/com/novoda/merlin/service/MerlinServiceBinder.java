@@ -9,7 +9,7 @@ import android.os.IBinder;
 
 import com.novoda.merlin.Endpoint;
 import com.novoda.merlin.MerlinsBeard;
-import com.novoda.merlin.logger.Logger;
+import com.novoda.merlin.Logger;
 import com.novoda.merlin.receiver.ConnectivityChangesRegister;
 import com.novoda.merlin.registerable.bind.BindCallbackManager;
 import com.novoda.merlin.registerable.connection.ConnectCallbackManager;

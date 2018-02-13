@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Build;
 
-import com.novoda.merlin.logger.Logger;
+import com.novoda.merlin.Logger;
 import com.novoda.merlin.service.ConnectivityChangeEventExtractor;
 import com.novoda.merlin.service.MerlinService;
 

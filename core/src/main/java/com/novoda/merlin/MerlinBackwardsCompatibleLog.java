@@ -1,8 +1,8 @@
-package com.novoda.merlin.logger;
+package com.novoda.merlin;
 
 import android.util.Log;
 
-public final class MerlinBackwardsCompatibleLog implements Logger.LogHandle {
+final class MerlinBackwardsCompatibleLog implements Logger.LogHandle {
 
     private static MerlinBackwardsCompatibleLog lazyInstance;
 
@@ -12,7 +12,7 @@ public final class MerlinBackwardsCompatibleLog implements Logger.LogHandle {
         // Single instance.
     }
 
-    public static MerlinBackwardsCompatibleLog getInstance() {
+    static MerlinBackwardsCompatibleLog getInstance() {
         if (lazyInstance == null) {
             lazyInstance = new MerlinBackwardsCompatibleLog();
         }

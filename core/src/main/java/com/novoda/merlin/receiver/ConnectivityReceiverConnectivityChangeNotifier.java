@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 
 import com.novoda.merlin.MerlinsBeard;
-import com.novoda.merlin.logger.Logger;
+import com.novoda.merlin.Logger;
 import com.novoda.merlin.service.MerlinService;
 
 class ConnectivityReceiverConnectivityChangeNotifier {

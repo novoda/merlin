@@ -3,7 +3,7 @@ package com.novoda.merlin.registerable.bind;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.registerable.MerlinCallbackManager;
 import com.novoda.merlin.registerable.Register;
-import com.novoda.merlin.logger.Logger;
+import com.novoda.merlin.Logger;
 
 public class BindCallbackManager extends MerlinCallbackManager<Bindable> {
 

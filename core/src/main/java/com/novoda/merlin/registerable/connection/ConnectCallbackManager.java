@@ -2,7 +2,7 @@ package com.novoda.merlin.registerable.connection;
 
 import com.novoda.merlin.registerable.MerlinCallbackManager;
 import com.novoda.merlin.registerable.Register;
-import com.novoda.merlin.logger.Logger;
+import com.novoda.merlin.Logger;
 
 public class ConnectCallbackManager extends MerlinCallbackManager<Connectable> {
 

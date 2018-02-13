@@ -1,4 +1,4 @@
-package com.novoda.merlin.logger;
+package com.novoda.merlin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,7 @@ public final class Logger {
     private static final List<LogHandle> HANDLES = new ArrayList<>();
 
     private Logger() {
+        // Uses static methods.
     }
 
     /**
