@@ -6,8 +6,6 @@ import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
 
-import com.novoda.merlin.service.AndroidVersion;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

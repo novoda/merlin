@@ -7,8 +7,6 @@ import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
 
-import com.novoda.merlin.service.AndroidVersion;
-
 /**
  * This class provides a mechanism for retrieving the current
  * state of a network connection given an application context.

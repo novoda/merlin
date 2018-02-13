@@ -8,7 +8,7 @@
   <application>
 
     <service
-      android:name="com.novoda.merlin.service.MerlinService"
+      android:name="com.novoda.merlin.MerlinService"
       android:exported="false" />
 
   </application>

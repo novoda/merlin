@@ -5,9 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.novoda.merlin.Merlin;
-import com.novoda.merlin.registerable.bind.Bindable;
-import com.novoda.merlin.registerable.connection.Connectable;
-import com.novoda.merlin.registerable.disconnection.Disconnectable;
+import com.novoda.merlin.Bindable;
+import com.novoda.merlin.Connectable;
+import com.novoda.merlin.Disconnectable;
 import com.novoda.merlin.Logger;
 
 public abstract class MerlinActivity extends AppCompatActivity {
