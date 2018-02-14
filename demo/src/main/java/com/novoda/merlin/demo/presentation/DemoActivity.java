@@ -80,7 +80,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
     @Override
     protected Merlin createMerlin() {
         return new Merlin.Builder()
-//                .withConnectableCallbacks()
+                .withConnectableCallbacks()
                 .withDisconnectableCallbacks()
                 .withBindableCallbacks()
                 .build(this);
