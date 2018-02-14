@@ -1,9 +1,9 @@
 ext {
     versions = [
-            support   : '25.3.1',
+            support   : '27.0.2',
             androidSdk: [
-                    compile   : 25,
-                    min       : 14,
+                    compile: 27,
+                    min    : 14,
             ]
     ]
 
