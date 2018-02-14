@@ -3,7 +3,7 @@ apply plugin: 'bintray-release'
 
 dependencies {
     implementation libraries.app.supportAnnotations
-
+    
     testImplementation libraries.test.jUnit
     testImplementation libraries.test.mockito
     testImplementation libraries.test.fest

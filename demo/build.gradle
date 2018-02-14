@@ -1,15 +1,13 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-
     implementation project(':core')
     implementation project(':merlin-rxjava')
     implementation project(':merlin-rxjava2')
+    
     implementation libraries.app.rxJava
     implementation libraries.app.rxJava2
-
     implementation libraries.app.supportDesign
-
 }
 
 android {
