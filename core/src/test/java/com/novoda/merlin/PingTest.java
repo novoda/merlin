@@ -9,8 +9,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.novoda.merlin.EndpointPinger.ResponseCodeFetcher;
-import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 

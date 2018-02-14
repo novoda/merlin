@@ -8,7 +8,6 @@ dependencies {
 
     testImplementation libraries.test.jUnit
     testImplementation libraries.test.mockito
-    testImplementation libraries.test.fest
 }
 
 android {
