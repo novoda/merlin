@@ -4,25 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class ConnectivityReceiverTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private Context context;
-    @Mock
-    private Intent intent;
-    @Mock
-    private ConnectivityReceiverConnectivityChangeNotifier notifier;
+    private final Context context = mock(Context.class);
+    private final Intent intent = mock(Intent.class);
+    private final ConnectivityReceiverConnectivityChangeNotifier notifier = mock(ConnectivityReceiverConnectivityChangeNotifier.class);
 
     private ConnectivityReceiver connectivityReceiver;
 

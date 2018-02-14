@@ -3,15 +3,12 @@ package com.novoda.merlin;
 import java.io.IOException;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.novoda.merlin.EndpointPinger.ResponseCodeFetcher;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class PingTest {
@@ -20,13 +17,8 @@ public class PingTest {
 
     private static final int RESPONSE_CODE = 201;
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private ResponseCodeFetcher responseCodeFetcher;
-    @Mock
-    private ResponseCodeValidator responseCodeValidator;
+    private final ResponseCodeFetcher responseCodeFetcher = mock(ResponseCodeFetcher.class);
+    private final ResponseCodeValidator responseCodeValidator = mock(ResponseCodeValidator.class);
 
     private Ping ping;
 

@@ -1,25 +1,15 @@
 package com.novoda.merlin;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
 import static org.mockito.Mockito.*;
 
 public class RegistrarTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private Register<Connectable> connectables;
-    @Mock
-    private Register<Disconnectable> disconnectables;
-    @Mock
-    private Register<Bindable> bindables;
+    private final Register<Connectable> connectables = mock(Register.class);
+    private final Register<Disconnectable> disconnectables = mock(Register.class);
+    private final Register<Bindable> bindables = mock(Register.class);
 
     private Registrar registrar;
 

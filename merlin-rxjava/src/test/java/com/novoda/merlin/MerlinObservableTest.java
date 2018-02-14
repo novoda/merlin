@@ -5,26 +5,21 @@ import android.content.Context;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 
 import rx.Subscription;
 import rx.observers.AssertableSubscriber;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class MerlinObservableTest {
 
-    @Mock
-    Merlin merlin;
+    private final Merlin merlin = mock(Merlin.class);
 
-    AssertableSubscriber<NetworkStatus> testSubscriber;
+    private AssertableSubscriber<NetworkStatus> testSubscriber;
 
     @Before
     public void setUp() {
-        initMocks(this);
-
         testSubscriber = MerlinObservable.from(merlin)
                 .test();
     }

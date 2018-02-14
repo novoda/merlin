@@ -4,14 +4,11 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 public class ConnectivityChangeEventCreatorTest {
 
@@ -21,13 +18,8 @@ public class ConnectivityChangeEventCreatorTest {
     private static final String ANY_INFO = "any_info";
     private static final String ANY_REASON = "any_reason";
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private MerlinsBeard merlinsBeard;
-    @Mock
-    private Intent intent;
+    private final MerlinsBeard merlinsBeard = mock(MerlinsBeard.class);
+    private final Intent intent = mock(Intent.class);
 
     private ConnectivityChangeEventCreator creator;
 

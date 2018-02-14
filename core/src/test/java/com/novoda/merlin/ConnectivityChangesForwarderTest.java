@@ -1,18 +1,13 @@
 package com.novoda.merlin;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class ConnectivityChangesForwarderTest {
 
@@ -22,19 +17,11 @@ public class ConnectivityChangesForwarderTest {
     private static final String ANY_REASON = "any_reason";
     private static final NetworkStatus AVAILABLE_NETWORK = NetworkStatus.newAvailableInstance();
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private NetworkStatusRetriever networkStatusRetriever;
-    @Mock
-    private DisconnectCallbackManager disconnectCallbackManager;
-    @Mock
-    private ConnectCallbackManager connectCallbackManager;
-    @Mock
-    private BindCallbackManager bindCallbackManager;
-    @Mock
-    private EndpointPinger endpointPinger;
+    private final NetworkStatusRetriever networkStatusRetriever = mock(NetworkStatusRetriever.class);
+    private final DisconnectCallbackManager disconnectCallbackManager = mock(DisconnectCallbackManager.class);
+    private final ConnectCallbackManager connectCallbackManager = mock(ConnectCallbackManager.class);
+    private final BindCallbackManager bindCallbackManager = mock(BindCallbackManager.class);
+    private final EndpointPinger endpointPinger = mock(EndpointPinger.class);
 
     private ConnectivityChangesForwarder connectivityChangesForwarder;
 

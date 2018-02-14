@@ -8,34 +8,21 @@ import android.net.NetworkRequest;
 import android.os.Build;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.refEq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class ConnectivityChangesRegisterTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private Context context;
-    @Mock
-    private ConnectivityManager connectivityManager;
-    @Mock
-    private AndroidVersion androidVersion;
-    @Mock
-    private MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier;
-    @Mock
-    private ConnectivityChangeEventExtractor extractor;
+    private final Context context = mock(Context.class);
+    private final ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
+    private final AndroidVersion androidVersion = mock(AndroidVersion.class);
+    private final MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier = mock(MerlinService.ConnectivityChangesNotifier.class);
+    private final ConnectivityChangeEventExtractor extractor = mock(ConnectivityChangeEventExtractor.class);
 
     private ConnectivityChangesRegister connectivityChangesRegister;
 
