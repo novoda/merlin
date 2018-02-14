@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.novoda:merlin:1.1.5'
+    compile 'com.novoda:merlin:1.1.6'
 }
 ```
 
