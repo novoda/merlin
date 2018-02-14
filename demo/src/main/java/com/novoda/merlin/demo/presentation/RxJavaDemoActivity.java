@@ -8,7 +8,7 @@ import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
-import com.novoda.merlin.rxjava.MerlinObservable;
+import com.novoda.merlin.MerlinObservable;
 
 import rx.Subscription;
 import rx.functions.Action1;

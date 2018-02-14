@@ -2,20 +2,7 @@ package com.novoda.merlin;
 
 import android.content.Context;
 
-import com.novoda.merlin.logger.Logger;
-import com.novoda.merlin.logger.MerlinBackwardsCompatibleLog;
-import com.novoda.merlin.registerable.Register;
-import com.novoda.merlin.registerable.Registrar;
-import com.novoda.merlin.registerable.bind.BindCallbackManager;
-import com.novoda.merlin.registerable.bind.Bindable;
-import com.novoda.merlin.registerable.connection.ConnectCallbackManager;
-import com.novoda.merlin.registerable.connection.Connectable;
-import com.novoda.merlin.registerable.disconnection.DisconnectCallbackManager;
-import com.novoda.merlin.registerable.disconnection.Disconnectable;
-import com.novoda.merlin.service.MerlinServiceBinder;
-import com.novoda.merlin.service.ResponseCodeValidator;
-
-import static com.novoda.merlin.service.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
+import static com.novoda.merlin.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
 
 public class MerlinBuilder {
 
@@ -34,7 +21,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide connectable callbacks, without calling this, Merlin.registerConnectable will throw a MerlinException.
+     * Enables Merlin to provide connectable callbacks, without calling this, Merlin.registerConnectable will throw an IllegalStateException.
      *
      * @return MerlinBuilder.
      */
@@ -45,7 +32,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide disconnectable callbacks, without calling this, Merlin.registerDisconnectable will throw a MerlinException.
+     * Enables Merlin to provide disconnectable callbacks, without calling this, Merlin.registerDisconnectable will throw an IllegalStateException.
      *
      * @return MerlinBuilder.
      */
@@ -56,7 +43,7 @@ public class MerlinBuilder {
     }
 
     /**
-     * Enables Merlin to provide bindable callbacks, without calling this, Merlin.registerBindable will throw a MerlinException.
+     * Enables Merlin to provide bindable callbacks, without calling this, Merlin.registerBindable will throw an IllegalStateException.
      *
      * @return MerlinBuilder.
      */

@@ -3,15 +3,15 @@ package com.novoda.merlin.demo.presentation;
 import android.os.Bundle;
 import android.view.View;
 
+import com.novoda.merlin.Bindable;
+import com.novoda.merlin.Connectable;
+import com.novoda.merlin.Disconnectable;
 import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
 import com.novoda.merlin.demo.presentation.base.MerlinActivity;
-import com.novoda.merlin.registerable.bind.Bindable;
-import com.novoda.merlin.registerable.connection.Connectable;
-import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
 public class DemoActivity extends MerlinActivity implements Connectable, Disconnectable, Bindable {
 
@@ -80,7 +80,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
     @Override
     protected Merlin createMerlin() {
         return new Merlin.Builder()
-                .withConnectableCallbacks()
+//                .withConnectableCallbacks()
                 .withDisconnectableCallbacks()
                 .withBindableCallbacks()
                 .build(this);
