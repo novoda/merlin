@@ -5,26 +5,21 @@ import android.content.Context;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subscribers.TestSubscriber;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class MerlinFlowableTest {
 
-    @Mock
-    Merlin merlin;
+    private final Merlin merlin = mock(Merlin.class);
 
-    TestSubscriber<NetworkStatus> testSubscriber;
+    private TestSubscriber<NetworkStatus> testSubscriber;
 
     @Before
     public void setUp() {
-        initMocks(this);
-
         testSubscriber = MerlinFlowable.from(merlin)
                 .test();
     }

@@ -5,11 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -23,19 +19,11 @@ public class ConnectivityReceiverConnectivityChangeNotifierTest {
     private static final boolean CAN_NOTIFY = true;
     private static final boolean CANNOT_NOTIFY = false;
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private Context context;
-    @Mock
-    private ConnectivityChangeEventCreator eventCreator;
-    @Mock
-    private ConnectivityReceiver.MerlinBinderRetriever merlinBinderRetriever;
-    @Mock
-    private MerlinsBeard merlinsBeard;
-    @Mock
-    private MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier;
+    private final Context context = mock(Context.class);
+    private final ConnectivityChangeEventCreator eventCreator = mock(ConnectivityChangeEventCreator.class);
+    private final ConnectivityReceiver.MerlinBinderRetriever merlinBinderRetriever = mock(ConnectivityReceiver.MerlinBinderRetriever.class);
+    private final MerlinsBeard merlinsBeard = mock(MerlinsBeard.class);
+    private final MerlinService.ConnectivityChangesNotifier connectivityChangesNotifier = mock(MerlinService.ConnectivityChangesNotifier.class);
 
     private ConnectivityReceiverConnectivityChangeNotifier notifier;
 
@@ -49,7 +37,6 @@ public class ConnectivityReceiverConnectivityChangeNotifierTest {
         given(merlinsBeardCreator.createMerlinsBeard(context)).willReturn(merlinsBeard);
 
         notifier = new ConnectivityReceiverConnectivityChangeNotifier(merlinsBeardCreator, merlinBinderRetriever, eventCreator);
-
     }
 
     @Test

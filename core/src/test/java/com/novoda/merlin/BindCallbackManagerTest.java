@@ -4,28 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class BindCallbackManagerTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private NetworkStatus networkStatus;
-
-    private Register<Bindable> bindables;
+    private final NetworkStatus networkStatus = mock(NetworkStatus.class);
+    private final Register<Bindable> bindables = new Register<>();
 
     private BindCallbackManager bindCallbackManager;
 
     @Before
     public void setUp() {
-        bindables = new Register<>();
         bindCallbackManager = new BindCallbackManager(bindables);
     }
 
@@ -35,7 +27,7 @@ public class BindCallbackManagerTest {
 
         bindCallbackManager.onMerlinBind(networkStatus);
 
-        Mockito.verify(bindable).onBind(networkStatus);
+        verify(bindable).onBind(networkStatus);
     }
 
     @Test
@@ -45,7 +37,7 @@ public class BindCallbackManagerTest {
         bindCallbackManager.onMerlinBind(networkStatus);
 
         for (Bindable bindable : bindables) {
-            Mockito.verify(bindable).onBind(networkStatus);
+            verify(bindable).onBind(networkStatus);
         }
     }
 
@@ -53,7 +45,7 @@ public class BindCallbackManagerTest {
         List<Bindable> bindables = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
-            Bindable connectable = Mockito.mock(Bindable.class);
+            Bindable connectable = mock(Bindable.class);
             bindables.add(connectable);
             this.bindables.register(connectable);
         }
@@ -61,7 +53,7 @@ public class BindCallbackManagerTest {
     }
 
     private Bindable givenRegisteredBindable() {
-        Bindable bindable = Mockito.mock(Bindable.class);
+        Bindable bindable = mock(Bindable.class);
         bindables.register(bindable);
         return bindable;
     }

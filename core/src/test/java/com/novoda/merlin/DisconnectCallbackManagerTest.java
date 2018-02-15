@@ -8,18 +8,15 @@ import org.junit.Test;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DisconnectCallbackManagerTest {
 
-    private Register<Disconnectable> disconnectables;
+    private final Register<Disconnectable> disconnectables = new Register<>();
 
     private DisconnectCallbackManager disconnectCallbackManager;
 
     @Before
     public void setUp() {
-        initMocks(this);
-        disconnectables = new Register<>();
         disconnectCallbackManager = new DisconnectCallbackManager(disconnectables);
     }
 

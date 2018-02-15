@@ -1,14 +1,11 @@
 package com.novoda.merlin;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class NetworkStatusRetrieverTest {
@@ -16,15 +13,9 @@ public class NetworkStatusRetrieverTest {
     private static boolean CONNECTED = true;
     private static boolean DISCONNECTED = false;
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private MerlinsBeard merlinsBeards;
-    @Mock
-    private EndpointPinger endpointPinger;
-    @Mock
-    private EndpointPinger.PingerCallback pingerCallback;
+    private final MerlinsBeard merlinsBeards = mock(MerlinsBeard.class);
+    private final EndpointPinger endpointPinger = mock(EndpointPinger.class);
+    private final EndpointPinger.PingerCallback pingerCallback = mock(EndpointPinger.PingerCallback.class);
 
     private NetworkStatusRetriever networkStatusRetriever;
 

@@ -7,13 +7,9 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -28,13 +24,8 @@ public class ConnectivityChangeEventExtractorTest {
     private static final Network ANY_NETWORK = mock(Network.class);
     private static final NetworkInfo UNAVAILABLE_NETWORK_INFO = null;
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private ConnectivityManager connectivityManager;
-    @Mock
-    private NetworkInfo networkInfo;
+    private final ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
+    private final NetworkInfo networkInfo = mock(NetworkInfo.class);
 
     private ConnectivityChangeEventExtractor eventExtractor;
 

@@ -1,30 +1,16 @@
 package com.novoda.merlin;
 
-import android.content.Context;
-
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class MerlinTest {
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private Context context;
-    @Mock
-    private MerlinServiceBinder serviceBinder;
-    @Mock
-    private ResponseCodeValidator validator;
-    @Mock
-    private Registrar registrar;
+    private final MerlinServiceBinder serviceBinder = mock(MerlinServiceBinder.class);
+    private final ResponseCodeValidator validator = mock(ResponseCodeValidator.class);
+    private final Registrar registrar = mock(Registrar.class);
 
     private Merlin merlin;
 

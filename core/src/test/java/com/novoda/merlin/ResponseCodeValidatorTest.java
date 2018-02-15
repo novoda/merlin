@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.novoda.merlin.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
-import static org.fest.assertions.api.Assertions.assertThat;
 
 public class ResponseCodeValidatorTest {
 

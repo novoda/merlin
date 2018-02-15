@@ -11,13 +11,12 @@ import static org.mockito.Mockito.verify;
 
 public class ConnectCallbackManagerTest {
 
-    private Register<Connectable> connectables;
+    private final Register<Connectable> connectables = new Register<>();
 
     private ConnectCallbackManager connectCallbackManager;
 
     @Before
     public void setUp() {
-        connectables = new Register<>();
         connectCallbackManager = new ConnectCallbackManager(connectables);
     }
 

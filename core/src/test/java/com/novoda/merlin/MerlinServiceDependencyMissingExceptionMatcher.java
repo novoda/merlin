@@ -8,7 +8,7 @@ class MerlinServiceDependencyMissingExceptionMatcher extends BaseMatcher<MerlinS
     private String expectedMessage;
     private Throwable expectedCause;
 
-    public static MerlinServiceDependencyMissingExceptionMatcher from(Class expectedDependency) {
+    static MerlinServiceDependencyMissingExceptionMatcher from(Class expectedDependency) {
         MerlinServiceDependencyMissingException expectedException = MerlinServiceDependencyMissingException.missing(expectedDependency);
         return new MerlinServiceDependencyMissingExceptionMatcher(expectedException);
     }

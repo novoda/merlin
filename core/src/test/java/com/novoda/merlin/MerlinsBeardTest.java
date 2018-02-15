@@ -7,15 +7,11 @@ import android.net.NetworkInfo;
 import android.os.Build;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 public class MerlinsBeardTest {
 
@@ -25,15 +21,9 @@ public class MerlinsBeardTest {
     private static final boolean BELOW_LOLLIPOP = false;
     private static final boolean LOLLIPOP_OR_ABOVE = true;
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Mock
-    private ConnectivityManager connectivityManager;
-    @Mock
-    private NetworkInfo networkInfo;
-    @Mock
-    private AndroidVersion androidVersion;
+    private final ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
+    private final NetworkInfo networkInfo = mock(NetworkInfo.class);
+    private final AndroidVersion androidVersion = mock(AndroidVersion.class);
 
     private MerlinsBeard merlinsBeard;
 
@@ -201,8 +191,8 @@ public class MerlinsBeardTest {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void givenNetworkStateForLollipopOrAbove(boolean isConnected, int networkType) {
-        Network network = Mockito.mock(Network.class);
-        NetworkInfo networkInfo = Mockito.mock(NetworkInfo.class);
+        Network network = mock(Network.class);
+        NetworkInfo networkInfo = mock(NetworkInfo.class);
         given(networkInfo.getType()).willReturn(networkType);
         given(networkInfo.isConnected()).willReturn(isConnected);
         given(connectivityManager.getNetworkInfo(network)).willReturn(networkInfo);
@@ -212,13 +202,13 @@ public class MerlinsBeardTest {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void givenNetworkStateWithoutNetworkInfoForLollipopOrAbove() {
-        Network network = Mockito.mock(Network.class);
+        Network network = mock(Network.class);
         given(androidVersion.isLollipopOrHigher()).willReturn(LOLLIPOP_OR_ABOVE);
         given(connectivityManager.getAllNetworks()).willReturn(new Network[]{network});
     }
 
     private void givenNetworkStateForBelowLollipop(boolean isConnected, int networkType) {
-        NetworkInfo networkInfo = Mockito.mock(NetworkInfo.class);
+        NetworkInfo networkInfo = mock(NetworkInfo.class);
         given(androidVersion.isLollipopOrHigher()).willReturn(BELOW_LOLLIPOP);
         given(connectivityManager.getNetworkInfo(networkType)).willReturn(networkInfo);
         given(networkInfo.isConnected()).willReturn(isConnected);

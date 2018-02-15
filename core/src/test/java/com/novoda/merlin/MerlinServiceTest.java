@@ -7,14 +7,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 public class MerlinServiceTest {
 
@@ -23,16 +19,11 @@ public class MerlinServiceTest {
     );
 
     @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-    @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    @Mock
-    private Intent intent;
-    @Mock
-    private ConnectivityChangesRegister connectivityChangesRegister;
-    @Mock
-    private ConnectivityChangesForwarder connectivityChangesForwarder;
+    private final Intent intent = mock(Intent.class);
+    private final ConnectivityChangesRegister connectivityChangesRegister = mock(ConnectivityChangesRegister.class);
+    private final ConnectivityChangesForwarder connectivityChangesForwarder = mock(ConnectivityChangesForwarder.class);
 
     private MerlinService merlinService;
 
