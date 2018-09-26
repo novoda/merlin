@@ -25,5 +25,6 @@
   <string name="demo_launch_button">Launch demo</string>
   <string name="rx_java_demo_launch_button">Launch RxJava demo</string>
   <string name="rx_java2_demo_launch_button">Launch RxJava2 demo</string>
+  <string name="merlin_logo">Merlin logo</string>
 
 </resources>
