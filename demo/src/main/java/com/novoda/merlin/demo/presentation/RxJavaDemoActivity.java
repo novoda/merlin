@@ -1,8 +1,8 @@
 package com.novoda.merlin.demo.presentation;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.novoda.merlin.MerlinObservable;
@@ -15,7 +15,7 @@ import rx.Subscription;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
-public class RxJavaDemoActivity extends Activity {
+public class RxJavaDemoActivity extends AppCompatActivity {
 
     private NetworkStatusDisplayer networkStatusDisplayer;
     private MerlinsBeard merlinsBeard;

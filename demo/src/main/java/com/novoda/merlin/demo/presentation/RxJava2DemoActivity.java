@@ -1,8 +1,8 @@
 package com.novoda.merlin.demo.presentation;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.novoda.merlin.MerlinFlowable;
@@ -16,7 +16,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class RxJava2DemoActivity extends Activity {
+public class RxJava2DemoActivity extends AppCompatActivity {
 
     private NetworkStatusDisplayer networkStatusDisplayer;
     private MerlinsBeard merlinsBeard;
