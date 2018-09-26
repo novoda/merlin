@@ -34,4 +34,11 @@
     android:layout_gravity="center_horizontal"
     android:text="@string/get_network_subtype" />
 
+  <Button
+    android:id="@+id/next_activity"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:text="@string/next_activity" />
+
 </LinearLayout>
