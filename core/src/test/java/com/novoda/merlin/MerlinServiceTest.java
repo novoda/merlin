@@ -10,7 +10,10 @@ import org.mockito.ArgumentCaptor;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class MerlinServiceTest {
 
@@ -109,6 +112,27 @@ public class MerlinServiceTest {
         binder.onBindComplete();
 
         verifyZeroInteractions(connectivityChangesRegister);
+        verifyZeroInteractions(connectivityChangesForwarder);
+    }
+
+
+    @Test
+    public void givenUnboundService_whenNotifying_thenDoesNotForwardEvent() {
+        MerlinService.LocalBinder localBinder = givenBoundMerlinService();
+
+        merlinService.onUnbind(null);
+        localBinder.notify(ANY_CONNECTIVITY_CHANGE_EVENT);
+
+        verifyZeroInteractions(connectivityChangesForwarder);
+    }
+
+    @Test
+    public void givenNullForwarder_whenNotifying_thenDoesNotForwardEvent() {
+        MerlinService.LocalBinder localBinder = givenBoundMerlinService();
+        localBinder.setConnectivityChangesForwarder(null);
+
+        localBinder.notify(ANY_CONNECTIVITY_CHANGE_EVENT);
+
         verifyZeroInteractions(connectivityChangesForwarder);
     }
 
