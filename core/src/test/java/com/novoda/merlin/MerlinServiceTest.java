@@ -115,7 +115,6 @@ public class MerlinServiceTest {
         verifyZeroInteractions(connectivityChangesForwarder);
     }
 
-
     @Test
     public void givenUnboundService_whenNotifying_thenDoesNotForwardEvent() {
         MerlinService.LocalBinder localBinder = givenBoundMerlinService();
