@@ -1,31 +1,37 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:paddingTop="@dimen/content_padding_top">
+
+  <ImageView
+    android:id="@+id/merlin_logo"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginBottom="@dimen/content_margin_bottom"
+    android:contentDescription="@string/merlin_logo"
+    android:src="@mipmap/ic_launcher" />
 
   <Button
     android:id="@+id/demo_launch_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
+    android:layout_gravity="center_horizontal"
     android:text="@string/demo_launch_button" />
 
   <Button
     android:id="@+id/rx_java_demo_launch_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_below="@id/demo_launch_button"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
+    android:layout_gravity="center_horizontal"
     android:text="@string/rx_java_demo_launch_button" />
 
   <Button
     android:id="@+id/rx_java2_demo_launch_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_below="@id/rx_java_demo_launch_button"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
+    android:layout_gravity="center_horizontal"
     android:text="@string/rx_java2_demo_launch_button" />
 
-</RelativeLayout>
+</LinearLayout>
