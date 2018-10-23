@@ -1,5 +1,6 @@
 package com.novoda.merlin.demo.presentation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -32,6 +33,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         findViewById(R.id.wifi_connected).setOnClickListener(wifiConnectedOnClick);
         findViewById(R.id.mobile_connected).setOnClickListener(mobileConnectedOnClick);
         findViewById(R.id.network_subtype).setOnClickListener(networkSubtypeOnClick);
+        findViewById(R.id.next_activity).setOnClickListener(nextActivityOnClick);
     }
 
     private final View.OnClickListener networkStatusOnClick = new View.OnClickListener() {
@@ -74,6 +76,15 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         @Override
         public void onClick(View view) {
             networkStatusDisplayer.displayNetworkSubtype(viewToAttachDisplayerTo);
+        }
+    };
+
+    private final View.OnClickListener nextActivityOnClick = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getApplicationContext(), DemoActivity.class);
+            startActivity(intent);
         }
     };
 

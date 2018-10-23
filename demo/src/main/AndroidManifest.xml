@@ -6,10 +6,10 @@
   android:versionName="0.3-SNAPSHOT">
 
   <application
-    android:theme="@style/AppTheme"
     android:allowBackup="false"
     android:icon="@mipmap/ic_launcher"
     android:label="Merlin demo"
+    android:theme="@style/AppTheme"
     tools:ignore="GoogleAppIndexingWarning">
 
     <activity
