@@ -127,63 +127,12 @@ public class MerlinsBeard {
         return networkInfo.getSubtypeName();
     }
 
-
     /**
-     * Provides a boolean representing whether the device is behind a captive portal with restricted network access.
      *
-     * @return boolean true if device is behind a captive portal.
-     */
-    private static boolean isWalledGardenConnection(){
-
-        HttpURLConnection urlConnection = null;
-        try {
-            URL url = new URL(ENDPOINT);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setInstanceFollowRedirects(false);
-            urlConnection.setConnectTimeout(WALLED_GARDEN_SOCKET_TIMEOUT_MS);
-            urlConnection.setReadTimeout(WALLED_GARDEN_SOCKET_TIMEOUT_MS);
-            urlConnection.setUseCaches(false);
-            urlConnection.getInputStream();
-            // We got a valid response, but not from the real google
-            return urlConnection.getResponseCode() != 204;
-        } catch (IOException e) {
-            if (BuildConfig.DEBUG) {
-                Log.d("MerlinsBeard", "Captive Portal check - probably not a portal: exception ", e);
-            }
-            return false;
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-        }
-    }
-
-
-    public static void isCaptivePortal(final EndpointPinger.PingerCallback onResultCallback){
-
-        new AsyncTask<Void, Boolean, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                return isWalledGardenConnection();
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if(result)
-                    onResultCallback.onSuccess();
-                else
-                    onResultCallback.onFailure();
-            }
-        }.execute();
-    }
-
-
-    /**
-     * Provides a boolean representing whether the device is behind a captive portal with restricted network access.
      *
-     * @return boolean true if device is behind a captive portal.
+     *
      */
-    public void isCaptivePortal2(EndpointPinger.PingerCallback pingerCallback){
+    public void isCaptivePortal(EndpointPinger.PingerCallback pingerCallback){
         pinger.ping(pingerCallback);
     }
 

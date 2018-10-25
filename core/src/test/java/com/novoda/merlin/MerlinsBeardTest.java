@@ -5,12 +5,18 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.view.ViewOutlineProvider;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 
 public class MerlinsBeardTest {
@@ -24,12 +30,14 @@ public class MerlinsBeardTest {
     private final ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
     private final NetworkInfo networkInfo = mock(NetworkInfo.class);
     private final AndroidVersion androidVersion = mock(AndroidVersion.class);
+    private final EndpointPinger endpointPinger = mock(EndpointPinger.class);
+    private final EndpointPinger.PingerCallback mockPingerCallback = mock(EndpointPinger.PingerCallback.class);
 
     private MerlinsBeard merlinsBeard;
 
     @Before
     public void setUp() {
-        merlinsBeard = new MerlinsBeard(connectivityManager, androidVersion);
+        merlinsBeard = new MerlinsBeard(connectivityManager, androidVersion, endpointPinger);
     }
 
     @Test
@@ -136,6 +144,12 @@ public class MerlinsBeardTest {
         boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
 
         assertThat(connectedToMobileNetwork).isFalse();
+    }
+
+    @Test
+    public void givenPingerCallback_whenCheckingCaptivePortal_thenCallsPingerCallback(){
+        merlinsBeard.isCaptivePortal(mockPingerCallback);
+        then(endpointPinger).should().ping(mockPingerCallback);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
