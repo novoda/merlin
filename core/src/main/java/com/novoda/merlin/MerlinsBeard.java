@@ -5,7 +5,13 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * This class provides a mechanism for retrieving the current
@@ -14,9 +20,12 @@ import android.os.Build;
 public class MerlinsBeard {
 
     private static final boolean IS_NOT_CONNECTED_TO_NETWORK_TYPE = false;
+    private static final String ENDPOINT = "http://clients3.google.com/generate_204";
+    private static final int WALLED_GARDEN_SOCKET_TIMEOUT_MS = 10000;
 
     private final ConnectivityManager connectivityManager;
     private final AndroidVersion androidVersion;
+    private final EndpointPinger pinger;
 
     /**
      * Use this method to create a MerlinsBeard object, this is how you can retrieve the current network state.
@@ -27,12 +36,14 @@ public class MerlinsBeard {
     public static MerlinsBeard from(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         AndroidVersion androidVersion = new AndroidVersion();
-        return new MerlinsBeard(connectivityManager, androidVersion);
+        EndpointPinger pinger = EndpointPinger.withCustomEndpointAndValidation(Endpoint.from(ENDPOINT), new ResponseCodeValidator.DefaultEndpointResponseCodeValidator());
+        return new MerlinsBeard(connectivityManager, androidVersion, pinger);
     }
 
-    MerlinsBeard(ConnectivityManager connectivityManager, AndroidVersion androidVersion) {
+    MerlinsBeard(ConnectivityManager connectivityManager, AndroidVersion androidVersion, EndpointPinger pinger) {
         this.connectivityManager = connectivityManager;
         this.androidVersion = androidVersion;
+        this.pinger = pinger;
     }
 
     /**
@@ -114,6 +125,66 @@ public class MerlinsBeard {
             return "";
         }
         return networkInfo.getSubtypeName();
+    }
+
+
+    /**
+     * Provides a boolean representing whether the device is behind a captive portal with restricted network access.
+     *
+     * @return boolean true if device is behind a captive portal.
+     */
+    private static boolean isWalledGardenConnection(){
+
+        HttpURLConnection urlConnection = null;
+        try {
+            URL url = new URL(ENDPOINT);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setInstanceFollowRedirects(false);
+            urlConnection.setConnectTimeout(WALLED_GARDEN_SOCKET_TIMEOUT_MS);
+            urlConnection.setReadTimeout(WALLED_GARDEN_SOCKET_TIMEOUT_MS);
+            urlConnection.setUseCaches(false);
+            urlConnection.getInputStream();
+            // We got a valid response, but not from the real google
+            return urlConnection.getResponseCode() != 204;
+        } catch (IOException e) {
+            if (BuildConfig.DEBUG) {
+                Log.d("MerlinsBeard", "Captive Portal check - probably not a portal: exception ", e);
+            }
+            return false;
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+    }
+
+
+    public static void isCaptivePortal(final EndpointPinger.PingerCallback onResultCallback){
+
+        new AsyncTask<Void, Boolean, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                return isWalledGardenConnection();
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if(result)
+                    onResultCallback.onSuccess();
+                else
+                    onResultCallback.onFailure();
+            }
+        }.execute();
+    }
+
+
+    /**
+     * Provides a boolean representing whether the device is behind a captive portal with restricted network access.
+     *
+     * @return boolean true if device is behind a captive portal.
+     */
+    public void isCaptivePortal2(EndpointPinger.PingerCallback pingerCallback){
+        pinger.ping(pingerCallback);
     }
 
 }
