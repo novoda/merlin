@@ -1,21 +1,22 @@
 package com.novoda.merlin.demo.presentation;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.novoda.merlin.MerlinFlowable;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
-import com.novoda.merlin.MerlinFlowable;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class RxJava2DemoActivity extends Activity {
+public class RxJava2DemoActivity extends AppCompatActivity {
 
     private NetworkStatusDisplayer networkStatusDisplayer;
     private MerlinsBeard merlinsBeard;
@@ -35,6 +36,7 @@ public class RxJava2DemoActivity extends Activity {
         findViewById(R.id.wifi_connected).setOnClickListener(wifiConnectedOnClick);
         findViewById(R.id.mobile_connected).setOnClickListener(mobileConnectedOnClick);
         findViewById(R.id.network_subtype).setOnClickListener(networkSubtypeOnClick);
+        findViewById(R.id.next_activity).setOnClickListener(nextActivityOnClick);
     }
 
     private final View.OnClickListener networkStatusOnClick = new View.OnClickListener() {
@@ -77,6 +79,15 @@ public class RxJava2DemoActivity extends Activity {
         @Override
         public void onClick(View view) {
             networkStatusDisplayer.displayNetworkSubtype(viewToAttachDisplayerTo);
+        }
+    };
+
+    private final View.OnClickListener nextActivityOnClick = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getApplicationContext(), RxJava2DemoActivity.class);
+            startActivity(intent);
         }
     };
 

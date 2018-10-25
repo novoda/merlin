@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.novoda:merlin:1.1.6'
+    compile 'com.novoda:merlin:1.1.8'
 }
 ```
 
@@ -37,7 +37,7 @@ If for some reason your app's manifest doesn't end up containing the required en
     ```xml
     <service
       android:exported="false"
-      android:name="com.novoda.merlin.MerlinService" />
+      android:name="com.novoda.merlin.service.MerlinService" />
     ```
 
 ## Sample usage
