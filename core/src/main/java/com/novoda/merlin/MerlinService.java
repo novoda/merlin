@@ -74,13 +74,11 @@ public class MerlinService extends Service {
 
         @Override
         public void notify(ConnectivityChangeEvent connectivityChangeEvent) {
-            if (!canNotify()) {
-                throw new IllegalStateException("You must call canNotify() before calling notify(ConnectivityChangeEvent)");
-            }
-
-            // Workaround for https://github.com/novoda/merlin/issues/163, further work required.
-            if (MerlinService.this.connectivityChangesForwarder != null) {
+            // Workaround for https://github.com/novoda/merlin/issues/163 & 171, further work required.
+            if (canNotify() && MerlinService.this.connectivityChangesForwarder != null) {
                 MerlinService.this.connectivityChangesForwarder.forward(connectivityChangeEvent);
+            } else {
+                Logger.w("notify event dropped due to inconsistent service state");
             }
         }
 
