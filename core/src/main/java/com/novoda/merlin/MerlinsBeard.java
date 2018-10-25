@@ -22,7 +22,6 @@ public class MerlinsBeard {
 
     private static final boolean IS_NOT_CONNECTED_TO_NETWORK_TYPE = false;
     private static final String ENDPOINT = "http://clients3.google.com/generate_204";
-    private static final int WALLED_GARDEN_SOCKET_TIMEOUT_MS = 10000;
 
     private final ConnectivityManager connectivityManager;
     private final AndroidVersion androidVersion;
