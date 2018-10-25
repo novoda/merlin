@@ -7,6 +7,7 @@ import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class MerlinsBeard {
     private final ConnectivityManager connectivityManager;
     private final AndroidVersion androidVersion;
     private final EndpointPinger pinger;
+    private final Ping ping;
 
     /**
      * Use this method to create a MerlinsBeard object, this is how you can retrieve the current network state.
@@ -36,14 +38,18 @@ public class MerlinsBeard {
     public static MerlinsBeard from(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         AndroidVersion androidVersion = new AndroidVersion();
-        EndpointPinger pinger = EndpointPinger.withCustomEndpointAndValidation(Endpoint.from(ENDPOINT), new ResponseCodeValidator.DefaultEndpointResponseCodeValidator());
-        return new MerlinsBeard(connectivityManager, androidVersion, pinger);
+        ResponseCodeValidator validator = new ResponseCodeValidator.DefaultEndpointResponseCodeValidator();
+        EndpointPinger pinger = EndpointPinger.withCustomEndpointAndValidation(Endpoint.from(ENDPOINT), validator);
+        Ping ping = new Ping(Endpoint.defaultEndpoint(), new EndpointPinger.ResponseCodeFetcher(), validator);
+
+        return new MerlinsBeard(connectivityManager, androidVersion, pinger, ping);
     }
 
-    MerlinsBeard(ConnectivityManager connectivityManager, AndroidVersion androidVersion, EndpointPinger pinger) {
+    MerlinsBeard(ConnectivityManager connectivityManager, AndroidVersion androidVersion, EndpointPinger pinger, Ping ping) {
         this.connectivityManager = connectivityManager;
         this.androidVersion = androidVersion;
         this.pinger = pinger;
+        this.ping = ping;
     }
 
     /**
@@ -128,12 +134,20 @@ public class MerlinsBeard {
     }
 
     /**
-     *
-     *
-     *
+     * Detects if client is behind a captive portal.
+     * @param pingerCallback to call with success or failure.
      */
     public void isCaptivePortal(EndpointPinger.PingerCallback pingerCallback){
         pinger.ping(pingerCallback);
+    }
+
+    /**
+     * Detects if client is behind a captive portal - synchronously.
+     * @return Boolean result representing if client is behind a captive portal.
+     */
+    @WorkerThread
+    public boolean isCaptivePortal(){
+        return !ping.doSynchronousPing();
     }
 
 }

@@ -32,12 +32,13 @@ public class MerlinsBeardTest {
     private final AndroidVersion androidVersion = mock(AndroidVersion.class);
     private final EndpointPinger endpointPinger = mock(EndpointPinger.class);
     private final EndpointPinger.PingerCallback mockPingerCallback = mock(EndpointPinger.PingerCallback.class);
+    private final Ping mockPing = mock(Ping.class);
 
     private MerlinsBeard merlinsBeard;
 
     @Before
     public void setUp() {
-        merlinsBeard = new MerlinsBeard(connectivityManager, androidVersion, endpointPinger);
+        merlinsBeard = new MerlinsBeard(connectivityManager, androidVersion, endpointPinger, mockPing);
     }
 
     @Test
@@ -150,6 +151,20 @@ public class MerlinsBeardTest {
     public void givenPingerCallback_whenCheckingCaptivePortal_thenCallsPingerCallback(){
         merlinsBeard.isCaptivePortal(mockPingerCallback);
         then(endpointPinger).should().ping(mockPingerCallback);
+    }
+
+    @Test
+    public void givenSuccessfulPing_whenCheckingCaptivePortal_thenReturnFailure() {
+        given(mockPing.doSynchronousPing()).willReturn(true);
+        boolean result = merlinsBeard.isCaptivePortal();
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void givenFailedPing_whenCheckingCaptivePortal_thenReturnSuccess() {
+        given(mockPing.doSynchronousPing()).willReturn(false);
+        boolean result = merlinsBeard.isCaptivePortal();
+        assertThat(result).isTrue();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

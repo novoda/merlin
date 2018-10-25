@@ -5,7 +5,7 @@ import java.net.URL;
 
 public class Endpoint {
 
-    private static final Endpoint DEFAULT_ENDPOINT = Endpoint.from("http://connectivitycheck.android.com/generate_204");
+    private static final Endpoint DEFAULT_ENDPOINT = Endpoint.from("https://connectivitycheck.android.com/generate_204");
 
     private final String endpoint;
 
