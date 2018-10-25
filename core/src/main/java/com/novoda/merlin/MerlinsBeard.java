@@ -5,14 +5,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 /**
  * This class provides a mechanism for retrieving the current
@@ -21,7 +15,6 @@ import java.net.URL;
 public class MerlinsBeard {
 
     private static final boolean IS_NOT_CONNECTED_TO_NETWORK_TYPE = false;
-    private static final String ENDPOINT = "http://clients3.google.com/generate_204";
 
     private final ConnectivityManager connectivityManager;
     private final AndroidVersion androidVersion;
@@ -38,7 +31,7 @@ public class MerlinsBeard {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         AndroidVersion androidVersion = new AndroidVersion();
         ResponseCodeValidator validator = new ResponseCodeValidator.DefaultEndpointResponseCodeValidator();
-        EndpointPinger pinger = EndpointPinger.withCustomEndpointAndValidation(Endpoint.from(ENDPOINT), validator);
+        EndpointPinger pinger = EndpointPinger.withCustomEndpointAndValidation(Endpoint.defaultEndpoint(), validator);
         Ping ping = new Ping(Endpoint.defaultEndpoint(), new EndpointPinger.ResponseCodeFetcher(), validator);
 
         return new MerlinsBeard(connectivityManager, androidVersion, pinger, ping);
@@ -134,18 +127,20 @@ public class MerlinsBeard {
 
     /**
      * Detects if client is behind a captive portal.
+     *
      * @param pingerCallback to call with success or failure.
      */
-    public void isCaptivePortal(EndpointPinger.PingerCallback pingerCallback){
+    public void isCaptivePortal(EndpointPinger.PingerCallback pingerCallback) {
         pinger.ping(pingerCallback);
     }
 
     /**
      * Detects if client is behind a captive portal - synchronously.
+     *
      * @return Boolean result representing if client is behind a captive portal.
      */
     @WorkerThread
-    public boolean isCaptivePortal(){
+    public boolean isCaptivePortal() {
         return !ping.doSynchronousPing();
     }
 
