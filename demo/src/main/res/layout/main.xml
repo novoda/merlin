@@ -22,6 +22,13 @@
     android:text="@string/current_status" />
 
   <Button
+      android:id="@+id/is_captive_portal"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:text="@string/is_captive_portal" />
+
+  <Button
     android:id="@+id/wifi_connected"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

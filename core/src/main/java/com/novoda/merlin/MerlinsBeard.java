@@ -134,10 +134,20 @@ public class MerlinsBeard {
 
     /**
      * Detects if client is behind a captive portal.
-     * @param pingerCallback to call with success or failure.
+     * @param callback to call with boolean result representing if client is behind a captive portal.
      */
-    public void isCaptivePortal(EndpointPinger.PingerCallback pingerCallback){
-        pinger.ping(pingerCallback);
+    public void isCaptivePortal(final CaptivePortalDetectionCallback callback){
+        pinger.ping(new EndpointPinger.PingerCallback() {
+            @Override
+            public void onSuccess() {
+                callback.onResult(false);
+            }
+
+            @Override
+            public void onFailure() {
+                callback.onResult(true);
+            }
+        });
     }
 
     /**
@@ -147,6 +157,10 @@ public class MerlinsBeard {
     @WorkerThread
     public boolean isCaptivePortal(){
         return !ping.doSynchronousPing();
+    }
+
+    public interface CaptivePortalDetectionCallback{
+        void onResult(boolean isCaptivePortal);
     }
 
 }

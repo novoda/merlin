@@ -30,6 +30,7 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), merlinsBeard);
 
         findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
+        findViewById(R.id.is_captive_portal).setOnClickListener(captivePortalClick);
         findViewById(R.id.wifi_connected).setOnClickListener(wifiConnectedOnClick);
         findViewById(R.id.mobile_connected).setOnClickListener(mobileConnectedOnClick);
         findViewById(R.id.network_subtype).setOnClickListener(networkSubtypeOnClick);
@@ -44,6 +45,22 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
             } else {
                 networkStatusDisplayer.displayNegativeMessage(R.string.current_status_network_disconnected, viewToAttachDisplayerTo);
             }
+        }
+    };
+
+    private final View.OnClickListener captivePortalClick = new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+            merlinsBeard.isCaptivePortal(new MerlinsBeard.CaptivePortalDetectionCallback() {
+                @Override
+                public void onResult(boolean isCaptivePortal) {
+                    if (!isCaptivePortal) {
+                        networkStatusDisplayer.displayPositiveMessage(R.string.is_captive_portal_false, viewToAttachDisplayerTo);
+                    } else {
+                        networkStatusDisplayer.displayNegativeMessage(R.string.is_captive_portal_true, viewToAttachDisplayerTo);
+                    }
+                }
+            });
         }
     };
 

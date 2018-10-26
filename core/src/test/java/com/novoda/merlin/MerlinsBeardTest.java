@@ -5,12 +5,9 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.view.ViewOutlineProvider;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -32,6 +29,7 @@ public class MerlinsBeardTest {
     private final AndroidVersion androidVersion = mock(AndroidVersion.class);
     private final EndpointPinger endpointPinger = mock(EndpointPinger.class);
     private final EndpointPinger.PingerCallback mockPingerCallback = mock(EndpointPinger.PingerCallback.class);
+    private final MerlinsBeard.CaptivePortalDetectionCallback mockCaptivePortalCallback = mock(MerlinsBeard.CaptivePortalDetectionCallback.class);
     private final Ping mockPing = mock(Ping.class);
 
     private MerlinsBeard merlinsBeard;
@@ -148,9 +146,19 @@ public class MerlinsBeardTest {
     }
 
     @Test
-    public void givenPingerCallback_whenCheckingCaptivePortal_thenCallsPingerCallback(){
-        merlinsBeard.isCaptivePortal(mockPingerCallback);
-        then(endpointPinger).should().ping(mockPingerCallback);
+    public void givenCaptivePortalCallback_whenCheckingCaptivePortal_thenCallsCaptivePortalCallback(){
+        willAnswer(new Answer<EndpointPinger.PingerCallback>() {
+            @Override
+            public EndpointPinger.PingerCallback answer(InvocationOnMock invocation) throws Throwable {
+                EndpointPinger.PingerCallback cb = invocation.getArgument(0);
+                cb.onSuccess();
+                return cb;
+            }
+        }).given(endpointPinger).ping(any(EndpointPinger.PingerCallback.class));
+
+        merlinsBeard.isCaptivePortal(mockCaptivePortalCallback);
+
+        then(mockCaptivePortalCallback).should().onResult(false);
     }
 
     @Test

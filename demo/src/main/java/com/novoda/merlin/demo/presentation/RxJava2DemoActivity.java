@@ -23,6 +23,7 @@ public class RxJava2DemoActivity extends AppCompatActivity {
     private CompositeDisposable disposables;
     private View viewToAttachDisplayerTo;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,7 @@ public class RxJava2DemoActivity extends AppCompatActivity {
         disposables = new CompositeDisposable();
 
         findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
+        findViewById(R.id.is_captive_portal).setOnClickListener(captivePortalClick);
         findViewById(R.id.wifi_connected).setOnClickListener(wifiConnectedOnClick);
         findViewById(R.id.mobile_connected).setOnClickListener(mobileConnectedOnClick);
         findViewById(R.id.network_subtype).setOnClickListener(networkSubtypeOnClick);
@@ -59,6 +61,22 @@ public class RxJava2DemoActivity extends AppCompatActivity {
             } else {
                 networkStatusDisplayer.displayNegativeMessage(R.string.wifi_disconnected, viewToAttachDisplayerTo);
             }
+        }
+    };
+
+    private final View.OnClickListener captivePortalClick = new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+            merlinsBeard.isCaptivePortal(new MerlinsBeard.CaptivePortalDetectionCallback() {
+                @Override
+                public void onResult(boolean isCaptivePortal) {
+                    if (!isCaptivePortal) {
+                        networkStatusDisplayer.displayPositiveMessage(R.string.is_captive_portal_false, viewToAttachDisplayerTo);
+                    } else {
+                        networkStatusDisplayer.displayNegativeMessage(R.string.is_captive_portal_true, viewToAttachDisplayerTo);
+                    }
+                }
+            });
         }
     };
 
