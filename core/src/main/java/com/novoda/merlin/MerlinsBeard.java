@@ -18,8 +18,8 @@ public class MerlinsBeard {
 
     private final ConnectivityManager connectivityManager;
     private final AndroidVersion androidVersion;
-    private final EndpointPinger pinger;
-    private final Ping ping;
+    private final EndpointPinger captivePortalPinger;
+    private final Ping captivePortalPing;
 
     /**
      * Use this method to create a MerlinsBeard object, this is how you can retrieve the current network state.
@@ -30,18 +30,18 @@ public class MerlinsBeard {
     public static MerlinsBeard from(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         AndroidVersion androidVersion = new AndroidVersion();
-        ResponseCodeValidator validator = new ResponseCodeValidator.DefaultEndpointResponseCodeValidator();
-        EndpointPinger pinger = EndpointPinger.withCustomEndpointAndValidation(Endpoint.defaultEndpoint(), validator);
-        Ping ping = new Ping(Endpoint.defaultEndpoint(), new EndpointPinger.ResponseCodeFetcher(), validator);
+        ResponseCodeValidator validator = new ResponseCodeValidator.CaptivePortalEndpointResponseCodeValidator();
+        EndpointPinger captivePortalpinger = EndpointPinger.withCustomEndpointAndValidation(Endpoint.captivePortalEndpoint(), validator);
+        Ping captivePortalPing = new Ping(Endpoint.captivePortalEndpoint(), new EndpointPinger.ResponseCodeFetcher(), validator);
 
-        return new MerlinsBeard(connectivityManager, androidVersion, pinger, ping);
+        return new MerlinsBeard(connectivityManager, androidVersion, captivePortalpinger, captivePortalPing);
     }
 
-    MerlinsBeard(ConnectivityManager connectivityManager, AndroidVersion androidVersion, EndpointPinger pinger, Ping ping) {
+    MerlinsBeard(ConnectivityManager connectivityManager, AndroidVersion androidVersion, EndpointPinger captivePortalPinger, Ping CaptivePortalPing) {
         this.connectivityManager = connectivityManager;
         this.androidVersion = androidVersion;
-        this.pinger = pinger;
-        this.ping = ping;
+        this.captivePortalPinger = captivePortalPinger;
+        this.captivePortalPing = CaptivePortalPing;
     }
 
     /**
@@ -127,10 +127,11 @@ public class MerlinsBeard {
 
     /**
      * Detects if client is behind a captive portal.
+     *
      * @param callback to call with boolean result representing if client is behind a captive portal.
      */
-    public void isCaptivePortal(final CaptivePortalDetectionCallback callback){
-        pinger.ping(new EndpointPinger.PingerCallback() {
+    public void isCaptivePortal(final CaptivePortalDetectionCallback callback) {
+        captivePortalPinger.ping(new EndpointPinger.PingerCallback() {
             @Override
             public void onSuccess() {
                 callback.onResult(false);
@@ -150,10 +151,10 @@ public class MerlinsBeard {
      */
     @WorkerThread
     public boolean isCaptivePortal() {
-        return !ping.doSynchronousPing();
+        return !captivePortalPing.doSynchronousPing();
     }
 
-    public interface CaptivePortalDetectionCallback{
+    public interface CaptivePortalDetectionCallback {
         void onResult(boolean isCaptivePortal);
     }
 
