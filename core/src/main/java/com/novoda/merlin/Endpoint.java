@@ -9,7 +9,7 @@ public class Endpoint {
 
     private final String endpoint;
 
-    public static Endpoint captivePortalEndpoint() {
+    public static Endpoint defaultEndpoint() {
         return DEFAULT_ENDPOINT;
     }
 

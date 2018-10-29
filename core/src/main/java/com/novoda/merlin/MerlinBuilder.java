@@ -14,7 +14,7 @@ public class MerlinBuilder {
     private Register<Disconnectable> disconnectables;
     private Register<Bindable> bindables;
 
-    private Endpoint endpoint = Endpoint.captivePortalEndpoint();
+    private Endpoint endpoint = Endpoint.defaultEndpoint();
     private ResponseCodeValidator responseCodeValidator = new CaptivePortalEndpointResponseCodeValidator();
 
     MerlinBuilder() {
