@@ -6,7 +6,7 @@ import android.net.ConnectivityManager;
 public class MerlinsBeardBuilder {
 
     private Endpoint endpoint = Endpoint.defaultEndpoint();
-    private ResponseCodeValidator responseCodeValidator = new ResponseCodeValidator.CaptivePortalEndpointResponseCodeValidator();
+    private ResponseCodeValidator responseCodeValidator = new ResponseCodeValidator.DefaultEndpointResponseCodeValidator();
 
     MerlinsBeardBuilder() {
         // Uses builder pattern.
