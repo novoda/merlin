@@ -5,8 +5,8 @@ import android.net.ConnectivityManager;
 
 public class MerlinsBeardBuilder {
 
-    private Endpoint endpoint = Endpoint.defaultEndpoint();
-    private ResponseCodeValidator responseCodeValidator = new ResponseCodeValidator.DefaultEndpointResponseCodeValidator();
+    private Endpoint endpoint = Endpoint.captivePortalEndpoint();
+    private ResponseCodeValidator responseCodeValidator = new ResponseCodeValidator.CaptivePortalResponseCodeValidator();
 
     MerlinsBeardBuilder() {
         // Uses builder pattern.
@@ -15,7 +15,7 @@ public class MerlinsBeardBuilder {
     /**
      * Sets a custom endpoint.
      *
-     * @param endpoint to ping, by default {@link Endpoint#DEFAULT_ENDPOINT}.
+     * @param endpoint to ping, by default {@link Endpoint#CAPTIVE_PORTAL_ENDPOINT}.
      * @return MerlinsBeardBuilder.
      */
     public MerlinsBeardBuilder withEndpoint(Endpoint endpoint) {

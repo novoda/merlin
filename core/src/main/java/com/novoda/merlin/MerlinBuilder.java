@@ -2,7 +2,7 @@ package com.novoda.merlin;
 
 import android.content.Context;
 
-import static com.novoda.merlin.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
+import static com.novoda.merlin.ResponseCodeValidator.CaptivePortalResponseCodeValidator;
 
 public class MerlinBuilder {
 
@@ -14,8 +14,8 @@ public class MerlinBuilder {
     private Register<Disconnectable> disconnectables;
     private Register<Bindable> bindables;
 
-    private Endpoint endpoint = Endpoint.defaultEndpoint();
-    private ResponseCodeValidator responseCodeValidator = new DefaultEndpointResponseCodeValidator();
+    private Endpoint endpoint = Endpoint.captivePortalEndpoint();
+    private ResponseCodeValidator responseCodeValidator = new CaptivePortalResponseCodeValidator();
 
     MerlinBuilder() {
     }
