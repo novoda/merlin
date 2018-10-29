@@ -22,13 +22,6 @@
     android:text="@string/current_status" />
 
   <Button
-      android:id="@+id/is_captive_portal"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_horizontal"
-      android:text="@string/is_captive_portal" />
-
-  <Button
     android:id="@+id/wifi_connected"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -48,6 +41,13 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:text="@string/get_network_subtype" />
+
+  <Button
+    android:id="@+id/has_internet_access"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:text="@string/has_internet_access" />
 
   <Button
     android:id="@+id/next_activity"

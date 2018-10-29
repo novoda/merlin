@@ -126,36 +126,37 @@ public class MerlinsBeard {
     }
 
     /**
-     * Detects if client is behind a captive portal.
+     * Detects if a client has internet access by pinging an {@link Endpoint}.
      *
-     * @param callback to call with boolean result representing if client is behind a captive portal.
+     * @param callback to call with boolean result representing if a client has internet access.
      */
-    public void isCaptivePortal(final CaptivePortalDetectionCallback callback) {
+    public void hasInternetAccess(final InternetAccessCallback callback) {
         captivePortalPinger.ping(new EndpointPinger.PingerCallback() {
             @Override
             public void onSuccess() {
-                callback.onResult(false);
+                callback.onResult(true);
             }
 
             @Override
             public void onFailure() {
-                callback.onResult(true);
+                callback.onResult(false);
             }
         });
     }
 
     /**
-     * Detects if client is behind a captive portal - synchronously.
+     * Synchronously detects if a client has internet access by pinging an {@link Endpoint}.
+     * Clients are expected to handle their own threading.
      *
-     * @return Boolean result representing if client is behind a captive portal.
+     * @return Boolean result representing if a client has internet access.
      */
     @WorkerThread
-    public boolean isCaptivePortal() {
-        return !captivePortalPing.doSynchronousPing();
+    public boolean hasInternetAccess() {
+        return captivePortalPing.doSynchronousPing();
     }
 
-    public interface CaptivePortalDetectionCallback {
-        void onResult(boolean isCaptivePortal);
+    public interface InternetAccessCallback {
+        void onResult(boolean hasAccess);
     }
 
 }
