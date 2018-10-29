@@ -9,12 +9,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.novoda.merlin.ResponseCodeValidator.DefaultEndpointResponseCodeValidator;
+import static com.novoda.merlin.ResponseCodeValidator.CaptivePortalResponseCodeValidator;
 
 public class ResponseCodeValidatorTest {
 
     @RunWith(Parameterized.class)
-    public static class DefaultEndpointResponseCodeValidatorTest {
+    public static class CaptivePortalResponseCodeValidatorTest {
 
         private final int responseCode;
         private final boolean isValid;
@@ -24,14 +24,14 @@ public class ResponseCodeValidatorTest {
             return Responses.toParameterList();
         }
 
-        public DefaultEndpointResponseCodeValidatorTest(int responseCode, boolean isValid) {
+        public CaptivePortalResponseCodeValidatorTest(int responseCode, boolean isValid) {
             this.responseCode = responseCode;
             this.isValid = isValid;
         }
 
         @Test
         public void whenCheckingResponseCodeValidity() {
-            boolean actual = new DefaultEndpointResponseCodeValidator().isResponseCodeValid(responseCode);
+            boolean actual = new CaptivePortalResponseCodeValidator().isResponseCodeValid(responseCode);
 
             assertThat(actual).isEqualTo(isValid);
         }

@@ -43,6 +43,13 @@
     android:text="@string/get_network_subtype" />
 
   <Button
+    android:id="@+id/has_internet_access"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:text="@string/has_internet_access" />
+
+  <Button
     android:id="@+id/next_activity"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

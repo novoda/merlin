@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.support.annotation.WorkerThread;
 
 /**
  * This class provides a mechanism for retrieving the current
@@ -17,22 +18,27 @@ public class MerlinsBeard {
 
     private final ConnectivityManager connectivityManager;
     private final AndroidVersion androidVersion;
+    private final EndpointPinger captivePortalPinger;
+    private final Ping captivePortalPing;
 
     /**
-     * Use this method to create a MerlinsBeard object, this is how you can retrieve the current network state.
+     * @deprecated Use {@link MerlinsBeard.Builder} instead.
      *
+     * Use this method to create a MerlinsBeard object, this is how you can retrieve the current network state.
      * @param context pass any context application or activity.
      * @return MerlinsBeard.
      */
+    @Deprecated
     public static MerlinsBeard from(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        AndroidVersion androidVersion = new AndroidVersion();
-        return new MerlinsBeard(connectivityManager, androidVersion);
+        return new MerlinsBeard.Builder()
+                .build(context);
     }
 
-    MerlinsBeard(ConnectivityManager connectivityManager, AndroidVersion androidVersion) {
+    MerlinsBeard(ConnectivityManager connectivityManager, AndroidVersion androidVersion, EndpointPinger captivePortalPinger, Ping CaptivePortalPing) {
         this.connectivityManager = connectivityManager;
         this.androidVersion = androidVersion;
+        this.captivePortalPinger = captivePortalPinger;
+        this.captivePortalPing = CaptivePortalPing;
     }
 
     /**
@@ -114,6 +120,43 @@ public class MerlinsBeard {
             return "";
         }
         return networkInfo.getSubtypeName();
+    }
+
+    /**
+     * Detects if a client has internet access by pinging an {@link Endpoint}.
+     *
+     * @param callback to call with boolean result representing if a client has internet access.
+     */
+    public void hasInternetAccess(final InternetAccessCallback callback) {
+        captivePortalPinger.ping(new EndpointPinger.PingerCallback() {
+            @Override
+            public void onSuccess() {
+                callback.onResult(true);
+            }
+
+            @Override
+            public void onFailure() {
+                callback.onResult(false);
+            }
+        });
+    }
+
+    /**
+     * Synchronously detects if a client has internet access by pinging an {@link Endpoint}.
+     * Clients are expected to handle their own threading.
+     *
+     * @return Boolean result representing if a client has internet access.
+     */
+    @WorkerThread
+    public boolean hasInternetAccess() {
+        return captivePortalPing.doSynchronousPing();
+    }
+
+    public interface InternetAccessCallback {
+        void onResult(boolean hasAccess);
+    }
+
+    public static class Builder extends MerlinsBeardBuilder {
     }
 
 }
