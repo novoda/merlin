@@ -23,13 +23,13 @@ public class RxJava2DemoActivity extends AppCompatActivity {
     private CompositeDisposable disposables;
     private View viewToAttachDisplayerTo;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         viewToAttachDisplayerTo = findViewById(R.id.displayerAttachableView);
-        merlinsBeard = MerlinsBeard.from(this);
+        merlinsBeard = new MerlinsBeard.Builder()
+                .build(this);
         networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), merlinsBeard);
         disposables = new CompositeDisposable();
 

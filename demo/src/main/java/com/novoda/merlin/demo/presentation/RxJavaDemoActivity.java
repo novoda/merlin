@@ -27,7 +27,8 @@ public class RxJavaDemoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         viewToAttachDisplayerTo = findViewById(R.id.displayerAttachableView);
-        merlinsBeard = MerlinsBeard.from(this);
+        merlinsBeard = new MerlinsBeard.Builder()
+                .build(this);
         networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), merlinsBeard);
         subscriptions = new CompositeSubscription();
 

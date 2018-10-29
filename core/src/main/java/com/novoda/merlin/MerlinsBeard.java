@@ -22,19 +22,16 @@ public class MerlinsBeard {
     private final Ping captivePortalPing;
 
     /**
-     * Use this method to create a MerlinsBeard object, this is how you can retrieve the current network state.
+     * @deprecated Use {@link MerlinsBeard.Builder} instead.
      *
+     * Use this method to create a MerlinsBeard object, this is how you can retrieve the current network state.
      * @param context pass any context application or activity.
      * @return MerlinsBeard.
      */
+    @Deprecated
     public static MerlinsBeard from(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        AndroidVersion androidVersion = new AndroidVersion();
-        ResponseCodeValidator validator = new ResponseCodeValidator.CaptivePortalEndpointResponseCodeValidator();
-        EndpointPinger captivePortalpinger = EndpointPinger.withCustomEndpointAndValidation(Endpoint.captivePortalEndpoint(), validator);
-        Ping captivePortalPing = new Ping(Endpoint.captivePortalEndpoint(), new EndpointPinger.ResponseCodeFetcher(), validator);
-
-        return new MerlinsBeard(connectivityManager, androidVersion, captivePortalpinger, captivePortalPing);
+        return new MerlinsBeard.Builder()
+                .build(context);
     }
 
     MerlinsBeard(ConnectivityManager connectivityManager, AndroidVersion androidVersion, EndpointPinger captivePortalPinger, Ping CaptivePortalPing) {
@@ -157,6 +154,9 @@ public class MerlinsBeard {
 
     public interface InternetAccessCallback {
         void onResult(boolean hasAccess);
+    }
+
+    public static class Builder extends MerlinsBeardBuilder {
     }
 
 }

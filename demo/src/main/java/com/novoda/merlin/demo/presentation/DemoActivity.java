@@ -26,7 +26,8 @@ public class DemoActivity extends MerlinActivity implements Connectable, Disconn
         setContentView(R.layout.main);
 
         viewToAttachDisplayerTo = findViewById(R.id.displayerAttachableView);
-        merlinsBeard = MerlinsBeard.from(this);
+        merlinsBeard = new MerlinsBeard.Builder()
+                .build(this);
         networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), merlinsBeard);
 
         findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
