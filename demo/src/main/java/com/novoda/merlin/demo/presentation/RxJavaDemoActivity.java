@@ -27,11 +27,13 @@ public class RxJavaDemoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         viewToAttachDisplayerTo = findViewById(R.id.displayerAttachableView);
-        merlinsBeard = MerlinsBeard.from(this);
+        merlinsBeard = new MerlinsBeard.Builder()
+                .build(this);
         networkStatusDisplayer = new NetworkStatusDisplayer(getResources(), merlinsBeard);
         subscriptions = new CompositeSubscription();
 
         findViewById(R.id.current_status).setOnClickListener(networkStatusOnClick);
+        findViewById(R.id.has_internet_access).setOnClickListener(hasInternetAccessClick);
         findViewById(R.id.wifi_connected).setOnClickListener(wifiConnectedOnClick);
         findViewById(R.id.mobile_connected).setOnClickListener(mobileConnectedOnClick);
         findViewById(R.id.network_subtype).setOnClickListener(networkSubtypeOnClick);
@@ -46,6 +48,22 @@ public class RxJavaDemoActivity extends AppCompatActivity {
             } else {
                 networkStatusDisplayer.displayNegativeMessage(R.string.current_status_network_disconnected, viewToAttachDisplayerTo);
             }
+        }
+    };
+
+    private final View.OnClickListener hasInternetAccessClick = new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+            merlinsBeard.hasInternetAccess(new MerlinsBeard.InternetAccessCallback() {
+                @Override
+                public void onResult(boolean hasAccess) {
+                    if (hasAccess) {
+                        networkStatusDisplayer.displayPositiveMessage(R.string.has_internet_access_true, viewToAttachDisplayerTo);
+                    } else {
+                        networkStatusDisplayer.displayNegativeMessage(R.string.has_internet_access_false, viewToAttachDisplayerTo);
+                    }
+                }
+            });
         }
     };
 

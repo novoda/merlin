@@ -8,9 +8,11 @@ import android.os.Build;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 
 public class MerlinsBeardTest {
@@ -24,12 +26,15 @@ public class MerlinsBeardTest {
     private final ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
     private final NetworkInfo networkInfo = mock(NetworkInfo.class);
     private final AndroidVersion androidVersion = mock(AndroidVersion.class);
+    private final EndpointPinger endpointPinger = mock(EndpointPinger.class);
+    private final MerlinsBeard.InternetAccessCallback mockCaptivePortalCallback = mock(MerlinsBeard.InternetAccessCallback.class);
+    private final Ping mockPing = mock(Ping.class);
 
     private MerlinsBeard merlinsBeard;
 
     @Before
     public void setUp() {
-        merlinsBeard = new MerlinsBeard(connectivityManager, androidVersion);
+        merlinsBeard = new MerlinsBeard(connectivityManager, androidVersion, endpointPinger, mockPing);
     }
 
     @Test
@@ -136,6 +141,56 @@ public class MerlinsBeardTest {
         boolean connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork();
 
         assertThat(connectedToMobileNetwork).isFalse();
+    }
+
+    @Test
+    public void givenSuccessfulPing_whenCheckingCaptivePortal_thenCallsOnResultWithTrue() {
+        willAnswer(new Answer<EndpointPinger.PingerCallback>() {
+            @Override
+            public EndpointPinger.PingerCallback answer(InvocationOnMock invocation) {
+                EndpointPinger.PingerCallback cb = invocation.getArgument(0);
+                cb.onSuccess();
+                return cb;
+            }
+        }).given(endpointPinger).ping(any(EndpointPinger.PingerCallback.class));
+
+        merlinsBeard.hasInternetAccess(mockCaptivePortalCallback);
+
+        then(mockCaptivePortalCallback).should().onResult(true);
+    }
+
+    @Test
+    public void givenFailurePing_whenCheckingCaptivePortal_thenCallsOnResultWithFalse() {
+        willAnswer(new Answer<EndpointPinger.PingerCallback>() {
+            @Override
+            public EndpointPinger.PingerCallback answer(InvocationOnMock invocation) {
+                EndpointPinger.PingerCallback cb = invocation.getArgument(0);
+                cb.onFailure();
+                return cb;
+            }
+        }).given(endpointPinger).ping(any(EndpointPinger.PingerCallback.class));
+
+        merlinsBeard.hasInternetAccess(mockCaptivePortalCallback);
+
+        then(mockCaptivePortalCallback).should().onResult(false);
+    }
+
+    @Test
+    public void givenSuccessfulPing_whenCheckingHasInternetAccessSync_thenReturnsTrue() {
+        given(mockPing.doSynchronousPing()).willReturn(true);
+
+        boolean result = merlinsBeard.hasInternetAccess();
+
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void givenFailedPing_whenCheckingHasInternetAccessSync_thenReturnsFalse() {
+        given(mockPing.doSynchronousPing()).willReturn(false);
+
+        boolean result = merlinsBeard.hasInternetAccess();
+
+        assertThat(result).isFalse();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
