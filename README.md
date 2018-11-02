@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.novoda:merlin:1.2.0'
+    implementation 'com.novoda:merlin:1.2.0'
 }
 ```
 
@@ -87,10 +87,10 @@ Starting in version 1.0.0, the RxJava support is no longer built into the librar
 
 ```groovy
 // For RxJava 1.x
-compile 'com.novoda:merlin-rxjava:[version_number]'
+implementation 'com.novoda:merlin-rxjava:[version_number]'
 
 // For RxJava 2.x
-compile 'com.novoda:merlin-rxjava2:[version_number]'
+implementation 'com.novoda:merlin-rxjava2:[version_number]'
 ```
 
 
