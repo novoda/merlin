@@ -1,4 +1,4 @@
-![Merlin header image](https://github.com/novoda/merlin/blob/master/header.png)
+![Merlin header image](https://github.com/novoda/merlin/blob/release/header.png)
 
 # Merlin [![Build status](https://ci.novoda.com/buildStatus/icon?job=merlin)](https://ci.novoda.com/job/merlin/lastBuild/console) [![Download](https://api.bintray.com/packages/novoda/maven/merlin/images/download.svg)](https://bintray.com/novoda/maven/merlin/_latestVersion) [![License](https://img.shields.io/github/license/novoda/merlin.svg)](https://github.com/novoda/merlin/blob/master/LICENSE.txt)
 
