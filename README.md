@@ -37,7 +37,7 @@ If for some reason your app's manifest doesn't end up containing the required en
     ```xml
     <service
       android:exported="false"
-      android:name="com.novoda.merlin.service.MerlinService" />
+      android:name="com.novoda.merlin.MerlinService" />
     ```
 
 ## Sample usage
