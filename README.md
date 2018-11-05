@@ -1,4 +1,4 @@
-![Merlin header image](https://github.com/novoda/merlin/blob/master/header.png)
+![Merlin header image](https://github.com/novoda/merlin/blob/release/header.png)
 
 # Merlin [![Build status](https://ci.novoda.com/buildStatus/icon?job=merlin)](https://ci.novoda.com/job/merlin/lastBuild/console) [![Download](https://api.bintray.com/packages/novoda/maven/merlin/images/download.svg)](https://bintray.com/novoda/maven/merlin/_latestVersion) [![License](https://img.shields.io/github/license/novoda/merlin.svg)](https://github.com/novoda/merlin/blob/master/LICENSE.txt)
 
@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.novoda:merlin:1.1.8'
+    implementation 'com.novoda:merlin:1.2.0'
 }
 ```
 
@@ -37,7 +37,7 @@ If for some reason your app's manifest doesn't end up containing the required en
     ```xml
     <service
       android:exported="false"
-      android:name="com.novoda.merlin.service.MerlinService" />
+      android:name="com.novoda.merlin.MerlinService" />
     ```
 
 ## Sample usage
@@ -81,18 +81,21 @@ For further details you can check [the wiki](https://github.com/novoda/merlin/wi
 
 Version 1 of Merlin introduced [several breaking changes](https://github.com/novoda/merlin/wiki/Migration-guide#notable-changes-for-migration) in the implementation and the APIs, to account for the latest changes in Android N+. Please follow the instructions [in the wiki](https://github.com/novoda/merlin/wiki/Migration-guide) to make the upgrade as painless as possible.
 
+## Migrating from 1.1.7
+
+In version `1.1.8` some public API changes were made. According to our tests auto importing should be able to take care of these changes. 
+
 ### RxJava support in v1.0+
 
 Starting in version 1.0.0, the RxJava support is no longer built into the library but it has been split out into a separate artifact. You'll need to add one of these two dependencies, depending on the version of RxJava you use:
 
 ```groovy
 // For RxJava 1.x
-compile 'com.novoda:merlin-rxjava:[version_number]'
+implementation 'com.novoda:merlin-rxjava:[version_number]'
 
 // For RxJava 2.x
-compile 'com.novoda:merlin-rxjava2:[version_number]'
+implementation 'com.novoda:merlin-rxjava2:[version_number]'
 ```
-
 
 ## Links
 
