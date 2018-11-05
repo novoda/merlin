@@ -18,7 +18,7 @@ class Register<T extends Registerable> {
     }
 
     List<T> registerables() {
-        return registerables;
+        return new ArrayList<>(registerables);
     }
 
     void clear() {
