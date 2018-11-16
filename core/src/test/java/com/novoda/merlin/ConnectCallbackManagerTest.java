@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 public class ConnectCallbackManagerTest {
@@ -40,6 +41,15 @@ public class ConnectCallbackManagerTest {
         }
     }
 
+    @Test
+    public void givenRegisteredConnectable_whenCallingOnConnectAndAddingConnectable_thenCallsConnectForConnectable() {
+        Connectable connectable = givenRegisteredConnectableModifyingConnectables();
+
+        connectCallbackManager.onConnect();
+
+        verify(connectable).onConnect();
+    }
+
     private List<Connectable> givenMultipleRegisteredConnectables() {
         List<Connectable> connectables = new ArrayList<>();
 
@@ -55,6 +65,19 @@ public class ConnectCallbackManagerTest {
         Connectable connectable = mock(Connectable.class);
         connectables.register(connectable);
         return connectable;
+    }
+
+    private Connectable givenRegisteredConnectableModifyingConnectables() {
+        Connectable connectable = new Connectable() {
+
+            @Override
+            public void onConnect() {
+                connectables.register(mock(Connectable.class));
+            }
+        };
+        Connectable spyConnectable = spy(connectable);
+        connectables.register(spyConnectable);
+        return spyConnectable;
     }
 
 }
