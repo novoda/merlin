@@ -11,8 +11,9 @@ class HttpRequestMaker implements RequestMaker {
 
     @Override
     public Request head(Endpoint endpoint) {
+        HttpURLConnection urlConnection = null;
         try {
-            HttpURLConnection urlConnection = connectTo(endpoint);
+            urlConnection = connectTo(endpoint);
             urlConnection.setRequestProperty("Accept-Encoding", "");
 
             setConnectionToHeadRequest(urlConnection);
@@ -21,6 +22,10 @@ class HttpRequestMaker implements RequestMaker {
             return new MerlinHttpRequest(urlConnection);
         } catch (IOException e) {
             throw new RequestException(e);
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
     }
 
@@ -55,7 +60,6 @@ class HttpRequestMaker implements RequestMaker {
                 request.disconnect();
             }
         }
-
     }
 
 }
