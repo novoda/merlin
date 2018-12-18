@@ -1,4 +1,4 @@
-package com.novoda.merlin
+package com.novoda.demo
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
