@@ -1,3 +1,0 @@
-include ':merlin-rxjava', ':merlin-rxjava2'
-include 'core'
-include 'demo'
