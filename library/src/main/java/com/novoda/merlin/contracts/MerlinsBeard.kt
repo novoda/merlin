@@ -1,5 +1,7 @@
 package com.novoda.merlin.contracts
 
+typealias InternetAccessCallback = (Boolean) -> Unit
+
 interface MerlinsBeard {
 
     fun isConnected(): Boolean
@@ -10,7 +12,7 @@ interface MerlinsBeard {
 
     fun mobileNetworkSubtype(): String
 
-    fun hasInternetAccess(unit: Unit)
+    fun hasInternetAccess(callback: InternetAccessCallback)
 
     fun hasInternetAccess(): Boolean
 
