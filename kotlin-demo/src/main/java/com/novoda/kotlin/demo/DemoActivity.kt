@@ -9,47 +9,17 @@ class DemoActivity : CommonDemoActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        currentStatus().setOnClickListener(reportNetworkStatus())
-        hasInternetAccess().setOnClickListener(reportInternetAccess())
-        wifiConnected().setOnClickListener(reportWifiConnected())
-        mobileConnected().setOnClickListener(reportMobileConnected())
-        networkSubtype().setOnClickListener(reportNetworkSubtype())
-        nextActivity().setOnClickListener(navigateToNextActivity())
+        currentStatus().onClick("Network status")
+        hasInternetAccess().onClick("Has internet access")
+        wifiConnected().onClick("Wifi connected")
+        mobileConnected().onClick("Mobile connected")
+        networkSubtype().onClick("Network subtype")
+        nextActivity().onClick("Navigate to next activity")
     }
 
-    private fun reportNetworkStatus(): View.OnClickListener {
-        return View.OnClickListener {
-            Toast.makeText(this, "Network status", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun reportInternetAccess(): View.OnClickListener {
-        return View.OnClickListener {
-            Toast.makeText(this, "Has internet access", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun reportWifiConnected(): View.OnClickListener {
-        return View.OnClickListener {
-            Toast.makeText(this, "Wifi connected", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun reportMobileConnected(): View.OnClickListener {
-        return View.OnClickListener {
-            Toast.makeText(this, "Mobile connected", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun reportNetworkSubtype(): View.OnClickListener {
-        return View.OnClickListener {
-            Toast.makeText(this, "Network subtype", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun navigateToNextActivity(): View.OnClickListener {
-        return View.OnClickListener {
-            Toast.makeText(this, "Navigate to next activity", Toast.LENGTH_SHORT).show()
+    private fun View.onClick(message: String) {
+        setOnClickListener {
+            Toast.makeText(this@DemoActivity, message, Toast.LENGTH_SHORT).show()
         }
     }
 }
