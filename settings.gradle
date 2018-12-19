@@ -1,1 +1,1 @@
-include ':kotlin-demo', ':library'
+include ':kotlin-demo', ':library', ':java-demo'
