@@ -1,4 +1,4 @@
-package com.novoda.common.demo;
+package com.novoda.demo.resources;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

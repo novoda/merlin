@@ -3,7 +3,7 @@ package com.novoda.kotlin.demo
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import com.novoda.common.demo.CommonDemoActivity
+import com.novoda.demo.resources.CommonDemoActivity
 
 class DemoActivity : CommonDemoActivity() {
 
