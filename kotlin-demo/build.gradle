@@ -4,14 +4,20 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':library')
     implementation project(':demo-resources')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
