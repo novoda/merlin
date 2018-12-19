@@ -1,24 +1,20 @@
 package com.novoda.kotlin.demo
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
-import com.novoda.common.demo.R
-import kotlinx.android.synthetic.main.activity_demo.*
+import com.novoda.common.demo.CommonDemoActivity
 
-class DemoActivity : AppCompatActivity() {
+class DemoActivity : CommonDemoActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_demo)
-
-        current_status.setOnClickListener(reportNetworkStatus())
-        has_internet_access.setOnClickListener(reportInternetAccess())
-        wifi_connected.setOnClickListener(reportWifiConnected())
-        mobile_connected.setOnClickListener(reportMobileConnected())
-        network_subtype.setOnClickListener(reportNetworkSubtype())
-        next_activity.setOnClickListener(navigateToNextActivity())
+        currentStatus().setOnClickListener(reportNetworkStatus())
+        hasInternetAccess().setOnClickListener(reportInternetAccess())
+        wifiConnected().setOnClickListener(reportWifiConnected())
+        mobileConnected().setOnClickListener(reportMobileConnected())
+        networkSubtype().setOnClickListener(reportNetworkSubtype())
+        nextActivity().setOnClickListener(navigateToNextActivity())
     }
 
     private fun reportNetworkStatus(): View.OnClickListener {
