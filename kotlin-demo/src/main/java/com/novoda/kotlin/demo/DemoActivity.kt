@@ -1,4 +1,4 @@
-package com.novoda.demo
+package com.novoda.kotlin.demo
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
