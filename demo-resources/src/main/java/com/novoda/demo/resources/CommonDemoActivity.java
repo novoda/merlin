@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+// This can be removed when synthetics across modules are supported https://youtrack.jetbrains.com/issue/KT-22430
 public class CommonDemoActivity extends AppCompatActivity {
 
     private View currentStatus;
