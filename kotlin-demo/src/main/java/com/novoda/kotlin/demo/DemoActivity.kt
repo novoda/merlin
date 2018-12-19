@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import com.novoda.common.demo.R
 import kotlinx.android.synthetic.main.activity_demo.*
 
 class DemoActivity : AppCompatActivity() {

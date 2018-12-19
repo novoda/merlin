@@ -1,3 +1,34 @@
 <resources>
-    <string name="app_name">common</string>
+    <string name="app_name">Merlin Demo</string>
+
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+
+    <string name="has_internet_access_true">Has internet access: true</string>
+    <string name="has_internet_access_false">Has internet access: false</string>
+
+    <string name="current_status_network_connected">Current Status: Connected</string>
+    <string name="current_status_network_disconnected">Current Status: Disconnected</string>
+
+    <string name="wifi_connected">Wifi Network: Connected</string>
+    <string name="wifi_disconnected">Wifi Network: Disconnected</string>
+
+    <string name="mobile_connected">Mobile Network: Connected</string>
+    <string name="mobile_disconnected">Mobile Network: Disconnected</string>
+
+    <string name="subtype_not_available">Subtype: Not Available</string>
+    <string name="subtype_value">Subtype: %s</string>
+
+
+    <string name="has_internet_access">Has internet access</string>
+    <string name="current_status">Get Current Status</string>
+    <string name="is_wifi_connected">Is connected to Wi-Fi</string>
+    <string name="is_mobile_connected">Is connected to mobile network</string>
+    <string name="get_network_subtype">Get network subtype</string>
+    <string name="next_activity">Next activity</string>
+
+    <string name="demo_launch_button">Launch demo</string>
+    <string name="rx_java_demo_launch_button">Launch RxJava demo</string>
+    <string name="rx_java2_demo_launch_button">Launch RxJava2 demo</string>
+    <string name="merlin_logo">Merlin logo</string>
 </resources>
