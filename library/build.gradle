@@ -25,5 +25,4 @@ dependencies {
     testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
     testImplementation 'org.jetbrains.spek:spek-api:1.1.5'
     testImplementation 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
-    testImplementation 'org.junit.platform:junit-platform-runner:1.0.0'
 }

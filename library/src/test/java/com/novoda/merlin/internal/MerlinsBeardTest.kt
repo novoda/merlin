@@ -12,10 +12,7 @@ import org.jetbrains.spek.api.dsl.SpecBody
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import org.junit.platform.runner.JUnitPlatform
-import org.junit.runner.RunWith
 
-@RunWith(JUnitPlatform::class)
 object MerlinsBeardTest : Spek({
 
     given("No network information available") {
@@ -87,6 +84,7 @@ object MerlinsBeardTest : Spek({
             on { allNetworks }.thenReturn(Array(1) { network })
             on { getNetworkCapabilities(network) }.thenReturn(networkCapabilities)
             on { getNetworkInfo(network) }.thenReturn(networkInfo)
+            on { getNetworkInfo(ConnectivityManager.TYPE_WIFI) }.thenReturn(networkInfo)
         }
 
         and("android version is lower than Lollipop") {
@@ -103,8 +101,8 @@ object MerlinsBeardTest : Spek({
             on("checking if connected to wifi network") {
                 val connectedToWifi = merlinsBeard.isConnectedToWifi()
 
-                it("is not connected") {
-                    assertThat(connectedToWifi).isFalse()
+                it("is connected") {
+                    assertThat(connectedToWifi).isTrue()
                 }
             }
         }
@@ -130,10 +128,10 @@ object MerlinsBeardTest : Spek({
         }
     }
 
-    given("Connected to Wifi") {
+    given("Connected to Mobile Network") {
         val network: Network = mock()
         val networkCapabilities: NetworkCapabilities = mock {
-            on { hasTransport(NetworkCapabilities.TRANSPORT_WIFI) }.thenReturn(true)
+            on { hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) }.thenReturn(true)
         }
         val networkInfo: NetworkInfo = mock {
             on { isConnected }.thenReturn(true)
@@ -143,6 +141,27 @@ object MerlinsBeardTest : Spek({
             on { allNetworks }.thenReturn(Array(1) { network })
             on { getNetworkCapabilities(network) }.thenReturn(networkCapabilities)
             on { getNetworkInfo(network) }.thenReturn(networkInfo)
+            on { getNetworkInfo(ConnectivityManager.TYPE_MOBILE) }.thenReturn(networkInfo)
+        }
+
+        and("android version is lower than Lollipop") {
+            val merlinsBeard = MerlinsBeard(connectivityManager, AndroidVersion(Build.VERSION_CODES.KITKAT))
+
+            on("checking if connected to mobile network") {
+                val connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork()
+
+                it("is connected") {
+                    assertThat(connectedToMobileNetwork).isTrue()
+                }
+            }
+
+            on("checking if connected to wifi network") {
+                val connectedToWifi = merlinsBeard.isConnectedToWifi()
+
+                it("is not connected") {
+                    assertThat(connectedToWifi).isFalse()
+                }
+            }
         }
 
         and("android version is Lollipop or higher") {
@@ -151,16 +170,16 @@ object MerlinsBeardTest : Spek({
             on("checking if connected to mobile network") {
                 val connectedToMobileNetwork = merlinsBeard.isConnectedToMobileNetwork()
 
-                it("is not connected") {
-                    assertThat(connectedToMobileNetwork).isFalse()
+                it("is connected") {
+                    assertThat(connectedToMobileNetwork).isTrue()
                 }
             }
 
             on("checking if connected to wifi network") {
                 val connectedToWifi = merlinsBeard.isConnectedToWifi()
 
-                it("is connected") {
-                    assertThat(connectedToWifi).isTrue()
+                it("is not connected") {
+                    assertThat(connectedToWifi).isFalse()
                 }
             }
         }
