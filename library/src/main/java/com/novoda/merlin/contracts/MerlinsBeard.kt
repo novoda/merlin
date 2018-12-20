@@ -1,8 +1,14 @@
 package com.novoda.merlin.contracts
 
+import android.net.ConnectivityManager
+import com.novoda.merlin.internal.AndroidVersion
+
 typealias InternetAccessCallback = (Boolean) -> Unit
 
 interface MerlinsBeard {
+
+    val connectivityManager: ConnectivityManager
+    val androidVersion: AndroidVersion
 
     fun isConnected(): Boolean
 
