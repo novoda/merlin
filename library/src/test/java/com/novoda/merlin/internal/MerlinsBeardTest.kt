@@ -33,7 +33,7 @@ object MerlinsBeardTest : Spek({
             val merlinsBeard = MerlinsBeard(connectivityManager)
             val mobileNetworkSubtype = merlinsBeard.mobileNetworkSubtype()
 
-            it("it is empty") {
+            it("is empty") {
                 assertThat(mobileNetworkSubtype).isEmpty()
             }
         }
@@ -56,7 +56,6 @@ object MerlinsBeardTest : Spek({
                     assertThat(connectedToWifi).isFalse()
                 }
             }
-
         }
 
         and("android version is lower than Lollipop") {
@@ -87,6 +86,7 @@ object MerlinsBeardTest : Spek({
         }
         val networkInfo: NetworkInfo = mock {
             on { isConnected }.thenReturn(true)
+            on { subtypeName }.thenReturn("")
         }
         val connectivityManager: ConnectivityManager = mock {
             on { activeNetworkInfo }.thenReturn(networkInfo)
@@ -94,6 +94,15 @@ object MerlinsBeardTest : Spek({
             on { getNetworkCapabilities(network) }.thenReturn(networkCapabilities)
             on { getNetworkInfo(network) }.thenReturn(networkInfo)
             on { getNetworkInfo(ConnectivityManager.TYPE_WIFI) }.thenReturn(networkInfo)
+        }
+
+        on("checking mobile subtype") {
+            val merlinsBeard = MerlinsBeard(connectivityManager)
+            val mobileNetworkSubtype = merlinsBeard.mobileNetworkSubtype()
+
+            it("is empty") {
+                assertThat(mobileNetworkSubtype).isEmpty()
+            }
         }
 
         and("android version is lower than Lollipop") {
@@ -158,7 +167,7 @@ object MerlinsBeardTest : Spek({
             val merlinsBeard = MerlinsBeard(connectivityManager)
             val mobileNetworkSubtype = merlinsBeard.mobileNetworkSubtype()
 
-            it("is is subtype") {
+            it("is subtype") {
                 assertThat(mobileNetworkSubtype).isEqualTo("subtype")
             }
         }
