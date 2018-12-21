@@ -8,7 +8,7 @@ import android.os.Build
 import com.novoda.merlin.contracts.InternetAccessCallback
 import com.novoda.merlin.contracts.MerlinsBeard
 
-class MerlinsBeard(
+internal class MerlinsBeard(
     override val connectivityManager: ConnectivityManager,
     override val androidVersion: AndroidVersion = AndroidVersion(Build.VERSION.SDK_INT)
 ) : MerlinsBeard {
