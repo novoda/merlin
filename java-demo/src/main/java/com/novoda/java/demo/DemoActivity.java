@@ -16,39 +16,44 @@ public class DemoActivity extends CommonDemoActivity {
 
         currentStatus().setOnClickListener(view -> {
             if (merlinsBeard.isConnected()) {
-                Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.current_status_network_connected, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Disconnected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.current_status_network_disconnected, Toast.LENGTH_SHORT).show();
             }
         });
 
         hasInternetAccess().setOnClickListener(view -> {
             if (merlinsBeard.hasInternetAccess()) {
-                Toast.makeText(this, "Has internet access", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.has_internet_access_true, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Does not have internet access", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.has_internet_access_false, Toast.LENGTH_SHORT).show();
             }
         });
 
         wifiConnected().setOnClickListener(view -> {
             if (merlinsBeard.isConnectedToWifi()) {
-                Toast.makeText(this, "Wifi connected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Wifi disconnected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.wifi_disconnected, Toast.LENGTH_SHORT).show();
             }
         });
 
         mobileConnected().setOnClickListener(view -> {
             if (merlinsBeard.isConnectedToMobileNetwork()) {
-                Toast.makeText(this, "Mobile connected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.mobile_connected, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Mobile disconnected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.mobile_disconnected, Toast.LENGTH_SHORT).show();
             }
         });
 
         networkSubtype().setOnClickListener(view -> {
-            String message = "Network subtype: " + merlinsBeard.mobileNetworkSubtype();
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            String mobileNetworkSubtype = merlinsBeard.mobileNetworkSubtype();
+            if (mobileNetworkSubtype.isEmpty()) {
+                Toast.makeText(this, R.string.subtype_not_available, Toast.LENGTH_SHORT).show();
+            } else {
+                String message = getResources().getString(R.string.subtype_value, mobileNetworkSubtype);
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            }
         });
 
         nextActivity().setOnClickListener(view -> {

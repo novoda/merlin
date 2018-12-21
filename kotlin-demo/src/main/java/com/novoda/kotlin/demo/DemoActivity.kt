@@ -53,9 +53,16 @@ class DemoActivity : CommonDemoActivity() {
         }
     }
 
-    private fun View.onClick(message: KFunction0<String>) {
+    private fun View.onClick(subtype: KFunction0<String>) {
         setOnClickListener {
-            Toast.makeText(this@DemoActivity, message(), Toast.LENGTH_SHORT).show()
+            with(subtype()) {
+                if (this.isBlank()) {
+                    Toast.makeText(this@DemoActivity, R.string.subtype_not_available, Toast.LENGTH_SHORT).show()
+                } else {
+                    val message = resources.getString(R.string.subtype_value, this)
+                    Toast.makeText(this@DemoActivity, message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 }
