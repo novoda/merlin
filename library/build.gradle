@@ -14,11 +14,18 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0'
+    testImplementation "com.google.truth:truth:0.42"
     testImplementation 'junit:junit:4.12'
+    testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
+    testImplementation 'org.jetbrains.spek:spek-api:1.1.5'
+    testImplementation 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
 }
