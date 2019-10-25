@@ -1,6 +1,6 @@
 package com.novoda.merlin;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 class Registrar {
 

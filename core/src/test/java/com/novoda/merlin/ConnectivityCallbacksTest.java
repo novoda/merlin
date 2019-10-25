@@ -5,11 +5,12 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
+
+import androidx.annotation.RequiresApi;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;

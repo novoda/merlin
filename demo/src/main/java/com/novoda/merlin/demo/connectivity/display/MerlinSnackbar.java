@@ -1,11 +1,13 @@
 package com.novoda.merlin.demo.connectivity.display;
 
 import android.content.res.Resources;
-import android.support.annotation.IntegerRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
 import android.view.View;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.IntegerRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 class MerlinSnackbar {
 

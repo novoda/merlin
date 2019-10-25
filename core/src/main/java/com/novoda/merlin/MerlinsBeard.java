@@ -6,7 +6,8 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.support.annotation.WorkerThread;
+
+import androidx.annotation.WorkerThread;
 
 /**
  * This class provides a mechanism for retrieving the current

@@ -1,12 +1,13 @@
 package com.novoda.merlin.demo.connectivity.display;
 
 import android.content.res.Resources;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.demo.R;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 public class NetworkStatusDisplayer {
 

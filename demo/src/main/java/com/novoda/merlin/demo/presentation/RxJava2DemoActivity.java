@@ -2,7 +2,6 @@ package com.novoda.merlin.demo.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.novoda.merlin.MerlinFlowable;
@@ -11,6 +10,7 @@ import com.novoda.merlin.NetworkStatus;
 import com.novoda.merlin.demo.R;
 import com.novoda.merlin.demo.connectivity.display.NetworkStatusDisplayer;
 
+import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
