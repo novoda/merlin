@@ -1,10 +1,10 @@
 package com.novoda.merlin.demo.connectivity.display;
 
 import android.content.res.Resources;
-import android.support.design.widget.Snackbar;
 import android.util.TypedValue;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.novoda.merlin.demo.R;
 
 class PositiveThemer implements Themer {

@@ -1,7 +1,6 @@
 package com.novoda.merlin.demo.presentation.base;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.novoda.merlin.Bindable;
@@ -9,6 +8,8 @@ import com.novoda.merlin.Connectable;
 import com.novoda.merlin.Disconnectable;
 import com.novoda.merlin.Logger;
 import com.novoda.merlin.Merlin;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class MerlinActivity extends AppCompatActivity {
 
