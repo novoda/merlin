@@ -10,8 +10,8 @@ class PingTaskFactory {
         this.responseCodeValidator = responseCodeValidator;
     }
 
-    PingTask create(Endpoint endpoint, EndpointPinger.PingerCallback pingerCallback) {
-        Ping ping = new Ping(endpoint, responseCodeFetcher, responseCodeValidator);
+    PingTask create(RequestMaker requestMaker, Endpoint endpoint, EndpointPinger.PingerCallback pingerCallback) {
+        Ping ping = new Ping(requestMaker, endpoint, responseCodeFetcher, responseCodeValidator);
         return new PingTask(ping, pingerCallback);
     }
 

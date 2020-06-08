@@ -1,5 +1,5 @@
 package com.novoda.merlin;
 
-interface Request {
+public interface Request {
     int getResponseCode();
 }

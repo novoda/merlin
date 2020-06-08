@@ -16,6 +16,7 @@ public class MerlinBuilder {
 
     private Endpoint endpoint = Endpoint.captivePortalEndpoint();
     private ResponseCodeValidator responseCodeValidator = new CaptivePortalResponseCodeValidator();
+    private RequestMaker requestMaker = new HttpRequestMaker();
 
     MerlinBuilder() {
     }
@@ -110,6 +111,16 @@ public class MerlinBuilder {
     }
 
     /**
+     * Sets custom request maker
+     * @param requestMaker Request maker used to ping endpoint set by {@link #withEndpoint} method
+     * @return MerlinBuilder
+     */
+    public MerlinBuilder withCustomRequestMaker(RequestMaker requestMaker) {
+        this.requestMaker = requestMaker;
+        return this;
+    }
+
+    /**
      * Creates Merlin with the specified builder options.
      *
      * @param context Used to create the MerlinServiceBinder and start a Service.
@@ -121,6 +132,7 @@ public class MerlinBuilder {
                 merlinConnector,
                 merlinDisconnector,
                 merlinOnBinder,
+                requestMaker,
                 endpoint,
                 responseCodeValidator
         );

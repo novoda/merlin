@@ -11,6 +11,7 @@ public class EndpointPingerTest {
 
     private static final Endpoint ENDPOINT = Endpoint.from("any endpoint");
 
+    private final RequestMaker requestMaker = new HttpRequestMaker();
     private final PingTask pingTask = mock(PingTask.class);
     private final PingTaskFactory pingTaskFactory = mock(PingTaskFactory.class);
     private final EndpointPinger.PingerCallback pingerCallback = mock(EndpointPinger.PingerCallback.class);
@@ -19,15 +20,15 @@ public class EndpointPingerTest {
 
     @Before
     public void setUp() {
-        given(pingTaskFactory.create(ENDPOINT, pingerCallback)).willReturn(pingTask);
-        endpointPinger = new EndpointPinger(ENDPOINT, pingTaskFactory);
+        given(pingTaskFactory.create(requestMaker, ENDPOINT, pingerCallback)).willReturn(pingTask);
+        endpointPinger = new EndpointPinger(requestMaker, ENDPOINT, pingTaskFactory);
     }
 
     @Test
     public void whenPinging_thenCreatesPingTask() {
         endpointPinger.ping(pingerCallback);
 
-        verify(pingTaskFactory).create(ENDPOINT, pingerCallback);
+        verify(pingTaskFactory).create(requestMaker, ENDPOINT, pingerCallback);
     }
 
     @Test
