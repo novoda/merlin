@@ -39,7 +39,7 @@ public class MerlinsBeardBuilder {
     /**
      * Sets custom request maker
      * @param requestMaker Request maker used to ping endpoint set by {@link #withEndpoint} method
-     * @return MerlinBuilder
+     * @return MerlinsBeardBuilder
      */
     public MerlinsBeardBuilder withCustomRequestMaker(RequestMaker requestMaker) {
         this.requestMaker = requestMaker;
