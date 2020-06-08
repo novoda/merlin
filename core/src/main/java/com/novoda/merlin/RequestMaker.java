@@ -1,5 +1,5 @@
 package com.novoda.merlin;
 
-interface RequestMaker {
+public interface RequestMaker {
     Request head(Endpoint endpoint);
 }

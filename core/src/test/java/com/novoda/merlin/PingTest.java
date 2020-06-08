@@ -17,6 +17,7 @@ public class PingTest {
 
     private static final int RESPONSE_CODE = 201;
 
+    private final RequestMaker requestMaker = new HttpRequestMaker();
     private final ResponseCodeFetcher responseCodeFetcher = mock(ResponseCodeFetcher.class);
     private final ResponseCodeValidator responseCodeValidator = mock(ResponseCodeValidator.class);
 
@@ -25,6 +26,7 @@ public class PingTest {
     @Before
     public void setUp() {
         ping = new Ping(
+                requestMaker,
                 ENDPOINT,
                 responseCodeFetcher,
                 responseCodeValidator
@@ -33,7 +35,7 @@ public class PingTest {
 
     @Test
     public void givenSuccessfulRequest_whenSynchronouslyPinging_thenChecksResponseCodeIsValid() {
-        given(responseCodeFetcher.from(ENDPOINT)).willReturn(RESPONSE_CODE);
+        given(responseCodeFetcher.from(requestMaker, ENDPOINT)).willReturn(RESPONSE_CODE);
 
         ping.doSynchronousPing();
 
@@ -42,7 +44,7 @@ public class PingTest {
 
     @Test
     public void givenSuccessfulRequest_whenSynchronouslyPinging_thenReturnsTrue() {
-        given(responseCodeFetcher.from(ENDPOINT)).willReturn(RESPONSE_CODE);
+        given(responseCodeFetcher.from(requestMaker, ENDPOINT)).willReturn(RESPONSE_CODE);
         given(responseCodeValidator.isResponseCodeValid(RESPONSE_CODE)).willReturn(true);
 
         boolean isSuccess = ping.doSynchronousPing();
@@ -52,7 +54,7 @@ public class PingTest {
 
     @Test
     public void givenRequestFailsWithIOException_whenSynchronouslyPinging_thenReturnsFalse() {
-        given(responseCodeFetcher.from(ENDPOINT)).willThrow(new RequestException(new IOException()));
+        given(responseCodeFetcher.from(requestMaker, ENDPOINT)).willThrow(new RequestException(new IOException()));
 
         boolean isSuccess = ping.doSynchronousPing();
 
@@ -61,7 +63,7 @@ public class PingTest {
 
     @Test
     public void givenRequestFailsWithRuntimeException_whenSynchronouslyPinging_thenReturnsFalse() {
-        given(responseCodeFetcher.from(ENDPOINT)).willThrow(new RequestException(new RuntimeException()));
+        given(responseCodeFetcher.from(requestMaker, ENDPOINT)).willThrow(new RequestException(new RuntimeException()));
 
         boolean isSuccess = ping.doSynchronousPing();
 

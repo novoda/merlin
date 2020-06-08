@@ -15,12 +15,14 @@ class MerlinServiceBinder {
     private ResponseCodeValidator validator;
     private MerlinServiceConnection merlinServiceConnection;
     private Endpoint endpoint;
+    private RequestMaker requestMaker;
 
     MerlinServiceBinder(Context context, ConnectCallbackManager connectCallbackManager, DisconnectCallbackManager disconnectCallbackManager,
-                        BindCallbackManager bindCallbackManager, Endpoint endpoint, ResponseCodeValidator validator) {
+                        BindCallbackManager bindCallbackManager, RequestMaker requestMaker, Endpoint endpoint, ResponseCodeValidator validator) {
         this.validator = validator;
         listenerHolder = new ListenerHolder(connectCallbackManager, disconnectCallbackManager, bindCallbackManager);
         this.context = context;
+        this.requestMaker = requestMaker;
         this.endpoint = endpoint;
     }
 
@@ -31,7 +33,7 @@ class MerlinServiceBinder {
 
     void bindService() {
         if (merlinServiceConnection == null) {
-            merlinServiceConnection = new MerlinServiceConnection(context, listenerHolder, endpoint, validator);
+            merlinServiceConnection = new MerlinServiceConnection(context, listenerHolder, requestMaker, endpoint, validator);
         }
         Intent intent = new Intent(context, MerlinService.class);
         context.bindService(intent, merlinServiceConnection, Context.BIND_AUTO_CREATE);
@@ -51,10 +53,12 @@ class MerlinServiceBinder {
         private final ListenerHolder listenerHolder;
         private final Endpoint endpoint;
         private final ResponseCodeValidator validator;
+        private RequestMaker requestMaker;
 
-        MerlinServiceConnection(Context context, ListenerHolder listenerHolder, Endpoint endpoint, ResponseCodeValidator validator) {
+        MerlinServiceConnection(Context context, ListenerHolder listenerHolder, RequestMaker requestMaker, Endpoint endpoint, ResponseCodeValidator validator) {
             this.context = context;
             this.listenerHolder = listenerHolder;
+            this.requestMaker = requestMaker;
             this.endpoint = endpoint;
             this.validator = validator;
         }
@@ -72,7 +76,7 @@ class MerlinServiceBinder {
                     connectivityChangeEventExtractor
             );
             NetworkStatusRetriever networkStatusRetriever = new NetworkStatusRetriever(MerlinsBeard.from(context));
-            EndpointPinger endpointPinger = EndpointPinger.withCustomEndpointAndValidation(endpoint, validator);
+            EndpointPinger endpointPinger = EndpointPinger.withCustomRequestMakerEndpointAndValidation(requestMaker, endpoint, validator);
             ConnectivityChangesForwarder connectivityChangesForwarder = new ConnectivityChangesForwarder(
                     networkStatusRetriever,
                     listenerHolder.disconnectCallbackManager,

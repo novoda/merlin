@@ -4,6 +4,7 @@ class EndpointPinger {
 
     private final Endpoint endpoint;
     private final PingTaskFactory pingTaskFactory;
+    private final RequestMaker requestMaker;
 
     interface PingerCallback {
 
@@ -13,18 +14,19 @@ class EndpointPinger {
 
     }
 
-    static EndpointPinger withCustomEndpointAndValidation(Endpoint endpoint, ResponseCodeValidator validator) {
+    static EndpointPinger withCustomRequestMakerEndpointAndValidation(RequestMaker requestMaker, Endpoint endpoint, ResponseCodeValidator validator) {
         PingTaskFactory pingTaskFactory = new PingTaskFactory(new ResponseCodeFetcher(), validator);
-        return new EndpointPinger(endpoint, pingTaskFactory);
+        return new EndpointPinger(requestMaker, endpoint, pingTaskFactory);
     }
 
-    EndpointPinger(Endpoint endpoint, PingTaskFactory pingTaskFactory) {
+    EndpointPinger(RequestMaker requestMaker, Endpoint endpoint, PingTaskFactory pingTaskFactory) {
         this.endpoint = endpoint;
         this.pingTaskFactory = pingTaskFactory;
+        this.requestMaker = requestMaker;
     }
 
     void ping(PingerCallback pingerCallback) {
-        PingTask pingTask = pingTaskFactory.create(endpoint, pingerCallback);
+        PingTask pingTask = pingTaskFactory.create(requestMaker, endpoint, pingerCallback);
         pingTask.execute();
     }
 
@@ -34,8 +36,8 @@ class EndpointPinger {
 
     static class ResponseCodeFetcher {
 
-        public int from(Endpoint endpoint) {
-            return MerlinRequest.head(endpoint).getResponseCode();
+        public int from(RequestMaker requestMaker, Endpoint endpoint) {
+            return MerlinRequest.head(requestMaker, endpoint).getResponseCode();
         }
 
     }

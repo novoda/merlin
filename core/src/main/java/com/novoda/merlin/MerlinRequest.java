@@ -4,11 +4,7 @@ class MerlinRequest implements Request {
 
     private final Request request;
 
-    static MerlinRequest head(Endpoint endpoint) {
-        return head(new HttpRequestMaker(), endpoint);
-    }
-
-    private static MerlinRequest head(RequestMaker requestMaker, Endpoint endpoint) {
+    static MerlinRequest head(RequestMaker requestMaker, Endpoint endpoint) {
         return new MerlinRequest(requestMaker.head(endpoint));
     }
 

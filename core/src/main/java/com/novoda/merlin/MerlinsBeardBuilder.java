@@ -7,6 +7,7 @@ public class MerlinsBeardBuilder {
 
     private Endpoint endpoint = Endpoint.captivePortalEndpoint();
     private ResponseCodeValidator responseCodeValidator = new ResponseCodeValidator.CaptivePortalResponseCodeValidator();
+    private RequestMaker requestMaker = new HttpRequestMaker();
 
     MerlinsBeardBuilder() {
         // Uses builder pattern.
@@ -35,11 +36,21 @@ public class MerlinsBeardBuilder {
         return this;
     }
 
+    /**
+     * Sets custom request maker
+     * @param requestMaker Request maker used to ping endpoint set by {@link #withEndpoint} method
+     * @return MerlinBuilder
+     */
+    public MerlinsBeardBuilder withCustomRequestMaker(RequestMaker requestMaker) {
+        this.requestMaker = requestMaker;
+        return this;
+    }
+
     public MerlinsBeard build(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         AndroidVersion androidVersion = new AndroidVersion();
-        EndpointPinger captivePortalpinger = EndpointPinger.withCustomEndpointAndValidation(endpoint, responseCodeValidator);
-        Ping captivePortalPing = new Ping(endpoint, new EndpointPinger.ResponseCodeFetcher(), responseCodeValidator);
+        EndpointPinger captivePortalpinger = EndpointPinger.withCustomRequestMakerEndpointAndValidation(requestMaker, endpoint, responseCodeValidator);
+        Ping captivePortalPing = new Ping(requestMaker, endpoint, new EndpointPinger.ResponseCodeFetcher(), responseCodeValidator);
 
         return new MerlinsBeard(connectivityManager, androidVersion, captivePortalpinger, captivePortalPing);
     }
